@@ -13,28 +13,15 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SpringFramework</title>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
-<script
-	src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/resources/css/app.css" />
-
-<link rel="stylesheet"
-	href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
+<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>
 
-<link
-  rel="stylesheet"
-  type="text/css"
-  href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css"
-  media="all"
-/>
 </head>
 <body>
 	<div class="container-fluid" id="header">
@@ -42,7 +29,7 @@
 			<div class="col-sm-2"></div>
 			<div class="col-sm-7">
 				<ul class="nav nav-pills">
-					<li class="nav-item header"><a class="nav-link" href="#">HOME</a>
+					<li class="nav-item header"><a class="nav-link" href="${pageContext.request.contextPath}/">HOME</a>
 					</li>
 					<li class="nav-item header"><span class="nav-link">로그인
 							후 아래 '브랜드' 메뉴에서 좋아하는 브랜드를 ♥해주세요</span></li>
@@ -50,7 +37,7 @@
 			</div>
 			<div class="col-3">
 				<ul class="nav nav-pills">
-					<li class="nav-item header"><a class="nav-link">로그인</a>
+					<li class="nav-item header"><a class="nav-link" href="${pageContext.request.contextPath}/member/loginForm">로그인</a>
 					</li>
 					<li class="nav-item header"><a
 						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">마이페이지</a>
@@ -67,7 +54,7 @@
 			<div class="col-sm-2"></div>
 			<div class="col-sm-8 d-flex justify-content-between">
 				<div>
-					<a href="#"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME"
+					<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME"
 						class="ml-3" /></a>
 				</div>
 				<ul class="nav">
