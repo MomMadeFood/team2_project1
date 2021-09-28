@@ -50,7 +50,7 @@
 			</div>
 			<div class="col-3">
 				<ul class="nav nav-pills">
-					<li class="nav-item header"><a class="nav-link" href="#">로그인</a>
+					<li class="nav-item header"><a class="nav-link">로그인</a>
 					</li>
 					<li class="nav-item header"><a
 						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">마이페이지</a>
@@ -71,15 +71,15 @@
 						class="ml-3" /></a>
 				</div>
 				<ul class="nav">
-					<li class="nav-item"><a class="nav-link" href="#">브랜드</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">여성</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
+					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#">브랜드</a></li>
+					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#">여성</a></li>
+					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
 						tabindex="-1" aria-disabled="true">남성</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
+					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
 						tabindex="-1" aria-disabled="true">키즈</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
+					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
 						tabindex="-1" aria-disabled="true">뷰티</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
+					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
 						tabindex="-1" aria-disabled="true">라이프스타일</a></li>
 				</ul>
 				<ul class="nav">
