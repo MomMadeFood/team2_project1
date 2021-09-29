@@ -3,14 +3,16 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 <div class="container-fluid">
-	<div class="row" style="margin-top: 20px;">
-		<div class="col-sm-2"></div>
-		<div class="col-sm-8">
+	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
+		<div style="width: 10%;"></div>
+		<div style="width: 80%">
 			<div class="row">
-				<div class="col-sm-7">
+				<div style="width: 45%">
 					<img style="width: 100%" src="${pageContext.request.contextPath}/resources/images/product1.jpeg">
 				</div>
-				<div class="col-sm-5">
+				<div style="width: 5%;">
+				</div>
+				<div style="width: 40%;">
 					<div class="item_detail_info float_right" id="contentDiv">
 						<div class="info">
 							<div class="info_sect">
@@ -151,7 +153,7 @@
             	</div>
         	</div>  
      	</div>
-       	<div class="col-sm-2"></div>
+       	<div style="width: 10%"></div>
 	</div>     
 </div>
 
