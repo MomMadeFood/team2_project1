@@ -19,7 +19,7 @@
 	<div class="container-fluid">
 		<div class="row" style="margin: 0px auto; width: 990px;">
 			<div class="col-sm-9">
-				<table class="table" style="border-bottom: 1px solid #E5E5E5;">
+				<table class="table .txt" style="border-bottom: 1px solid #E5E5E5;">
 					<colgroup>
 						<col width="70%" />
 						<col width="8%" />
@@ -257,7 +257,7 @@
 										id="transfer" checked> <label class="form-check-label"
 										for="transfer"> 실시간 계좌이체 </label>
 								</div>
-								<a href="confirm" class="btn" style="width: 100px; margin-left: 10px"
+								<a href="confirm" style=" margin-left: 10px"
 									class="btn btn-secondary">결제하기</a>
 							</div>
 						</div>
@@ -293,7 +293,7 @@
 					</div>
 				</div>
 				<div
-					style="width: 310px; height: 340px; border: 1px solid black; margin-top: 15px;">
+					style="width: 310px;border: 1px solid black; margin-top: 15px;">
 					<div
 						style="height: 35%; border-bottom: 1px solid #CCCCCC; padding: 10px;">
 						<p
