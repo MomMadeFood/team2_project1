@@ -2,87 +2,76 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="sec"
-	uri="http://www.springframework.org/security/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <!DOCTYPE html>
 <html>
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>SpringFramework</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
-<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>
-
-</head>
-<body>
-	<div class="container-fluid" id="header">
-		<div class="row">
-			<div class="col-sm-2"></div>
-			<div class="col-sm-7">
-				<ul class="nav nav-pills">
-					<li class="nav-item header"><a class="nav-link" href="${pageContext.request.contextPath}/">HOME</a>
-					</li>
-					<li class="nav-item header"><span class="nav-link">로그인
-							후 아래 '브랜드' 메뉴에서 좋아하는 브랜드를 ♥해주세요</span></li>
-				</ul>
-			</div>
-			<div class="col-3">
-				<ul class="nav nav-pills">
-					<li class="nav-item header"><a class="nav-link" href="${pageContext.request.contextPath}/member/loginForm">로그인</a>
-					</li>
-					<li class="nav-item header"><a
-						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">마이페이지</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">주문조회</a>
-						</div></li>
-				</ul>
-			</div>
-			<div class="col-sm-2"></div>
-		</div>
-	</div>
-	<div class="container-fluid mt-3 mb-5">
-		<div class="row">
-			<div class="col-sm-2"></div>
-			<div class="col-sm-8 d-flex justify-content-between">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>SpringFramework</title>
+		<%--
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
+		<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
+		--%>
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap-4.6.0-dist/css/bootstrap.min.css"/>
+		<script src="${pageContext.request.contextPath}/resources/jquery/jquery-3.5.1.min.js"></script>
+		<script src="${pageContext.request.contextPath}/resources/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
+	
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css"/>
+	</head>
+	<body>
+		<div class="d-flex flex-column vh-100">
+			<nav class="navbar navbar-expand-sm bg-dark navbar-dark text-white font-weight-bold justify-content-between">
+				<a class="navbar-brand" href="/"> 
+					<img src="${pageContext.request.contextPath}/resources/images/logo-spring.png" width="30" height="30" class="d-inline-block align-top">
+					Spring
+				</a>
 				<div>
-					<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME"
-						class="ml-3" /></a>
+					<div>
+						<%-- 
+						<c:if test="${sessionMid == null}">
+							<a class="btn btn-success btn-sm" href="${pageContext.request.contextPath}/ch08/login">로그인</a>
+							<a class="btn btn-success btn-sm" href="${pageContext.request.contextPath}/ch15/login">로그인</a>
+						</c:if>
+						<c:if test="${sessionMid != null}">
+							<a class="btn btn-success btn-sm" href="${pageContext.request.contextPath}/ch08/logout">로그아웃</a>
+						</c:if> 
+						--%>
+						<sec:authorize access="isAnonymous()">
+							<a href="${pageContext.request.contextPath}/ch17/loginForm" class="btn btn-success btn-sm">로그인</a>
+						</sec:authorize>
+					
+						<sec:authorize access="isAuthenticated()">
+							<%-- 사이트간 요청 위조 방지가 비활성화되어 있을 경우 --%>  
+							<%-- 
+							<a href="${pageContext.request.contextPath}/logout" 
+							   class="btn btn-success btn-sm">로그아웃</a> 
+							--%>
+							   
+							<%-- 사이트간 요청 위조 방지가 활성화되어 있을 경우 --%>   
+							<form method="post" action="${pageContext.request.contextPath}/logout">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								<button class="btn btn-success btn-sm">로그아웃</button>
+							</form>
+						</sec:authorize>
+					</div>
 				</div>
-				<ul class="nav">
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#">브랜드</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#">여성</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">남성</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">키즈</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">뷰티</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">라이프스타일</a></li>
-				</ul>
-				<ul class="nav">
-					<li class="nav-item"><a class="nav-link" href="#">기획전</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">이벤트</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">THE 매거진</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">편집샵</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">룩북</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">아울렛*</a></li>
-				</ul>
-				<div></div>
-			</div>
-			<div class="col-sm-2"></div>
-		</div>
-	</div>
+			</nav>
+	
+			<div class="flex-grow-1 container-fluid">
+				<div class="row h-100">
+					<div class="col-md-4 p-3 bg-dark">
+						<div class="h-100 d-flex flex-column">
+							<div class="flex-grow-1" style="height: 0px; overflow-y: auto; overflow-x: hidden;">
+								<%@ include file="/WEB-INF/views/common/menu.jsp" %>
+							</div>
+						</div>
+					</div>
+	
+					<div class="col-md-8 p-3">
+						<div class=" h-100 d-flex flex-column">
+							<div class="flex-grow-1 overflow-auto pr-3" style="height: 0px">
