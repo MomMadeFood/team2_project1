@@ -13,10 +13,10 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>SpringFramework</title>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap-4.6.0-dist/css/bootstrap.min.css/">
+<script src="${pageContext.request.contextPath}/resources/jquery/jquery-3.5.1.min.js"></script>
+<script src="${pageContext.request.contextPath}/resources/bootstrap-4.6.0-dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/productDetail.css" />
@@ -51,40 +51,38 @@
 			<div class="col-sm-2"></div>
 		</div>
 	</div>
-	<div class="container-fluid mt-3 mb-5">
-		<div class="row">
-			<div class="col-sm-2"></div>
-			<div class="col-sm-8 d-flex justify-content-between">
-				<div>
-					<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME"
-						class="ml-3" /></a>
-				</div>
-				<ul class="nav">
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#">브랜드</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#">여성</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">남성</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">키즈</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">뷰티</a></li>
-					<li class="nav-item"><a style="font-weight:bold" class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">라이프스타일</a></li>
-				</ul>
-				<ul class="nav">
-					<li class="nav-item"><a class="nav-link" href="#">기획전</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">이벤트</a></li>
-					<li class="nav-item"><a class="nav-link" href="#">THE 매거진</a>
-					</li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">편집샵</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">룩북</a></li>
-					<li class="nav-item"><a class="nav-link" href="#"
-						tabindex="-1" aria-disabled="true">아울렛*</a></li>
-				</ul>
-				<div></div>
+
+	<div class= "d-flex" style="width: 990px; margin:0px auto; width:990px;">
+		<div style="display: flex; align-items: center;">
+			<div>
+				<a href="${pageContext.request.contextPath}/"><img
+					src="${pageContext.request.contextPath}/resources/images/logo.png"
+					alt="HANDSOME" class="ml-3" /></a>
 			</div>
-			<div class="col-sm-2"></div>
 		</div>
+		<ul class="nav">
+			<li class="nav-item"><a style="font-weight: bold"
+				class="nav-link" href="#">브랜드</a></li>
+			<li class="nav-item"><a style="font-weight: bold"
+				class="nav-link" href="#">여성</a></li>
+			<li class="nav-item"><a style="font-weight: bold"
+				class="nav-link" href="#" tabindex="-1" aria-disabled="true">남성</a></li>
+			<li class="nav-item"><a style="font-weight: bold"
+				class="nav-link" href="#" tabindex="-1" aria-disabled="true">키즈</a></li>
+			<li class="nav-item"><a style="font-weight: bold"
+				class="nav-link" href="#" tabindex="-1" aria-disabled="true">뷰티</a></li>
+			<li class="nav-item"><a style="font-weight: bold"
+				class="nav-link" href="#" tabindex="-1" aria-disabled="true">라이프스타일</a></li>
+		</ul>
+		<ul class="nav">
+			<li class="nav-item"><a class="nav-link" href="#">기획전</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">이벤트</a></li>
+			<li class="nav-item"><a class="nav-link" href="#">THE 매거진</a></li>
+			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
+				aria-disabled="true">편집샵</a></li>
+			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
+				aria-disabled="true">룩북</a></li>
+			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
+				aria-disabled="true">아울렛*</a></li>
+		</ul>
 	</div>
