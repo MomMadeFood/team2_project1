@@ -16,4 +16,9 @@ public class purchaseController {
 	public String confirm() {
 		return "purchase/purchaseConfirm";
 	}
+	
+	@RequestMapping("/orderList")
+	public String orderList() {
+		return "order/orderList";
+	}
 }
