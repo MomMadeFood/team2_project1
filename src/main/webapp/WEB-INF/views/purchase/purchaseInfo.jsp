@@ -7,6 +7,12 @@
         margin: 0px;
       }
     </style>
+	<script>
+		function emailChange() {
+			let selectedEmail = $("#emailSel").val();
+			$("#emailAddr").val(selectedEmail);
+		}
+	</script>
 <div>
 
 	<div
@@ -181,12 +187,9 @@
 							<tr>
 								<td style="background-color: #F5F5F5;" scope="row"
 									class="th_space">수령인 E-mail</td>
-								<td><input style="width: 120px">
-								<div id="hp3" name="hp3" title="휴대폰 마지막자리" type="text"
-										maxLength=4
-										style="display: inline-block; margin-left: 8px; margin-right: 8px">@</div>
-									<input style="width: 120px"> <select title="이메일 계정"
-									id="emailDelySel">
+								<td>
+                      			<input id="emailId" name="emailId" title="이메일앞자리" type="text" style="width:120px"><div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="emailAddr" name="emailAddr" title="이메일주소" type="text" style="width:120px">
+                      			<select title="이메일 계정" id="emailSel" onchange="emailChange()">
 										<option value="">직접입력</option>
 										<option value="naver.com">naver.com</option>
 										<option value="gmail.com">gmail.com</option>
@@ -241,19 +244,18 @@
 							</div>
 						</div>
 						<div style="display: flex; height: 30%; width: 100%;">
-							<div
-								style="height: 100%; width: 20%; background-color: #F5F5F5; padding-left: 20px; padding-top: 10px">
+							<div style="height: 100%; width: 20%; background-color: #F5F5F5; padding-left: 20px; padding-top: 10px">
 								<p style="font-weight: bold">결제수단 선택</p>
 							</div>
 							<div
 								style="height: 100%; width: 80%; display: flex; padding: 10px">
 								<div style="margin-top: 3px;" class="form-check">
-									<input class="form-check-input" type="radio" name="credit"
+									<input class="form-check-input" type="radio" name="purchaseCheck"
 										id="credit"> <label style="margin-right: 20px;"
 										class="form-check-label" for="credit"> 신용카드 </label>
 								</div>
 								<div style="margin-top: 3px;" class="form-check">
-									<input class="form-check-input" type="radio" name="transfer"
+									<input class="form-check-input" type="radio" name="purchaseCheck"
 										id="transfer" checked> <label class="form-check-label"
 										for="transfer"> 실시간 계좌이체 </label>
 								</div>
