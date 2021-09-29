@@ -15,36 +15,34 @@
 
 <div class="mt-5">
 	<div style="width: 990px; margin: 0px auto; background-color: #f5f5f5;">
-		<form style="padding:0px; margin:0px">
-			<div style="display:flex; justify-content:between; width:100%">
-				<div class="search-order-input">
-					<div class="date-search-order">
-						<span class="txt" style="padding-right: 10px">＊ 조회기간</span> <input
-							type="date" id="findStartDate" name="findStartDate" style="width:130"/> - <input
-							type="date" id="findEndDate" name="findEndDate"/>
-						<button type="button"
-							class="btn btn-sm btn-outline-secondary btn-search">1주일</button>
-						<button type="button"
-							class="btn btn-sm btn-outline-secondary btn-search">1개월</button>
-						<button type="button"
-							class="btn btn-sm btn-outline-secondary btn-search">3개월</button>
-					</div>
-					<div class="content-search-order">
-						<span class="txt" style="padding-right: 10px">＊ 검색구분 </span> <select name="searchType">
-							<option value="0">상품명</option>
-							<option value="1">주문번호</option>
-						</select> <input type="text" id="searchContent" name="searchContent" style="width:418px"/>
-					</div>
+		<div style="display:flex; justify-content:between; width:100%">
+			<div class="search-order-input">
+				<div class="date-search-order ">
+					<span class="txt" style="padding-right: 10px">＊ 조회기간</span> <input
+						type="date" id="findStartDate" name="findStartDate" style="width:130"/> - <input
+						type="date" id="findEndDate" name="findEndDate"/>
+					<button type="button"
+						class="btn btn-sm btn-outline-secondary btn-search">1주일</button>
+					<button type="button"
+						class="btn btn-sm btn-outline-secondary btn-search">1개월</button>
+					<button type="button"
+						class="btn btn-sm btn-outline-secondary btn-search">3개월</button>
 				</div>
-				<div class="search-order-input2" style="padding-top:17px; padding-left:10px;">
-					<button type="button" class="btn btn-md btn-dark btn-join mt-3" style="width:150px; height:70px;">조회하기</button>
+				<div class="content-search-order">
+					<span class="txt" style="padding-right: 10px">＊ 검색구분 </span> <select name="searchType">
+						<option value="0">상품명</option>
+						<option value="1">주문번호</option>
+					</select> <input type="text" id="searchContent" name="searchContent" style="width:418px"/>
 				</div>
 			</div>
-		</form>
+			<div class="search-order-input2" style="padding-top:17px; padding-left:10px;">
+				<button type="button" class="btn btn-md btn-dark btn-join mt-3" style="width:150px; height:70px;">조회하기</button>
+			</div>
+		</div>
 	</div>
 </div>
 
-<div class="mt-5">
+<div class="mt-5" >
 	<div style="width:990px; margin: 0px auto;">
 		<div style="display:flex; justify-content: space-between ;margin-top:40px">
 		  <div>

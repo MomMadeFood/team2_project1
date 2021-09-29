@@ -181,7 +181,65 @@
                   role="tabpanel"
                   aria-labelledby="v-pills-best-woman-tab"
                 >
-                  11
+                  <div class="swiper mySwiper">
+                    <div class="swiper-wrapper">
+                      <div class="swiper-slide">
+                        <div class="item_box">
+                          <a href="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/iu.jpg" />
+                          </a>
+                          <a href="#">
+                            <span class="brand">가나다라</span>
+                            <span class="price">100000</span>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu2.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu3.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu4.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu5.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <div class="item_box">
+                          <a href="#">
+                            <img src="${pageContext.request.contextPath}/resources/images/iu6.jpg" />
+                          </a>
+                          <a href="#">
+                            <span class="brand">여섯번째</span>
+                            <span class="price">1400000</span>
+                          </a>
+                        </div>
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu2.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu3.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu4.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu5.jpg" />
+                      </div>
+                      <div class="swiper-slide">
+                        <img src="${pageContext.request.contextPath}/resources/images/iu6.jpg" />
+                      </div>
+                    </div>
+                    <div class="swiper-button-next disableButton" style="color:#8f8f8f;"></div>
+                    <div class="swiper-button-prev disableButton" style="color:#8f8f8f;"></div>
+                    <div class="swiper-pagination"></div>
+                  </div>
                 </div>
                 <div
                   class="tab-pane fade"

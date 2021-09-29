@@ -235,7 +235,7 @@
 									<p
 										style="padding-top: 5px; padding-right: 10px; font-size: 12px; vertical-align: middle; line-height: 20px; color: #999">*
 										100 포인트 이상부터 사용이 가능합니다.</p>
-									<button type="button" style="width: 100px; margin-left: 10px"
+									<button type="button" style="margin-left: 10px"
 										class="btn btn-sm btn-secondary">충전하러가기</button>
 								</div>
 							</div>
@@ -257,8 +257,8 @@
 										id="transfer" checked> <label class="form-check-label"
 										for="transfer"> 실시간 계좌이체 </label>
 								</div>
-								<a href="confirm" style=" margin-left: 10px"
-									class="btn btn-secondary">결제하기</a>
+								<button onclick="location.href='confirm'" style="margin-left: 10px;"
+									class="btn btn-sm btn-secondary">결제하기</button>
 							</div>
 						</div>
 					</div>

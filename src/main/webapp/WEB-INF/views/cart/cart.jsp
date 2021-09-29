@@ -172,8 +172,8 @@
 		</div>
 
 		<div class="center mb-5" style="width:290px">
-			<button class="cart_lg_btn_wt">선택상품삭제</button>
-			<a class="cart_lg_btn_gr" href="purchase/info">선택상품주문</a>
+			<a class="cart_lg_btn_wt">선택상품삭제</a>
+			<button class="cart_lg_btn_gr" onclick="location.href='/purchase/confirm';">선택상품주문</button>
 		</div>
 	</div>
 	
