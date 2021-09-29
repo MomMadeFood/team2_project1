@@ -23,4 +23,10 @@ public class HomeController {
 		logger.info("실행");
 		return "error/403";
 	}
+	
+	@RequestMapping("/orderList")
+	public String orderList() {
+		logger.info("실행");
+		return "order/orderList";
+	}
 }  
