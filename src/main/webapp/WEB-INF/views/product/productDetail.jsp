@@ -3,6 +3,73 @@
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
 
 <div class="container-fluid">
+	<script type="text/javascript">
+		function reduceSum() {
+			let sum = parseInt($(".qty_input").val());
+			let total = document.querySelector(".price span").innerHTML
+					.substr(1);
+
+			if (sum > 1) {
+				sum = sum - 1;
+			}
+			$(".qty_input").val(sum);
+
+			let temp = "";
+
+			for (var i = 0; i < total.length; i++) {
+				if (total.charAt(i) != ',') {
+					temp = temp + total.charAt(i);
+				}
+			}
+			temp = parseInt(temp);
+			temp = temp * sum;
+			let price = String(temp);
+
+			let ans = "";
+			let cnt = 0;
+			for (var i = price.length - 1; i >= 0; i--) {
+				cnt++;
+				ans = price.charAt(i) + ans;
+				if (i > 0 && cnt % 3 == 0) {
+					ans = "," + ans;
+				}
+			}
+
+			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
+		}
+
+		function increaseSum() {
+			let sum = parseInt($(".qty_input").val());
+			let total = document.querySelector(".price span").innerHTML
+					.substr(1);
+
+			sum = sum + 1;
+			$(".qty_input").val(sum);
+
+			let temp = "";
+
+			for (var i = 0; i < total.length; i++) {
+				if (total.charAt(i) != ',') {
+					temp = temp + total.charAt(i);
+				}
+			}
+			temp = parseInt(temp);
+			temp = temp * sum;
+			let price = String(temp);
+
+			let ans = "";
+			let cnt = 0;
+			for (var i = price.length - 1; i >= 0; i--) {
+				cnt++;
+				ans = price.charAt(i) + ans;
+				if (i > 0 && cnt % 3 == 0) {
+					ans = "," + ans;
+				}
+			}
+
+			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
+		}
+	</script>
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
 		<div style="width: 10%;"></div>
 		<div style="width: 80%">
@@ -126,9 +193,9 @@
                                      		<span class="product-subtitle">수량</span>
                                      	</td>
                                          <td style="margin-top:10px;">
-                                             <button class="qty_left" type="button">-</button>
+                                             <button class="qty_left" type="button" onclick="reduceSum()">-</button>
                                              <input type="text" name="pop_out" value="1" class="qty_input" />
-                                             <button class="qty_right" type="button">+</button>
+                                             <button class="qty_right" type="button" onclick="increaseSum()">+</button>
                                          </td>
                                      </tr>
                                      <tr>
@@ -136,10 +203,10 @@
                                      		<span class="product-subtitle">총 합계</span>
                                      	</td>
                                      	<td>
-                                     		<span >₩598,000</span>
+                                     		<span id="totalPrice">₩598,000</span>
                                      	</td>
                                      </tr>
-                                
+									
                                 </table>
 	                            <div style="margin-top: 15px;">
 	                                <button type="button" class="cart_lg_btn_wt" style="width:40%">쇼핑백 담기</button>
