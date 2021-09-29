@@ -85,13 +85,13 @@
 	                                          <input type="radio"
 											id="customRadioInline1" name="color"
 											class="custom-control-input">
-	                                          <label class="custom-control-label" for="customRadioInline1">BLACK</label>
+	                                          <label class="custom-control-label" for="customRadioInline1"><img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_BK_C01.jpg" width="20px;"></label>
 	                                      </div>
                                       		<div class="custom-control custom-radio custom-control-inline">
 		                                          <input type="radio"
 												id="customRadioInline2" name="color"
 												class="custom-control-input">
-		                                          <label class="custom-control-label" for="customRadioInline2">CREAM</label>
+		                                          <label class="custom-control-label" for="customRadioInline2"><img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_CR_C01.jpg" width="20px;"></label>
 		                                      </div>
                                      	</td>
                                  	</tr>
@@ -154,12 +154,10 @@
         	</div>  
      	</div>
        	<div style="width: 10%"></div>
-	</div>     
-</div>
-
-
+	</div>   
 
 <!-- 더보기 script -->
+
 <script>
     $(document).ready(function() {
         $('.prod-detail-con-more').on('click', '.more-btn', function(){
