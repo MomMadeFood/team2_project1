@@ -7,8 +7,45 @@
 		<div style="width: 10%;"></div>
 		<div style="width: 80%">
 			<div class="row">
-				<div style="width: 45%">
-					<img style="width: 100%" src="${pageContext.request.contextPath}/resources/images/product1.jpeg">
+				<div style="width: 55%"> 
+					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+						  <ol class="carousel-indicators">
+						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+						    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+						    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+						    <li data-target="#carouselExampleIndicators" data-slide-to="3"></li>
+						    <li data-target="#carouselExampleIndicators" data-slide-to="4"></li>
+						    <li data-target="#carouselExampleIndicators" data-slide-to="5"></li>
+						  </ol>
+						  <div class="carousel-inner">
+						    <div class="carousel-item active">
+						      <img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_CR_W01.jpg/dims/resize/684x1032" class="d-block w-100 img-fluid" >
+						    </div>
+						    <div class="carousel-item">
+						      <img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_CR_W02.jpg/dims/resize/684x1032" class="d-block w-100 img-fluid" >
+						    </div>
+						    <div class="carousel-item">
+						      <img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_CR_W03.jpg/dims/resize/684x1032" class="d-block w-100 img-fluid" >
+						    </div>
+   						    <div class="carousel-item">
+						      <img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_BK_W01.jpg/dims/resize/684x1032/" class="d-block w-100 img-fluid">
+						    </div>
+   						    <div class="carousel-item">
+						      <img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_BK_W02.jpg/dims/resize/684x1032/" class="d-block w-100 img-fluid">
+						    </div>
+   						    <div class="carousel-item">
+						      <img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_BK_W03.jpg/dims/resize/684x1032/" class="d-block w-100 img-fluid">
+						    </div>
+						  </div>
+						  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+						    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						    <span class="sr-only">Previous</span>
+						  </a>
+						  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+						    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+						    <span class="sr-only">Next</span>
+						  </a>
+						</div>		
 				</div>
 				<div style="width: 5%;">
 				</div>
@@ -17,7 +54,7 @@
 						<div class="info">
 							<div class="info_sect">
 								<div class="brand-name">
-									<a>O'2nd</a>
+									<a href="http://www.thehandsome.com/ko/c/br45/br45">O'2nd</a>
 								</div>
 								<h4 class="item_name">
 									<span class="name ko_fir_spel"> 펄 돌먼 점퍼</span> 
@@ -32,16 +69,13 @@
 										<p class="description">여밈 부분을 따라 이어지는 펄 비즈가 특징으로 양쪽을 서로
 											언밸런스하게 매치하여 한층 색다른 느낌을 주었습니다. 암홀 라인이 여유로운 돌먼 소매 디자인으로 착용감과
 											디자인을 모두 살렸으며, 부드럽고 고급스러운 터치감이 돋보이는 퀄리티 높은 소재를 사용하였습니다.</p>
-									</div>
-									<p class="size-text">
-										- 피팅 정보 : 176cm, 55 사이즈 모델이 76 사이즈 착용
-                                    </p>                
+									</div>      
                                 </div>
                                </div>
                                 <div class="info_sect">
                                 	<div class="prod-detail-con-more">
                                     	<button class="noline-btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        더보기
+                                        		더보기<i href="#;"></i>
                                         </button>
                                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <ul>
@@ -141,13 +175,11 @@
                                      </tr>
                                 
                                 </table>
-	                            <div style="margin-top: 15px;">
+	                            <div class = "product_priceinfo" style="margin-top: 15px;">
 	                                <button type="button" class="cart_lg_btn_wt" style="width:40%">쇼핑백 담기</button>
 	                                <button type="button" class="cart_lg_btn_gr" style="width:40%">바로 주문</button>
 	                            </div>
-	                            
 	                        </div>
-	                        
 	                    </div>
 	                </div>
             	</div>
@@ -167,6 +199,7 @@
         })
     });
 </script>
+
 
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
