@@ -77,7 +77,7 @@
 		</ul>
 		<ul class="nav">
 			<li class="nav-item"><a class="nav-link" href="#">기획전</a></li>
-			<li class="nav-item"><a class="nav-link" href="#">이벤트</a></li>
+			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/event">이벤트</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">THE 매거진</a></li>
 			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
 				aria-disabled="true">편집샵</a></li>
