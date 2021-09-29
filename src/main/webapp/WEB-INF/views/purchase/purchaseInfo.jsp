@@ -1,6 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+    <style>
+      p{
+        padding: 0px;
+        margin: 0px;
+      }
+    </style>
 <div>
 
 	<div
@@ -251,8 +257,8 @@
 										id="transfer" checked> <label class="form-check-label"
 										for="transfer"> 실시간 계좌이체 </label>
 								</div>
-								<button type="button" style="width: 100px; margin-left: 10px"
-									class="btn btn-sm btn-secondary">결제하기</button>
+								<a href="confirm" class="btn" style="width: 100px; margin-left: 10px"
+									class="btn btn-secondary">결제하기</a>
 							</div>
 						</div>
 					</div>
@@ -273,7 +279,7 @@
 							<div
 								style="margin-top: 20px; display: flex; justify-content: space-between;">
 								<div>배송비</div>
-								<div>0</div>
+								<div>3000</div>
 							</div>
 						</div>
 					</div>
@@ -282,7 +288,7 @@
 							style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
 							<div style="float: left;">합계</div>
 							<div
-								style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">345,000</div>
+								style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">348,000</div>
 						</div>
 					</div>
 				</div>
