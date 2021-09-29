@@ -14,25 +14,11 @@ public class HomeController {
 	
 	@RequestMapping("/")
 	public String content() {
-		logger.info("실행");
 		return "home";
-	}
-	
-	@RequestMapping("/info")
-	public String info() {
-		logger.info("실행");
-		return "member/purchaseInfo";
-	}
-	
-	@RequestMapping("/confirm")
-	public String confirm() {
-		logger.info("실행");
-		return "member/purchaseConfirm";
 	}
 	
 	@RequestMapping("/error/403")
 	public String error403() {
-		logger.info("실행");
 		return "error/403";
 	}
 }  

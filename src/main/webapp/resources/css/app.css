@@ -255,3 +255,26 @@ a:link, a:active, a:visited, a {
 .member-bottom{
 	background-color: #f5f5f5;
 }
+
+.txt {
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 22px;
+}
+
+.date-search-order{
+	padding-left: 100px;
+	padding-top: 30px;
+}
+.content-search-order{
+	padding-left: 100px;
+	padding-top: 10px;
+	padding-bottom: 30px;
+}
+.search-order-input{
+	width:70%;
+}
+
+.search-order-input2{
+	width:30%;
+} 
