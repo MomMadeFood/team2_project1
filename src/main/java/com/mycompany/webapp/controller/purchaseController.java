@@ -21,4 +21,9 @@ public class purchaseController {
 	public String orderList() {
 		return "order/orderList";
 	}
+	
+	@RequestMapping("/productDetail")
+	public String productDetail() {
+		return "product/productDetail";
+	}
 }
