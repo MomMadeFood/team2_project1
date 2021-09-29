@@ -12,7 +12,6 @@ public class CartController {
 	
 	@RequestMapping("/cart")
 	public String cart() {
-		logger.info("실행");
 		return "cart/cart";
 	}
 }  

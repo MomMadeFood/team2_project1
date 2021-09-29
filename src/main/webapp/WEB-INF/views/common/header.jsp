@@ -42,10 +42,10 @@
 				<ul class="nav nav-pills">
 					<li class="nav-item header"><a class="nav-link" href="${pageContext.request.contextPath}/member/loginForm">로그인</a>
 					</li>
-					<li class="nav-item header"><a
-						class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">마이페이지</a>
+					<li class="nav-item header"><a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#">마이페이지</a>
 						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">주문조회</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/order/orderList">주문조회</a>
+							<a class="dropdown-item" href="${pageContext.request.contextPath}/cart/cart">장바구니</a>
 						</div></li>
 				</ul>
 			</div>
@@ -53,37 +53,26 @@
 		</div>
 	</div>
 
-	<div class= "d-flex" style="width: 990px; margin:0px auto; width:990px;">
+	<div class= "d-flex" style="width:1240px; margin:0px auto;">
 		<div style="display: flex; align-items: center;">
-			<div>
-				<a href="${pageContext.request.contextPath}/"><img
-					src="${pageContext.request.contextPath}/resources/images/logo.png"
-					alt="HANDSOME" class="ml-3" /></a>
+			<div style="margin-right: 100px;">
+				<a href="${pageContext.request.contextPath}/"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME" class="ml-3" /></a>
 			</div>
 		</div>
 		<ul class="nav">
-			<li class="nav-item"><a style="font-weight: bold"
-				class="nav-link" href="#">브랜드</a></li>
-			<li class="nav-item"><a style="font-weight: bold"
-				class="nav-link" href="#">여성</a></li>
-			<li class="nav-item"><a style="font-weight: bold"
-				class="nav-link" href="#" tabindex="-1" aria-disabled="true">남성</a></li>
-			<li class="nav-item"><a style="font-weight: bold"
-				class="nav-link" href="#" tabindex="-1" aria-disabled="true">키즈</a></li>
-			<li class="nav-item"><a style="font-weight: bold"
-				class="nav-link" href="#" tabindex="-1" aria-disabled="true">뷰티</a></li>
-			<li class="nav-item"><a style="font-weight: bold"
-				class="nav-link" href="#" tabindex="-1" aria-disabled="true">라이프스타일</a></li>
+			<li class="nav-item"><a style="font-weight: bold" class="nav-link" href="#">브랜드</a></li>
+			<li class="nav-item"><a style="font-weight: bold" class="nav-link" href="#">여성</a></li>
+			<li class="nav-item"><a style="font-weight: bold" class="nav-link" href="#" tabindex="-1" aria-disabled="true">남성</a></li>
+			<li class="nav-item"><a style="font-weight: bold" class="nav-link" href="#" tabindex="-1" aria-disabled="true">키즈</a></li>
+			<li class="nav-item"><a style="font-weight: bold" class="nav-link" href="#" tabindex="-1" aria-disabled="true">뷰티</a></li>
+			<li class="nav-item"><a style="font-weight: bold" class="nav-link" href="#" tabindex="-1" aria-disabled="true">라이프스타일</a></li>
 		</ul>
 		<ul class="nav">
 			<li class="nav-item"><a class="nav-link" href="#">기획전</a></li>
 			<li class="nav-item"><a class="nav-link" href="${pageContext.request.contextPath}/event">이벤트</a></li>
 			<li class="nav-item"><a class="nav-link" href="#">THE 매거진</a></li>
-			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
-				aria-disabled="true">편집샵</a></li>
-			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
-				aria-disabled="true">룩북</a></li>
-			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1"
-				aria-disabled="true">아울렛*</a></li>
+			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1" aria-disabled="true">편집샵</a></li>
+			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1" aria-disabled="true">룩북</a></li>
+			<li class="nav-item"><a class="nav-link" href="#" tabindex="-1" aria-disabled="true">아울렛*</a></li>
 		</ul>
 	</div>
