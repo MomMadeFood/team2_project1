@@ -12,13 +12,11 @@ public class MemberController {
 	
 	@RequestMapping("/loginForm")
 	public String loginForm() {
-		logger.info("실행");
 		return "member/loginForm";
 	}
 	
 	@RequestMapping("/joinForm")
 	public String joinForm() {
-		logger.info("실행");
 		return "member/joinForm";
 	}
 }  
