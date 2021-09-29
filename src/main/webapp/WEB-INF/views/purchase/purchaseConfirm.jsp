@@ -148,34 +148,34 @@
             <h5 >배송지 정보</h5>
           </div>
         </div>
-        <div style="margin-top:20px; height: 140px; width:100%; clear:both;">
+        <div style="margin-top:20px; width:100%; clear:both;">
           <div style="display:flex; height: 33%; border-top:1px black solid;border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5;padding-left:20px;padding-top:10px"><p style="font-weight:bold">배송지 주소</p></div>
-            <div style="height:100%; width:80%;padding:10px;">
+            <div style="width:20%; background-color: #F5F5F5;padding-left:20px;padding-top:10px"><p style="font-weight:bold">배송지 주소</p></div>
+            <div style="width:80%;padding:10px;">
               <p>서울시 송파구 가락동 xx-x번지 ***호</p>
             </div>
           </div>
           <div style="display:flex; height: 33%; width:100%; border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">수령인</p></div>
-            <div style="height:100%; width:80%; display:flex; padding:10px">
+            <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">수령인</p></div>
+            <div style="width:80%; display:flex; padding:10px">
               <p>김정우</p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">휴대폰</p></div>
-            <div style="height:100%; width:80%; display:flex; padding:10px">
+            <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">휴대폰</p></div>
+            <div style="width:80%; display:flex; padding:10px">
               <p>010-1234-5679</p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">연락처</p></div>
-            <div style="height:100%; width:80%; display:flex; padding:10px">
+            <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">연락처</p></div>
+            <div style="width:80%; display:flex; padding:10px">
               <p></p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">배송시 요청사항</p></div>
-            <div style="height:100%; width:80%; display:flex; padding:10px">
+            <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">배송시 요청사항</p></div>
+            <div style="width:80%; display:flex; padding:10px">
               <p>없음</p>
             </div>
           </div>

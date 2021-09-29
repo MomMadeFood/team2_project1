@@ -195,3 +195,8 @@ a:link { text-decoration: none;}
     border-right: none;
 
 }
+
+.noline-btn {
+	border:none;
+	background-color:white;
+}

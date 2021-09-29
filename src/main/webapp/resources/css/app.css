@@ -124,6 +124,13 @@ a:hover, a:active {
 	border-bottom: 2px solid #0b0b0b;
 }
 
+.product-subtitle {
+	height: 50px;
+	line-height: 40px;
+	font-weight: 600;
+}
+
+
 .nav-link {
 	color: #8f8f8f;
 	font-weight: 500;
