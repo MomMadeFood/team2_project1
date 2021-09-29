@@ -17,10 +17,10 @@
       <div style="width: 990px; margin:0px auto; width:990px;">
 
         <div style="background-color: #F5F5F5; height: 65px; margin-top:20px; border:1px solid #E5E5E5; display:flex">
-          <div style="width: 70%; border-right:1px solid #E5E5E5; display:flex; padding:18px">
+          <div style="width: 70%; border-right:1px solid #E5E5E5; display:flex; align-items: center; margin-left: 10px; ">
             <p  style="font-weight:bold">주문번호 : </p><p style="color:#c59c6c; font-weight:bold">210928P10845433</p>
           </div>
-          <div style="width: 30%;display:flex; padding:18px">
+          <div style="width: 30%;display:flex; padding:18px;align-items: center;">
             <p>주문일시: 2021.09.29 15:30</p>
           </div>
         </div>
@@ -31,8 +31,8 @@
         </div>
         <table class="table" style="border-bottom:1px solid #E5E5E5; margin-top:20px">
           <colgroup>
-            <col width="32%"/>
-            <col width="8%"/>
+            <col width="33%"/>
+            <col width="7%"/>
             <col width="10%"/>
             <col width="10%"/>
             <col width="20%"/>
@@ -50,7 +50,7 @@
           </thead>
           <tbody>
             <tr style="height:150px;">
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
+              <td style="vertical-align: middle; text-align:right">
                 <div style="display: flex; justify-content:between">
                   <div>
                     <img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt=""
@@ -100,13 +100,13 @@
           </thead>
           <tbody>
             <tr style="height:20px;">
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩345,000</p></td>
+              <td style=" vertical-align: middle; text-align:right"><p>₩345,000</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩3,000</p></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩48,000</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩300,000</p></td>
             </tr>
             <tr style="height:100px;">
-              <td colspan='2' style="vertical-align: middle; text-align:right; border-left: 1px solid #E5E5E5;"></td>
+              <td colspan='2' style="vertical-align: middle; text-align:right; "></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right">
                 <div style="display:flex; justify-content: space-between;"><p>쿠폰할인</p><p>- ₩ 0</p></div>
                 <div style="display:flex; justify-content: space-between;"><p>플러스포인트쿠폰</p><p>- ₩ 0</p></div>
@@ -123,22 +123,22 @@
             </tr>
           </tbody>
         </table>
-        <div style="height: 140px; width:100%; clear:both; border-bottom: 1px solid #cccccc">
+        <div style="width:100%; clear:both; border-bottom: 1px solid #cccccc">
           <div style="display:flex; height: 33%; border-top:1px black solid;border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5;padding-left:20px;padding-top:10px"><p style="font-weight:bold">주 결제수단</p></div>
-            <div style="height:100%; width:80%;padding:10px;">
+            <div style=" width:20%; background-color: #F5F5F5;padding-left:20px;padding-top:10px"><p style="font-weight:bold">주 결제수단</p></div>
+            <div style=" width:80%;padding:10px;">
               <p>KB 국민카드 (9429-****-****-****)</p>
             </div>
           </div>
           <div style="display:flex; height: 33%; width:100%; border-bottom: 1px solid #cccccc">
-            <div style="height:100%; width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">실 결제금액</p></div>
-            <div style="height:100%; width:80%; display:flex; padding:10px">
+            <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">실 결제금액</p></div>
+            <div style=" width:80%; display:flex; padding:10px">
               <p>₩ 280,000</p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;">
-            <div style="height:100%; width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">할부 개월 수</p></div>
-            <div style="height:100%; width:80%; display:flex; padding:10px">
+            <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">할부 개월 수</p></div>
+            <div style=" width:80%; display:flex; padding:10px">
               <p>일시불</p>
             </div>
           </div>
