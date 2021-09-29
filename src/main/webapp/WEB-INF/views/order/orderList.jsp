@@ -73,17 +73,16 @@
 		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
 		      	<p>210928P10845433</p>
 		      	<p style="color:#dee2e6">(2021.09.28)</p>
-		      	<a href="#" style="color:#ecd795">상세보기</a>
+		      	<a href="${pageContext.request.contextPath}/order/orderConfirm" style="color:#ecd795">상세보기</a>
 		      </td>
 		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
 		        <div style="display: flex; justify-content:between">
 		          <div>
-		            <img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt=""
-		style="width: 98px; height: 98px;">
+		            <img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt="" style="width: 98px; height: 98px;">
 		          </div>
 		          <div style="text-align:left; margin-left:20px;">
-		            <a style="color:black;" href="#" >
-		              SYSTEM HOMME</br>
+		            <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail" >
+		              SYSTEM HOMME<br/>
 		              컬러 라인 니트 탑
 		            </a>
 		            <p style="margin-top: 10px;font-size:12px;color:#CCC7CD">color : BLACK / size : 100</p>
