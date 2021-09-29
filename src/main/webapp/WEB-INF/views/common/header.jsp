@@ -20,6 +20,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/productDetail.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css" />
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>

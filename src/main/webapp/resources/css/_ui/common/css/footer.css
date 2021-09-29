@@ -1,6 +1,6 @@
 /*201708 footer start*/
 #topBtn{position:fixed;right:50%;margin-right:-660px;top:79%;z-index:999;display:none;}
-#footerWrap{margin-bottom:0;margin-top:53px;clear:both;}
+#footerWrap{margin-bottom:0;margin-top:-20px;clear:both;}
 #footerWrap .footer{position:relative;margin:30px auto;max-width:1205px;}/*1811*/
 #footerWrap .footer .footer_cnts1 .footer_menu{float:left;width:73.688%;}
 #footerWrap .footer .footer_cnts1 .footer_menu .footer_logo{margin-bottom:16px;float:left;margin-right:3.5%;}
