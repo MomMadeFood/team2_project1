@@ -31,12 +31,11 @@
         </div>
         <table class="table" style="border-bottom:1px solid #E5E5E5; margin-top:20px">
           <colgroup>
-            <col width="33%"/>
+            <col width="43%"/>
             <col width="7%"/>
-            <col width="10%"/>
-            <col width="15%"/>
             <col width="20%"/>
-            <col width="15%"/>
+            <col width="20%"/>
+            <col width="10%"/>
           </colgroup>
           <thead style="background-color: #F5F5F5;">
             <tr style="text-align: center; height:47px; font-size:15px; ">
@@ -44,7 +43,6 @@
               <th scope="col">수량</th>
               <th scope="col">판매가</th>
               <th scope="col">실결제금액</th>
-              <th scope="col">적립 한섬마일리지</th>
               <th scope="col">주문상태</th>
             </tr>
           </thead>
@@ -69,7 +67,6 @@
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>1</p></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩345,000</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩280,000</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>한섬마일리지<br>17,250M</p><p style="margin-top: 20px;">H.Point<br>345P</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>구매</p></td>
             </tr>
           </tbody>
