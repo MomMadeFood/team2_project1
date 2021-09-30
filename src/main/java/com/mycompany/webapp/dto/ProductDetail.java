@@ -1,0 +1,15 @@
+package com.mycompany.webapp.dto;
+
+import lombok.Data;
+
+@Data
+public class ProductDetail {
+	private String productDetailNo;
+	private String productNo;
+	private String withProduct;
+	private String img1;
+	private String img2;
+	private String img3;
+	private String colorCode;
+	private String colorChip;
+}
