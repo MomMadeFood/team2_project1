@@ -59,8 +59,7 @@
                       SYSTEM HOMME</br>
                       컬러 라인 니트 탑
                     </a>
-                    <p style="margin-top: 10px;font-size:12px;color:#CCC7CD">color : BLACK / size : 100</p>
-                    <p style="margin-top: 10px; font-size:11px;">한섬 마일리지 : 5.0%  H.Point : 0.1%</p>
+                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : BLACK / size : 100</p>
                   </div>
                 </div>
               </td>
