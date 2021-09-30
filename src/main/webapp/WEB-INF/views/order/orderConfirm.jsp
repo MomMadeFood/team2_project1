@@ -18,10 +18,10 @@
 
         <div style="background-color: #F5F5F5; height: 65px; margin-top:20px; border:1px solid #E5E5E5; display:flex">
           <div style="width: 70%; border-right:1px solid #E5E5E5; display:flex; align-items: center; margin-left: 10px; ">
-            <p  style="font-weight:bold">주문번호 : </p><p style="color:#c59c6c; font-weight:bold">210928P10845433</p>
+            <p  style="font-weight:bold; font-size:15px">주문번호 : </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">210928P10845433</p>
           </div>
           <div style="width: 30%;display:flex; padding:18px;align-items: center;">
-            <p>주문일시: 2021.09.29 15:30</p>
+            <p style="font-size:15px">주문일시: 2021.09.29 15:30</p>
           </div>
         </div>
         <div style="display:flex; justify-content: space-between ;margin-top:40px">
@@ -34,9 +34,9 @@
             <col width="33%"/>
             <col width="7%"/>
             <col width="10%"/>
-            <col width="10%"/>
+            <col width="15%"/>
             <col width="20%"/>
-            <col width="20%"/>
+            <col width="15%"/>
           </colgroup>
           <thead style="background-color: #F5F5F5;">
             <tr style="text-align: center; height:47px; font-size:15px; ">
@@ -78,10 +78,6 @@
           <div>
             <h5 >결제정보</h5>
           </div>
-          <div>
-            <button type="button" style="width: 100px; margin-left:10px" class="btn btn-sm btn-secondary">상세보기</button>
-            <button type="button" style="width: 100px; margin-left:10px" class="btn btn-sm btn-secondary">영수증출력</button>
-          </div>
         </div>
         <table class="table" style="border-bottom:1px solid #E5E5E5; margin-top:20px">
           <colgroup>
@@ -105,20 +101,15 @@
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩48,000</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩300,000</p></td>
             </tr>
-            <tr style="height:100px;">
+            <tr style="height:80px;">
               <td colspan='2' style="vertical-align: middle; text-align:right; "></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right">
                 <div style="display:flex; justify-content: space-between;"><p>쿠폰할인</p><p>- ₩ 0</p></div>
                 <div style="display:flex; justify-content: space-between;"><p>플러스포인트쿠폰</p><p>- ₩ 0</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>할인</p><p>- ₩ 0</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>한섬 VVIP 혜택</p><p>- ₩ 48,000</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>할인</p><p>- ₩ 0</p></div>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
                 <div style="display:flex; justify-content: space-between;"><p>신용카드</p><p>₩ 280,000</p></div>
                 <div style="display:flex; justify-content: space-between;"><p>한섬마일리지</p><p>20,000 M</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>e-money</p><p>0 P</p></div>
                 <div style="display:flex; justify-content: space-between;"><p>H.Point</p><p>0 P</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>기프트 카드</p><p>₩ 0</p></div>
               </td>
             </tr>
           </tbody>
