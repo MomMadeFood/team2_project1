@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Member {
-	private String Id;
+	private String id;
 	private String password;
 	private Date birth;
 	private String tel;
