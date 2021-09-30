@@ -140,27 +140,7 @@
                                 </div>
                                </div>
                                 <div class="info_sect">
-                                	<div class="prod-detail-con-more">
-                                    	<button class="noline-btn" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        		더보기<i href="#;"></i>
-                                        </button>
-                                        <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
-                                        <ul>
-                                            <li>- 램스울과 캐시미어 혼방 소재<br />- 앞면의 지퍼 클로징<br />- 양옆에 포켓<br />- 여밈과 소맷단, 밑단에 리브 니트</li>
-                                        </ul>
-	                                    </div>
-	                                </div>
-	                            </div>
-                                <div class="info_sect">
                                     <ul class="point_delivery">
-                                        <li>
-                                            <span class="product-subtitle">한섬마일리지</span>
-                                            <span class="txt">29,900&nbsp;M&nbsp;(5%)</span>
-                                        </li>
-                                        <li>
-                                            <span class="product-subtitle">H.Point</span>
-                                             <span class="txt">598&nbsp;P&nbsp;(0.1%)</span>
-                                        </li>
                                         <li>
                                             <span class="product-subtitle">배송비</span>
                                             <span class="txt">30,000원 이상 무료배송 (실결제 기준)</span>
@@ -237,15 +217,11 @@
                                      		<span class="product-subtitle">총 합계</span>
                                      	</td>
                                      	<td>
-                                     		<span id="totalPrice">₩598,000</span>
+                                     		<span id="totalPrice">₩598,000</span> 
                                      	</td>
-                                     </tr>
-									
+                                     </tr>						
                                 </table>
-	                            <div class = "product_priceinfo" style="margin-top: 15px;">
-	                                <a href="${pageContext.request.contextPath}/cart/cart" class="cart_lg_btn_wt" style="width:40%">쇼핑백 담기</a>
-	                                <a href="${pageContext.request.contextPath}/order/orderForm" class="cart_lg_btn_gr" style="width:40%">바로 주문</a>
-	                            </div>
+                                 <a href="${pageContext.request.contextPath}/cart/cart" class="go-cart float-left" style="width:100%">쇼핑백 담기</a>
 	                        </div>
 	                    </div>
 	                </div>
@@ -254,19 +230,6 @@
      	</div>
        	<div style="width: 10%"></div>
 	</div>   
-
-<!-- 더보기 script -->
-
-<script>
-    $(document).ready(function() {
-        $('.prod-detail-con-more').on('click', '.more-btn', function(){
-            $('.more-con-box').slideToggle(function(){
-                $(this).parent('.prod-detail-con-more').find('.more-btn').toggleClass('on');
-            });
-        })
-    });
-</script>
-
 
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
