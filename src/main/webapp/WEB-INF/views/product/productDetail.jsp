@@ -243,8 +243,8 @@
 									
                                 </table>
 	                            <div class = "product_priceinfo" style="margin-top: 15px;">
-	                                <button type="button" class="cart_lg_btn_wt" style="width:40%">쇼핑백 담기</button>
-	                                <button type="button" class="cart_lg_btn_gr" style="width:40%">바로 주문</button>
+	                                <a href="${pageContext.request.contextPath}/cart/cart" class="cart_lg_btn_wt" style="width:40%">쇼핑백 담기</a>
+	                                <a href="${pageContext.request.contextPath}/order/orderForm" class="cart_lg_btn_gr" style="width:40%">바로 주문</a>
 	                            </div>
 	                        </div>
 	                    </div>
