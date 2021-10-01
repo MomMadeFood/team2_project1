@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class CartController {
 	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 	
-	@RequestMapping("/cart")
+	@RequestMapping("")
 	public String cart() {
 		return "cart/cart";
 	}
