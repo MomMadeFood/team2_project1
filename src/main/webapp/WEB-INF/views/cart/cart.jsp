@@ -52,7 +52,7 @@
 								<!-- 선택 상품 -->
 							<input type="checkbox" value="1">
 						</td>
-						<td>
+						<td class="c-td-product">
 							<!-- pt_list_all -->
 							<div>
 								<!--상품 정보-->
@@ -119,7 +119,7 @@
 					<!-- Option -->
 					<tr class="cart-table-option">
 						<td></td>
-						<td colspan="4">
+						<td colspan="4" class="c-td-option">
 							<div>
 								<a href="#">
 									<img src="http://newmedia.thehandsome.com/YN/2B/FW/YN2B9KTO939N_LP_S01.jpg" alt="" class="cart_product_img" />
