@@ -206,13 +206,6 @@ a:link, a:active, a:visited, a {
 	outline: none;
 }
 
-.login_box{
-	border : 1px solid #e3e3e3;
-	width:50%; 
-	overflow:hidden; 
-	height:510px;
-}
-
 .title_wrap h4 {
     font-size: 16px;
     color: #222;
