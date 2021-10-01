@@ -44,85 +44,122 @@
       </div>
 
 
-      <div class="top-bar">
-        <div class="container">
-          <div class="row">
-            <div class="col-12">
-              <a href="#" class=""><span class="mr-2 "></span> <span class="d-none d-md-inline-block">HOME</span></a>
-              <span class="mx-md-2 d-inline-block"></span>
-           
-              <div class="float-right">
-
-
-                <a href="#" class=""><span class="mr-2 "></span> <span class="d-none d-md-inline-block">MyPage</span></a>
-
-              </div>
-
-            </div>
-
-          </div>
-
-        </div>
-      </div>
-
-      <header class="site-navbar js-sticky-header site-navbar-target" role="banner">
+      <header class="site-navbar js-sticky-header site-navbar-target mb-5" role="banner" style="background-color:#F5F5F5">
 
         <div class="container">
-          <div class="row align-items-center position-relative">
+          <div class="row position-relative">
 
 
-            <div class="site-logo">
-              <a href="index.html" class="text-black"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME" class="ml-3" /></a>
+            <div class="mt-4">
+              <a href="/" class="text-black"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME" class="ml-3" /></a>
             </div>
 
-            <div class="col-12">
+            <div style="width:60%;">
               <nav class="site-navigation text-center ml-auto " role="navigation">
 
                 <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
 
                   <li class="has-children">
-                    <a href="#about-section" class="nav-link">대분류</a>
+                    <a href="#WO" class="nav-link h-a-lg" style="font-size:13pt;">WOMEN</a>
                     <ul class="dropdown arrow-top">
-                      <li class="has-children">
-                        <a href="#">중분류</a>
-                        <ul class="dropdown">
-                          <li><a href="#">소분류</a></li>
-                        </ul>
+                      <li>
+                        <a href="#WO01">OUTER</a>
+                      </li>
+                      <li>
+                        <a href="#WO02">DRESS</a>
+                      </li>
+                      <li>
+                        <a href="#WO03">SKIRT</a>
+                      </li>
+                      <li>
+                        <a href="#WO04">TOP</a>
+                      </li>
+                      <li>
+                        <a href="#WO05">PANTS</a>
+                      </li>
+                      <li>
+                        <a href="#WO10">SPECIAL SHOP</a>
+                      </li>
+                      <li>
+                        <a href="#WO11">FASHION ACC</a>
                       </li>
                     </ul>
                   </li>
                   <li class="has-children">
-                    <a href="#about-section" class="nav-link">대분류</a>
+                    <a href="#ME" class="nav-link" style="font-size:13pt;">MEN</a>
                     <ul class="dropdown arrow-top">
-                      <li class="has-children">
-                        <a href="#">중분류</a>
-                        <ul class="dropdown">
-                          <li><a href="#">소분류</a></li>
-                        </ul>
+                      <li>
+                        <a href="#ME01">OUTER</a>
+                      </li>
+                      <li>
+                        <a href="#WO04">TOP</a>
+                      </li>
+                      <li>
+                        <a href="#ME05">PANTS</a>
+                      </li>
+                      <li>
+                        <a href="#ME10">SPECIAL SHOP</a>
+                      </li>
+                      <li>
+                        <a href="#ME11">FASHION ACC</a>
                       </li>
                     </ul>
                   </li>
                   
                   <li class="has-children">
-                    <a href="#about-section" class="nav-link">대분류</a>
+                    <a href="#KI" class="nav-link h-a-lg" style="font-size:13pt;">KIDS</a>
                     <ul class="dropdown arrow-top">
-                      <li class="has-children">
-                        <a href="#">중분류</a>
-                        <ul class="dropdown">
-                          <li><a href="#">소분류</a></li>
-                        </ul>
+                      <li>
+                        <a href="#KI06">CLOTHING</a>
+                      </li>
+                      <li>
+                        <a href="#KI08">KIDS ACC</a>
                       </li>
                     </ul>
                   </li>
                   
-                  <li><a href="#why-us-section" class="nav-link">이벤트</a></li>
+                  <li class="has-children">
+                    <a href="#LI" class="nav-link h-a-lg" style="font-size:13pt;">LIFE</a>
+                    <ul class="dropdown arrow-top">
+                      <li>
+                        <a href="#LI07">BATH</a>
+                      </li>
+                      <li>
+                        <a href="#LI09">HOME</a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                  <li><a href="#why-us-section" class="nav-link h-a-lg" style="font-size:13pt;">EVENT</a></li>
                 </ul>
               </nav>
 
             </div>
+            
+            <div class="mt-1" style="width:20%;">
+              <nav class="site-navigation text-center ml-auto " role="navigation">
 
-            <div class="toggle-button d-inline-block d-lg-none"><a href="#" class="site-menu-toggle py-5 js-menu-toggle text-black"><span class="icon-menu h3"></span></a></div>
+                <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
+					<li>
+           			 <a href="#" class=""><i class="fas fa-sign-in-alt fa-lg"></i></a>
+					</li>
+           			<li>
+           			 <a href="/cart/cart" class=""><i class="fas fa-shopping-cart fa-lg"></i></a>
+					</li>
+					
+					
+					<li>
+           			 <a href="/purchase/orderList" class=""><i class="fas fa-clipboard-list fa-lg"></i></a>
+					</li>
+					
+					
+					<li>
+           			 <a href=# class=""><i class="fas fa-sign-out-alt fa-lg"></i></a>
+					</li>
+                </ul>
+              </nav>
 
+            </div>
           </div>
         </div>
 
