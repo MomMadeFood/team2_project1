@@ -6,7 +6,7 @@
 	<script type="text/javascript">
 		function reduceSum() {
 			let sum = parseInt($(".qty_input").val());
-			let total = document.querySelector(".price span").innerHTML
+			let total = document.querySelector(".pd_price span").innerHTML
 					.substr(1);
 			if (sum > 1) {
 				sum = sum - 1;
@@ -34,7 +34,7 @@
 		}
 		function increaseSum() {
 			let sum = parseInt($(".qty_input").val());
-			let total = document.querySelector(".price span").innerHTML
+			let total = document.querySelector(".pd_price span").innerHTML
 					.substr(1);
 			sum = sum + 1;
 			$(".qty_input").val(sum);
@@ -57,6 +57,26 @@
 				}
 			}
 			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
+		}
+		
+		function colorchipChange(){
+			console.log(event);
+			var tgId = event.currentTarget.id;
+			let col1 = document.querySelector("#customRadioInline1");
+			let col2 = document.querySelector("#customRadioInline2");
+			console.log($("#customRadioInline1").hasClass("color-selected"));
+			console.log($("#customRadioInline2").hasClass("color-selected"));
+			console.log(tgId);
+			
+			if($("#customRadioInline1").hasClass("color-selected")&&tgId=="customRadioInline2"){
+				$("#customRadioInline2").addClass("color-selected");
+				$("#customRadioInline1").removeClass("color-selected");
+				console.log("1");
+			}else  if($("#customRadioInline2").hasClass&&tgId=="customRadioInline1"){
+				$("#customRadioInline1").addClass("color-selected");
+				$("#customRadioInline2").removeClass("color-selected");
+				console.log("2");
+			}
 		}
 	</script>
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
@@ -106,63 +126,62 @@
 				<div style="width: 5%;">
 				</div>
 				<div style="width: 40%;">
-					<div class="item_detail_info float_right" id="contentDiv">
+					<div class="pd_item_detail_info float_right" id="contentDiv">
 						<div class="info">
 							<div class="info_sect">
 								<div class="brand-name">
-									<a href="http://www.thehandsome.com/ko/c/br45/br45">O'2nd</a>
+									<a class= "pd_a" href="http://www.thehandsome.com/ko/c/br45/br45">O'2nd</a>
 								</div>
 								<h4 class="item_name">
-									<span class="name ko_fir_spel"> 펄 돌먼 점퍼</span> 
+									<span class="pd_name"> 펄 돌먼 점퍼</span> 
 								</h4>
-								<p class="price">
+								<p class="pd_price">
 									<span>₩598,000</span>
 								</p>
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>O22B9ROT502W_CR</span></strong>
 									<div class="round-style"
 										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-										<p class="description">여밈 부분을 따라 이어지는 펄 비즈가 특징으로 양쪽을 서로
+										<p class="pd_p description">여밈 부분을 따라 이어지는 펄 비즈가 특징으로 양쪽을 서로
 											언밸런스하게 매치하여 한층 색다른 느낌을 주었습니다. 암홀 라인이 여유로운 돌먼 소매 디자인으로 착용감과
 											디자인을 모두 살렸으며, 부드럽고 고급스러운 터치감이 돋보이는 퀄리티 높은 소재를 사용하였습니다.</p>
 									</div>      
                                 </div>
                                </div>
                                 <div class="info_sect">
-                                    <ul class="point_delivery">
-                                        <li>
-                                            <span class="product-subtitle">배송비</span>
-                                            <span class="txt">30,000원 이상 무료배송 (실결제 기준)</span>
+                                    <ul class="pd_ul">
+                                        <li class="pd_li li_sect">
+                                            <span class="pd-title">배송비</span>
+                                            <span class="pd-text">30,000원 이상 무료배송 (실결제 기준)</span>
                                             <br/>
-                                            <span class="txt">30,000원 미만 배송비 2,500원</span>
+                                            <span class="pd-text">30,000원 미만 배송비 2,500원</span>
                                             <br/>
                                         </li>
                                     </ul>
                                 </div>
                                     
-                                <table>
+                                <table class="pd-info">
                                 	<colgroup>
 										<col style="width: 20%" />
 										<col style="width: 60%" />
-										<col style="width: 20%" />
+										<col style="width: 10%" />
+										<col style="width: 10%" />
 									</colgroup>
                                 	<tr>
                                  		<td>
                                  			<span class="product-subtitle">색상</span>
                                  		</td>
-                                 		<td> 
-	                                      <div class="custom-control custom-radio custom-control-inline">
+                                 		<td>
+                                 		</td>
+                                 		<td onClick="colorchipChange() " class="color-selected"  id="customRadioInline1">
 	                                          <input type="radio"
-											id="customRadioInline1" name="color"
-											class="custom-control-input">
-	                                          <label class="custom-control-label" for="customRadioInline1"><img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_BK_C01.jpg" width="20px;"></label>
-	                                      </div>
-                                      		<div class="custom-control custom-radio custom-control-inline">
-		                                          <input type="radio"
-												id="customRadioInline2" name="color"
-												class="custom-control-input">
-		                                          <label class="custom-control-label" for="customRadioInline2"><img src="http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_CR_C01.jpg" width="20px;"></label>
-		                                      </div>
+											 name="color"
+											class="custom-control-input1" value="BK"> <div class="pd-col1"></div>
+										</td>
+										<td onClick="colorchipChange()" id="customRadioInline2" >
+	                                          <input type="radio"
+											 name="color"
+											class="custom-control-input2" value="CR"><div class="pd-col2"></div>
                                      	</td>
                                  	</tr>
                                  	<tr>
@@ -183,6 +202,8 @@
 		                                          <label class="custom-control-label" for="customRadioInline5">88(66)</label>
 		                                      </div>
                                      	</td>
+                                     	<td></td>
+                                     	<td></td>
                                  	 </tr>
                                   	 <tr>
                                  		<td>
@@ -191,6 +212,8 @@
                                  		<td>
                                  			<span>99</span>
                                  		</td>
+                                 		<td></td>
+                                 		<td></td>
                                      <tr>
                                      	<td>
                                      		<span class="product-subtitle">수량</span>
@@ -200,17 +223,21 @@
                                              <input type="text" name="pop_out" value="1" class="qty_input" />
                                              <button class="qty_right" type="button" onclick="increaseSum()">+</button>
                                          </td>
+                                         <td></td>
+                                         <td></td>
                                      </tr>
                                      <tr>
                                      	<td>
-                                     		<span class="product-subtitle">총 합계</span>
+                                     		<span class="pd-title">총 합계</span>
                                      	</td>
                                      	<td>
-                                     		<span id="totalPrice">₩598,000</span> 
+                                     		<span class="pd-text" id="totalPrice">₩598,000</span> 
                                      	</td>
+                                     	<td></td>
+                                     	<td></td>
                                      </tr>						
                                 </table>
-                                 <a href="${pageContext.request.contextPath}/cart/cart" class="go-cart float-left" style="width:100%">쇼핑백 담기</a>
+                                 <a href="${pageContext.request.contextPath}/cart/cart" class="go-cart float-left pd_a" style="width:250px">쇼핑백 담기</a>
 	                        </div>
 	                    </div>
 	                </div>
