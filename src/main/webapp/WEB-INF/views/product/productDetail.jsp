@@ -163,26 +163,30 @@
                                 <table class="pd-info">
                                 	<colgroup>
 										<col style="width: 20%" />
-										<col style="width: 60%" />
-										<col style="width: 10%" />
-										<col style="width: 10%" />
+										<col style="width: 50%" />
+										<col style="width: 15%" />
+										<col style="width: 15%" />
 									</colgroup>
                                 	<tr>
                                  		<td>
                                  			<span class="product-subtitle">색상</span>
                                  		</td>
-                                 		<td>
-                                 		</td>
-                                 		<td onClick="colorchipChange() " class="color-selected"  id="customRadioInline1">
+                                 		<td class="pd-colors">
+                                 			<div onClick="colorchipChange() " class="color-selected"  id="customRadioInline1">
 	                                          <input type="radio"
 											 name="color"
 											class="custom-control-input1" value="BK"> <div class="pd-col1"></div>
-										</td>
-										<td onClick="colorchipChange()" id="customRadioInline2" >
+											</div>
+											<div onClick="colorchipChange()" id="customRadioInline2" >
 	                                          <input type="radio"
 											 name="color"
 											class="custom-control-input2" value="CR"><div class="pd-col2"></div>
-                                     	</td>
+                                     	</div>
+										</td>
+                                     	<td>
+                                 		</td>
+                                 		<td>
+                                 		</td>
                                  	</tr>
                                  	<tr>
                                  		 <td>
@@ -190,16 +194,13 @@
                                     	 </td>
                                     	 <td>
 		                                      <div class="custom-control custom-radio custom-control-inline">
-		                                        <input type="radio" id="customRadioInline3" name="size" class="custom-control-input">
-		                                        <label class="custom-control-label" for="customRadioInline3">76(44)</label>
+		                                        <label><input type="radio" name="size" value="76"/><span>76(44)</span> </label>
+		                                      </div>		                                      
+		                                      <div class="custom-control custom-radio custom-control-inline">
+		                                          <label><input type="radio" name="size" value="82"/><span>82(55)</span> </label>
 		                                      </div>
 		                                      <div class="custom-control custom-radio custom-control-inline">
-		                                          <input type="radio" id="customRadioInline4" name="size" class="custom-control-input">
-		                                          <label class="custom-control-label" for="customRadioInline4">82(55)</label>
-		                                      </div>
-		                                      <div class="custom-control custom-radio custom-control-inline">
-		                                          <input type="radio" id="customRadioInline5" name="size" class="custom-control-input">
-		                                          <label class="custom-control-label" for="customRadioInline5">88(66)</label>
+		                                          <label><input type="radio" name="size" value="88"/><span>88(66)</span> </label>
 		                                      </div>
                                      	</td>
                                      	<td></td>

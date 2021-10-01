@@ -19,7 +19,13 @@
   opacity: 0;
   width: 0;
   height: 0;
- 	
+}
+
+input[type=radio] { 
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
 }
 
 [type=radio] + div {
@@ -107,6 +113,44 @@
     text-decoration: none;
 }
 
+label {
+display: inline-block;
+padding: 5px;
+position: relative;
+padding-left: 20px;
+}
+
+label input {
+display: none;
+
+}
+
+label span {
+    -webkit-text-size-adjust: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    font-size: inherit;
+    word-break: break-all;
+    list-style: none;
+    outline: none;
+    text-decoration: none;
+    display: block;
+    padding: 0 3px;
+    line-height: 24px;
+    border: 1px solid #ccc;
+    text-align: center;
+    color: #363636!important;
+    font-family: "Malgun Gothic","맑은 고딕";
+    min-width: 60px;
+    height: 26px;
+    box-sizing: border-box;
+}
+
+input:checked+span {
+background: #ccf;
+border-color: #ccf;
+}
+
 .pd_a:visited {
 	text-decoration: none;
 }
@@ -172,9 +216,6 @@ p.price {
 	font-size: 22px;
 }
 
-li_sect{
-	margin-left: -2px auto;
-}
 
 span.pd-title, span.pd-text {
 	padding-top: 15px;
@@ -215,7 +256,6 @@ strong.number-code{
 p.description {
 	margin-top:15px;
 	padding: 20px 35px;
-	
 }
 
 div.info_sect {
@@ -234,5 +274,9 @@ div.info_sect {
 }
 
 .color-selected{
-	border-bottom: 1px solid black;
+	border-bottom: 3px solid black;
+}
+
+.pd-colors{
+	float: left;
 }
