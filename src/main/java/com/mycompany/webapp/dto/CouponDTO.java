@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Coupon {
+public class CouponDTO {
 	private String couponNo;
 	private int totalAmount;
 	private int remainAmount;

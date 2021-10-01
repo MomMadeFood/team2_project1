@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Point {
+public class PointDTO {
 	private String pointNo;
 	private String memberId;
 	private String name;
