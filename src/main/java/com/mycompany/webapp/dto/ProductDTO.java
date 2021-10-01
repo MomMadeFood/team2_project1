@@ -3,7 +3,7 @@ package com.mycompany.webapp.dto;
 import lombok.Data;
 
 @Data
-public class Product {
+public class ProductDTO {
 	private String productNo;
 	private String name;
 	private int price;

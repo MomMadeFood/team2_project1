@@ -5,11 +5,11 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class Card {
-	private String cardNo;
+public class CouponDetailDTO {
 	private String memberId;
-	private String company;
+	private String couponNo;
+	private Date issueDate;
 	private Date expireDate;
-	private String payPassword;
-	private String oneClick;
+	private Date useDate;
+	private int state;
 }

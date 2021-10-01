@@ -3,9 +3,12 @@ package com.mycompany.webapp.dto;
 import lombok.Data;
 
 @Data
-public class Cart {
-	private String memberId;
+public class OrderDetailDTO {
+	private String orderDetailNo;
 	private String productDetailNo;
 	private String psize;
+	private String orderNo;
 	private int amount;
+	private int price;
+	private int state;
 }
