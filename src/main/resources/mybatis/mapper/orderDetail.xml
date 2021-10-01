@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.OrderDetailDao">
+	<select id="selectOrderDetailByOrderDetailNo" resultType="orderDetail" parameterType="string">
+		SELECT * FROM order_detail where order_detail_no = #{orderDetailNo}
+	</select>
+</mapper>
