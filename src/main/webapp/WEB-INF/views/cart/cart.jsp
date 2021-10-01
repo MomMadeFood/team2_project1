@@ -8,20 +8,19 @@
 			<h3 class="center">쇼핑백</h3>
 		</div>
 
-		<div class="cart-tab-menu">
-			<ul class="nav cart-tabs">
-				<li class="cart-nav-item">
-					<button class="cart-nav-btn-wt">택배</button>
-				</li>
-				<li class="cart-nav-item">
-					<button class="cart-nav-btn">매장수령</button>
-				</li>
-				<li class="cart-nav-item">
-					<button class="cart-nav-btn">퀵배송</button>
-				</li>
-			</ul>
-		</div>
-
+		<!-- Option -->
+		<script type="text/javascript">
+		function hideOption()  {
+			  const row = document.getElementById('pid-option');
+			  row.style.display = 'none';
+			}
+	
+			function showOption()  {
+			  const row = document.getElementById('pid-option');
+			  row.style.display = '';
+			}
+	
+		</script>
 
 		<div>
 			<table class="table table-bordered cart-table">
@@ -68,11 +67,10 @@
 											</span>
 										</span>
 									</a>
-									
-								<!--옵션-->
+							<!--옵션-->
 									<div class="d-flex justify-content-between">
 										<p> color : LIGHT PINK<span>/</span> size : 90</p>
-										<a class="cart-option" href="#">옵션변경</a>
+										<a class="cart-option" onclick="showOption()">옵션변경</a>
 									</div>
 								</div>
 							</div>
@@ -116,10 +114,12 @@
 							</div> 
 						</td>
 					</tr>
+					
 					<!-- Option -->
-					<tr class="cart-table-option">
+					
+					<tr class="cart-table-option" id="pid-option" style="display:none;">
 						<td></td>
-						<td colspan="4" class="c-td-option">
+						<td colspan="4" class="c-td-option" >
 							<div>
 								<a href="#">
 									<img src="http://newmedia.thehandsome.com/YN/2B/FW/YN2B9KTO939N_LP_S01.jpg" alt="" class="cart_product_img" />
@@ -146,7 +146,7 @@
 							<!-- btns -->
 							<div>
 								<a class="cart_button_wt" href="#">변경</a>
-								<a class="cart_button_wt" href="#">취소</a>
+								<a class="cart_button_wt" onclick="hideOption()">취소</a>
 							</div>
 							<!-- //btns -->
 						</td>
@@ -176,5 +176,9 @@
 			<a href="${pageContext.request.contextPath}/order/orderForm" class="cart_lg_btn_gr" style="width:40%">선택상품주문</a>
 		</div>
 	</div>
+	
+
+	
+
 	
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
