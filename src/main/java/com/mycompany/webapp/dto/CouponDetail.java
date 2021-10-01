@@ -6,7 +6,6 @@ import lombok.Data;
 
 @Data
 public class CouponDetail {
-	private String couponId;
 	private String memberId;
 	private String couponNo;
 	private Date issueDate;
