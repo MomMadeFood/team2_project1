@@ -25,8 +25,8 @@
 		
 		<security:form-login
 			login-page="/member/loginForm"
-			username-parameter="mid"
-			password-parameter="mpassword"
+			username-parameter="id"
+			password-parameter="password"
 			login-processing-url="/login"
 			authentication-success-handler-ref="authenticationSuccessHandler"
 			authentication-failure-handler-ref="authenticationFailureHandler"/>		
@@ -100,25 +100,24 @@
 	
 	<security:jdbc-user-service id="jdbcUserService"
 								data-source-ref="dataSource"
-								users-by-username-query="SELECT mid, mpassword, menabled FROM member WHERE mid=?"
-								authorities-by-username-query="SELECT mid, mrole FROM member WHERE mid=?"/>
+								users-by-username-query="SELECT id, password, enabled FROM member WHERE id=?"
+								authorities-by-username-query="SELECT id, role FROM member WHERE id=?"/>
 
 	<!-- 인증 성공 또는 실패시 실행되는 핸들러 객체 설정 -->
 	<bean id="authenticationSuccessHandler" 
-		  class="com.mycompany.webapp.security.AuthenticationSuccessHandler">
+		  class="com.mycompany.webapp.security.MemberLoginSuccessHandler">
 		<!-- 로그인 성공후 리다이렉트로 이동할 경로 -->
 		<property name="alwaysUseDefaultTargetUrl" value="false"/>
 		<property name="defaultTargetUrl" value="/"/>	  
 	</bean>
 		  
 	<bean id="authenticationFailureHandler" 
-		  class="com.mycompany.webapp.security.AuthenticationFailureHandler">
+		  class="com.mycompany.webapp.security.MemberLoginFailureHandler">
 		<!-- 로그인 실패후 리다이렉트로 이동할 경로 -->
-		<property name="defaultFailureUrl" value="/loginForm"/>
 	</bean>
 	
 	<bean id="logoutSuccessHandler"
-		  class="com.mycompany.webapp.security.LogoutSuccessHandler">
+		  class="com.mycompany.webapp.security.MemberLogoutSuccessHandler">
 		<!-- 로그아웃 성공시 리다이렉트로 이동할 경로 -->
 		<property name="defaultTargetUrl" value="/"/>
 	</bean>

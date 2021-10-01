@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler;
 
-public class LogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
-	private static final Logger logger = LoggerFactory.getLogger(LogoutSuccessHandler.class);
+public class MemberLogoutSuccessHandler extends SimpleUrlLogoutSuccessHandler {
+	private static final Logger logger = LoggerFactory.getLogger(MemberLogoutSuccessHandler.class);
 	
 	@Override
 	public void onLogoutSuccess(
