@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class Stock {
 	private String productDetailNo;
-	private String size;
+	private String psize;
 	private int amount;
 }

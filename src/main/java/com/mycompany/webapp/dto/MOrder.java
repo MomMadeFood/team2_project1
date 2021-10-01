@@ -16,4 +16,6 @@ public class MOrder {
 	private String addr;
 	private String detailAddr;
 	private String zipCode;
+	private String tel;
+	private String phone;
 }

@@ -22,20 +22,20 @@
 			<p style="font-size: 28px;">배송&결제정보 입력</p>
 		</div>
 	</div>
-	<div class="container-fluid">
-		<div class="row" style="margin: 0px auto; width: 990px;">
-			<div class="col-sm-9">
+	<div>
+		<div style="margin: 0px auto; width: 1000px;display:flex">
+			<div style="width:68%">
 				<table class="table .txt" style="border-bottom: 1px solid #E5E5E5;">
 					<colgroup>
-						<col width="70%" />
-						<col width="8%" />
+						<col width="60%" />
+						<col width="18%" />
 						<col width="22%" />
 					</colgroup>
 					<thead style="background-color: #F5F5F5;">
 						<tr style="text-align: center; height: 47px; font-size: 15px;">
 							<th scope="col">상품정보</th>
 							<th scope="col">수량</th>
-							<th scope="col">판매가/쿠폰 적용가</th>
+							<th scope="col">판매가</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -49,7 +49,7 @@
 								</div></td>
 							<td
 								style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-							<td style="vertical-align: middle;">345,000</td>
+							<td style="vertical-align: middle;">345,000₩</td>
 						</tr>
 					</tbody>
 				</table>
@@ -206,14 +206,14 @@
 						<h4>결제 수단 선택</h4>
 					</div>
 					<div
-						style="height: 180px; width: 100%; clear: both; border-bottom: 2px solid #cccccc">
+						style="width: 100%; clear: both; border-bottom: 2px solid #cccccc">
 						<div
 							style="display: flex; height: 70%; border-top: 1px black solid; border-bottom: 1px solid #cccccc;">
 							<div
-								style="height: 100%; width: 20%; background-color: #F5F5F5; padding-left: 20px; padding-top: 20px">
-								<p style="font-weight: bold">H.Point 결제</p>
+								style="width: 20%; background-color: #F5F5F5;display: flex; align-items: center;">
+								<p style="font-weight: bold; margin-left:15px">H.Point 결제</p>
 							</div>
-							<div style="height: 100%; width: 80%; padding: 10px;">
+							<div style="width: 80%; padding: 10px;">
 								<div style="display: flex; justify-content: space-between;">
 									<div style="display: flex;">
 										<input style="width: 130px;" type="text" id="pointBox"
@@ -234,18 +234,11 @@
 											class="btn btn-sm btn-secondary">적용취소</button>
 									</div>
 								</div>
-								<div style="display: flex; margin-top: 10px">
-									<p
-										style="padding-top: 5px; padding-right: 10px; font-size: 12px; vertical-align: middle; line-height: 20px; color: #999">*
-										100 포인트 이상부터 사용이 가능합니다.</p>
-									<button type="button" style="margin-left: 10px"
-										class="btn btn-sm btn-secondary">충전하러가기</button>
-								</div>
 							</div>
 						</div>
-						<div style="display: flex; height: 30%; width: 100%;">
-							<div style="height: 100%; width: 20%; background-color: #F5F5F5; padding-left: 20px; padding-top: 10px">
-								<p style="font-weight: bold">결제수단 선택</p>
+						<div style="display: flex; width: 100%;">
+							<div style="width: 20%; background-color: #F5F5F5; display: flex; align-items: center;">
+								<p style="font-weight: bold;margin-left:15px">결제수단 선택</p>
 							</div>
 							<div
 								style="height: 100%; width: 80%; display: flex; padding: 10px">
@@ -259,52 +252,48 @@
 										id="transfer" checked> <label class="form-check-label"
 										for="transfer"> 실시간 계좌이체 </label>
 								</div>
-								<button onclick="location.href='confirm'" style="margin-left: 10px;"
-									class="btn btn-sm btn-secondary">결제하기</button>
+								
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-sm-3">
-				<div style="width: 310px; height: 220px; border: 1px solid black">
-					<div style="height: 70%;">
-						<div
-							style="width: 100%; height: 100%; padding-left: 20px; padding-right: 20px; padding-top: 5px">
+			<div style="width:32%; margin-left:40px">
+				<div style="position:sticky;top:20px;">
+					<div style="width: 310px; height: 220px; border: 1px solid black">
+						<div style="height: 70%;">
 							<div
-								style="border-bottom: 1px solid #CCCCCC; text-align: center; height: 35px">최종결제금액</div>
-							<div
-								style="margin-top: 30px; display: flex; justify-content: space-between;">
-								<div>상품 합계</div>
-								<div>345,000</div>
+								style="width: 100%; height: 100%; padding-left: 20px; padding-right: 20px; padding-top: 5px">
+								<div
+									style="border-bottom: 1px solid #CCCCCC; text-align: center; height: 35px">최종결제금액</div>
+								<div
+									style="margin-top: 10px; display: flex; justify-content: space-between;">
+									<div>상품 합계</div>
+									<div>345,000₩</div>
+								</div>
+								<div
+									style="margin-top: 10px; display: flex; justify-content: space-between;">
+									<div>배송비</div>
+									<div>0</div>
+								</div>
+								<div
+									style="margin-top: 10px; display: flex; justify-content: space-between;">
+									<div>할인 금액</div>
+									<div>- 40000₩</div>
+								</div>
 							</div>
+						</div>
+						<div style="height: 30%; background-color: #f5f5f5;">
 							<div
-								style="margin-top: 20px; display: flex; justify-content: space-between;">
-								<div>배송비</div>
-								<div>3000</div>
+								style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
+								<div style="float: left;">합계</div>
+								<div
+									style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">305,000₩</div>
 							</div>
 						</div>
 					</div>
-					<div style="height: 30%; background-color: #f5f5f5;">
-						<div
-							style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
-							<div style="float: left;">합계</div>
-							<div
-								style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">348,000</div>
-						</div>
-					</div>
-				</div>
-				<div
-					style="width: 310px;border: 1px solid black; margin-top: 15px;">
 					<div
-						style="height: 35%; border-bottom: 1px solid #CCCCCC; padding: 10px;">
-						<p
-							style="font-size: 12px; margin: 0px; font-weight: bold; color: #414040;">구매
-							시 지급 예정 포인트</p>
-						<p>(제품 수령 완료 후 10일 후 적립)</p>
-						<p style="color: #c69c6c;">한섬마일리지 14,750 M</p>
-						<p style="color: #c69c6c;">H.Point 259 P</p>
-					</div>
+					style="width: 310px;border: 1px solid black; margin-top: 15px;">
 					<div style="height: 65%; padding: 10px;">
 						<input type="checkbox" id="agree"> <label for="agree">구매자
 							동의</label>
@@ -319,6 +308,13 @@
 								기존 마이너스 한섬 마일리지를 보유하고 있는 고객은 한섬<br>마일리지가 차감돠어 적립되는 것에
 								동의합니다. 적립 예정<br>한섬마일리지가 상이할 수 있습니다.
 							</p>
+						</div>
+					</div>
+				</div>
+					<div style="margin-top:15px; width:100%">
+						<div style="margin:0px auto; width:90px">
+							<button onclick="location.href='orderConfirm'"
+										class="btn btn btn-secondary">결제하기</button>
 						</div>
 					</div>
 				</div>
