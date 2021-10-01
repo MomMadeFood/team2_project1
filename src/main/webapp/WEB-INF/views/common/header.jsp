@@ -24,6 +24,7 @@
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>
+<script src="https://kit.fontawesome.com/90405714d1.js" crossorigin="anonymous"></script>
 
 </head>
 <body>
