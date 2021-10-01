@@ -16,10 +16,6 @@ public class HomeController {
 	public String content() {
 		return "home";
 	}
-	@RequestMapping("/event")
-	public String event() {
-		return "event";
-	}
 	
 	@RequestMapping("/error/403")
 	public String error403() {

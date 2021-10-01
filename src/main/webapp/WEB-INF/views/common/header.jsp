@@ -130,7 +130,7 @@
                     </ul>
                   </li>
                   
-                  <li><a href="#why-us-section" class="nav-link h-a-lg" style="font-size:13pt;">EVENT</a></li>
+                  <li><a href="${pageContext.request.contextPath}/event/coupon" class="nav-link h-a-lg" style="font-size:13pt;">EVENT</a></li>
                 </ul>
               </nav>
 
@@ -140,25 +140,27 @@
               <nav class="site-navigation text-center ml-auto " role="navigation">
 
                 <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
-					<li>
-           			 <a href="#" class=""><i class="fas fa-sign-in-alt fa-lg"></i></a>
-					</li>
            			<li>
-           			 <a href="/cart/cart" class=""><i class="fas fa-shopping-cart fa-lg"></i></a>
+           			 <a href="${pageContext.request.contextPath}/cart" class=""><i class="fas fa-shopping-cart fa-lg"></i></a>
 					</li>
-					
-					
 					<li>
-           			 <a href="/purchase/orderList" class=""><i class="fas fa-clipboard-list fa-lg"></i></a>
+           			 <a href="${pageContext.request.contextPath}/order/orderList" class=""><i class="fas fa-clipboard-list fa-lg"></i></a>
 					</li>
-					
-					
-					<li>
-           			 <a href=# class=""><i class="fas fa-sign-out-alt fa-lg"></i></a>
-					</li>
-                </ul>
+					<sec:authorize access="isAnonymous()">
+						<li>
+		           			 <a href="${pageContext.request.contextPath}/member/loginForm" class=""><i class="fas fa-sign-in-alt fa-lg" style="color:#8db5ff;"></i></a>
+						</li>
+					</sec:authorize>
+					<sec:authorize access="isAuthenticated()">
+						<li style="padding: 12px;">
+							<form method="post" action="${pageContext.request.contextPath}/logout" class="d-inline-block">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								<button type="submit" style="border: none; background-color:transparent;"><i class="fas fa-sign-out-alt fa-lg" style="color:#ff7a7a;"></i></button> 
+							</form>
+						</li>
+					</sec:authorize>
+                </ul>   
               </nav>
-
             </div>
           </div>
         </div>
