@@ -11,7 +11,7 @@ public class Point {
 	private String name;
 	private String content;
 	private String type;
-	private int number;
+	private int amount;
 	private Date issueDate;
 	private Date expireDate;
 	private int state;

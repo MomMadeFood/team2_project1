@@ -8,6 +8,7 @@ import lombok.Data;
 public class Member {
 	private String id;
 	private String password;
+	private String name;
 	private Date birth;
 	private String tel;
 	private String phone;
@@ -15,4 +16,6 @@ public class Member {
 	private String zipcode;
 	private String addr;
 	private String detailAddr;
+	private int enabled;
+	private String role;
 }
