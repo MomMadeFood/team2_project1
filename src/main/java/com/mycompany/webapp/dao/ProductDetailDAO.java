@@ -1,10 +1,11 @@
 package com.mycompany.webapp.dao;
 
 import org.apache.ibatis.annotations.Mapper;
-import com.mycompany.webapp.dto.ProductDetailDTO;
+
+import com.mycompany.webapp.dto.ProductDTO;
 
 @Mapper
 public interface ProductDetailDAO {
-	public ProductDetailDTO selectProductDetailById (String ProductNo);
+	public ProductDTO selectProductDetailById (String ProductNo);
 }
 
