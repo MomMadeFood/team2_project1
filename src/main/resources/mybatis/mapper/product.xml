@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.ProductDAO">
+
+	<select id="selectNewProductBySex" resultType="newProduct" parameterType="string">
+		<![CDATA[
+			select * from (   
+			    select * from (
+			        select A.name, A.price, A.brand, pd.product_detail_no, pd.img1
+			        from (
+			            
+			                select p.product_no product_no, p.name name, p.price price, p.brand brand, pc.category_id category_id
+			                from product p join product_category pc on p.product_no = pc.product_no
+			                where substr(pc.category_id,1,2) = #{value}
+			        
+			        ) A join product_detail pd on A.product_no = pd.product_no
+			        order by pd.product_detail_no
+			    ) 
+			    where name not like '%유니섹스%'
+			    order by rownum desc
+			) where rownum <= 10
+		]]>
+	</select>
+
+	<select id="">
+		SELECT pd.color_code, s.psize, s.amount
+		FROM product_detail pd, stock s
+		WHERE pd.product_detail_no = s.product_detail_no
+		AND pd.product_no = #{value};
+	</select>
+</mapper>

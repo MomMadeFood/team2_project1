@@ -1,15 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
-<style type="text/css">
-	@import url("/resources/css/productDetail.css");
-</style>
 
 <div class="container-fluid">
 	<script type="text/javascript">
 		function reduceSum() {
 			let sum = parseInt($(".qty_input").val());
-			let total = document.querySelector(".pd-price span").innerHTML
+			let total = document.querySelector(".pd_price span").innerHTML
 					.substr(1);
 			if (sum > 1) {
 				sum = sum - 1;
@@ -37,7 +34,7 @@
 		}
 		function increaseSum() {
 			let sum = parseInt($(".qty_input").val());
-			let total = document.querySelector(".pd-price span").innerHTML
+			let total = document.querySelector(".pd_price span").innerHTML
 					.substr(1);
 			sum = sum + 1;
 			$(".qty_input").val(sum);
@@ -136,14 +133,14 @@
 									<a class= "pd_a" href="http://www.thehandsome.com/ko/c/br45/br45">O'2nd</a>
 								</div>
 								<h4 class="item_name">
-									<span class="pd-name"> 펄 돌먼 점퍼</span> 
+									<span class="pd_name"> 펄 돌먼 점퍼</span> 
 								</h4>
-								<p class="pd-price">
+								<p class="pd_price">
 									<span>₩598,000</span>
 								</p>
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>O22B9ROT502W_CR</span></strong>
-									<div class="pd-round-style"
+									<div class="round-style"
 										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
 										<p class="pd_p description">여밈 부분을 따라 이어지는 펄 비즈가 특징으로 양쪽을 서로
 											언밸런스하게 매치하여 한층 색다른 느낌을 주었습니다. 암홀 라인이 여유로운 돌먼 소매 디자인으로 착용감과
@@ -163,46 +160,84 @@
                                     </ul>
                                 </div>
                                     
-                                    
-                                <div class="pd-info">
-                                	<ul>
-                                 		<li class="pd-colors">
-                           					<span class="product-subtitle">색상</span>
+                                <table class="pd-info">
+                                	<colgroup>
+										<col style="width: 20%" />
+										<col style="width: 50%" />
+										<col style="width: 15%" />
+										<col style="width: 15%" />
+									</colgroup>
+                                	<tr>
+                                 		<td>
+                                 			<span class="product-subtitle">색상</span>
+                                 		</td>
+                                 		<td class="pd-colors">
                                  			<div onClick="colorchipChange() " class="color-selected"  id="customRadioInline1">
 	                                          <input type="radio"
 											 name="color"
-											class="custom-control-input1" value="BK"><div class="pd-col1"></div>
+											class="custom-control-input1" value="BK"> <div class="pd-col1"></div>
 											</div>
 											<div onClick="colorchipChange()" id="customRadioInline2" >
 	                                          <input type="radio"
 											 name="color"
 											class="custom-control-input2" value="CR"><div class="pd-col2"></div>
-											</div>
-                                   		</li>
-                                 		 <li class="pd-size">
-                                    	 		<span class="product-subtitle">사이즈</span>
-                                    	 	<label><input type="radio" name="size" value="76"/><span>76(44)</span></label>	                                      
-                                    	 	<label><input type="radio" name="size" value="82"/><span>82(55)</span> </label>
-                                    	 	<label><input type="radio" name="size" value="88"/><span>88(66)</span></label>
-                                   		</li>
-                                 		<li>
+                                     	</div>
+										</td>
+                                     	<td>
+                                 		</td>
+                                 		<td>
+                                 		</td>
+                                 	</tr>
+                                 	<tr>
+                                 		 <td>
+                                    	 	<span class="product-subtitle">사이즈</span>
+                                    	 </td>
+                                    	 <td>
+		                                      <div class="custom-control custom-radio custom-control-inline">
+		                                        <label><input type="radio" name="size" value="76"/><span>76(44)</span> </label>
+		                                      </div>		                                      
+		                                      <div class="custom-control custom-radio custom-control-inline">
+		                                          <label><input type="radio" name="size" value="82"/><span>82(55)</span> </label>
+		                                      </div>
+		                                      <div class="custom-control custom-radio custom-control-inline">
+		                                          <label><input type="radio" name="size" value="88"/><span>88(66)</span> </label>
+		                                      </div>
+                                     	</td>
+                                     	<td></td>
+                                     	<td></td>
+                                 	 </tr>
+                                  	 <tr>
+                                 		<td>
                                  			<span class="product-subtitle">남은 수량</span>
-                                 			<span style="mr-2">99</span>
-                                 		</li>
-                                     	<li>
+                                 		</td>
+                                 		<td>
+                                 			<span>99</span>
+                                 		</td>
+                                 		<td></td>
+                                 		<td></td>
+                                     <tr>
+                                     	<td>
                                      		<span class="product-subtitle">수량</span>
+                                     	</td>
+                                         <td style="margin-top:10px;">
                                              <button class="qty_left" type="button" onclick="reduceSum()">-</button>
                                              <input type="text" name="pop_out" value="1" class="qty_input" />
                                              <button class="qty_right" type="button" onclick="increaseSum()">+</button>
-                                         </li>
-                                     </ul>
-                                     <ul>
-                                     	<li>
+                                         </td>
+                                         <td></td>
+                                         <td></td>
+                                     </tr>
+                                     <tr>
+                                     	<td>
                                      		<span class="pd-title">총 합계</span>
+                                     	</td>
+                                     	<td>
                                      		<span class="pd-text" id="totalPrice">₩598,000</span> 
-                                     	</li>
-                                     </ul>						
-                                </div>
+                                     	</td>
+                                     	<td></td>
+                                     	<td></td>
+                                     </tr>						
+                                </table>
                                  <a href="${pageContext.request.contextPath}/cart/cart" class="go-cart float-left pd_a" style="width:250px">쇼핑백 담기</a>
 	                        </div>
 	                    </div>
@@ -213,6 +248,5 @@
        	<div style="width: 10%"></div>
 	</div>   
 
-	
 
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
