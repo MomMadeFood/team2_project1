@@ -1,35 +1,42 @@
-.footer-menu {
-    background-color: white;
-    width:1200px;
-    margin:0px auto;
-    
-}
+div .footer_cnts2 {
+	/* Font & Text */
+	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	letter-spacing: normal;
+	line-height: 20px;
+	text-decoration: none solid rgb(85, 85, 85);
+	text-align: start;
+	text-indent: 0px;
+	text-transform: none;
+	vertical-align: top;
+	white-space: normal;
+	word-spacing: 0px;
 
-.footer-img {
-    display: inline;
-    vertical-align: top;
-}
+	/* Color & Background */
+	background-attachment: scroll;
+	background-color: rgb(245, 245, 245);
+	background-image: none;
+	background-position: 0% 0%;
+	background-repeat: repeat;
+	color: rgb(85, 85, 85);
 
-.footer-list {
-    list-style: none;
-}
+	/* List */
+	list-style-image: none;
+	list-style-type: disc;
+	list-style-position: outside;
 
-.footer-list>li {
-    list-style: none;
-    font-family: "Malgun Gothic","맑은 고딕","Dotum","돋움", AppleGothic,sans-serif;
-    font-size: 8pt;
-    color: #555;
-}
+	/* Table */
+	border-collapse: separate;
+	border-spacing: 0px 0px;
+	caption-side: top;
+	empty-cells: show;
+	table-layout: auto;
 
-.footer-menu-list-wrap {
-    vertical-align: top;
-    display: inline-block;
-    margin-left:5px;
-}
-
-
-.footer-menu-app-wrap {
-    display: inline-block;
-    margin-left:20px;
-    
+	/* Miscellaneous */
+	overflow: visible;
+	cursor: auto;
+	visibility: visible;
 }
