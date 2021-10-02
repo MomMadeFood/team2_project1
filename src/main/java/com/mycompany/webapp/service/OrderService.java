@@ -13,7 +13,7 @@ import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
-import com.mycompany.webapp.dto.ProductDTO;
+import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
 public class OrderService {
