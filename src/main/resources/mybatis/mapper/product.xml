@@ -23,10 +23,9 @@
 		]]>
 	</select>
 
-	<select id="">
-		SELECT pd.color_code, s.psize, s.amount
-		FROM product_detail pd, stock s
-		WHERE pd.product_detail_no = s.product_detail_no
-		AND pd.product_no = #{value};
+	<select id="selectColorsByPid" resultType="string">
+		SELECT COLOR_CODE
+		FROM PRODUCT_DETAIL
+		WHERE PRODUCT_NO = #{value}
 	</select>
 </mapper>

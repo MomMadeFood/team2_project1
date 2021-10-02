@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 
+import jdk.internal.org.jline.utils.Log;
+
 @Controller
 @RequestMapping("/cart")
 public class CartController {
@@ -31,5 +33,15 @@ public class CartController {
 		
 		model.addAttribute("cartList", cartList);
 		return "cart/cart";
+	}
+	
+	
+	
+	
+	@RequestMapping("/test")
+	public String cartOption() {
+		logger.info(cartService.getCartOptionColor("TN2B7WSHG03N").toString());
+		logger.info(cartService.getCartOptionSize("TN2B7WSHG03N", "BL").toString());
+		return "/";
 	}
 }  

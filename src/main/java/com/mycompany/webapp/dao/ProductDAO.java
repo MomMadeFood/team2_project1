@@ -16,7 +16,7 @@ public interface ProductDAO {
 	 * @param id
 	 * @return List<String> colors
 	 */
-	List<String> selectColorsById(String id);
+	List<String> selectColorsByPid(String id);
 }
 
 	
