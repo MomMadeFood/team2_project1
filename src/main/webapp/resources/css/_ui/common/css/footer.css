@@ -11,7 +11,7 @@
 #footerWrap .footer .footer_cnts1 .cnts1_right{float:right;width:25.568%;overflow:hidden;}
 #footerWrap .footer .footer_cnts1 .cnts1_right ul{overflow:hidden;}
 #footerWrap .footer .footer_cnts1 .cnts1_right ul li{float:left;margin-right:10.6%;}
-#footerWrap .footer .footer_cnts1 .cnts1_right ul li a{display:inline-block;height:18px;background:url("/_ui/desktop/common/images/common/ico_footer_location.png") no-repeat;color:#363636;padding-left:20px;font-size:12px;}
+#footerWrap .footer .footer_cnts1 .cnts1_right ul li a{display:inline-block;height:18px;color:#363636;padding-left:20px;font-size:12px;}
 #footerWrap .footer .footer_cnts1 .cnts1_right ul li.look a{background-position:0 -18px;}
 /* #footerWrap .footer .footer_cnts1 .cnts1_right ul li.pickup{margin-right:0;} *//* 200407 수정 */
 #footerWrap .footer .footer_cnts1 .cnts1_right ul li.ico_youtube a{ height:19px; background:url("http://cdn.thehandsome.com/_ui/desktop/common/images/common/ico_footer_location02.png") no-repeat; background-position:0 4px; }/* 200407 추가 */
@@ -28,7 +28,7 @@
 #footerWrap .footer_cnts2 .cnts2_left a.box{font-size:9px;padding:3px 7px;background:#fff;border:1px solid #e3e3e3;margin-right:7px;}
 #footerWrap .footer_cnts2 .cnts2_left p{font-size:10px;}
 #footerWrap .footer_cnts2 .cnts2_left .top_p{padding-top:15px;}
-#footerWrap .footer_cnts2 .cnts2_left p span{display:inline-block;padding-right:11px;margin-right:10px;background:url("/_ui/desktop/common/images/common/ico_noti_line.gif") right center no-repeat;}
+#footerWrap .footer_cnts2 .cnts2_left p span{display:inline-block;padding-right:11px;margin-right:10px;}
 #footerWrap .footer_cnts2 .cnts2_left p span:last-child{background:none;}
 #footerWrap .footer_cnts2 .cnts2_left .copyright{font-size:10px;font-family:"whitneyLight"}
 #footerWrap .footer_cnts2 .cnts2_right{float:right;width:39.42%;margin-top:30px;}
