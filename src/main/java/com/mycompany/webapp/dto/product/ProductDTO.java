@@ -1,4 +1,6 @@
-package com.mycompany.webapp.dto;
+package com.mycompany.webapp.dto.product;
+
+import java.util.List;
 
 import lombok.Data;
 
