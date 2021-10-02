@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.mycompany.webapp.dto.ProductDTO;
+import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Mapper
 public interface CartDAO {

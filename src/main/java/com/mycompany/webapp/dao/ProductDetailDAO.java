@@ -2,7 +2,7 @@ package com.mycompany.webapp.dao;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.mycompany.webapp.dto.ProductDTO;
+import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Mapper
 public interface ProductDetailDAO {

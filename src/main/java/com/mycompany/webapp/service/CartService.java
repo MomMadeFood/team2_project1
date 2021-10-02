@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CartDAO;
-import com.mycompany.webapp.dto.ProductDTO;
+import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
 public class CartService {
