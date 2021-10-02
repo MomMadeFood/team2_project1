@@ -8,4 +8,3 @@ import com.mycompany.webapp.dto.product.ProductDTO;
 public interface ProductDetailDAO {
 	public ProductDTO selectProductDetailById (String ProductNo);
 }
-

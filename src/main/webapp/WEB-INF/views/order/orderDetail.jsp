@@ -18,10 +18,10 @@
 
         <div style="background-color: #F5F5F5; height: 65px; margin-top:20px; border:1px solid #E5E5E5; display:flex">
           <div style="width: 70%; border-right:1px solid #E5E5E5; display:flex; align-items: center; margin-left: 10px; ">
-            <p  style="font-weight:bold; font-size:15px">주문번호 : </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">210928P10845433</p>
+            <p  style="font-weight:bold; font-size:15px">주문번호 : </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">${mOrderDTO.orderNo}</p>
           </div>
           <div style="width: 30%;display:flex; padding:18px;align-items: center;">
-            <p style="font-size:15px">주문일시: 2021.09.29 15:30</p>
+            <p style="font-size:15px">주문일시: ${mOrderDTO.orderDate}</p>
           </div>
         </div>
         <div style="display:flex; justify-content: space-between ;margin-top:40px">
@@ -51,22 +51,22 @@
               <td style="vertical-align: middle; text-align:right">
                 <div style="display: flex; justify-content:between">
                   <div>
-                    <img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt=""
+                    <img src="http://newmedia.thehandsome.com/SH/2B/FW/SH2B9WJM343N_RD_W01.jpg" alt=""
 								style="width: 98px; height: 98px;">
                   </div>
                   <div style="text-align:left; margin-left:20px;">
                     <a style="color:black;" href="#" >
-                      SYSTEM HOMME</br>
-                      컬러 라인 니트 탑
+                      ${productDTO.brand}</br>
+                      ${productDTO.name}
                     </a>
-                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : BLACK / size : 100</p>
+                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productDTO.colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${orderDetailDTO.psize}</p>
                   </div>
                 </div>
               </td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>1</p></td>
-              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩345,000</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩280,000</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>구매</p></td>
+              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p> ${orderDetailDTO.amount}</p></td>
+              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩${orderDetailDTO.price}</p></td>
+              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩${orderDetailDTO.price}</p></td>
+              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetailDTO.state}</p></td>
             </tr>
           </tbody>
         </table>
@@ -139,31 +139,31 @@
           <div style="display:flex; height: 33%; border-top:1px black solid;border-bottom: 1px solid #cccccc">
             <div style="width:20%; background-color: #F5F5F5;padding-left:20px;padding-top:10px"><p style="font-weight:bold">배송지 주소</p></div>
             <div style="width:80%;padding:10px;">
-              <p>서울시 송파구 가락동 xx-x번지 ***호</p>
+              <p>${mOrderDTO.addr} ${mOrderDTO.detailAddr}</p>
             </div>
           </div>
           <div style="display:flex; height: 33%; width:100%; border-bottom: 1px solid #cccccc">
             <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">수령인</p></div>
             <div style="width:80%; display:flex; padding:10px">
-              <p>김정우</p>
+              <p>${mOrderDTO.recName}</p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;border-bottom: 1px solid #cccccc">
             <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">휴대폰</p></div>
             <div style="width:80%; display:flex; padding:10px">
-              <p>010-1234-5679</p>
+              <p>${mOrderDTO.phone}</p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;border-bottom: 1px solid #cccccc">
             <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">연락처</p></div>
             <div style="width:80%; display:flex; padding:10px">
-              <p></p>
+              <p>${mOrderDTO.tel}</p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;border-bottom: 1px solid #cccccc">
             <div style="width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">배송시 요청사항</p></div>
             <div style="width:80%; display:flex; padding:10px">
-              <p>없음</p>
+              <p>${mOrderDTO.request}</p>
             </div>
           </div>
         </div>

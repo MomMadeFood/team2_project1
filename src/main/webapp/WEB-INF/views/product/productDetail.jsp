@@ -1,6 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+<style type="text/css">
+	@import url("/resources/css/productDetail.css");
+</style>
 
 <div class="container-fluid">
 	<script type="text/javascript">

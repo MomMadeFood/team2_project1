@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.mycompany.webapp.dao.OrderDetailDao">
-	<select id="selectOrderDetailByOrderDetailNo" resultType="orderDetail" parameterType="string">
-		SELECT * FROM order_detail where order_detail_no = #{orderDetailNo}
+<mapper namespace="com.mycompany.webapp.dao.OrderDetailDAO">
+	<select id="selectOrderDetailByOrderDetailNo" resultType="map" parameterType="string">
+		select  * from product p,product_detail pd, order_detail od, m_order mo where od.order_detail_no= #{orderDetailNo}
+        and pd.product_detail_no = od.product_detail_no
+		and mo.order_no = od.order_no 
+		and p.product_no = SUBSTR(od.PRODUCT_DETAIL_NO, 1,12)
+	</select>
+	
+	<select id="selectPaymentsByOrderNo" resultType="payment" parameterType="string">
+		select * from payment where ORDER_NO=#{orderNo}
 	</select>
 </mapper>
