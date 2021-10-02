@@ -27,8 +27,7 @@
 				<colgroup>
 					<col style="width: 10px;" />
 					<col />
-					<col style="width: 120px" />
-					<col style="width: 105px" />
+					<col style="width: 225px" />
 					<col style="width: 140px" />
 					<col style="width: 110px" />
 				</colgroup>
@@ -41,11 +40,13 @@
 						<th scope="col">상품정보</th>
 						<th scope="col">수량</th>
 						<th scope="col">판매가</th>
-						<th scope="col">적립율</th>
 						<th scope="col">선택</th>
 					</tr>
 				</thead>
 				<tbody>
+					<!-- cartList -->
+					<c:forEach var="cart" items="${cartList}">
+					
 					<tr>
 						<td>
 								<!-- 선택 상품 -->
@@ -60,16 +61,16 @@
 										<img src="http://newmedia.thehandsome.com/YN/2B/FW/YN2B9KTO939N_LP_S01.jpg" alt="" class="cart_product_img" />
 										<span class="cart_product" >
 											<span class="cart_product_link">
-												FOURM THE STORE
+												${cart.brand}
 											</span>
 											<span class="cart_product_link">
-												[palette] 자카드 니트 탑
+												${cart.name}
 											</span>
 										</span>
 									</a>
 							<!--옵션-->
 									<div class="d-flex justify-content-between">
-										<p> color : LIGHT PINK<span>/</span> size : 90</p>
+										<p> color : ${cart.colorCode}<span>/</span> size : ${cart.psize}</p>
 										<a class="cart-option" onclick="showOption()">옵션변경</a>
 									</div>
 								</div>
@@ -96,19 +97,11 @@
 						<td>
 							<!-- 가격 -->
 							<div>
-								<span class="cart_span text-center" >₩158,000</span>
+								<span class="cart_span text-center" >₩${cart.price}</span>
 							</div> 
 						</td>
 						<td>
-								<!-- 적립율 -->
-								<span class="cart_span text-center" >5% (한섬마일리지)
-								<br>            
-								0.1% (H.Point)</span>            
-						</td>
-						<td>
 							<div>
-								<!-- 위시리스트 등록 -->
-								<a class="cart_button_wt" href="#">위시리스트</a>
 								<!-- 삭제 -->
 								<a class="cart_button_wt" href="">삭제</a>
 							</div> 
@@ -151,6 +144,10 @@
 							<!-- //btns -->
 						</td>
 					</tr>
+					
+					</c:forEach>
+					
+					
 					<tr class="cart-table-total">
 						<td colspan="2"></td>
 						<td >
