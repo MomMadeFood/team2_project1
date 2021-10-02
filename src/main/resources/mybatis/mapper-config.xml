@@ -5,8 +5,11 @@
 	<settings>
    		<setting name="mapUnderscoreToCamelCase" value="true"/>
 	</settings>
+	
 	<typeAliases>
 		<typeAlias type="com.mycompany.webapp.dto.OrderDetailDTO" alias="orderDetail"/>
+		<typeAlias type="com.mycompany.webapp.dto.PaymentDTO" alias="payment"/>
 	</typeAliases>	
+	
 
 </configuration>

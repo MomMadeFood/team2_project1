@@ -18,4 +18,5 @@ public class MOrderDTO {
 	private String zipCode;
 	private String tel;
 	private String phone;
+	private String recName;
 }

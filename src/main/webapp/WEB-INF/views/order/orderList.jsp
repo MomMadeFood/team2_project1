@@ -6,7 +6,7 @@
 	<div class="row mb-5">
 		<div class="col-sm-2"></div>
 		<div class="col-sm-8 d-flex justify-content-center">
-			<h4>주문/배송/반폼/취소</h4>
+			<h4>주문/배송/반품/취소</h4>
 		</div>
 		<div class="col-sm-2"></div>
 	</div>
@@ -73,7 +73,7 @@
 		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
 		      	<p>210928P10845433</p>
 		      	<p style="color:#dee2e6">(2021.09.28)</p>
-		      	<a href="${pageContext.request.contextPath}/order/orderConfirm" style="color:#ecd795">상세보기</a>
+		      	<a href="${pageContext.request.contextPath}/order/orderDetail" style="color:#ecd795">상세보기</a>
 		      </td>
 		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
 		        <div style="display: flex; justify-content:between">

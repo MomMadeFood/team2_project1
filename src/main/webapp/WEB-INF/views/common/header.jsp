@@ -18,7 +18,6 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/productDetail.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css" />
 
 
