@@ -6,6 +6,7 @@ import lombok.Data;
 
 @Data
 public class CouponDTO {
+	//Coupon
 	private String couponNo;
 	private int totalAmount;
 	private int remainAmount;
@@ -17,4 +18,8 @@ public class CouponDTO {
 	private Date issueDate;
 	private Date expireDate;
 	private int validity;
+	//Coupon_Detail
+	private String memberId;
+	private Date useDate;
+	private int state;
 }
