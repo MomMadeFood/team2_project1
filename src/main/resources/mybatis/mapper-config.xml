@@ -7,6 +7,7 @@
 	</settings>
 	<typeAliases>
 		<typeAlias type="com.mycompany.webapp.dto.OrderDetailDTO" alias="orderDetail"/>
+		<typeAlias type="com.mycompany.webapp.dto.product.ProductNewDTO" alias="newProduct"/>
 	</typeAliases>	
 
 </configuration>
