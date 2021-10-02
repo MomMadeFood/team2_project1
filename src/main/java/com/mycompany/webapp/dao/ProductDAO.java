@@ -10,3 +10,10 @@ import com.mycompany.webapp.dto.product.ProductNewDTO;
 public interface ProductDAO {
 	public List<ProductNewDTO> selectNewProductBySex(String sex);
 }
+
+	/**
+	 * 제품의 색상 종류를 조회
+	 * @param id
+	 * @return List<String> colors
+	 */
+	List<String> selectColorsById(String id);
