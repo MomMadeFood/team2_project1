@@ -1,5 +1,6 @@
 package com.mycompany.webapp.controller;
 
+import java.security.Principal;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,10 +22,13 @@ public class CartController {
 	private CartService cartService;
 	
 	@RequestMapping("")
-	public String cart(Model model) {
+	public String cart(
+			Principal principal,
+			Model model) {
 		logger.info("실행");
-		List<ProductDTO> cartList = cartService.getCarts("injae");
-		logger.info(cartList.toString());
+		
+		List<ProductDTO> cartList = cartService.getCarts(principal.getName());
+		
 		model.addAttribute("cartList", cartList);
 		return "cart/cart";
 	}
