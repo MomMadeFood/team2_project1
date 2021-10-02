@@ -26,11 +26,20 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" />
 
 
+
+
 <!-- 사진 swiper -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>
 <script src="https://kit.fontawesome.com/90405714d1.js" crossorigin="anonymous"></script>
+
+
+<!-- header -->
+<script src="${pageContext.request.contextPath}/resources/js/jquery.sticky.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
+<script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
+
 
 </head>
 <body>
@@ -167,9 +176,5 @@
 
       </header>
 
-    <script src="js/jquery-3.3.1.min.js"></script>
-    <script src="js/popper.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/jquery.sticky.js"></script>
-    <script src="js/main.js"></script>
+    
 		
