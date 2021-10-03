@@ -89,7 +89,7 @@
 							<tbody>
 								<sec:authorize access="isAuthenticated()">
 									<sec:authentication property="principal.username" var="user_id"/>
-									<tr class="member-id"><div style="display:none">${user_id}</div></tr>
+									<tr ><div class="member-id" style="display:none">${user_id}</div></tr>
 								</sec:authorize>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -128,16 +128,16 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>배송지 주소</td>
-									<td><input style="width: 80px" title="우편번호" id="adress"
+									<td><input style="width: 80px" title="우편번호" id="zipcode"
 										name="postcode" type="text" readonly> <input
 										value="조회" id="adressBtn" name="adressBtn" type="button">
 										<div style="margin-top: 10px;">
-											<input style="width: 100%;" id="adress" name="adress"
-												type="text">
+											<input style="width: 100%;" id="addr" name="adress"
+												type="text" value="서울시 송파구 가락동">
 										</div>
 										<div style="margin-top: 10px;">
 											<input style="width: 100%;" value="나머지 주소를 입력해주세요"
-												id="adressDetail" name="adressDetail" type="text">
+												id="detail-addr" name="adressDetail" type="text" >
 										</div></td>
 								</tr>
 								<tr>
@@ -145,7 +145,7 @@
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>수령인</td>
 									<td><input style="width: 150px;" value="김정우" title="수령인"
-										id="rec_name" name="rec_name" type="text"></td>
+										id="rec-name" name="rec-name" type="text"></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -163,11 +163,11 @@
 										<div
 											style="display: inline-block; margin-left: 8px; margin-right: 8px">-</div>
 										<input id="hp2" name="hp2" title="휴대폰 가운데자리" type="text"
-										maxLength=4 style="width: 80px">
+										maxLength=4 style="width: 80px" value="1234">
 									<div
 											style="display: inline-block; margin-left: 8px; margin-right: 8px">-</div>
 										<input id="hp3" name="hp3" title="휴대폰 마지막자리" type="text"
-										maxLength=4 style="width: 80px"></td>
+										maxLength=4 style="width: 80px" value="5370"></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -196,17 +196,17 @@
 										<div
 											style="display: inline-block; margin-left: 8px; margin-right: 8px">-</div>
 										<input id="ph2" name="ph2" title="연락처 가운데자리" type="text"
-										maxLength=3 style="width: 80px">
+										maxLength=3 style="width: 80px" value="123">
 									<div
 											style="display: inline-block; margin-left: 8px; margin-right: 8px">-</div>
 										<input id="ph3" name="ph3" title="연락처 마지막자리" type="text"
-										maxLength=4 style="width: 80px"></td>
+										maxLength=4 style="width: 80px" value="6768"></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">배송요청사항</td>
-									<td><input style="width: 80%;" id="ship_req"
-										name="ship_req" type="text">
+									<td><input style="width: 80%;" id="request"
+										name="ship_req" type="text" value="파손 조심하셈">
 									<div style="display: inline-block; margin-left: 10px;">0 /
 											20자</div></td>
 								</tr>
@@ -214,7 +214,7 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">수령인 E-mail</td>
 									<td>
-	                      			<input id="emailId" name="emailId" title="이메일앞자리" type="text" style="width:120px"><div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="emailAddr" name="emailAddr" title="이메일주소" type="text" style="width:120px">
+	                      			<input id="rec-email1" name="rec-email1" title="이메일앞자리" type="text" style="width:120px" value="kjw1234"><div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="rec-email2" name="rec-email2" title="이메일주소" type="text" style="width:120px">
 	                      			<select title="이메일 계정" id="emailSel" onchange="emailChange()">
 											<option value="">직접입력</option>
 											<option value="naver.com">naver.com</option>
@@ -270,12 +270,12 @@
 								<div
 									style="height: 100%; width: 80%; display: flex; padding: 10px">
 									<div style="margin-top: 3px;" class="form-check">
-										<input class="form-check-input" type="radio" name="purchaseCheck"
+										<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
 											id="credit"> <label style="margin-right: 20px;"
 											class="form-check-label" for="credit"> 신용카드 </label>
 									</div>
 									<div style="margin-top: 3px;" class="form-check">
-										<input class="form-check-input" type="radio" name="purchaseCheck"
+										<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
 											id="transfer" checked> <label class="form-check-label"
 											for="transfer"> 실시간 계좌이체 </label>
 									</div>
@@ -378,7 +378,7 @@
 
 	function emailChange() {
 		let selectedEmail = $("#emailSel").val();
-		$("#emailAddr").val(selectedEmail);
+		$("#rec-email2").val(selectedEmail);
 	}
 	
 	function resetPoint(){
@@ -419,30 +419,83 @@
 	}
 
 	function postOrderForm() {
-		let detailList = document.querySelectorAll("#orderTable tbody tr");
-		let memberId = document.querySelector(".member-id");
+		let orderList = document.querySelectorAll("#orderTable tbody tr");
+		let memberId = document.querySelector(".member-id").innerHTML;
+		let recName = $("#rec-name").val();
+		let hp = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
+		let tel = $("#ph1").val()+"-"+$("#ph2").val()+"-"+$("#ph3").val();
+		let request = $("#request").val();
+		let recEmail = $("#rec-email1").val()+"@"+$("#rec-email2").val();
+		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
+		let discountPrice = convertNum(document.querySelector("#discount-point").innerHTML);
+		let zipcode = $("#zipcode").val();
+		let addr = $("#addr").val();
+		let detailAddr = $("#detail-addr").val();
+		let paymentType = "";
+		let point = discountPrice;
 		
-		console.log(memberId);
-		console.log(detailList);
 		
-		for (let element of detailList) {			
-			 let productDetailNo = element.querySelector(".detail-id").innerHTML;
-			 
-			 let amount = element.querySelector(".detail-amount").innerHTML;
-			 let size = element.querySelector(".detail-size").innerHTML;
-			 let price = element.querySelector(".detail-price").innerHTML;
-			 let state = "1";
-			 
-			 console.log(productDetailNo+" "+amount+" "+size+" "+price+" "+state);
-			 
+		
+		let radios = document.querySelectorAll(".payment-way");
+		
+		console.log(radios);
+		for(radio of radios){
+			console.log(radio.id);
+			if(radio.checked){
+				paymentType = radio.id;	
+			}
 		}
-		/*
+		
+		console.log(orderList,memberId,recName,hp,tel,request,recEmail,priceTotal,discountPrice,zipcode,addr,detailAddr,paymentType,point);
+		
+
+		let detailList = [];
+		let data = {
+				"memberId":memberId,
+				"priceTotal":priceTotal,
+				"priceDiscount":discountPrice,
+				"request":request,
+				"addr":addr,
+				"detailAddr":detailAddr,
+				"zipcode":zipcode,
+				"tel":tel,
+				"phone":hp,
+				"paymentType":paymentType,
+				"point":point,
+		}
+		for (let index = 0; index <orderList.length; index++) {			
+			 let productDetailNo = orderList[index].querySelector(".detail-id").innerHTML;
+			 
+			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
+			 let size = parseInt(orderList[index].querySelector(".detail-size").innerHTML);
+			 let price = parseInt(orderList[index].querySelector(".detail-price").innerHTML);
+			 let state = 1;
+			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
+			 detailList.push(detailOrder);
+			 console.log(productDetailNo+" "+amount+" "+size+" "+price+" "+state);
+			 data['detailList[' + index +'].productDetailNo'] = productDetailNo;
+			 data['detailList[' + index +'].amount'] = amount; 
+			 data['detailList[' + index +'].size'] = size; 
+			 data['detailList[' + index +'].price'] = price; 
+		}
+		
+		console.log(data);
+		
+
+		
 		$.ajax({
-			
+			type:"POST",
+			url:"orderFormProc",
+			data: data
 		}).done((data)=>{
-			
+			if(data.result=="SUCCESS"){
+				location.href="/order/orderList";
+			}else{
+				console.log("------");
+			}
 		});
-		 */
+		
+
 
 	}
 </script>
