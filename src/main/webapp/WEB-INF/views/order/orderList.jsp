@@ -68,34 +68,39 @@
 		      <th scope="col">구분</th>
 		    </tr>
 		  </thead>
-		  <tbody class="txt">
-		    <tr style="height:150px;">
-		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
-		      	<p>210928P10845433</p>
-		      	<p style="color:#dee2e6">(2021.09.28)</p>
-		      	<a href="${pageContext.request.contextPath}/order/orderDetail" style="color:#ecd795">상세보기</a>
-		      </td>
-		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
-		        <div style="display: flex; justify-content:between">
-		          <div>
-		            <img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt="" style="width: 98px; height: 98px;">
-		          </div>
-		          <div style="text-align:left; margin-left:20px;">
-		            <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail" >
-		              SYSTEM HOMME<br/>
-		              컬러 라인 니트 탑
-		            </a>
-		            <p style="margin-top: 10px;font-size:12px;color:#CCC7CD">color : BLACK / size : 100</p>
-		            <p style="margin-top: 10px; font-size:11px;">한섬 마일리지 : 5.0%  H.Point : 0.1%</p>
-		          </div>
-		        </div>
-		      </td>
-		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>1</p></td>
-		      <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩345,000</p></td>
-		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>구매</p></td>
-		      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p></p></td>
-		    </tr>
-		  </tbody>
+	  	  <c:forEach items="${orderList}" var="order">
+		   	<tbody class="txt">
+		   		 <c:forEach items="${order.detailList}" var="orderDetail" varStatus="status">
+			  	  <tr style="height:150px;">
+			  	  	  <c:if test="${status.index==0}">
+					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center" rowspan="${fn:length(order.detailList)}">
+					      	<p>${order.orderNo}</p>
+					      	<p style="color:#dee2e6">(${order.orderDate})</p>
+					      	<a href="${pageContext.request.contextPath}/order/orderDetail" style="color:#ecd795">상세보기</a>
+					      </td>
+				      </c:if>
+				      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
+				        <div style="display: flex; justify-content:between">
+				          <div>
+				            <img src="${orderDetail.img1}" alt="" style="width: 98px; height: 98px;">
+				          </div>
+				          <div style="text-align:left; margin-left:20px;">
+				            <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail" >
+				              SYSTEM HOMME<br/>
+				              컬러 라인 니트 탑
+				            </a>
+				            <p style="margin-top: 10px;font-size:12px;color:#CCC7CD">color :  <img src="${orderDetail.colorChip}" alt="" width="20px" height="20px"> / size : ${orderDetail.psize}</p>
+				          </div>
+				        </div>
+				      </td>
+				      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.amount}</p></td>
+				      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price}"/></p></td>
+				      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.state}</p></td>
+				      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p></p></td>
+			      </tr>
+			  </c:forEach>
+		    </tbody>
+		  </c:forEach>
 		</table>
 	</div>
 </div>

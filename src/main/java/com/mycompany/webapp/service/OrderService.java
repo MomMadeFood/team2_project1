@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
+import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 
@@ -70,4 +71,7 @@ public class OrderService {
 		
 		return orderDetailMap;
 	} 
+	public List<OrderListDTO> getOrderList(Map<String, Object> param){
+		return orderDetailDAO.selectOrderListByMemberNo(param);
+	}
 }

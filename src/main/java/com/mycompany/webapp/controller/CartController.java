@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 
-import jdk.internal.org.jline.utils.Log;
 
 @Controller
 @RequestMapping("/cart")
