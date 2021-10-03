@@ -1,6 +1,7 @@
 package com.mycompany.webapp.dto;
 
 import java.util.Date;
+import java.util.List;
 
 import lombok.Data;
 
@@ -19,4 +20,5 @@ public class MOrderDTO {
 	private String tel;
 	private String phone;
 	private String recName;
+	List<OrderDetailDTO> detailList;
 }
