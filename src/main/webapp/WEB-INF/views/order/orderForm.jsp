@@ -35,43 +35,43 @@
 						</thead>
 						<tbody>
 							<tr style="text-align: center; height: 132px;">
-								<div style="display:none">SH2B9WJM343N_RD</div>
+								<td class="detail-id" style="display:none">SH2B9WJM343N_RD</td>
 								<td class="d-flex"><img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt=""
 									style="width: 98px; height: 98px;">
 									<div style="text-align: left; margin-left: 20px;">
 										<a style="color: black;" href="#"> SYSTEM HOMME</br> 컬러 라인 니트 탑
 										</a>
-										<p style="margin-top: 10px;">color : BLACK / size : 100</p>
+										<p style="margin-top: 10px;">color :  <p class="detail-color">BLACK</p> / size : <p class="detail-size">100</p></p>
 									</div></td>
 								<td
-									style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;">345,000₩</td>
+									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
+								<td class="detail-price" style="vertical-align: middle;">345,000₩</td>
 							</tr>
 							<tr style="text-align: center; height: 132px;">
-								<div style="display:none">SH2B9WJM333M_BK</div>
+								<td class="detail-id" style="display:none">SH2B9WJM333M_BK</td>
 								<td class="d-flex"><img src="http://newmedia.thehandsome.com/MM/2B/FW/MM2B9WCT404M_CM_W01.jpg/dims/resize/684x1032/" alt=""
 									style="width: 98px; height: 98px;">
 									<div style="text-align: left; margin-left: 20px;">
 										<a style="color: black;" href="#"> SYSTEM HOMME</br> 핸드 메이드 패딩 코트
 										</a>
-										<p style="margin-top: 10px;">color : BLACK / size : 100</p>
+										<p style="margin-top: 10px;">color : <p class="detail-color">BLACK</p> / size : <p class="detail-size">100</p></p>
 									</div></td>
 								<td
-									style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;">758,000₩</td>
+									 class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
+								<td  class="detail-price" style="vertical-align: middle;">758,000₩</td>
 							</tr>
 							<tr style="text-align: center; height: 132px;">
-								<div style="display:none">MM2B9WCT404M_CM</div>
+								<td class="detail-id" style="display:none">MM2B9WCT404M_CM</td>
 								<td class="d-flex"><img src="http://newmedia.thehandsome.com/SH/2B/FW/SH2B9WJM333M_BK_W01.jpg/dims/resize/684x1032/" alt=""
 									style="width: 98px; height: 98px;">
 									<div style="text-align: left; margin-left: 20px;">
 										<a style="color: black;" href="#"> SYSTEM HOMME</br> 플랩 점퍼
 										</a>
-										<p style="margin-top: 10px;">color : BLACK / size : 100</p>
+										<p style="margin-top: 10px;">color : <p class="detail-color">BLACK</p> / size :<p class="detail-size">100</p></p>
 									</div></td>
 								<td
-									style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;">690,000₩</td>
+									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
+								<td class="detail-price" style="vertical-align: middle;">690,000₩</td>
 							</tr>
 						</tbody>
 					</table>
@@ -87,6 +87,10 @@
 								<col>
 							</colgroup>
 							<tbody>
+								<sec:authorize access="isAuthenticated()">
+									<sec:authentication property="principal.username" var="user_id"/>
+									<tr class="member-id"><div style="display:none">${user_id}</div></tr>
+								</sec:authorize>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">주문자</td>
@@ -238,22 +242,23 @@
 								<div style="width: 80%; padding: 10px;">
 									<div style="display: flex; justify-content: space-between;">
 										<div style="display: flex;">
-											<input style="width: 130px;" type="text" id="pointBox"
+											<input style="width: 130px;" type="number" value=0 id="apply-point"
 												name="pointBox">
 											<p
 												style="margin-left: 10px; font-size: 12px; font-weight: bold; padding-top: 5px">P
-												사용 (잔액 : 50P)</p>
+												사용 (잔액 : <span id="remain-point">50,000</span>P)</p>
+											<div id="cur-point" style="display:none">50000</div>
 										</div>
 										<div style="display: flex;">
 											<div style="padding-top: 2px">
-												<input type="checkbox" id="allUse">
+												<input type="checkbox" id="allUse"  onClick = "allPointApply(this)">
 											</div>
 											<p
 												style="font-size: 12px; font-weight: bold; padding-top: 5px; margin-left: 10px">모두사용</p>
 											<button style="width: 50px; margin-left: 10px;" type="button"
-												class="btn btn-sm btn-secondary">적용</button>
+												class="btn btn-sm btn-secondary" onclick="applyPoint()">적용</button>
 											<button type="button" style="width: 80px; margin-left: 10px"
-												class="btn btn-sm btn-secondary">적용취소</button>
+												class="btn btn-sm btn-secondary" onClick="resetPoint()">적용취소</button>
 										</div>
 									</div>
 								</div>
@@ -291,7 +296,7 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>상품 합계</div>
-										<div>345,000₩</div>
+										<div><span id="prod-price">1,795,000</span>₩</div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
@@ -301,7 +306,7 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>할인 금액</div>
-										<div>- 40000₩</div>
+										<div>- <span id="discount-point">0</span>₩</div>
 									</div>
 								</div>
 							</div>
@@ -310,7 +315,7 @@
 									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
-										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">305,000₩</div>
+										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price">1,795,000</span>₩</div>
 								</div>
 							</div>
 						</div>
@@ -345,27 +350,91 @@
 		</div>
 </div>
 <script>
+
+	function convertNum(price){
+		let temp = "";
+		for (var i = 0; i < price.length; i++) {
+			if (price.charAt(i) != ',') {
+				temp = temp + price.charAt(i);
+			}
+		}
+		temp = parseInt(temp);
+		return temp;
+	}
+	
+	function convertPrice(num){
+		num = String(num);
+		let ans = "";
+		let cnt = 0;
+		for (var i = num.length - 1; i >= 0; i--) {
+			cnt++;
+			ans = num.charAt(i) + ans;
+			if (i > 0 && cnt % 3 == 0) {
+				ans = "," + ans;
+			}
+		}
+		return ans;
+	}
+
 	function emailChange() {
 		let selectedEmail = $("#emailSel").val();
 		$("#emailAddr").val(selectedEmail);
 	}
+	
+	function resetPoint(){
+		document.querySelector("#discount-point").innerHTML = 0;
+		document.querySelector("#remain-point").innerHTML = convertPrice(document.querySelector("#cur-point").innerHTML);
+		$("#apply-point").val(0);
+		document.querySelector("#total-price").innerHTML = document.querySelector("#prod-price").innerHTML;
+		
+	}
+	
+	function applyPoint(){
+		//let curPoint = document.querySelector("#cur-point").innerHTML;
+		let applyPoint = convertNum($("#apply-point").val());
+		let remainPoint = convertNum(document.querySelector("#remain-point").innerHTML);
+		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
+		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
+		
+		console.log(remainPoint - applyPoint);
+		if(applyPoint>remainPoint){
+			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
+		}else{
+			document.querySelector("#remain-point").innerHTML = convertPrice(remainPoint - applyPoint);
+			document.querySelector("#discount-point").innerHTML = convertPrice(discountPoint+applyPoint);
+			document.querySelector("#total-price").innerHTML = convertPrice(prodPrice-(discountPoint+applyPoint));
+		}
+		$("#apply-point").val(0);
+	}
+	
+	function allPointApply(box){
+		console.log("aaaaa");
+		let curPoint = convertNum(document.querySelector("#remain-point").innerHTML);
+		if(box.checked==true){
+			$("#apply-point").val(curPoint);
+		}else{
+			$("#apply-point").val(0);
+		}
+		
+	}
 
 	function postOrderForm() {
 		let detailList = document.querySelectorAll("#orderTable tbody tr");
+		let memberId = document.querySelector(".member-id");
 		
-		
-		
+		console.log(memberId);
 		console.log(detailList);
 		
-		for (let element of detailList) {
-			console.log(element.querySelector("div"));
-			/*
-			  let productDetailNo = element.
-			  let amount
-			  let size
-			  let price
-			  let state
-			  */
+		for (let element of detailList) {			
+			 let productDetailNo = element.querySelector(".detail-id").innerHTML;
+			 
+			 let amount = element.querySelector(".detail-amount").innerHTML;
+			 let size = element.querySelector(".detail-size").innerHTML;
+			 let price = element.querySelector(".detail-price").innerHTML;
+			 let state = "1";
+			 
+			 console.log(productDetailNo+" "+amount+" "+size+" "+price+" "+state);
+			 
 		}
 		/*
 		$.ajax({
