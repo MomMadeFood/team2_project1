@@ -70,4 +70,9 @@ public class OrderController {
 	public String orderList() {
 		return "order/orderList";
 	}
+	
+	@RequestMapping("/orderFormProc")
+	public String orderFormProc() {
+		return "redirect:/order/orderList";
+	}
 }
