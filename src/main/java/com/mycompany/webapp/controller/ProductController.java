@@ -23,9 +23,6 @@ public class ProductController {
 	@Resource
 	private ProductDetailService productDetailService;
 	
-	
-	
-	
 	@RequestMapping("/productDetail")
 	public String productDetail(String no, Model model) {
 		String no1 = no;
@@ -34,8 +31,6 @@ public class ProductController {
 		List<ProductDTO> productDetailList = productDetailService.getProductDetail(no1);
 		List<ProductDTO> productSizePriceList = productDetailService.getProductDetailCol(no1);
 		
-		//"YS2B9WPC002WZO_BR"
-		ProductDTO productDetail = new ProductDTO();
 		for(ProductDTO temp : productDetailList) {
 			if(temp.getProductDetailNo().equals(no)) {
 				model.addAttribute("productDetail", temp);
@@ -58,10 +53,13 @@ public class ProductController {
 		}
 		Object[] sizeList = sizeSet.toArray();
 		model.addAttribute("sizeList", sizeList);
-		
-		System.out.println(sizeList.toString());
-		
-	
-		return "product/productDetail";
+			return "product/productDetail";
 		}
+		
+		@RequestMapping("/productList")
+		public String productList() {
+			return "product/productList";
+		}
+		
+		
 }

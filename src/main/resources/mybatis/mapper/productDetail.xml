@@ -24,4 +24,3 @@
 			b WHERE a.product_no = b.PRODUCT_NO AND a.product_no=#{value}
 	</select>
 </mapper>
-
