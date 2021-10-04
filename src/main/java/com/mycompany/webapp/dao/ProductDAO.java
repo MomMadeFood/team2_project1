@@ -1,9 +1,11 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.dto.product.ProductNewDTO;
 
 @Mapper
@@ -17,6 +19,7 @@ public interface ProductDAO {
 	 * @return List<String> colors
 	 */
 	List<String> selectColorsByPid(String id);
+	
 }
 
 	
