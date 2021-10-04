@@ -23,5 +23,6 @@
       <typeAlias type="com.mycompany.webapp.dto.product.ProductNewDTO" alias="newProduct"/>
       <typeAlias type="com.mycompany.webapp.dto.product.ProductDetailDTO" alias="productDetail"/>
       <typeAlias type="com.mycompany.webapp.dto.product.ProductCategoryDTO" alias="productCategory"/>
+      <typeAlias type="com.mycompany.webapp.dto.product.ProductColorDTO" alias="color"/>
    </typeAliases>   
 </configuration>
