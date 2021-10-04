@@ -27,3 +27,8 @@ a:hover, a:active, a:visited, a:focus {
     border-color: #343a40;
     text-decoration: none;
 }
+
+.orderList-detail-view{
+	color: #ecd795
+}
+
