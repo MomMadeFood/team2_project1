@@ -8,6 +8,9 @@
         padding: 0px;
         margin: 0px;
       }
+      
+   
+
     </style>
 
 <div>
@@ -245,19 +248,49 @@
 								<div style="width: 20%; background-color: #F5F5F5; display: flex; align-items: center;">
 									<p style="font-weight: bold;margin-left:15px">결제수단 선택</p>
 								</div>
-								<div
-									style="height: 100%; width: 80%; display: flex; padding: 10px">
-									<div style="margin-top: 3px;" class="form-check">
-										<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
-											id="credit"> <label style="margin-right: 20px;"
-											class="form-check-label" for="credit"> 신용카드 </label>
+								<div style="height: 100%; width: 80%;">
+									<div
+										style="height: 100%; display: flex; padding: 10px;">
+										<div style="margin-top: 3px;" class="form-check">
+											<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
+												id="credit"> <label style="margin-right: 20px;"
+												class="form-check-label" for="credit"> 신용카드 </label>
+										</div>
+										<div style="margin-top: 3px;" class="form-check">
+											<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
+												id="transfer" checked> <label class="form-check-label"
+												for="transfer"> 실시간 계좌이체 </label>
+										</div>
 									</div>
-									<div style="margin-top: 3px;" class="form-check">
-										<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
-											id="transfer" checked> <label class="form-check-label"
-											for="transfer"> 실시간 계좌이체 </label>
+									<div style="height:200px; padding:30px; border-top: 1px solid #cccccc;display:flex">
+										<button onClick="clickLeft()">left</button>
+										<c:forEach items="${cardList}" var="card" varStatus="status">
+											<div class=" card									
+											<c:if test="${status.index eq 0}">
+	    										show
+											</c:if>
+											"
+											style=" height:140px; width:300px; margin:0px auto; border:1px solid #cccccc; background-color: #F5F5F5;											
+											<c:if test="${status.index != 0}">
+	    										display:none
+											</c:if>
+											<c:if test="${status.index eq 0}">
+	    										display:block
+											</c:if>
+											">
+												<div style="height:70%; border-bottom:1px solid #cccccc;padding-left:5px">
+													<p>${card.company}</p>
+													<fmt:formatDate var="resultRegDt" value="${card.expireDate}" pattern="yyyy-MM-dd"/>
+													<div style="margin-top:45px">
+														<p>유효기간: ${resultRegDt}</p>
+													</div>
+												</div>
+												<div style="height:30%; texg-align:center;padding-top:10px;padding-left:5px"><p>카드번호: ${card.cardNo}</p></div>
+											</div>
+
+										</c:forEach>
+										<button onClick="clickRight()">right</button>
 									</div>
-									
 								</div>
 							</div>
 						</div>
@@ -328,6 +361,39 @@
 		</div>
 </div>
 <script>
+
+	function clickRight(){
+		//console.log("------");
+		let showEle = document.querySelector(".show");
+		console.log(showEle.classList.contains("card"))
+		if(showEle.nextElementSibling.classList.contains("card")){
+			
+			//console.log(showEle.nextElementSibling.nextElementSibling);
+			
+
+			showEle.nextElementSibling.classList.add("show");
+			showEle.classList.remove("show");
+			showEle.style.display="none";
+			showEle.nextElementSibling.style.display="block";			
+		}
+
+		
+		
+	}
+	
+	function clickLeft(){
+		let showEle = document.querySelector(".show");
+		if(showEle.previousElementSibling.classList.contains("card")){
+			
+			//console.log(showEle.nextElementSibling.nextElementSibling);
+			
+	
+			showEle.previousElementSibling.classList.add("show");
+			showEle.classList.remove("show");
+			showEle.style.display="none";
+			showEle.previousElementSibling.style.display="block";
+		}
+	}
 
 	function convertNum(price){
 		let temp = "";

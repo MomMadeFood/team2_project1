@@ -25,7 +25,6 @@ import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.OrderService.OrderResult;
@@ -43,17 +42,24 @@ public class OrderController {
 	@Resource
 	private MemberService memberService;
 	
-	@Resource
-	private CardService cardService;
+
 
 	
 	@RequestMapping("/orderForm")
 	public String orderForm(Principal principal,Model model) {
 		logger.info("실행");
-		MemberDTO memberDTO = memberService.getMember(principal.getName());
-		List<CardDTO> cardList = cardService.getCardList(principal.getName());
+		
+		Map<String,Object> map = memberService.getMemberInfo(principal.getName());
+		MemberDTO memberDTO = (MemberDTO)map.get("memberDTO");
+		List<CardDTO> cardList = (List<CardDTO>)map.get("cardList");
+		
 		model.addAttribute("memberDTO",memberDTO);
-		System.out.println(memberDTO.toString());
+		model.addAttribute("cardList",cardList);
+		
+		for(CardDTO cardDTO :cardList) {
+			System.out.println(cardDTO.getCardNo());
+		}
+
 		return "order/orderForm";
 	}
 	
