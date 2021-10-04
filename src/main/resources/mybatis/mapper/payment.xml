@@ -4,4 +4,8 @@
 	<insert id="insertPayment" parameterType="payment">
 		INSERT INTO payment(payment_type,order_no,price)values(#{paymentType},#{orderNo},#{price})
 	</insert>
+	
+	<select id="selectPaymentsById" parameterType="string" resultType="payment">
+		SELECT * FROM payment WHERE order_no = #{orderNo}
+	</select>
 </mapper>

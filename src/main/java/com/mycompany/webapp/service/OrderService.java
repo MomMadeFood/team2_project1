@@ -1,6 +1,7 @@
 package com.mycompany.webapp.service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -16,6 +17,8 @@ import com.mycompany.webapp.controller.OrderController;
 import com.mycompany.webapp.dao.MOrderDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dao.PaymentDAO;
+import com.mycompany.webapp.dao.ProductDAO;
+import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
@@ -39,6 +42,9 @@ public class OrderService {
 	
 	@Resource
 	private StockDAO stockDAO;
+	
+	@Resource
+	private ProductDAO productDAO;
 	
 	public enum OrderResult{
 		SUCCESS,
@@ -163,6 +169,24 @@ public class OrderService {
 			// TODO: handle exception
 		//}
 		return OrderResult.SUCCESS;
+	}
+	
+	
+	public Map<String,Object> getMOrder(String orderNo) {
+		
+		Map<String,Object> mp = new HashMap<String, Object>();
+		List<ProductDTO> productList = new ArrayList<ProductDTO>();
+		
+		MOrderDTO mOrderDTO =  mOrderDAO.selectMOrderById(orderNo);
+		mOrderDTO.setDetailList(orderDetailDAO.selectOrderDetailsById(orderNo));
+		mOrderDTO.setPaymentList(paymentDAO.selectPaymentsById(orderNo));
+		
+		for(OrderDetailDTO orderDetail : mOrderDTO.getDetailList()) {
+			productList.add(productDAO.selectProductById(orderDetail.getProductDetailNo()));
+		}
+		mp.put("mOrderDTO", mOrderDTO);
+		mp.put("productList",productList);
+		return mp;
 	}
 	
 }

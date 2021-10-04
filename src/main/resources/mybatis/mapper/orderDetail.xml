@@ -78,4 +78,8 @@
 		values((select TO_CHAR(SYSDATE, 'YYYYMMDD') from dual) || 'D'||(select 10000000+(SELECT count(*) FROM order_detail)from 
 		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state})
 	</insert>
+	
+	<select id="selectOrderDetailsById" parameterType="string" resultType="orderDetail">
+		SELECT * FROM order_detail WHERE order_no = #{orderNo}
+	</select>
 </mapper>

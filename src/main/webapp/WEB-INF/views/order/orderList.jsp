@@ -104,7 +104,7 @@
 								var strDate = orderDate.getFullYear() + "-" +month + "-" + day + " " + hour + ":" + minute + ":" + second ;  
 								
 								htmlContent += '  			  <p style="color:#dee2e6">' + strDate+'</p>';
-								htmlContent += '  			  <a href="${pageContext.request.contextPath}/order/orderDetail" style="color:#ecd795">상세보기</a>';
+								htmlContent += '  			  <a href="${pageContext.request.contextPath}/order/orderDetail?orderNo="'+ order.orderNo +'style="color:#ecd795">상세보기</a>';
 								htmlContent += '  		    </td>';
 							}
 							htmlContent += '  		  <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">';
@@ -203,7 +203,7 @@
 						      	<p>${order.orderNo}</p>
 						      	<fmt:formatDate var="orderDate" value="${order.orderDate}" pattern="yyyy-MM-dd hh:mm:ss"/>
 						      	<p style="color:#dee2e6">${orderDate}</p>
-						      	<a href="${pageContext.request.contextPath}/order/orderDetail" style="color:#ecd795">상세보기</a>
+						      	<a href="${pageContext.request.contextPath}/order/orderDetail?orderNo=${order.orderNo}" style="color:#ecd795">상세보기</a>
 						      </td>
 					      </c:if>
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">

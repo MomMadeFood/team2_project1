@@ -45,11 +45,10 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/orderDetail")
-	public String confirm(Model model) {
+	public String orderDetail(Model model,String orderNo) {
 		
-		String orderDetailNo = "ABC123DEF456";
-		
-		Map<String,Object> map = orderService.getOrderDetail(orderDetailNo);
+		Map<String,Object> map = orderService.getMOrder(orderNo);
+		/*
 		MOrderDTO mOrderDTO = (MOrderDTO) map.get("mOrderDTO");
 		ProductDTO productDTO = (ProductDTO) map.get("productDTO");
 		OrderDetailDTO orderDetailDTO = (OrderDetailDTO) map.get("orderDetailDTO");
@@ -67,7 +66,12 @@ public class OrderController {
 		for(PaymentDTO paymentDTO: paymentList) {
 			logger.info(paymentDTO.toString());
 		}
+		*/
 		
+		System.out.println(((MOrderDTO)map.get("mOrderDTO")).toString());
+		
+		model.addAttribute("mOrderDTO",(MOrderDTO)map.get("mOrderDTO"));
+		model.addAttribute("productList",map.get("productList"));
 		return "order/orderDetail";
 	}
 	
@@ -194,14 +198,11 @@ public class OrderController {
 	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormProc(MOrderDTO mOrderDTO) {
-		logger.info("실행됐어 -------");
-		System.out.println(mOrderDTO.toString());
 		OrderResult orderResult = orderService.insertMOrder(mOrderDTO);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
 		String json = jsonObject.toString();
-
 		return json;
 	}
 }

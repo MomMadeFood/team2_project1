@@ -20,6 +20,15 @@ public interface ProductDAO {
 	 */
 	List<String> selectColorsByPid(String id);
 	
+
+	
+	/**
+	 * 제품 상세 조회
+	 * @param productDetailNo, psize
+	 * @return ProductDTO
+	 */
+	ProductDTO selectProductById(String productDetailNo);
+	
 }
 
 	
