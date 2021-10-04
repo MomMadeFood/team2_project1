@@ -22,6 +22,29 @@
 			) where rownum <= 10
 		]]>
 	</select>
+	
+	<select id="selectBestProductBySex" resultType="newProduct" parameterType="string">
+		<![CDATA[
+			select * from (   
+			    select distinct B.product_detail_no, B.name, B.price, B.brand, B.img1, C.cnt from (
+			        select A.name name, A.price price, A.brand brand, pd.product_detail_no product_detail_no, pd.img1 img1
+			        from (
+			            
+			                select p.product_no product_no, p.name name, p.price price, p.brand brand, pc.category_id category_id
+			                from product p join product_category pc on p.product_no = pc.product_no
+			                where substr(pc.category_id,1,2) = #{value}
+			        
+			        ) A join product_detail pd on A.product_no = pd.product_no    
+			        where A.name not like '%유니섹스%'
+			        order by pd.product_detail_no
+			    ) B join (  select product_detail_no, count(*) cnt from order_detail
+			                group by product_detail_no
+			                order by count(*) desc) C 
+			    on b.product_detail_no = C.product_detail_no
+			    order by C.cnt desc
+			) where rownum <=10 
+		]]>
+	</select>
 
 	<select id="selectColorsByPid" resultType="string">
 		SELECT COLOR_CODE
