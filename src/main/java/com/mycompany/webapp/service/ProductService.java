@@ -18,4 +18,8 @@ public class ProductService {
 	public List<ProductNewDTO> getNewProdudct(String sex) {
 		return productDao.selectNewProductBySex(sex);
 	}
+	
+	public List<ProductNewDTO> getBestProdudct(String sex) {
+		return productDao.selectBestProductBySex(sex);
+	}
 }

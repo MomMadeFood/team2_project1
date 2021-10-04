@@ -72,17 +72,17 @@
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">주문자</td>
-									<td>김정우</td>
+									<td>${memberDTO.name}</td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">휴대폰</td>
-									<td>010-2777-5370</td>
+									<td>${memberDTO.phone}</td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">E-mail</td>
-									<td>kjw970103@gmail.com</td>
+									<td>${memberDTO.email}</td>
 								</tr>
 							</tbody>
 						</table>
@@ -107,14 +107,14 @@
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>배송지 주소</td>
 									<td><input style="width: 80px" title="우편번호" id="zipcode"
-										name="postcode" type="text" readonly> <input
+										name="postcode" type="text" value="${memberDTO.zipcode}"> <input
 										value="조회" id="adressBtn" name="adressBtn" type="button">
 										<div style="margin-top: 10px;">
 											<input style="width: 100%;" id="addr" name="adress"
-												type="text" value="서울시 송파구 가락동">
+												type="text" value="${memberDTO.addr}">
 										</div>
 										<div style="margin-top: 10px;">
-											<input style="width: 100%;" value="나머지 주소를 입력해주세요"
+											<input style="width: 100%;" value="${memberDTO.detailAddr}"
 												id="detail-addr" name="adressDetail" type="text" >
 										</div></td>
 								</tr>
@@ -122,7 +122,7 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>수령인</td>
-									<td><input style="width: 150px;" value="김정우" title="수령인"
+									<td><input style="width: 150px;" value="${memberDTO.name}" title="수령인"
 										id="rec-name" name="rec-name" type="text"></td>
 								</tr>
 								<tr>

@@ -12,7 +12,7 @@
           <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <h4 class="title">신상품</h4>
             <a class="home-content-txt" id="v-pills-new-women-tab" data-toggle="pill" href="#v-pills-new-women" role="tab" aria-controls="v-pills-new-women" aria-selected="true">여성</a>
-            <a class="home-content-txt" id="v-pills-new-men-tab" data-toggle="pill" href="#v-pills-new-men" role="tab" aria-controls="v-pills-new-men" aria-selected="false" onclick="newMenButtonHandler()">남성</a>
+            <a class="home-content-txt" id="v-pills-new-men-tab" data-toggle="pill" href="#v-pills-new-men" role="tab" aria-controls="v-pills-new-men" aria-selected="false">남성</a>
           </div>
         </div>
         <div class="col-10">
@@ -84,125 +84,50 @@
       </div>
       <div class="col-10">
         <div class="tab-content" id="v-pills-tabContent">
-          <div class="tab-pane fade" id="v-pills-best-women" role="tabpanel" aria-labelledby="v-pills-best-women-tab">
-            22
-          </div>
           <div class="tab-pane fade show active" id="v-pills-best-men" role="tabpanel" aria-labelledby="v-pills-best-men-tab">
             <div class="swiper best_men_swiper">
               <div class="swiper-wrapper">
-                <div class="swiper-slide">
-                 <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/MM/2A/FW/MM2A9NPC021HNA_IN_W01.jpg/dims/resize/234x353" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">CLUB MONACO</span>
-                      <span class="price">₩218,000</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/TH/2A/FW/TH2ABKRN033N_GY_W01.jpg/dims/resize/234x353" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">TIME HOMME</span>
-                      <span class="price">₩295,000</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/MU/2B/SS/MU2B1KTO092MMY_BK_W01.jpg/dims/resize/234x353" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">MUE</span>
-                      <span class="price">₩668,500</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/SH/2B/SS/SH2B0KRN005M_BK_W01.jpg/dims/resize/234x353/" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">SYSTEM HOMME</span>
-                      <span class="price">₩206,500</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                 <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/CM/2B/SS/CM2B1KTO052M_NL_W01.jpg/dims/resize/234x353" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">the CASHMERE</span>
-                      <span class="price">₩375,000</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/CM/2B/SS/CM2B1KOT032M_OW_W01.jpg/dims/resize/684x1032/" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">the CASHMERE</span>
-                      <span class="price">₩525,000</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                	<div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/TG/2B/SS/TG2B1TPC025M29_WN_W01.jpg/dims/resize/684x1032/" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">TOM GREYHOUND</span>
-                      <span class="price">₩132,300</span>
-                    </a>
-                  </div>
-                </div>
+               <c:forEach items="${bestMenProductList}" var="product">
                  <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/HS/2B/SS/HS2B3NPC006MTP_BK_W01.jpg/dims/resize/684x1032/" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">FOURM MEN'S LOUNGE</span>
-                      <span class="price">₩222,500</span>
-                    </a>
+	               <div class="item_box">
+		             <a href="${pageContext.request.contextPath}/product/productDetail?no=${product.productDetailNo}">
+		               <img src="${product.img1}" />
+		             </a>
+		             <a href="${pageContext.request.contextPath}/product/productDetail?no=${product.productDetailNo}">
+		               <span class="brand">${product.brand}</span>
+		               <span class="price">
+		               	 ₩<fmt:formatNumber pattern="#,###" value="${product.price}"/>
+		               </span>
+		             </a>
+	               </div>
                   </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/LV/2B/SS/LV2B3WPC001M_NY_W01.jpg/dims/resize/684x1032/" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">LANVIN PARIS</span>
-                      <span class="price">₩582,000</span>
-                    </a>
-                  </div>
-                </div>
-                <div class="swiper-slide">
-                  <div class="item_box">
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <img src="http://newmedia.thehandsome.com/TH/2B/SS/TH2B0WCT405M_GN_W01.jpg/dims/resize/684x1032/" />
-                    </a>
-                    <a href="${pageContext.request.contextPath}/product/productDetail">
-                      <span class="brand">TIME HOMME</span>
-                      <span class="price">₩890,000</span>
-                    </a>
-                  </div>
-                </div>
+                </c:forEach>
               </div>
               <div class="swiper-button-next disableButton2" style="color:#8f8f8f;" id="best-men-swiper-button-next"></div>
               <div class="swiper-button-prev disableButton2" style="color:#8f8f8f;" id="best-men-swiper-button-prev"></div>
+            </div>
+          </div>
+          <div class="tab-pane fade active" id="v-pills-best-women" role="tabpanel" aria-labelledby="v-pills-best-women-tab">
+            <div class="swiper best_women_swiper">
+              <div class="swiper-wrapper">
+               <c:forEach items="${bestWomenProductList}" var="product">
+                 <div class="swiper-slide">
+	               <div class="item_box">
+		             <a href="${pageContext.request.contextPath}/product/productDetail?no=${product.productDetailNo}">
+		               <img src="${product.img1}" />
+		             </a>
+		             <a href="${pageContext.request.contextPath}/product/productDetail?no=${product.productDetailNo}">
+		               <span class="brand">${product.brand}</span>
+		               <span class="price">
+		               	 ₩<fmt:formatNumber pattern="#,###" value="${product.price}"/>
+		               </span>
+		             </a>
+	               </div>
+                  </div>
+                </c:forEach>
+              </div>
+              <div class="swiper-button-next disableButton4" style="color:#8f8f8f;" id="best-women-swiper-button-next"></div>
+              <div class="swiper-button-prev disableButton4" style="color:#8f8f8f;" id="best-women-swiper-button-prev"></div>
             </div>
           </div>
         </div>
@@ -245,6 +170,17 @@
           allowTouchMove: false,
         });
         
+        var bestWomenSwiper= new Swiper(".best_women_swiper", {
+            slidesPerView: 4,
+            slidesPerGroup: 1,
+            loopFillGroupWithBlank: false,
+            navigation: {
+              nextEl: ".swiper-button-next",
+              prevEl: ".swiper-button-prev",
+            },
+            allowTouchMove: false,
+          });
+        
 		$(document).ready(function () {
 			
 			if (newWomenSwiper.isBeginning) {
@@ -255,6 +191,10 @@
 			}
 			if (bestMenSwiper.isBeginning) {
 		     	$("#best-men-swiper-button-prev").hide();
+		    }
+			
+			if (bestWomenSwiper.isBeginning) {
+		     	$("#best-women-swiper-button-prev").hide();
 		    }
 	         
 			$(".disableButton").on("click", function () {
@@ -281,18 +221,6 @@
 			});
          
          
-           $(".disableButton3").on("click", function () {
-             if (newMenSwiper.isBeginning) {
-               $("#new-men-swiper-button-prev").hide();
-             } else if (newMenSwiper.isEnd) {
-               $("#new-men-swiper-button-next").hide();
-             } else {
-               $("#new-men-swiper-button-prev").show();
-               $("#new-men-swiper-button-next").show();
-             }
-           });
-          
-          
           $(".disableButton2").on("click", function () {
             if (bestMenSwiper.isBeginning) {
               $("#best-men-swiper-button-prev").hide();
@@ -304,6 +232,17 @@
             }
           });
         });
+		
+        $(".disableButton4").on("click", function () {
+            if (bestWomenSwiper.isBeginning) {
+              $("#best-women-swiper-button-prev").hide();
+            } else if (bestWomenSwiper.isEnd) {
+              $("#best-women-swiper-button-next").hide();
+            } else {
+              $("#best-women-swiper-button-prev").show();
+              $("#best-women-swiper-button-next").show();
+            }
+          });
 		
       </script>
     </div>
