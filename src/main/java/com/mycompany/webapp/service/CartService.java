@@ -13,6 +13,8 @@ import com.mycompany.webapp.dao.CartDAO;
 import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.StockDTO;
+import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
@@ -27,13 +29,18 @@ public class CartService {
 		return carts;
 	}
 	
-	public List<String> getCartOptionColor(String pid) {
-		return productDAO.selectColorsByPid(pid);
+	public List<ProductColorDTO> getCartOptionColor(String pid) {
+		return productDAO.selectColorChipByPid(pid);
 	}
 	
-	public List<Map<String,String>> getCartOptionSize(String pid, String colorCode) {
+	
+	public List<StockDTO> getCartOptionSize(String pid, String colorCode) {
 		String pdId = pid + "_" + colorCode;
-		return stockDAO.selectSizeIsStockedByPdid(pdId);
+		return stockDAO.selectStocksByPdid(pdId);
+	}
+	
+	public List<StockDTO> getCartOptionSize(String pdId) {
+		return stockDAO.selectStocksByPdid(pdId);
 	}
 	
 	public List<ProductDTO> getSelectedProducts(

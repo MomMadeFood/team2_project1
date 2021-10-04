@@ -23,5 +23,12 @@
 			where PRODUCT_DETAIL.PRODUCT_DETAIL_NO = STOCK.PRODUCT_DETAIL_NO) a, (SELECT * FROM product) 
 			b WHERE a.product_no = b.PRODUCT_NO AND a.product_no=#{value}
 	</select>
+	
+	
+	<select id="selectOneImgByPdId" resultType="string">
+		SELECT img1
+		FROM product_detail
+		WHERE product_detail_no = #{value}
+	</select>
 </mapper>
 

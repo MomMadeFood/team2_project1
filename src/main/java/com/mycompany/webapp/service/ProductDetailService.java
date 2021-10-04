@@ -29,4 +29,9 @@ public class ProductDetailService {
 		return productDC;
 	
 	}
+	
+	// 상품의 대표 이미지 가져오기
+	public String getOneImgByPdId(String productDetailNo) {
+		return productDetailDAO.selectOneImgByPdId(productDetailNo);
+	}
 }

@@ -2,41 +2,85 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 	<script type="text/javascript">
+			
+
 			function hideOption()  {
 			  const row = document.getElementById('pid-option');
 			  row.style.display = 'none';
 			}
-	
-			function showOption()  {
-			  const row = document.getElementById('pid-option');
-			  row.style.display = '';
-			}
 			
-			function readColor(input) {
+			
+			//Option창
+			//Color Btn 동적 생성
+			//Option창 이미지 변경
+			function showOption(productNo) {
+				const row = document.getElementById('pid-option');
+				row.style.display = '';
+				
 				$.ajax({
 					url: "cart/optionColor",
-					data: { pno : input },
+					data: { pno : productNo },
 					success: function(data) {
-						console.log("성공:", data);
+						var colorTag = "";
+						for(var i=0; i<data.colorList.length; i++) {
+							colorTag += "<a name='color_option_btn' value="+productNo+"_"+data.colorList[i].colorCode+">";
+							colorTag += "<img src= " + data.colorList[i].colorChip + "  width='30px'>";
+							colorTag += "</a>";
+						}
+						$("#color_span").html(colorTag);
 					}
 				})
 				.done((data) => {
-					console.log(data);
+					$.ajax({
+						url: "cart/optionSizePno",
+						data: {pno : productNo, color:data.colorList[0].colorCode},
+						success: function(data) {
+							var sizeTag = "";
+							for(var i=0; i<data.sizeList.length; i++) {
+								if(data.sizeList[i].amount > 0) {
+									sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
+								} else {
+									sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize + 매진 +"</a>";
+								}
+							}
+							$("#size_span").html(sizeTag);
+						}
+					})
+					.done((data) => {
+						
+					});
 				});
 			}
 			
-			function readSize() {
+			//Color Option 버튼
+			//동적할당 태그 이벤트 처리
+			//Color별 사이즈 버튼 제공
+			$(document).on("click","a[name='color_option_btn']",function readSize() {
+				let productDetailNo = $(this).attr('value');
 				$.ajax({
-					url: "cart/optionSize",
-					data: {pno : 'TN2B7WSHG03N', pcolor : 'BL'},
+					url: "cart/optionSizePdno",
+					data: {pdno : productDetailNo},
 					success: function(data) {
-						console.log("성공:", data);
+						console.log(data);
+						var sizeTag = "";
+						for(var i=0; i<data.sizeList.length; i++) {
+							if(data.sizeList[i].amount > 0) {
+								sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
+							} else {
+								sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize + 매진 +"</a>";
+							}
+						}
+						$("#size_span").html(sizeTag);
+						
+						$("#option-img").attr("src", data.img); 
 					}
 				})
 				.done((data) => {
-					console.log(data);
+					
 				});
-			}
+			});
+			
+			
 				
 			
 			function cartInit () {
@@ -141,9 +185,8 @@
 									<div class="d-flex justify-content-between">
 										
 										<p> color : ${cart.colorCode}<span>/</span> size : ${cart.psize}</p>
-										<a class="cart-option" onclick="javascript:showOption()">옵션변경</a>
-										<a class="cart-option" onclick="javascript:readColor('${cart.productNo}');">색상조회</a>
-										<a class="cart-option" onclick="javascript:readSize('${cart.productNo}_BL');">사이즈조회</a>
+										<a class="cart-option" onclick="javascript:showOption('${cart.productNo}')">옵션변경</a>
+										
 									</div>
 								</div>
 							</div>
@@ -187,7 +230,7 @@
 						<td colspan="3" class="c-td-option" >
 							<div>
 								<a href="#">
-									<img src="http://newmedia.thehandsome.com/TN/2B/FW/TN2B7WSHG03N_BL_W03.jpg" alt="" class="cart_product_img" />
+									<img src="${cart.img1}" alt="" class="cart_product_img" id="option-img" />
 									<span class="cart_product" >
 										<span class="cart_product_link">
 											${cart.brand}
@@ -199,10 +242,10 @@
 								</a>
 								<div class="mt-2">
 									<div>
-										<span class="mr-2">color</span>  <a class="cart_select_btn">CREAM</a>
+										<span class="mr-2">color</span>  <span id="color_span"></span>
 									</div>
 									<div>
-										<span class="mr-3">size</span>  <a class="cart_select_btn">100</a><a class="cart_select_btn">110</a>
+										<span class="mr-3">size</span>  <span id="size_span"></span>
 									</div>
 								</div>
 							</div>

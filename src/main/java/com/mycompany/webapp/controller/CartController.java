@@ -2,7 +2,6 @@ package com.mycompany.webapp.controller;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -20,16 +19,19 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.StockDTO;
+import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
+import com.mycompany.webapp.service.ProductDetailService;
 
 @Controller
 @RequestMapping("/cart")
 public class CartController {
 	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 	
-	@Autowired
-	private CartService cartService;
+	@Autowired private CartService cartService;
+	@Autowired private ProductDetailService productDetailService;
 	
 	@RequestMapping("")
 	public String cart(
@@ -59,10 +61,10 @@ public class CartController {
 		logger.info("선택제품 : " + cart_ck.toString());
 		logger.info("카트제품 : " + cartDTO.getCartDTOList().toString());
 		
+		//선택된 주문 리스트만 orderList에 저장
 		List<ProductDTO> orderList = cartService.getSelectedProducts(cartDTO.getCartDTOList(), cart_ck);
 		
 		logger.info("주문제품 : " + orderList.toString());
-		
 		//주문폼 접근 경로
 	
 		
@@ -76,9 +78,7 @@ public class CartController {
 	@RequestMapping(value="/optionColor", produces="aplication/json; charset=UTF-8")
 	@ResponseBody
 	public String cartOptionColor(String pno) {
-		logger.info(cartService.getCartOptionColor("TN2B7WSHG03N").toString());
-		logger.info(pno);
-		List<String> colorList = cartService.getCartOptionColor(pno);
+		List<ProductColorDTO> colorList = cartService.getCartOptionColor(pno);
 		
 		JSONObject result = new JSONObject();
 		result.put("colorList", colorList);
@@ -87,16 +87,31 @@ public class CartController {
 	}
 	
 	
-	@RequestMapping(value="/optionSize", produces="aplication/json; charset=UTF-8")
+	@RequestMapping(value="/optionSizePdno", produces="aplication/json; charset=UTF-8")
 	@ResponseBody
-	public String cartOptionSize(String pno, String pcolor) {
-		logger.info(cartService.getCartOptionSize("TN2B7WSHG03N", "BL").toString());
-		logger.info(pno + " / " + pcolor);
-		
-		List<Map<String,String>> sizeList = cartService.getCartOptionSize(pno, pcolor);
-		
+	public String cartOptionSize(String pdno) {
 		JSONObject result = new JSONObject();
+		
+		List<StockDTO> sizeList = cartService.getCartOptionSize(pdno);
 		result.put("sizeList", sizeList);
+		
+		String img = productDetailService.getOneImgByPdId(pdno);
+		result.put("img", img);
+		
+		return result.toString();
+	}
+	
+	
+	@RequestMapping(value="/optionSizePno", produces="aplication/json; charset=UTF-8")
+	@ResponseBody
+	public String cartOptionSize(String pno, String color) {
+		JSONObject result = new JSONObject();
+		
+		List<StockDTO> sizeList = cartService.getCartOptionSize(pno, color);
+		result.put("sizeList", sizeList);
+		
+		String img = productDetailService.getOneImgByPdId(pno+"_"+color);
+		result.put("img", img);
 		
 		return result.toString();
 	}

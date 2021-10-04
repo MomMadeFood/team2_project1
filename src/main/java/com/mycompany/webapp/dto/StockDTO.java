@@ -4,9 +4,15 @@ import lombok.Data;
 
 @Data
 public class StockDTO {
-	private String productNo;
+	//Stock
 	private String productDetailNo;
-	private String color;
 	private String psize;
 	private int amount;
+	
+	//product Info
+	private String productNo;
+	private String color;
+	private String colorChip;
+	private String img1;
+	
 }
