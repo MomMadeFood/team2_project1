@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+
+	
     <style>
       p{
         padding: 0px;
@@ -34,45 +36,21 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">SH2B9WJM343N_RD</td>
-								<td class="d-flex"><img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt=""
+            <c:forEach var="order" items="${orderList}" varStatus="status">
+             <tr style="text-align: center; height: 132px;">
+								<td class="detail-id" style="display:none">${order.productDetailNo}</td>
+								<td class="d-flex"><img src="${order.img1}" alt=""
 									style="width: 98px; height: 98px;">
 									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#"> SYSTEM HOMME</br> 컬러 라인 니트 탑
+										<a style="color: black;" href="#">${order.brand}</br> ${order.name}
 										</a>
-										<p style="margin-top: 10px;">color :  <p class="detail-color">BLACK</p> / size : <p class="detail-size">100</p></p>
+										<p style="margin-top: 10px;">color :  <p class="detail-color">${order.color}</p> / size : <p class="detail-size">${order.psize}</p></p>
 									</div></td>
 								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td class="detail-price" style="vertical-align: middle;">345,000₩</td>
+									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${order.amount}</td>
+								<td class="detail-price" style="vertical-align: middle;">${order.price}₩</td>
 							</tr>
-							<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">SH2B9WJM333M_BK</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/MM/2B/FW/MM2B9WCT404M_CM_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#"> SYSTEM HOMME</br> 핸드 메이드 패딩 코트
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">BLACK</p> / size : <p class="detail-size">100</p></p>
-									</div></td>
-								<td
-									 class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td  class="detail-price" style="vertical-align: middle;">758,000₩</td>
-							</tr>
-							<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">MM2B9WCT404M_CM</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/SH/2B/FW/SH2B9WJM333M_BK_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#"> SYSTEM HOMME</br> 플랩 점퍼
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">BLACK</p> / size :<p class="detail-size">100</p></p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td class="detail-price" style="vertical-align: middle;">690,000₩</td>
-							</tr>
+						</c:forEach>
 						</tbody>
 					</table>
 					<div style="margin-top: 40px;">

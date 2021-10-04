@@ -6,10 +6,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -19,7 +19,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
@@ -40,8 +39,13 @@ public class OrderController {
 
 	
 	@RequestMapping("/orderForm")
-	public String orderForm() {
-		
+	public String orderForm(
+			RedirectAttributes rttr,
+			HttpServletRequest request,
+			HttpServletResponse response
+			) {
+		logger.info("실행");
+	
 		return "order/orderForm";
 	}
 	
