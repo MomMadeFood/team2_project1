@@ -47,27 +47,30 @@
             </tr>
           </thead>
           <tbody>
-            <tr style="height:150px;">
-              <td style="vertical-align: middle; text-align:right">
-                <div style="display: flex; justify-content:between">
-                  <div>
-                    <img src="http://newmedia.thehandsome.com/SH/2B/FW/SH2B9WJM343N_RD_W01.jpg" alt=""
-								style="width: 98px; height: 98px;">
-                  </div>
-                  <div style="text-align:left; margin-left:20px;">
-                    <a style="color:black;" href="#" >
-                      ${productDTO.brand}</br>
-                      ${productDTO.name}
-                    </a>
-                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productDTO.colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${orderDetailDTO.psize}</p>
-                  </div>
-                </div>
-              </td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p> ${orderDetailDTO.amount}</p></td>
-              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩${orderDetailDTO.price}</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩${orderDetailDTO.price}</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetailDTO.state}</p></td>
-            </tr>
+          	<c:forEach items="${mOrderDTO.detailList}" var="orderDetail" varStatus="status">
+	             <tr style="height:150px;">
+	              <td style="vertical-align: middle; text-align:right">
+	                <div style="display: flex; justify-content:between">
+	                  <div>
+	                    <img src="${productList[status.index].img1}" alt=""
+									style="width: 98px; height: 98px;">
+	                  </div>
+	                  <div style="text-align:left; margin-left:20px;">
+	                    <a style="color:black;" href="#" >
+	                      ${productList[status.index].brand}</br>
+	                      ${productList[status.index].name}
+	                    </a>
+	                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productList[status.index].colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${mOrderDTO.detailList[i].psize}</p>
+	                  </div>
+	                </div>
+	              </td>
+	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p> ${orderDetail.amount}</p></td>
+	              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price}" pattern="#,###"/></p></td>
+	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price}" pattern="#,###"/></p></td>
+	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.state}</p></td>
+	            </tr>         	
+          	</c:forEach>
+
           </tbody>
         </table>
         <div style="display:flex; justify-content: space-between ;margin-top:40px">
@@ -92,10 +95,10 @@
           </thead>
           <tbody>
             <tr style="height:20px;">
-              <td style=" vertical-align: middle; text-align:right"><p>₩345,000</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩3,000</p></td>
-              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩48,000</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩300,000</p></td>
+              <td style=" vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal+mOrderDTO.priceDiscount}" pattern="#,###"/></p></td>
+              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩0</p></td>
+              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩$0</p></td>
+              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal+mOrderDTO.priceDiscount}" pattern="#,###"/></p></td>
             </tr>
             <tr style="height:80px;">
               <td colspan='2' style="vertical-align: middle; text-align:right; "></td>
@@ -103,9 +106,9 @@
                 <div style="display:flex; justify-content: space-between;"><p>쿠폰할인</p><p>- ₩ 0</p></div>
                 <div style="display:flex; justify-content: space-between;"><p>플러스포인트쿠폰</p><p>- ₩ 0</p></div>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
-                <div style="display:flex; justify-content: space-between;"><p>신용카드</p><p>₩ 280,000</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>한섬마일리지</p><p>20,000 M</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>H.Point</p><p>0 P</p></div>
+                <div style="display:flex; justify-content: space-between;"><p>신용카드</p><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal}" pattern="#,###"/></p></div>
+                <div style="display:flex; justify-content: space-between;"><p>한섬마일리지</p><p>0M</p></div>
+                <div style="display:flex; justify-content: space-between;"><p>H.Point</p><p><fmt:formatNumber value="${mOrderDTO.priceDiscount}" pattern="#,###"/>P</p></div>
               </td>
             </tr>
           </tbody>
@@ -120,7 +123,7 @@
           <div style="display:flex; height: 33%; width:100%; border-bottom: 1px solid #cccccc">
             <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">실 결제금액</p></div>
             <div style=" width:80%; display:flex; padding:10px">
-              <p>₩ 280,000</p>
+              <p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal}" pattern="#,###"/></p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;">

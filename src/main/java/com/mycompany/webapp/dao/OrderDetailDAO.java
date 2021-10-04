@@ -40,4 +40,12 @@ public interface OrderDetailDAO {
 	 * @return 반영된 row 개수
 	 */
 	public int insertOrderDetail(OrderDetailDTO orderDetailDTO);
+	
+	/**
+	 * 주문 번호로 모든 상세 주문 정보를 가져옴(orderNo)
+	 * @param orderNo
+	 * @return List<OrderDetailNo>
+	 */
+	
+	public List<OrderDetailDTO> selectOrderDetailsById(String orderNo);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.dto.product.ProductNewDTO;
 
 @Mapper
@@ -17,6 +18,15 @@ public interface ProductDAO {
 	 * @return List<String> colors
 	 */
 	List<String> selectColorsByPid(String id);
+	
+	
+	/**
+	 * 제품 상세 조회
+	 * @param productDetailNo, psize
+	 * @return ProductDTO
+	 */
+	ProductDTO selectProductById(String productDetailNo);
+	
 }
 
 	

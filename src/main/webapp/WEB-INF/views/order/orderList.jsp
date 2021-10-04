@@ -76,7 +76,7 @@
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center" rowspan="${fn:length(order.detailList)}">
 					      	<p>${order.orderNo}</p>
 					      	<p style="color:#dee2e6">(${order.orderDate})</p>
-					      	<a href="${pageContext.request.contextPath}/order/orderDetail" style="color:#ecd795">상세보기</a>
+					      	<a href="${pageContext.request.contextPath}/order/orderDetail?orderNo=${order.orderNo}" style="color:#ecd795">상세보기</a>
 					      </td>
 				      </c:if>
 				      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">

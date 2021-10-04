@@ -28,4 +28,8 @@
 		FROM PRODUCT_DETAIL
 		WHERE PRODUCT_NO = #{value}
 	</select>
+	
+	<select id="selectProductById" parameterType="string" resultType="product">
+		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = SUBSTR(pd.PRODUCT_DETAIL_NO, 1,12)
+	</select>
 </mapper>
