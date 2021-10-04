@@ -29,7 +29,7 @@ public interface StockDAO {
 	/**
 	 * 상세 재품 번호로 사이즈들 정보와 재고유무만 조회 (재고량 조회 X)
 	 * @param produetDetailId
-	 * @return PSIZE, IS_STOCK
+	 * @return PSIZE, IS_STOCK(STOCKED, SOLDOUT)
 	 */
 	List<Map<String, String>> selectSizeIsStockedByPdid(String productDetailNo);
 	
