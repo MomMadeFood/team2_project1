@@ -11,10 +11,12 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -120,13 +122,17 @@ public class OrderController {
 		return "order/orderList";
 	}
 	
-	@RequestMapping("/orderFormProc")
+	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormProc(MOrderDTO mOrderDTO) {
 		logger.info("실행됐어 -------");
 		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		
 		System.out.println(mOrderDTO.toString());
 
-		return "";
+		return json;
 	}
 }

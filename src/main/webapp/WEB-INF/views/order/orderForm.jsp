@@ -479,6 +479,13 @@
 			 data['detailList[' + index +'].price'] = price; 
 		}
 		
+		data['paymentList[' + 0 +'].paymentType'] = paymentType;
+		data['paymentList[' + 0 +'].price'] = priceTotal-discountPrice;
+		
+		if(point>0){
+			data['paymentList[' + 1 +'].paymentType'] = "point";
+			data['paymentList[' + 1 +'].price'] = point;
+		}
 		console.log(data);
 		
 
@@ -488,15 +495,12 @@
 			url:"orderFormProc",
 			data: data
 		}).done((data)=>{
-			if(data.result=="SUCCESS"){
+			if(data.result=="success"){
 				location.href="/order/orderList";
 			}else{
 				console.log("------");
 			}
 		});
-		
-
-
 	}
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
