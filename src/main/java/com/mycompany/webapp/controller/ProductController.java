@@ -14,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.dto.product.ProductDetailInfo;
 import com.mycompany.webapp.service.ProductDetailService;
 
 @Controller
