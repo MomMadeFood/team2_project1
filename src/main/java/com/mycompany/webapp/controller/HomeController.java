@@ -29,7 +29,11 @@ public class HomeController {
 		List<ProductNewDTO> newMenProductList = productService.getNewProdudct("ME");
 		model.addAttribute("newMenProductList", newMenProductList);
 		
-		System.out.println(newMenProductList);
+		List<ProductNewDTO> bestMenProductList = productService.getBestProdudct("ME");
+		model.addAttribute("bestMenProductList", bestMenProductList);
+		
+		List<ProductNewDTO> bestWomenProductList = productService.getBestProdudct("WO");
+		model.addAttribute("bestWomenProductList", bestWomenProductList);
 		
 		return "home";
 	}

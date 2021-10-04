@@ -13,6 +13,7 @@ public interface ProductDAO {
 	
 	public List<ProductNewDTO> selectNewProductBySex(String sex);
 	
+	public List<ProductNewDTO> selectBestProductBySex(String sex);
 	/**
 	 * 제품의 색상 종류를 조회
 	 * @param id
