@@ -44,7 +44,7 @@
 									<div style="text-align: left; margin-left: 20px;">
 										<a style="color: black;" href="#">${order.brand}</br> ${order.name}
 										</a>
-										<p style="margin-top: 10px;">color :  <p class="detail-color">${order.color}</p> / size : <p class="detail-size">${order.psize}</p></p>
+										<p style="margin-top: 10px;">color : <p class="detail-color">${order.colorCode}</p> / size : <p class="detail-size">${order.psize} </p>
 									</div></td>
 								<td
 									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${order.amount}</td>
