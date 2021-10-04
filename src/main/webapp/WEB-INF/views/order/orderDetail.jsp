@@ -21,9 +21,7 @@
             <p  style="font-weight:bold; font-size:15px">주문번호 : </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">${mOrderDTO.orderNo}</p>
           </div>
           <div style="width: 30%;display:flex; padding:18px;align-items: center;">
-            <p style="font-size:15px">주문일시:<fmt:formatDate var="resultRegDt" value="${mOrderDTO.orderDate}" pattern="yyyy-MM-dd HH:mm"/>
-				${resultRegDt}
-			</p>
+            <p style="font-size:15px">주문일시: ${mOrderDTO.orderDate}</p>
           </div>
         </div>
         <div style="display:flex; justify-content: space-between ;margin-top:40px">
