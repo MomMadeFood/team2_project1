@@ -28,11 +28,14 @@ li.pd-colors>[type=radio] {
   opacity: 0;
   width: 0;
   height: 0;
+
 }
 
 
 li.pd-colors>[type=radio] + div {
   cursor: pointer;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 li.pd-colors>[type=radio]:checked + div {
@@ -111,7 +114,6 @@ label {
 display: inline-block;
 padding: 5px;
 position: relative;
-padding-left: 20px;
 }
 
 label input {
@@ -130,14 +132,15 @@ label span {
     text-decoration: none;
     display: block;
 /* 	padding: 0 3px; */
-	padding-left: 0px;
+	margin:0px;
     /* line-height: 24px; */
     border: 1px solid #ccc;
     text-align: center;
     color: #363636!important;
     font-family: "Malgun Gothic","맑은 고딕";
     /* min-width: 60px; */
-    min-width:15px;
+    font-size: 15px;
+    padding: 0px 10px;
     /* height: 26px; */
     box-sizing: border-box;
 }
