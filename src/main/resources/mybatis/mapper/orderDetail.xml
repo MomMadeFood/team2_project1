@@ -11,4 +11,22 @@
 	<select id="selectPaymentsByOrderNo" resultType="payment" parameterType="string">
 		select * from payment where ORDER_NO=#{orderNo}
 	</select>
+	
+	<select id="selectOrderListByMemberNo" resultType="orderList" parameterType="map">
+		select B.order_no, B.order_date, B.product_detail_no, pd.img1, p.brand, p.name, pd.color_chip, B.psize, B.amount, B.price, B.state
+		from 
+		(
+		    select A.order_no order_no, A.order_date order_date, od.psize psize, od.amount amount, od.price price, od.state state, od.product_detail_no product_detail_no
+		    from (       
+		            select order_no, order_date, state
+		            from m_order
+		            where member_id = #{ID}
+		    ) A join order_detail od on A.order_no = od.order_no 
+		    where A.order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')
+		) B join product_detail pd on B.product_detail_no = pd.product_detail_no
+		join product p on p.product_no = pd.product_no
+		order by order_no
+	</select>
+	
+	
 </mapper>

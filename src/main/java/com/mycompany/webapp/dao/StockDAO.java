@@ -31,5 +31,13 @@ public interface StockDAO {
 	 * @return PSIZE, IS_STOCK(STOCKED, SOLDOUT)
 	 */
 	List<Map<String, String>> selectSizeIsStockedByPdid(String productDetailNo);
+	
+	
+	/**
+	 * 상세 제품 번호로 사이즈 정보로 재고가 있으면 재고를 줄임
+	 * @param produetDetailId, size
+	 * @return 반영된 row 개수
+	 */
+	int updateStockByDetailIdSize(String productDetailNo, String size);
 
 }

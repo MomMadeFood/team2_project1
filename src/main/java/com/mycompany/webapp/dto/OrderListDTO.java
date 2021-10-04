@@ -1,11 +1,14 @@
 package com.mycompany.webapp.dto;
 
+import java.util.Date;
+
 import lombok.Data;
 
 @Data
-public class OrderDetailDTO {
-	private String orderDetailNo;
+public class OrderListDTO {
 	private String orderNo;
+	private Date orderDate;
+	private String orderDetailNo;
 	private String productDetailNo;
 	private String img1;
 	private String brand;

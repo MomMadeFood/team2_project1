@@ -9,9 +9,13 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.mycompany.webapp.dao.MOrderDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
+import com.mycompany.webapp.dao.PaymentDAO;
+import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
+import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 
@@ -20,6 +24,21 @@ public class OrderService {
 
 	@Resource
 	private OrderDetailDAO orderDetailDAO;
+	
+	@Resource
+	private MOrderDAO mOrderDAO;
+	
+	@Resource
+	private PaymentDAO paymentDAO;
+	
+	@Resource
+	private StockDAO stockDAO;
+	
+	public enum OrderResult{
+		SUCCESS,
+		FAIL,
+		FAIL_NOT_ENOUGH_STOCK,
+	}
 	
 	public Map<String,Object> getOrderDetail(String orderDetailNo){
 		
@@ -70,4 +89,41 @@ public class OrderService {
 		
 		return orderDetailMap;
 	} 
+	public List<OrderListDTO> getOrderList(Map<String, Object> param){
+		return orderDetailDAO.selectOrderListByMemberNo(param);
+	}
+	
+	public OrderResult insertMOrder(MOrderDTO mOrderDTO) {
+		try {
+			
+			List<OrderDetailDTO> detailList = mOrderDTO.getDetailList();
+			List<PaymentDTO> paymentList = mOrderDTO.getPaymentList();
+			
+			// 상품의 재고를 확인하는 동시에 감소시키는 로직
+			for(OrderDetailDTO orderDetailDTO:  detailList) {
+				int updateResult = stockDAO.updateStockByDetailIdSize(orderDetailDTO.getOrderDetailNo(), orderDetailDTO.getPsize());
+			}
+			
+			// 주문 정보를 삽입하는 코드
+			mOrderDAO.insertMOrder(mOrderDTO);
+			
+			// 주문 상세정보를 삽입하는 코드 
+			for(OrderDetailDTO orderDetailDTO:  detailList) {
+				int updateResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+			}
+			
+			// 결제타입을 삽입하는 코드
+			
+			for(PaymentDTO paymentDTO:  paymentList) {
+				int updateResult = paymentDAO.insertPayment(paymentDTO);
+			}
+			
+			
+
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
+		return OrderResult.SUCCESS;
+	}
+	
 }
