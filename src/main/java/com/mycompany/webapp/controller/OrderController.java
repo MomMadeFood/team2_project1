@@ -18,11 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.mycompany.webapp.dto.CardDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
+import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.OrderService.OrderResult;
 
@@ -35,12 +38,18 @@ public class OrderController {
 	
 	@Resource
 	private OrderService orderService;
+	
+	@Resource
+	private MemberService memberService;
 
 	
 	@RequestMapping("/orderForm")
-	public String orderForm() {
+	public String orderForm(Principal principal,Model model) {
 		logger.info("실행");
-	
+		MemberDTO memberDTO = memberService.getMember(principal.getName());
+		List<CardDTO> cardList = cardService.getCardList(principal.getName());
+		model.addAttribute("memberDTO",memberDTO);
+		System.out.println(memberDTO.toString());
 		return "order/orderForm";
 	}
 	
