@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.MOrderDAO">
+
+	<insert id="insertMOrder" parameterType="mOrder">
+		INSERT INTO m_order(order_no,member_id,order_date,price_total,price_discount,state,request,addr,detail_addr,zip_code,tel,phone,rec_name)
+		values(#{orderNo},#{memberId},sysdate,#{priceTotal},#{priceDiscount},#{state},#{request},#{addr},#{detailAddr},#{zipCode},#{tel},#{phone},#{recName})
+	</insert>
+	
+	<select id="selectMOrderCount" resultType="int">
+		select count(*) from m_order
+	</select>
+	
+</mapper>

@@ -1,5 +1,6 @@
 package com.mycompany.webapp.service;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -7,8 +8,11 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import com.mycompany.webapp.controller.OrderController;
 import com.mycompany.webapp.dao.MOrderDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dao.PaymentDAO;
@@ -22,6 +26,8 @@ import com.mycompany.webapp.dto.product.ProductDTO;
 @Service
 public class OrderService {
 
+	private static final Logger logger = LoggerFactory.getLogger(OrderService.class);
+	
 	@Resource
 	private OrderDetailDAO orderDetailDAO;
 	
@@ -94,35 +100,59 @@ public class OrderService {
 	}
 	
 	public OrderResult insertMOrder(MOrderDTO mOrderDTO) {
-		try {
+		//try {
 			
 			List<OrderDetailDTO> detailList = mOrderDTO.getDetailList();
 			List<PaymentDTO> paymentList = mOrderDTO.getPaymentList();
 			
+			
+			SimpleDateFormat format1 = new SimpleDateFormat( "yyyyMMdd");
+					
+
+			
 			// 상품의 재고를 확인하는 동시에 감소시키는 로직
+			logger.info("삽입 시작1");
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
-				int updateResult = stockDAO.updateStockByDetailIdSize(orderDetailDTO.getOrderDetailNo(), orderDetailDTO.getPsize());
+				int updateResult = stockDAO.updateStockByODIdSize(orderDetailDTO);
+				logger.info("개수: "+updateResult);
 			}
+			
 			
 			// 주문 정보를 삽입하는 코드
+			int cnt = 10000000+mOrderDAO.selectMOrderCount();
+			String conv = Integer.toString(cnt);
+			Date time = new Date();
+			String time1 = format1.format(time);
+			String orderNo = time1+"P"+conv;
+			System.out.println(orderNo);
+			mOrderDTO.setOrderNo(orderNo);
+			
+			logger.info("삽입 시작2");
 			mOrderDAO.insertMOrder(mOrderDTO);
 			
+			logger.info("----");
+			
+			logger.info("삽입 시작3");
 			// 주문 상세정보를 삽입하는 코드 
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
-				int updateResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+				orderDetailDTO.setOrderNo(orderNo);
+				int orderDetailInsertResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+				logger.info("개수: "+orderDetailInsertResult);
 			}
 			
+			logger.info("삽입 시작4");
 			// 결제타입을 삽입하는 코드
-			
 			for(PaymentDTO paymentDTO:  paymentList) {
-				int updateResult = paymentDAO.insertPayment(paymentDTO);
+				paymentDTO.setOrderNo(orderNo);
+				int paymentInsertResult = paymentDAO.insertPayment(paymentDTO);
+				logger.info("개수: "+paymentInsertResult);
 			}
 			
 			
 
-		}catch (Exception e) {
+		//}catch (Exception e) {
 			// TODO: handle exception
-		}
+		//}
 		return OrderResult.SUCCESS;
 	}
 	

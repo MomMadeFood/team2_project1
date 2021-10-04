@@ -13,6 +13,7 @@
    	  <typeAlias type="com.mycompany.webapp.dto.MemberDTO" alias="member"/>
    	  <typeAlias type="com.mycompany.webapp.dto.MOrderDTO" alias="morder"/>
       <typeAlias type="com.mycompany.webapp.dto.OrderDetailDTO" alias="orderDetail"/>
+      <typeAlias type="com.mycompany.webapp.dto.MOrderDTO" alias="mOrder"/>
       <typeAlias type="com.mycompany.webapp.dto.OrderListDTO" alias="orderList"/>
       <typeAlias type="com.mycompany.webapp.dto.PaymentDTO" alias="payment"/>
       <typeAlias type="com.mycompany.webapp.dto.PointDTO" alias="point"/>
