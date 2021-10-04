@@ -105,6 +105,15 @@ public class OrderService {
 		return orderDetailDAO.selectOrderListByMemberNo(param);
 	}
 	
+
+	public List<OrderListDTO> getOrderListByName(Map<String, Object> param){
+		return orderDetailDAO.selectOrderListByName(param);
+	}
+	
+	public List<OrderListDTO> getOrderListByOderNo(Map<String, Object> param){
+		return orderDetailDAO.selectOrderListByOrderNo(param);
+	}
+
 	public OrderResult insertMOrder(MOrderDTO mOrderDTO) {
 		//try {
 			

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.google.gson.Gson;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
@@ -75,16 +76,12 @@ public class OrderController {
 	}
 	
 	@RequestMapping("/orderList")
-	public String orderList(Principal principal, String startDate, String endDate, Model model) {
+	public String orderList(Principal principal, Model model) {
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("ID", principal.getName());
-		param.put("startDate", startDate);
-		param.put("endDate", endDate);
-		if(startDate == null || endDate==null) {
-			param.put("startDate", "1970-01-01");
-			param.put("endDate", "2022-01-01");
-		}
+		param.put("startDate", "1970-01-01");
+		param.put("endDate", "2999-01-01");
 		
 		List<OrderListDTO> tempOrderList = orderService.getOrderList(param);
 		String temp = "";
@@ -124,6 +121,80 @@ public class OrderController {
 		return "order/orderList";
 	}
 	
+	@ResponseBody
+	@RequestMapping(value="/orderListAjax", produces="application/json; charset=utf-8")
+	public String orderListAjax(String startDate, String endDate, int searchType, String searchTerm, Principal principal, Model model) {
+		System.out.println(startDate);
+		System.out.println(endDate);
+		System.out.println(searchType);
+		System.out.println(searchTerm);
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("ID", principal.getName());
+		if(startDate == null && endDate==null || startDate.equals("")  && endDate.equals("")) {
+			param.put("startDate", "1970-01-01");
+			param.put("endDate", "2999-01-01");
+		}else {
+			param.put("startDate", startDate);
+			param.put("endDate", endDate);
+		}
+		
+		
+		List<OrderListDTO> tempOrderList = null;
+		
+		if (searchTerm.trim().isEmpty() || searchTerm == null ) {
+			tempOrderList = orderService.getOrderList(param);
+		}
+		else{
+			if(searchType==0) {
+				param.put("name", searchTerm);
+				tempOrderList = orderService.getOrderListByName(param);
+			}else if(searchType==1) {
+				param.put("orderNo", searchTerm);
+				tempOrderList = orderService.getOrderListByOderNo(param);
+			}
+		}
+		
+		String temp = "";
+		int cnt = -1;
+		List<MOrderDTO> orderList =  new ArrayList<>();
+		List<OrderDetailDTO> orderDetailList  = new ArrayList<>(); 
+		
+		for(OrderListDTO order : tempOrderList) {
+			if(!temp.equals(order.getOrderNo())) {
+				if(cnt!=-1) {
+					orderList.get(cnt).setDetailList(orderDetailList);
+					orderDetailList  = new ArrayList<>(); 
+				}
+				cnt++;
+				temp = order.getOrderNo();
+				orderList.add(new MOrderDTO());
+				orderList.get(cnt).setOrderNo(order.getOrderNo());
+				orderList.get(cnt).setOrderDate(order.getOrderDate());
+			}
+			OrderDetailDTO orderDetail = new OrderDetailDTO();
+			orderDetail.setProductDetailNo(order.getProductDetailNo());
+			orderDetail.setImg1(order.getImg1());
+			orderDetail.setBrand(order.getBrand());
+			orderDetail.setName(order.getName());
+			orderDetail.setColorChip(order.getColorChip());
+			orderDetail.setPsize(order.getPsize());
+			orderDetail.setAmount(order.getAmount());
+			orderDetail.setPrice(order.getPrice());
+			orderDetail.setState(order.getState());
+			orderDetailList.add(orderDetail);
+		}
+		if(cnt!=-1) {
+			orderList.get(cnt).setDetailList(orderDetailList);
+		}
+		
+		System.out.println(orderList);
+		
+		Gson gson = new Gson();
+		String json = gson.toJson(orderList);
+		return json;
+	}
+
 	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormProc(MOrderDTO mOrderDTO) {
@@ -132,7 +203,6 @@ public class OrderController {
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
 		String json = jsonObject.toString();
-		
 		return json;
 	}
 }

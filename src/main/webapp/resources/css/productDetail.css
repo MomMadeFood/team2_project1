@@ -28,25 +28,18 @@ li.pd-colors>[type=radio] {
   opacity: 0;
   width: 0;
   height: 0;
+
 }
 
 
 li.pd-colors>[type=radio] + div {
   cursor: pointer;
+  margin-bottom: 15px;
+  padding-bottom: 15px;
 }
 
 li.pd-colors>[type=radio]:checked + div {
   outline: 5px solid black;
-}
-
-.pd-col1{
-	content:url(http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_BK_C01.jpg);
-	width:20px;
-}
-
-.pd-col2{
-	content:url(http://newmedia.thehandsome.com/O2/2B/FW/O22B9ROT502W_CR_C01.jpg);
-	width:20px;
 }
 
 .pd-round-style{	
@@ -121,7 +114,6 @@ label {
 display: inline-block;
 padding: 5px;
 position: relative;
-padding-left: 20px;
 }
 
 label input {
@@ -139,14 +131,17 @@ label span {
     outline: none;
     text-decoration: none;
     display: block;
-	padding: 0 3px;
-    line-height: 24px;
+/* 	padding: 0 3px; */
+	margin:0px;
+    /* line-height: 24px; */
     border: 1px solid #ccc;
     text-align: center;
     color: #363636!important;
     font-family: "Malgun Gothic","맑은 고딕";
-    min-width: 60px;
-    height: 26px;
+    /* min-width: 60px; */
+    font-size: 15px;
+    padding: 0px 10px;
+    /* height: 26px; */
     box-sizing: border-box;
 }
 
@@ -187,7 +182,7 @@ div.pd-item_detail_info {
 	vertical-align: top;
 	line-height: 20px;
 	word-break: break-all;
-	padding: 25px 0;
+/* 	padding: 25px 0; */
 	border-bottom: 1px solid #ebebeb;
 }
 

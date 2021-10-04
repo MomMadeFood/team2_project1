@@ -1,6 +1,7 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -19,6 +20,7 @@ public interface ProductDAO {
 	 */
 	List<String> selectColorsByPid(String id);
 	
+
 	
 	/**
 	 * 제품 상세 조회
