@@ -1,6 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 
 <%@ include file="/WEB-INF/views/common/header.jsp"%>
+
+	
     <style>
       p{
         padding: 0px;
@@ -39,18 +41,20 @@
 						</tr>
 					</thead>
 					<tbody>
+						<c:forEach var="order" items="${orderList}" varStatus="status">
 						<tr style="text-align: center; height: 132px;">
-							<td class="d-flex"><img src="${pageContext.request.contextPath}/resources/images/model.jpeg" alt=""
+							<td class="d-flex"><img src="${order.img1}" alt=""
 								style="width: 98px; height: 98px;">
 								<div style="text-align: left; margin-left: 20px;">
-									<a style="color: black;" href="#"> SYSTEM HOMME</br> 컬러 라인 니트 탑
+									<a style="color: black;" href="#"> ${order.brand}</br> ${order.name}
 									</a>
-									<p style="margin-top: 10px;">color : BLACK / size : 100</p>
+									<p style="margin-top: 10px;">color : ${order.colorCode } / size : ${order.psize }</p>
 								</div></td>
 							<td
-								style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-							<td style="vertical-align: middle;">345,000₩</td>
+								style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${order.amount}</td>
+							<td style="vertical-align: middle;">${order.price}₩</td>
 						</tr>
+						</c:forEach>
 					</tbody>
 				</table>
 				<div style="margin-top: 40px;">

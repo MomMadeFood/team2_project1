@@ -1,7 +1,10 @@
 package com.mycompany.webapp.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.mycompany.webapp.dao.CartDAO;
 import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.StockDAO;
+import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
@@ -30,6 +34,46 @@ public class CartService {
 	public List<Map<String,String>> getCartOptionSize(String pid, String colorCode) {
 		String pdId = pid + "_" + colorCode;
 		return stockDAO.selectSizeIsStockedByPdid(pdId);
+	}
+	
+	public List<ProductDTO> getSelectedProducts(
+		List<CartDTO> cartDTOs,
+		List<String> selectedCodes) {
+		Map<String, Integer> cartMap = new HashMap<String, Integer>();
+		
+		for(CartDTO c : cartDTOs) {
+			//카트에 담긴 코드를 cart_ck 코드 형식으로 변환
+			String psid = c.getProductDetailNo() + "_" + c.getPsize();
+			cartMap.put(psid, c.getAmount());
+		}
+		
+		//cartDTO를 orderForm으로 전송하기위해 ProductDTO로 파싱
+		StringTokenizer st;
+		List<ProductDTO> orderList = new ArrayList<ProductDTO>();
+		
+		//선택한 제품을 
+		for(String s : selectedCodes) {
+			
+			int amount = cartMap.get(s);
+			if(amount>0) {
+				st = new StringTokenizer(s, "_");
+				String pno = st.nextToken();
+				String pcolor = st.nextToken();
+				String psize = st.nextToken();
+				
+				//상품 상세 정보 불러오는 DAO 사용 예정
+				ProductDTO productDTO = new ProductDTO();
+				productDTO.setProductNo(pno);
+				productDTO.setColorCode(pcolor);
+				productDTO.setPsize(psize);				
+				productDTO.setProductDetailNo(pno+"_"+pcolor);
+				productDTO.setAmount(amount);
+				
+				orderList.add(productDTO);
+			}//if
+		}//for
+		
+		return orderList;
 	}
 
 }
