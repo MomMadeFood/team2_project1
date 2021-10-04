@@ -5,7 +5,6 @@
 	@import url("/resources/css/productDetail.css");
 </style>
 
-
 <div class="container-fluid">
 	<script type="text/javascript">
 		function reduceSum() {
@@ -62,32 +61,13 @@
 			}
 			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
 		}
-		
-		function colorchipChange(){
-			console.log(event);
-			var tgId = event.currentTarget.id;
-			let col1 = document.querySelector("#customRadioInline1");
-			let col2 = document.querySelector("#customRadioInline2");
-			console.log($("#customRadioInline1").hasClass("color-selected"));
-			console.log($("#customRadioInline2").hasClass("color-selected"));
-			console.log(tgId);
-			
-			if($("#customRadioInline1").hasClass("color-selected")&&tgId=="customRadioInline2"){
-				$("#customRadioInline2").addClass("color-selected");
-				$("#customRadioInline1").removeClass("color-selected");
-				console.log("1");
-			}else  if($("#customRadioInline2").hasClass&&tgId=="customRadioInline1"){
-				$("#customRadioInline1").addClass("color-selected");
-				$("#customRadioInline2").removeClass("color-selected");
-				console.log("2");
-			}
-		}
+	
 	</script>	
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
 		<div style="width: 10%;"></div>
-		<div style="width: 80%">
+		<div style="width: 80%;">
 			<div class="row">
-				<div style="width: 55%"> 
+				<div style="width: 55%;"> 
 					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 						  <ol class="carousel-indicators">
 						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -150,9 +130,6 @@
                                     </ul>
                                 </div>
                                 
-
-                                    
-                                    
                                 <div class="pd-info">
                                 	<ul>
                                  		<li style="display:flex" class="pd-colors">
@@ -196,7 +173,7 @@
             	</div>
         	</div>  
      	</div>
-       	<div style="width: 10%"></div>
+       	<div style="width: 10%;"></div>
 	</div>   
 
 	

@@ -118,7 +118,6 @@ position: relative;
 
 label input {
 display: none;
-
 }
 
 label span {
@@ -131,17 +130,13 @@ label span {
     outline: none;
     text-decoration: none;
     display: block;
-/* 	padding: 0 3px; */
 	margin:0px;
-    /* line-height: 24px; */
     border: 1px solid #ccc;
     text-align: center;
     color: #363636!important;
     font-family: "Malgun Gothic","맑은 고딕";
-    /* min-width: 60px; */
     font-size: 15px;
     padding: 0px 10px;
-    /* height: 26px; */
     box-sizing: border-box;
 }
 
@@ -182,7 +177,6 @@ div.pd-item_detail_info {
 	vertical-align: top;
 	line-height: 20px;
 	word-break: break-all;
-/* 	padding: 25px 0; */
 	border-bottom: 1px solid #ebebeb;
 }
 
@@ -261,9 +255,7 @@ div.info_sect {
 	margin-top: 10px;
 }
 
-
 .go-cart{
-	margin-top: 15px;
     padding: 8px 20px 10px;
     min-width: 140px;
     background: #fff;
@@ -275,4 +267,3 @@ div.info_sect {
 .color-selected{
 	border-bottom: 3px solid black;
 }
-
