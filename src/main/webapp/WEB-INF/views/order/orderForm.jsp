@@ -67,7 +67,7 @@
 									<div style="text-align: left; margin-left: 20px;">
 										<a style="color: black;" href="#"> SYSTEM HOMME</br> 플랩 점퍼
 										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">BLACK</p> / size :<p class="detail-size">100</p></p>
+										<p style="margin-top: 10px;">color : <p class="detail-color">BLACK</p> / size :<p class="detail-size">L</p></p>
 									</div></td>
 								<td
 									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
@@ -433,6 +433,7 @@
 		let detailAddr = $("#detail-addr").val();
 		let paymentType = "";
 		let point = discountPrice;
+		let zipCode = 12435;
 		
 		
 		
@@ -462,21 +463,24 @@
 				"phone":hp,
 				"paymentType":paymentType,
 				"point":point,
+				"zipCode":zipCode,
+				"recName":recName
 		}
 		for (let index = 0; index <orderList.length; index++) {			
 			 let productDetailNo = orderList[index].querySelector(".detail-id").innerHTML;
 			 
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
-			 let size = parseInt(orderList[index].querySelector(".detail-size").innerHTML);
+			 let size = orderList[index].querySelector(".detail-size").innerHTML;
 			 let price = parseInt(orderList[index].querySelector(".detail-price").innerHTML);
-			 let state = 1;
+			 let state = 2;
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
 			 console.log(productDetailNo+" "+amount+" "+size+" "+price+" "+state);
 			 data['detailList[' + index +'].productDetailNo'] = productDetailNo;
 			 data['detailList[' + index +'].amount'] = amount; 
-			 data['detailList[' + index +'].size'] = size; 
+			 data['detailList[' + index +'].psize'] = size; 
 			 data['detailList[' + index +'].price'] = price; 
+			 data['detailList[' + index +'].state'] = state; 
 		}
 		
 		data['paymentList[' + 0 +'].paymentType'] = paymentType;

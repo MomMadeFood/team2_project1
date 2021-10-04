@@ -25,5 +25,9 @@
 	    WHERE product_detail_no = #{value}
 	</select>
 	
+	<update id="updateStockByODIdSize" parameterType="orderDetail">
+		UPDATE stock SET amount = amount - #{amount} where product_detail_no = #{productDetailNo} and psize = #{psize} and amount>=#{amount}
+	</update>
+	
 	
 </mapper>

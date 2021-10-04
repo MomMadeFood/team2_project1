@@ -29,4 +29,9 @@
 	</select>
 	
 	
+	<insert id="insertOrderDetail" parameterType="orderDetail">
+		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state)
+		values((select TO_CHAR(SYSDATE, 'YYYYMMDD') from dual) || 'D'||(select 10000000+(SELECT count(*) FROM order_detail)from 
+		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state})
+	</insert>
 </mapper>

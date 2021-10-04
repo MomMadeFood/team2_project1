@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.StockDTO;
 
 @Mapper
@@ -38,6 +39,6 @@ public interface StockDAO {
 	 * @param produetDetailId, size
 	 * @return 반영된 row 개수
 	 */
-	int updateStockByDetailIdSize(String productDetailNo, String size);
+	int updateStockByODIdSize(OrderDetailDTO orderDetailDTO);
 
 }

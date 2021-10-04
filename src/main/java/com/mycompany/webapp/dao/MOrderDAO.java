@@ -10,7 +10,10 @@ public interface MOrderDAO {
 	/**
 	 * 주문 정보를 삽입함
 	 * @param MOrderDTO
-	 * @return 반영된 row 개수
+	 * @return orderNo
 	 */
 	public int insertMOrder(MOrderDTO mOrderDTO);
+	
+	
+	public int selectMOrderCount();
 }
