@@ -3,8 +3,8 @@
 <mapper namespace="com.mycompany.webapp.dao.CartDAO">
 
  <select id="selectCartsById" resultType="product" parameterType="string">
- 	SELECT p.name, p.brand, p.price,
-		pd.color_code, pd.img1,
+ 	SELECT p.product_no, p.name, p.brand, p.price,
+		pd.product_detail_no, pd.color_code, pd.img1,
 		c.psize, c.amount
 	FROM product p, product_detail pd, cart c
 	WHERE c.product_detail_no = pd.product_detail_no AND p.product_no = pd.product_no

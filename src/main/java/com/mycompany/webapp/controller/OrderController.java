@@ -8,11 +8,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -23,13 +24,14 @@ import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.OrderService;
+import com.mycompany.webapp.service.OrderService.OrderResult;
 
 
 @Controller
 @RequestMapping("/order")
 public class OrderController {
 	
-	private static Logger logger = LoggerFactory.getLogger(OrderController.class);
+	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
 	
 	@Resource
 	private OrderService orderService;
@@ -37,7 +39,8 @@ public class OrderController {
 	
 	@RequestMapping("/orderForm")
 	public String orderForm() {
-		
+		logger.info("실행");
+	
 		return "order/orderForm";
 	}
 	
@@ -187,9 +190,18 @@ public class OrderController {
 		String json = gson.toJson(orderList);
 		return json;
 	}
-	
-	@RequestMapping("/orderFormProc")
-	public String orderFormProc() {
-		return "redirect:/order/orderList";
+
+	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
+	@ResponseBody
+	public String orderFormProc(MOrderDTO mOrderDTO) {
+		logger.info("실행됐어 -------");
+		System.out.println(mOrderDTO.toString());
+		OrderResult orderResult = orderService.insertMOrder(mOrderDTO);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+
+		return json;
 	}
 }

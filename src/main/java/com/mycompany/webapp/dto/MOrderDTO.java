@@ -21,4 +21,5 @@ public class MOrderDTO {
 	private String phone;
 	private String recName;
 	List<OrderDetailDTO> detailList;
+	List<PaymentDTO> paymentList;
 }

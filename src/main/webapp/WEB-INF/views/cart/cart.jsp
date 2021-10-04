@@ -1,16 +1,8 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	
-	<!--content-->
-    <div style="width: 990px; margin:0px auto;">
-		<div class="m-5">
-			<h3 class="center">쇼핑백</h3>
-		</div>
-
-		<!-- Option -->
-		<script type="text/javascript">
-		function hideOption()  {
+	<script type="text/javascript">
+			function hideOption()  {
 			  const row = document.getElementById('pid-option');
 			  row.style.display = 'none';
 			}
@@ -19,11 +11,82 @@
 			  const row = document.getElementById('pid-option');
 			  row.style.display = '';
 			}
-	
-		</script>
+			
+			function readColor(input) {
+				$.ajax({
+					url: "cart/optionColor",
+					data: { pno : input },
+					success: function(data) {
+						console.log("성공:", data);
+					}
+				})
+				.done((data) => {
+					console.log(data);
+				});
+			}
+			
+			function readSize() {
+				$.ajax({
+					url: "cart/optionSize",
+					data: {pno : 'TN2B7WSHG03N', pcolor : 'BL'},
+					success: function(data) {
+						console.log("성공:", data);
+					}
+				})
+				.done((data) => {
+					console.log(data);
+				});
+			}
+				
+			
+			function cartInit () {
+				let sell_price = document.getElementById('pid_price').value;
+				let amount = document.getElementById('pid_amount');
+				document.getElementById('pid_sum').value =  parseInt(sell_price) * parseInt(amount.value);
+				change();
+			}
+			
 
+			function add () {
+				let sell_price = document.getElementById('pid_price').value;
+				let amount = document.getElementById('pid_amount');
+				let sum = document.getElementById('pid_sum');
+				amount.value ++ ;
+
+				sum.value = parseInt(amount) * parseInt(sell_price);
+			}
+
+			function del () {
+				let sell_price = document.getElementById('pid_price').value;
+				let amount = document.getElementById('pid_amount');
+				let sum = document.getElementById('pid_sum');
+					if (amount.value > 1) {
+						amount.value -- ;
+						sum.value = parseInt(amount) *  parseInt(sell_price);
+					}
+			}
+
+			function change () {
+				let sell_price = document.getElementById('pid_price').value;
+				let amount = document.getElementById('pid_amount');
+				let sum = document.getElementById('pid_sum');
+
+					if (amount.value < 0) {
+						amount.value = 0;
+					}
+				sum.value = parseInt(amount) *  parseInt(sell_price);
+			}  
+	
+	</script>
+	
+	<!--content-->
+    <div style="width: 990px; margin:0px auto;">
+		<div class="m-5">
+			<h3 class="center">쇼핑백</h3>
+		</div>
+		<form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart/orderForm">
 		<div>
-			<table class="table table-bordered cart-table">
+			<table class="table table-bordered cart-table" onload="cartInit()">
 				<colgroup>
 					<col style="width: 10px;" />
 					<col />
@@ -45,12 +108,18 @@
 				</thead>
 				<tbody>
 					<!-- cartList -->
-					<c:forEach var="cart" items="${cartList}">
 					
+					<c:forEach var="cart" items="${cartList}" varStatus="status">
+						<!-- Form 전송 hidden 데이터 -->
+						<input type="hidden" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
+						<input type="hidden" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
+						<!-- //Form 전송 데이터 -->
+						
 					<tr>
 						<td>
 								<!-- 선택 상품 -->
-							<input type="checkbox" value="1">
+							
+							<input type="checkbox" name="cart_ck" value="${cart.productDetailNo}_${cart.psize}">
 						</td>
 						<td class="c-td-product">
 							<!-- pt_list_all -->
@@ -58,7 +127,7 @@
 								<!--상품 정보-->
 								<div>
 									<a href="#" > 
-										<img src="http://newmedia.thehandsome.com/YN/2B/FW/YN2B9KTO939N_LP_S01.jpg" alt="" class="cart_product_img" />
+										<img src="${cart.img1}" alt="" class="cart_product_img" style="width:98px; height:98px;" />
 										<span class="cart_product" >
 											<span class="cart_product_link">
 												${cart.brand}
@@ -70,8 +139,11 @@
 									</a>
 							<!--옵션-->
 									<div class="d-flex justify-content-between">
+										
 										<p> color : ${cart.colorCode}<span>/</span> size : ${cart.psize}</p>
-										<a class="cart-option" onclick="showOption()">옵션변경</a>
+										<a class="cart-option" onclick="javascript:showOption()">옵션변경</a>
+										<a class="cart-option" onclick="javascript:readColor('${cart.productNo}');">색상조회</a>
+										<a class="cart-option" onclick="javascript:readSize('${cart.productNo}_BL');">사이즈조회</a>
 									</div>
 								</div>
 							</div>
@@ -79,25 +151,25 @@
 						</td>
 						<td>
 							<!-- 장바구니 수량 업데이트 -->
-							<form>
 								<!-- qty_sel -->
-								<div class="justify-content-center">
-									<div class="center">
-										<button class="qty_left">-</button> 
-										<input type="text" value="1" size="1" maxlength="2" class="qty_input"/>
-										<button class="qty_right">+</button>
-									</div>
-									<!-- //qty_sel -->
-									<div>
-										<a href="#" class="cart_button_wt">변경</a>
-									</div>
+							<div class="justify-content-center">
+								<div class="center">
+									<input type="button" value=" - " onclick="del();">
+									<input type="text" name="cartDTOList[${status.index}].amount" value="1" size="3" onchange="change();">
+									<input type="button" value=" + " onclick="add();">
 								</div>
-							</form>
+								<!-- //qty_sel -->
+								<div class="center">
+									<button type="submit" class="cart_button_wt">변경</button>
+								</div>
+							</div>
 						</td>
 						<td>
 							<!-- 가격 -->
 							<div>
-								<span class="cart_span text-center" >₩${cart.price}</span>
+								<span class="cart_span text-center" >₩${cart.price} 
+								
+								<br><input type="text" id="pid_sum" size="11" readonly></span>
 							</div> 
 						</td>
 						<td>
@@ -112,16 +184,16 @@
 					
 					<tr class="cart-table-option" id="pid-option" style="display:none;">
 						<td></td>
-						<td colspan="4" class="c-td-option" >
+						<td colspan="3" class="c-td-option" >
 							<div>
 								<a href="#">
-									<img src="http://newmedia.thehandsome.com/YN/2B/FW/YN2B9KTO939N_LP_S01.jpg" alt="" class="cart_product_img" />
+									<img src="http://newmedia.thehandsome.com/TN/2B/FW/TN2B7WSHG03N_BL_W03.jpg" alt="" class="cart_product_img" />
 									<span class="cart_product" >
 										<span class="cart_product_link">
-											FOURM THE STORE
+											${cart.brand}
 										</span>
 										<span class="cart_product_link">
-											[palette] 자카드 니트 탑
+											${cart.name }
 										</span>
 									</span>
 								</a>
@@ -166,13 +238,40 @@
 					</tr>
 				</tbody>
 			</table>
+			
 		</div>
 
 		<div class="center mb-5" style="width:290px">
 			<a class="cart_lg_btn_wt">선택상품삭제</a>
-			<a href="${pageContext.request.contextPath}/order/orderForm" class="cart_lg_btn_gr" style="width:40%">선택상품주문</a>
+			<input class="cart_lg_btn_gr" style="width:40%" type="submit" value="선택상품주문">
 		</div>
+		</form:form>
+		<script>
+           function checkData(form) {
+        	   //form의 제출 기능 off
+        	   event.preventDefault();
+        	   
+        	   //유효성 검사 결과 변수
+        	   let checkResult = true;
+        	   
+        	   //check box 갯수 체크
+        	   if($('input[name=cart_ck]:checked').length == 0) {
+        		   checkResult = false;
+        	   }
+        	   
+        	   //서버로 제출할지 말지 결정
+        	   if(checkResult) {
+        		   form.submit();
+        	   }
+           }
+	        </script>
+		
+		
 	</div>
+	
+	
+	
+	
 	
 
 	

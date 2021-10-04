@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.StockDTO;
 
 @Mapper
@@ -28,8 +29,16 @@ public interface StockDAO {
 	/**
 	 * 상세 재품 번호로 사이즈들 정보와 재고유무만 조회 (재고량 조회 X)
 	 * @param produetDetailId
-	 * @return PSIZE, IS_STOCK
+	 * @return PSIZE, IS_STOCK(STOCKED, SOLDOUT)
 	 */
 	List<Map<String, String>> selectSizeIsStockedByPdid(String productDetailNo);
+	
+	
+	/**
+	 * 상세 제품 번호로 사이즈 정보로 재고가 있으면 재고를 줄임
+	 * @param produetDetailId, size
+	 * @return 반영된 row 개수
+	 */
+	int updateStockByODIdSize(OrderDetailDTO orderDetailDTO);
 
 }
