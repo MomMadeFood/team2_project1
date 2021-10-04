@@ -25,6 +25,7 @@ import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.OrderService.OrderResult;
@@ -41,6 +42,9 @@ public class OrderController {
 	
 	@Resource
 	private MemberService memberService;
+	
+	@Resource
+	private CardService cardService;
 
 	
 	@RequestMapping("/orderForm")
