@@ -158,22 +158,11 @@
                                  		<li style="display:flex" class="pd-colors">
                            					<span class="product-subtitle mr-3">색상</span>
                            					<c:forEach items="${productDetailMap}" var="i" >
-                           						<div >
-                                 					<a href="${pageContext.request.contextPath}/product/productDetail?no=${i.key}">
-                                 					<img src= "${i.value}"  width="20px">
-                             						</a>
-												</div>
+                               					<a href="${pageContext.request.contextPath}/product/productDetail?no=${i.key}" style="margin-top: 5px;">
+                               						<img src= "${i.value}"  width="30px">
+                           						</a>
                    							</c:forEach>
                    						</li>
-                           			<%-- 		<c:forEach items="${colorChipList}" begin="1" var="colorChip" varStatus="status">
-                           						<div onClick="colorchipChange() " id="customRadioInline${status.count+1}">
-                                 					<a href="${pageContext.request.contextPath}/product/productDetail?no=${productDetailNoList.productDetailNo}">
-                                 					<img src= "${colorChip}"  width="20px">
-                             						</a>
-												</div>
-                   							</c:forEach> --%>
-                           					
-                                   	
                                    		
                                  		 <li class="pd-size">
                                     	 		<span class="product-subtitle">사이즈</span>
