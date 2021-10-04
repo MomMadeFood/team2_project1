@@ -1,19 +1,37 @@
 package com.mycompany.webapp.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.mycompany.webapp.dao.CardDAO;
 import com.mycompany.webapp.dao.MemberDAO;
+import com.mycompany.webapp.dto.CardDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 
 @Service
 public class MemberService {
 	
 	@Resource
-	MemberDAO memberDAO;
+	private MemberDAO memberDAO;
 	
-	public MemberDTO getMember(String memberId) {
-		return memberDAO.selectMemberById(memberId);
+	@Resource
+	private CardDAO cardDAO;
+	
+	public Map<String,Object> getMemberInfo(String memberId) {
+		
+		Map<String,Object> map = new HashMap<String, Object>();
+		
+		MemberDTO memberDTO = memberDAO.selectMemberById(memberId);
+		List<CardDTO> cardList = cardDAO.selectCardsById(memberId);
+		
+		map.put("memberDTO", memberDTO);
+		map.put("cardList",cardList);
+		
+		return map;
 	}
 }
