@@ -101,9 +101,9 @@
 								if(second < 10){
 									second ="0"+second;
 								}
-								var strDate = orderDate.getFullYear() + "-" +month + "-" + day + " " + hour + ":" + minute + ":" + second ;  
+								var strDate = orderDate.getFullYear() + "-" +month + "-" + day + " " + hour + ":" + minute + ":" + orderDate.getSeconds() ;  
 								
-								htmlContent += '  			  <p style="color:#dee2e6">' + strDate+'</p>';
+								htmlContent += '  			  <p style="color:#dee2e6">'+strDate+'</p>';
 								htmlContent += '  			  <a href="${pageContext.request.contextPath}/order/orderDetail?orderNo="'+ order.orderNo +'style="color:#ecd795">상세보기</a>';
 								htmlContent += '  		    </td>';
 							}
@@ -113,7 +113,7 @@
 							htmlContent += '  			    <img src="'+order['detailList'][i].img1+'" alt="" style="width: 98px; height: 98px;">';
 							htmlContent += '  			  </div>';
 							htmlContent += '  			  <div style="text-align:left; margin-left:20px;">';
-							htmlContent += '  			    <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail" >';
+							htmlContent += '  			    <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail?no='+ order['detailList'][i].productDetailNo +'" >';
 							htmlContent += 					  order['detailList'][i].brand+'<br/>';
 							htmlContent +=                    order['detailList'][i].name;
 							htmlContent += '  			     </a>';
@@ -212,7 +212,7 @@
 					            <img src="${orderDetail.img1}" alt="" style="width: 98px; height: 98px;">
 					          </div>
 					          <div style="text-align:left; margin-left:20px;">
-					            <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail" >
+					            <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail?no=${orderDetail.productDetailNo}" >
 					              ${orderDetail.brand}<br/>
 					              ${orderDetail.name}
 					            </a>
