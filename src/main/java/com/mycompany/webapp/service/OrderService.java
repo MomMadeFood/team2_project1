@@ -74,4 +74,12 @@ public class OrderService {
 	public List<OrderListDTO> getOrderList(Map<String, Object> param){
 		return orderDetailDAO.selectOrderListByMemberNo(param);
 	}
+	
+	public List<OrderListDTO> getOrderListByName(Map<String, Object> param){
+		return orderDetailDAO.selectOrderListByName(param);
+	}
+	
+	public List<OrderListDTO> getOrderListByOderNo(Map<String, Object> param){
+		return orderDetailDAO.selectOrderListByOrderNo(param);
+	}
 }

@@ -18,4 +18,8 @@ public interface OrderDetailDAO {
 	public List<PaymentDTO> selectPaymentsByOrderNo(String orderNo);
 	
 	public List<OrderListDTO> selectOrderListByMemberNo(Map<String, Object> param);
+	
+	public List<OrderListDTO> selectOrderListByName(Map<String, Object> param);
+	
+	public List<OrderListDTO> selectOrderListByOrderNo(Map<String, Object> param);
 }
