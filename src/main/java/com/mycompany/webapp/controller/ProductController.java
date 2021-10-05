@@ -16,10 +16,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.webapp.dto.CategoryDTO;
+import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.ProductDetailService;
+import com.mycompany.webapp.service.ProductService;
 
 @Controller
 @RequestMapping("/product")
@@ -63,12 +66,6 @@ public class ProductController {
 			return "product/productDetail";
 		}
 		
-	@RequestMapping("/productList")
-	public String productList() {
-		return "product/productList";
-	}
-	
-	
 	@RequestMapping("/cart")
 	public String cart(
 			HttpServletRequest request,
@@ -76,6 +73,19 @@ public class ProductController {
 			CartDTO cartDTO
 			) {
 		cartDTO.setMemberId(principal.getName());
+	
+	@Resource
+	private ProductService productService;
+	
+		@RequestMapping("/productList")
+		public String productList(Model model) {
+			
+			List<ProductCategoryDTO> productList = productService.getProductList("WO01");
+			System.out.println(productList);
+			
+			model.addAttribute("productList", productList);
+			return "product/productList";
+		}
 		
 		cartService.setCart(cartDTO);
 		

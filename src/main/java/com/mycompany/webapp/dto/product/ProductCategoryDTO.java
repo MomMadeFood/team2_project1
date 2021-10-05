@@ -6,4 +6,10 @@ import lombok.Data;
 public class ProductCategoryDTO {
 	private String productNo; 
 	private String categoryId; 
+	private String parentCategoryId;
+	private String brand;
+	private String name;
+	private String img1;
+	private String img3;
+	private int price;
 }

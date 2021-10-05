@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-<c:forEach begin="1"  end = "4" step="1" var="i">
+<c:forEach begin="1"  end = "3" step="1" var="i">
 <div class="card-deck mb-3">
 <div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
   <div class="card" style="width:25%;">

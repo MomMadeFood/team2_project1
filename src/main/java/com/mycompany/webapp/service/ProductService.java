@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.ProductDAO;
+import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductNewDTO;
 
 @Service
@@ -21,5 +22,9 @@ public class ProductService {
 	
 	public List<ProductNewDTO> getBestProdudct(String sex) {
 		return productDao.selectBestProductBySex(sex);
+	}
+	
+	public List<ProductCategoryDTO> getProductList(String parentCategoryId){
+		return productDao.selectProductListByPCId(parentCategoryId);
 	}
 }

@@ -1,10 +1,9 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 
+import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.dto.product.ProductNewDTO;
@@ -35,6 +34,9 @@ public interface ProductDAO {
 	 * @return ProductDTO
 	 */
 	ProductDTO selectProductById(String productDetailNo);
+	
+	//	부모 카테고리 id로 해당하는 상품 번호 조회
+	public List<ProductCategoryDTO> selectProductListByPCId(String parentCategoryId);
 	
 }
 

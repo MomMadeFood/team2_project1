@@ -7,4 +7,5 @@ public class CategoryDTO {
 	private String categoryId;
 	private String parentCategoryId;
 	private String categoryName;
+	private String productNo;
 }
