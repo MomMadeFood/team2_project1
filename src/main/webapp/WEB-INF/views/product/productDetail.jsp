@@ -129,7 +129,8 @@
                                         </li>
                                     </ul>
                                 </div>
-                                
+                                <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart">
+                                	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
                                 <div class="pd-info">
                                 	<ul>
                                  		<li style="display:flex" class="pd-colors">
@@ -144,7 +145,7 @@
                                  		 <li class="pd-size">
                                     	 		<span class="product-subtitle">사이즈</span>
                                     	 		<c:forEach items="${sizeList}" var="size">
-                                    	 			<label><input type="radio" name="size" value="${size}"/><span>${size}</span></label>
+                                    	 			<label><input type="radio" name="psize" value="${size}"/><span>${size}</span></label>
                                    	 			</c:forEach>	                                      
                                    		</li>
                                    
@@ -155,7 +156,7 @@
                                      	<li>
                                      		<span class="product-subtitle">수량</span>
                                              <button class="qty_left" type="button" onclick="reduceSum()">-</button>
-                                             <input type="text" name="pop_out" value="1" class="qty_input" />
+                                             <input type="text" name="amount" value="1" class="qty_input" />
                                              <button class="qty_right" type="button" onclick="increaseSum()">+</button>
                                          </li>
                                      </ul>
@@ -166,7 +167,9 @@
                                      	</li>
                                      </ul>	
                                 </div>
-                                 <a href="${pageContext.request.contextPath}/cart/cart" class="go-cart float-left pd_a" style="width:250px">쇼핑백 담기</a>
+                                
+                                <input type="submit" class="go-cart float-left pd_a" style="width:250px" value="쇼핑백 담기">
+	                        	</form:form>
 	                        </div>
 	                    </div>
 	                </div>

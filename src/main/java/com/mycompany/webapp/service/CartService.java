@@ -82,5 +82,9 @@ public class CartService {
 		
 		return orderList;
 	}
+	
+	public void insertCart(CartDTO cartDTO) {
+		cartDAO.insertCart(cartDTO);
+	}
 
 }
