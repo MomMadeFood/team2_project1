@@ -103,70 +103,37 @@
 			}
 			
 			function reduceSum(index) {
-				let sum = parseInt($("input[name=cartDTOList["+index+"].amount]").val());
-				let total = document.querySelector(".pd-price span").innerHTML
-						.substr(1);
-				if (sum > 1) {
-					sum = sum - 1;
+				let amount = parseInt($("#c-input-pamount"+index).val());
+				
+				if (amount > 1) {
+					amount = amount-1;
+					let price = parseInt($("#c-input-price"+index).val());
+					let total = parseInt($("#c-span-total"+index).text());
+					
+					$("#c-span-total"+index).text(amount * price);
+					$("#c-input-pamount"+index).val(amount);
+				} else {
+					alert("장바구니의 최소 수량은 1입니다")
 				}
-				$("input[name=cartDTOList["+index+"].amount]").val(sum);
-				let temp = "";
-				for (var i = 0; i < total.length; i++) {
-					if (total.charAt(i) != ',') {
-						temp = temp + total.charAt(i);
-					}
-				}
-				temp = parseInt(temp);
-				temp = temp * sum;
-				let price = String(temp);
-				let ans = "";
-				let cnt = 0;
-				for (var i = price.length - 1; i >= 0; i--) {
-					cnt++;
-					ans = price.charAt(i) + ans;
-					if (i > 0 && cnt % 3 == 0) {
-						ans = "," + ans;
-					}
-				}
-				document.querySelector("#totalPrice"+index).innerHTML = "₩" + ans;
 			}
 			
 			function increaseSum(index) {
-				let sum = parseInt($("input[name=cartDTOList["+index+"].amount]").val());
-				let total = document.querySelector(".pd-price span").innerHTML
-						.substr(1);
-				sum = sum + 1;
-				$("input[name=cartDTOList["+index+"].amount]").val(sum);
-				let temp = "";
-				for (var i = 0; i < total.length; i++) {
-					if (total.charAt(i) != ',') {
-						temp = temp + total.charAt(i);
-					}
-				}
-				temp = parseInt(temp);
-				temp = temp * sum;
-				let price = String(temp);
-				let ans = "";
-				let cnt = 0;
-				for (var i = price.length - 1; i >= 0; i--) {
-					cnt++;
-					ans = price.charAt(i) + ans;
-					if (i > 0 && cnt % 3 == 0) {
-						ans = "," + ans;
-					}
-				}
-				document.querySelector("#totalPrice"+index).innerHTML = "₩" + ans;
+				let amount = parseInt($("#c-input-pamount"+index).val());
+				
+				let price = parseInt($("#c-input-price"+index).val());
+				let total = parseInt($("#c-span-total"+index).text());
+				
+				$("#c-span-total"+index).text(amount * price);
+				$("#c-input-pamount"+index).val(amount + 1);
 			}
 
 			function change () {
-				let sell_price = document.getElementById('pid_price').value;
-				let amount = document.getElementById('pid_amount');
-				let sum = document.getElementById('pid_sum');
-
-					if (amount.value < 0) {
-						amount.value = 0;
-					}
-				sum.value = parseInt(amount) *  parseInt(sell_price);
+				let amount = parseInt($("#c-input-pamount"+index).val());
+				
+				let price = parseInt($("#c-input-price"+index).val());
+				let total = parseInt($("#c-span-total"+index).text());
+				
+				$("#c-span-total"+index).text(amount * price);
 			}  
 			
 			function delCart(index, productDetailNo, psize) {
@@ -252,26 +219,53 @@
 				let jsonData = JSON.stringify(cartData);
 				console.log(jsonData);
 				
+				$.ajax({
+					url: "/cart/updateCart",
+					type: "POST",
+					data: jsonData,
+					dataType : "json",
+					contentType: 'application/json',
+					success: function(data) {
+						if(data.result === "success") {
+							//상품 이미지/상품정보를 초기화
+							 $("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
+							 $("#c-span-pcolor"+orgIndex).text($("#c-span-ocolor").text());
+							 $("#c-span-psize"+orgIndex).text($("#c-span-osize").text()); 
+							 
+							 hideOption();
+						}
+					},
+					error: function(request,status,error) {
+						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+					}
+				}); 
+			 }
+			 
+			 function updateAmount(index) {
+				let cartData = new Object();
+				cartData.productDetailNo = $("#c-input-pdid"+index).val();
+				cartData.psize = $("#c-input-psize" + index).val();
+				cartData.amount = $("#c-input-pamount"+index).val();
+				
+				let jsonData = JSON.stringify(cartData);
+				console.log(jsonData);
+				 
 				 $.ajax({
-						url: "/cart/updateCart",
+						url: "/cart/updateAmount",
 						type: "POST",
 						data: jsonData,
 						dataType : "json",
 						contentType: 'application/json',
 						success: function(data) {
 							if(data.result === "success") {
-								//상품 이미지/상품정보를 초기화
-								 $("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
-								 $("#c-span-pcolor"+orgIndex).text($("#c-span-ocolor").text());
-								 $("#c-span-psize"+orgIndex).text($("#c-span-osize").text()); 
-								 
-								 hideOption();
+								alert("수량 변경 저장");
 							}
 						},
 						error: function(request,status,error) {
 							console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 						}
 					}); 
+				 
 			 }
 	
 	</script>
@@ -355,20 +349,20 @@
 							<div class="justify-content-center">
 								<div class="center">
 									<button class="qty_left" type="button" onclick="reduceSum(${status.index})">-</button>
-									<input type="text" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3" onchange="change();">
+									<input type="text" id="c-input-pamount${status.index}" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3" onchange="change();">
 									<button class="qty_right" type="button" onclick="increaseSum(${status.index})">+</button>
 								</div>
 								<!-- //qty_sel -->
 								<div class="center">
-									<button type="submit" class="cart_button_wt">변경</button>
+									<a class="cart_button_wt" onclick="updateAmount(${status.index});">변경</a>
 								</div>
 							</div>
 						</td>
 						<td>
 							<!-- 가격 -->
 							<div>
-								<span class="cart_span text-center" >₩${cart.price} </span>
-								<span class="pd-text" id="totalPrice${status.index}">₩${cart.price}</span> 
+								<input type="hidden" value="${cart.price}" id="c-input-price${status.index}"/>
+								<span class="pd-text">₩<span id="c-span-totalprice${status.index}">${cart.price}</span></span> 
 							</div> 
 						</td>
 						<td>
@@ -387,7 +381,7 @@
 					
 					<tr class="cart-table-option" id="option" style="display:none;">
 						<td></td>
-						<td colspan="3" class="c-td-option" >
+						<td class="c-td-option" >
 							<div>
 								<a href="#">
 									<img src="${cart.img1}" alt="" class="cart_product_img" id="option-img" />
@@ -404,13 +398,15 @@
 											</span>
 									</span>
 								</a>
-								<div class="mt-2">
-									<div>
-										<span class="mr-2">color</span>  <span id="color_span"></span>
-									</div>
-									<div>
-										<span class="mr-3">size</span>  <span id="size_span"></span>
-									</div>
+							</div>
+						</td>
+						<td colspan="2" class="c-td-option">
+							<div class="mt-2">
+								<div>
+									<span class="mr-2">color</span>  <span id="color_span"></span>
+								</div>
+								<div>
+									<span class="mr-3">size</span>  <span id="size_span"></span>
 								</div>
 							</div>
 						</td>
