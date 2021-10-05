@@ -4261,9 +4261,11 @@ input[type="button"].btn-block {
 
 .nav-tabs .nav-link {
   margin-bottom: -1px;
-  border: 1px solid transparent;
+ border: 1px solid transparent;
   border-top-left-radius: 0.25rem;
   border-top-right-radius: 0.25rem;
+  font-size: 15px;
+  text-align: center;
 }
 
 .nav-tabs .nav-link:hover, .nav-tabs .nav-link:focus {
