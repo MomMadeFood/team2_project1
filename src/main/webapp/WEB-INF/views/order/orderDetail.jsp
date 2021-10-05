@@ -58,7 +58,7 @@
 									style="width: 98px; height: 98px;">
 	                  </div>
 	                  <div style="text-align:left; margin-left:20px;">
-	                    <a style="color:black;" href="#" >
+	                    <a style="color:black;" href="/product/productDetail?no=${productList[status.index].productDetailNo}" >
 	                      ${productList[status.index].brand}</br>
 	                      ${productList[status.index].name}
 	                    </a>
