@@ -26,83 +26,49 @@
 		  </ul>
 		  <div class="tab-content mt-5 d-flex" id="myTabContent">
 		      <div class="tab-pane fade show active" id="brand" role="tabpanel" aria-labelledby="brand-coupon-tab" style="width:100%">
-		     	<div class="card ml-2 mr-2 coupon-item">
-			  	  <img height="142px" src="http://www.thehandsome.com/medias/systemhomme.jpg?context=bWFzdGVyfGltYWdlc3wxNjkzNjR8aW1hZ2UvanBlZ3xpbWFnZXMvaDgwL2gwNi84OTcwMDY3NDQzNzQyLmpwZ3wzNGIzMDI2YjNlNDc5MTk4OGJhYzMxYzZkMTJiYjhmOTQ1ZDQyM2ZlNmY4ODcxZmRiYTc0M2VmMmM0ZThkNTE5" class="card-img-top" alt="...">
-				  <div class="card-body">
-				    <h5 class="card-title">SYSTEM HOMME</h5>
-				    <p class="card-text">
-				    	<b>15% 할인 쿠폰</b> <br/>
-				    	30만원 제품 이상
-				    </p>
-				    <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+		     	<c:forEach items="${brandCouponList}" var="brandCoupon">
+		     	  <div class="card coupon-item">
+			  	    <img height="142px" src="${brandCoupon.img}" class="card-img-top" alt="...">
+				   <div class="card-body">
+				      <h5 class="card-title">${brandCoupon.title}</h5>
+				      <p class="card-text">
+				    	  <b>${brandCoupon.discount}<c:if test="${brandCoupon.discountType==1}">% </c:if><c:if test="${brandCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
+				      	  ${brandCoupon.content}
+				      </p>
+				      <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				    </div>
 				  </div>
-				</div>
-				<div class="card mr-2 coupon-item">
-				  <img src="http://www.thehandsome.com/medias/1111111111pc-TOP-fourm-the-store0915.jpg?context=bWFzdGVyfGltYWdlc3wxNTgzNzV8aW1hZ2UvanBlZ3xpbWFnZXMvaGUwL2hmZS85MjM3MDI1NTg3MjMwLmpwZ3xkN2U1YWJlN2JhOTQ0YjFiMjFiYmFjM2NkYmFiMmQ4NzFiOGU5MjFiM2UyYzg5ZDdkZThjYjM0MmE0NTZmYzhm" class="card-img-top" alt="...">
-				  <div class="card-body">
-				    <h5 class="card-title">FOURM STUDIO</h5>
-					 <p class="card-text">
-				    	<b>3만원 할인 쿠폰</b><br/>
-				    	40만원 제품 이상
-				    </p>				    
-				    <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
-				  </div>
-				</div>
-				<div class="card coupon-item">
-				  <img src="http://www.thehandsome.com/medias/-.jpg?context=bWFzdGVyfGltYWdlc3w0ODQwMjh8aW1hZ2UvanBlZ3xpbWFnZXMvaDllL2gzYy85MjM5Nzg3MjQxNTAyLmpwZ3xmMmEzZWFiYzcwMzNhODdhNzA0ZDYwODkxN2I4ZTE0NDc4ZDFhMzYwYjllMmJlZWNiMGFmNTIzMzJiNjc0Njc5" class="card-img-top" alt="...">
-				  <div class="card-body">
-				    <h5 class="card-title">the CASHMERE</h5>
-				    <p>
-				      <b>10% 할인 쿠폰</b><br/>
-				      20만원 제품 이상
-			   		 </p>
-				    <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
-				  </div>
-				</div>
+				</c:forEach>
 			  </div>
-		      <div class="tab-pane fade" id="welcome" role="tabpanel" aria-labelledby="welcome-coupon-tab">
+		      <div class="tab-pane fade" id="welcome" role="tabpanel" aria-labelledby="welcome-coupon-tab" style="width:100%">
+		      	<c:forEach items="${welcomeCouponList}" var="welcomeCoupon">
+		     	  <div class="card coupon-item">
+			  	    <img height="142px" src="${welcomeCoupon.img}" class="card-img-top" alt="...">
+				   <div class="card-body">
+				      <h5 class="card-title" style="font-weight:800">${welcomeCoupon.title}</h5>
+				      <p class="card-text">
+				    	  <b>${welcomeCoupon.discount}<c:if test="${welcomeCoupon.discountType==1}">% </c:if><c:if test="${welcomeCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
+				      	  ${welcomeCoupon.content}
+				      </p>
+				      <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				    </div>
+				  </div>
+				</c:forEach>
 			  </div>
-		      <div class="tab-pane fade" id="event" role="tabpanel" aria-labelledby="event-coupon-tab">
-				<div class="d-flex" style="margin:0px auto; width:990px;">
-		       	  <div style="width:33%;">
-		            <div id="c1" class="coupon">
-		       		  <div style="margin: 0px auto;">
-	       			    <p style="font-size: 30px;">15:30 OPEN</p>
-	       		      </div>
-	       		    </div>
-		       	    <div style="margin-top: 20px;">
-		       	      <div style="margin: 0px auto; width:100px">
-	       		        <button type="button" class="btn btn-secondary" disabled>준비중</button>
-	       		      </div>
-	       		    </div>
-	       		  </div>
-		          <div style="width:33%;">
-		            <div id="c2" class="coupon">
-		        	  <div style="margin: 0px auto;">	
-		        		<span id="my-time1" style=" color:blue;font-size: 30px; font-weight: bold;"></span> 
-		        		<span  id ="my-time3" style="color:blue; font-size: 30px;">:</span> 
-		        		<span id="my-time2" style="color:blue; font-size: 30px; font-weight: bold;" ></span>
-		        	  </div>
-		        	</div>
-		        	<div style="margin-top: 20px;">
-		        	  <div style="margin: 0px auto; width:100px">
-		        	    <button type="button" id="my-btn" class="btn btn-secondary" onClick="clickBtn()"  disabled>준비중</button>
-		              </div>
-		            </div>
-		          </div>
-		          <div style="width:33%;">
-		            <div id="c3" class="coupon">
-		              <div style="margin: 0px auto;">
-		        	    <p style="font-size: 30px;">17:30 OPEN</p>
-	     		      </div>
-	       		    </div>
-	       		    <div style="margin-top: 20px;">
-	        	      <div style="margin: 0px auto; width:100px">
-		                <button type="button" class="btn btn-secondary" disabled>준비중</button>
-		              </div>
-		            </div>
-		          </div>
-		        </div>
+		      <div class="tab-pane fade" id="event" role="tabpanel" aria-labelledby="event-coupon-tab" style="width:100%">
+				<c:forEach items="${eventCouponList}" var="eventCoupon">
+		     	  <div class="card coupon-item" style="height: 350px;">
+			  	    <img height="160px" src="${eventCoupon.img}" class="card-img-top" alt="...">
+				   <div class="card-body">
+				      <h5 class="card-title" style="font-weight:800">${eventCoupon.title}</h5>
+				      <p class="card-text">
+				    	  <b>${eventCoupon.discount}<c:if test="${eventCoupon.discountType==1}">% </c:if><c:if test="${eventCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
+				      	  ${eventCoupon.content}
+				      </p>
+				      <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				    </div>
+				  </div>
+				</c:forEach>
 			  </div>
 		  </div>
   	    </div>
