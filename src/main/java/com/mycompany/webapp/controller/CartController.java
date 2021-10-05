@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -128,6 +129,58 @@ public class CartController {
 		cartDTO.setPsize(size);
 		cartDTO.setMemberId(principal.getName());
 		cartService.deleteCart(cartDTO);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
+	
+	
+	@PostMapping(value="/deleteCarts",  produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String deleteCarts(
+			String jsonData,
+			Principal principal) {
+		//pdsno : 제품번호_색상_사이즈 형식 코드
+		logger.info("실행");
+		//StringTokenizer st;
+		
+		CartDTO cartDTO = new CartDTO();
+		cartDTO.setMemberId(principal.getName());
+		
+		
+		
+		//for(String p : jsonData) {
+			logger.info(jsonData);
+			/*
+			 * st = new StringTokenizer(p, "_");
+			 * 
+			 * cartDTO.setProductDetailNo(st.nextToken() + "_" + st.countTokens());
+			 * cartDTO.setPsize(st.nextToken());
+			 * 
+			 * cartService.deleteCart(cartDTO);
+			 */
+		//}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
+	
+	
+	@PostMapping(value="/updateCart", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateCart(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		logger.info("실행");
+		
+		cartDTO.setMemberId(principal.getName());
+		logger.info(cartDTO.toString());
+		
+		cartService.updateCart(cartDTO);
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
