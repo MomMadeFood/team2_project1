@@ -592,8 +592,10 @@
 		}).done((data)=>{
 			if(data.result=="success"){
 				location.href="/order/orderList";
+			}else if(data.result=="fail"){
+				location.href="/";
 			}else{
-				console.log("------");
+				alert(data.result+"의 재고가 부족합니다.");
 			}
 		});
 		
