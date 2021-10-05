@@ -31,7 +31,12 @@ public class ProductController {
 	
 	@Resource
 	private ProductDetailService productDetailService;
-	@Resource private CartService cartService;
+	
+	@Resource 
+	private CartService cartService;
+	
+	@Resource
+	private ProductService productService;
 	
 	@RequestMapping("/productDetail")
 	public String productDetail(String no, Model model) {
@@ -73,9 +78,12 @@ public class ProductController {
 			CartDTO cartDTO
 			) {
 		cartDTO.setMemberId(principal.getName());
-	
-	@Resource
-	private ProductService productService;
+		
+		cartService.setCart(cartDTO);
+		
+		return "redirect:/cart";
+		
+	}
 	
 		@RequestMapping("/productList")
 		public String productList(Model model) {
@@ -87,11 +95,7 @@ public class ProductController {
 			return "product/productList";
 		}
 		
-		cartService.setCart(cartDTO);
-		
-		return "redirect:/cart";
 	}
-}
 
 
 
