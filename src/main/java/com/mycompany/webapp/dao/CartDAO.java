@@ -17,4 +17,17 @@ public interface CartDAO {
 	List<ProductDTO> selectCartsById(String id);
 	
 	void insertCart(CartDTO cartDTO);
+	
+	/**
+	 * 카트에 담겨있는 품목의 수량을 조회
+	 * @param cartDTO
+	 * @return amount
+	 */
+	int selectAmountByCart(CartDTO cartDTO);
+	
+	/**
+	 * 카트에 담겨있는 품목의 수량을 수정
+	 * @param cartDTO
+	 */
+	void updateAmountByCart(CartDTO cartDTO);
 }

@@ -76,7 +76,8 @@ public class ProductController {
 			CartDTO cartDTO
 			) {
 		cartDTO.setMemberId(principal.getName());
-		cartService.insertCart(cartDTO);
+		
+		cartService.setCart(cartDTO);
 		
 		return "redirect:/cart";
 	}

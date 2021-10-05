@@ -83,8 +83,14 @@ public class CartService {
 		return orderList;
 	}
 	
-	public void insertCart(CartDTO cartDTO) {
-		cartDAO.insertCart(cartDTO);
+	public void setCart(CartDTO cartDTO) {
+		int amount = cartDAO.selectAmountByCart(cartDTO);
+		
+		if(amount > 0) {
+			cartDTO.setAmount(cartDTO.getAmount()+amount);
+			cartDAO.updateAmountByCart(cartDTO);
+		} else {
+			cartDAO.insertCart(cartDTO);
+		}
 	}
-
 }
