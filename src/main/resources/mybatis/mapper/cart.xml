@@ -27,6 +27,10 @@
  	SET amount = #{amount}
  	WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
  </update>
+ 
+ <delete id="deleteCart" parameterType="cart">
+ 	DELETE FROM cart WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
+ </delete>
 
 
 </mapper>

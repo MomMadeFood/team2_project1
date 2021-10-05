@@ -75,7 +75,7 @@ public class CartController {
 		return "redirect:/order/orderForm";
 	}
 	
-	@RequestMapping(value="/optionColor", produces="aplication/json; charset=UTF-8")
+	@RequestMapping(value="/optionColor", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String cartOptionColor(String pno) {
 		List<ProductColorDTO> colorList = cartService.getCartOptionColor(pno);
@@ -87,7 +87,7 @@ public class CartController {
 	}
 	
 	
-	@RequestMapping(value="/optionSizePdno", produces="aplication/json; charset=UTF-8")
+	@RequestMapping(value="/optionSizePdno", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String cartOptionSize(String pdno) {
 		JSONObject result = new JSONObject();
@@ -102,7 +102,7 @@ public class CartController {
 	}
 	
 	
-	@RequestMapping(value="/optionSizePno", produces="aplication/json; charset=UTF-8")
+	@RequestMapping(value="/optionSizePno", produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String cartOptionSize(String pno, String color) {
 		JSONObject result = new JSONObject();
@@ -117,6 +117,22 @@ public class CartController {
 	}
 	
 	
-	
+	@PostMapping(value="/deleteOneCart",  produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String deleteOneCart(
+			String pdno, String size,
+			Principal principal) {
+		logger.info("실행");
+		CartDTO cartDTO = new CartDTO();
+		cartDTO.setProductDetailNo(pdno);
+		cartDTO.setPsize(size);
+		cartDTO.setMemberId(principal.getName());
+		cartService.deleteCart(cartDTO);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
 
 }  
