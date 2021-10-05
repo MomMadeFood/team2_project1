@@ -36,60 +36,23 @@
 							</tr>
 						</thead>
 						<tbody>
-             				<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">TH2BAWJM311M_KK</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/TH/2B/FW/TH2BAWJM311M_KK_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">TIME HOMME</br> 퀼티드 칼라리스 점퍼
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">BK</p> / size : <p class="detail-size">100</p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td  style="vertical-align: middle;"><span class="detail-price">690000</span>₩</td>
-							</tr>
-							 <tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">TH2BBKPC022M_NY</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/TH/2B/FW/TH2BBKPC022M_NY_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">TIME HOMME</br> 캐시미어 블렌드 니트 팬츠
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">NY</p> / size : <p class="detail-size">82</p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;"><span class="detail-price">365000</span>₩</td>
-							</tr>
-							             				<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">YS2B9WSH003WAC_IV</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/YS/2B/FW/YS2B9WSH003WAC_IV_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">TIME HOMME</br> [ALEXA CHUNG] 플로럴 셔츠
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">IV</p> / size : <p class="detail-size">82</p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;"><span class="detail-price">438000</span>₩</td>
-							</tr>
-            <c:forEach var="order" items="${orderList}" varStatus="status">
-             <tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">${order.productDetailNo}</td>
-								<td class="d-flex"><img src="${order.img1}" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">${order.brand}</br> ${order.name}
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">${order.colorCode}</p> / size : <p class="detail-size">${order.psize} </p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${order.amount}</td>
-								<td class="detail-price" style="vertical-align: middle;">${order.price}₩</td>
-							</tr>
-						</c:forEach>
+            				<c:forEach var="product" items="${productList}" varStatus="status">
+	             				<tr style="text-align: center; height: 132px;">
+									<td class="detail-id" style="display:none">${product.productDetailNo}</td>
+									<td class="d-flex"><img src="${product.img1}" alt=""
+										style="width: 98px; height: 98px;">
+										<div style="text-align: left; margin-left: 20px;">
+											<a style="color: black;" href="#">${product.brand}</br> ${product.name}
+											</a>
+											<div style="display:flex">
+											 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
+											</div>
+										</div></td>
+									<td
+										class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
+									<td style="vertical-align: middle;">₩<span class="detail-price" ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 					<div style="margin-top: 40px;">
@@ -356,7 +319,7 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>상품 합계</div>
-										<div><span id="prod-price">1,795,000</span>₩</div>
+										<div><span id="prod-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
@@ -375,7 +338,7 @@
 									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
-										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price">1,795,000</span>₩</div>
+										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
 								</div>
 							</div>
 						</div>
@@ -597,8 +560,7 @@
 			 
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
-			 console.log(orderList[index].querySelector(".detail-price").innerHTML);
-			 let price = parseInt(orderList[index].querySelector(".detail-price").innerHTML);
+			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
 			 let state = 2;
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);

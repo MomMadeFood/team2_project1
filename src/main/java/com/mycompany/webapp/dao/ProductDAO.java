@@ -33,10 +33,12 @@ public interface ProductDAO {
 	 * @param productDetailNo, psize
 	 * @return ProductDTO
 	 */
-	ProductDTO selectProductById(String productDetailNo);
+	public ProductDTO selectProductById(ProductDTO productDTO);
 	
 	//	부모 카테고리 id로 해당하는 상품 번호 조회
 	public List<ProductCategoryDTO> selectProductListByPCId(String parentCategoryId);
+	
+
 	
 }
 

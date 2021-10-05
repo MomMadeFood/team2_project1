@@ -60,8 +60,8 @@
 	
 		
 	
-	<select id="selectProductById" parameterType="string" resultType="product">
-		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = SUBSTR(pd.PRODUCT_DETAIL_NO, 1,12)
+	<select id="selectProductById" parameterType="product" resultType="product">
+		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = #{productNo}
 	</select>
 	
 	<select id="selectProductListByPCId" parameterType="string" resultType="productCategory">
@@ -75,4 +75,6 @@
 		WHERE c.product_no = d.product_no AND rownum <= 12
 			]]>
 	</select>
+	
+	
 </mapper>
