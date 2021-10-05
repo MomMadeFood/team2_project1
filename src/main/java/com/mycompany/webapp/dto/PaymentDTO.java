@@ -7,4 +7,6 @@ public class PaymentDTO {
 	private String paymentType;
 	private String orderNo;
 	private int price;
+	private String payAccount;
+	private String company;
 }
