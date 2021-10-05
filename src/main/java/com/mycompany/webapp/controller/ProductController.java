@@ -1,5 +1,6 @@
 package com.mycompany.webapp.controller;
 
+import java.security.Principal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -7,20 +8,27 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.ProductDetailService;
 
 @Controller
 @RequestMapping("/product")
 public class ProductController {
+	Logger logger = LoggerFactory.getLogger(ProductController.class);
 	
 	@Resource
 	private ProductDetailService productDetailService;
+	@Resource private CartService cartService;
 	
 	@RequestMapping("/productDetail")
 	public String productDetail(String no, Model model) {
@@ -34,7 +42,7 @@ public class ProductController {
 			if(temp.getProductDetailNo().equals(no)) {
 				model.addAttribute("productDetail", temp);
 				System.out.println(temp);
-				break;
+				break; 
 			}
 		}
 
@@ -55,9 +63,38 @@ public class ProductController {
 			return "product/productDetail";
 		}
 		
-		@RequestMapping("/productList")
-		public String productList() {
-			return "product/productList";
-		}
+	@RequestMapping("/productList")
+	public String productList() {
+		return "product/productList";
+	}
+	
+	
+	@RequestMapping("/cart")
+	public String cart(
+			HttpServletRequest request,
+			Principal principal,
+			CartDTO cartDTO
+			) {
+		cartDTO.setMemberId(principal.getName());
+		cartService.insertCart(cartDTO);
 		
+		return "redirect:/cart";
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

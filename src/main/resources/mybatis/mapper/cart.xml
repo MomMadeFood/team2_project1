@@ -10,6 +10,11 @@
 	WHERE c.product_detail_no = pd.product_detail_no AND p.product_no = pd.product_no
 		AND c.member_id = #{value}
  </select>
+ 
+  <insert id="insertCart" parameterType="cart">
+ 	INSERT INTO cart (member_id, product_detail_no, psize, amount)
+	VALUES (#{memberId}, #{productDetailNo}, #{psize}, #{amount})
+ </insert>
 
 
 </mapper>
