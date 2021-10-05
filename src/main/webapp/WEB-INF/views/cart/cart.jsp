@@ -93,24 +93,13 @@
 			$(document).on("click","input[name='size_option_btn']",function clickSize() {
 				$("#c-span-osize").text($(this).attr('value'));
 			});
-				
-			
-			function cartInit () {
-				let sell_price = document.getElementById('pid_price').value;
-				let amount = document.getElementById('pid_amount');
-				document.getElementById('pid_sum').value =  parseInt(sell_price) * parseInt(amount.value);
-				change();
-			}
 			
 			function reduceSum(index) {
 				let amount = parseInt($("#c-input-pamount"+index).val());
 				
 				if (amount > 1) {
 					amount = amount-1;
-					let price = parseInt($("#c-input-price"+index).val());
-					let total = parseInt($("#c-span-total"+index).text());
 					
-					$("#c-span-total"+index).text(amount * price);
 					$("#c-input-pamount"+index).val(amount);
 				} else {
 					alert("장바구니의 최소 수량은 1입니다")
@@ -120,21 +109,8 @@
 			function increaseSum(index) {
 				let amount = parseInt($("#c-input-pamount"+index).val());
 				
-				let price = parseInt($("#c-input-price"+index).val());
-				let total = parseInt($("#c-span-total"+index).text());
-				
-				$("#c-span-total"+index).text(amount * price);
 				$("#c-input-pamount"+index).val(amount + 1);
 			}
-
-			function change () {
-				let amount = parseInt($("#c-input-pamount"+index).val());
-				
-				let price = parseInt($("#c-input-price"+index).val());
-				let total = parseInt($("#c-span-total"+index).text());
-				
-				$("#c-span-total"+index).text(amount * price);
-			}  
 			
 			function delCart(index, productDetailNo, psize) {
 				let result = confirm("삭제하시겠습니까?");
@@ -156,33 +132,43 @@
 			}
 			
 			function selectRemove() {
-					let result = confirm("삭제하시겠습니까?");
-					if(result) {
-						//JSON 변환
-						let pdsnoList = new Array();
-						let list = $("input:checkbox[name=cart_ck]:checked").each(function(){
-							let p = new Object();
-							p.pdsno = $(this).val();
-							pdsnoList.push(p);
-						});
-						let jsonData = JSON.stringify(pdsnoList);
+				let result = confirm("선택하신 N개의 상품을 삭제하시겠습니까?");
+				if(result) {
+					//JSON 변환
+					let cartList = new Array();
+					$("input:checkbox[name=cart_ck]:checked").each(function(){
+						let cart = new Object();
+						let str =  $(this).attr('value');
+						let strArray = str.split("_");
+				
+						cart.productDetailNo = strArray[0] + "_" + strArray[1];
+						cart.psize = strArray[2];
 						
-						$.ajax({
-							url: "/cart/deleteCarts",
-							type: "POST",
-							data: jsonData,
-							dataType : "json",
-							success: function(data) {
-								if(data.result === "success") {
-									$("#cart-tr-"+index).remove();
-								}
-							},
-							error: function(request,status,error) {
-								console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						cartList.push(cart);
+					});
+					let jsonData = JSON.stringify(cartList);
+					console.log(jsonData);
+					
+					$.ajax({
+						url: "/cart/deleteCarts",
+						type: "POST",
+						data: jsonData,
+						dataType : "json",
+						contentType: 'application/json',
+						success: function(data) {
+							if(data.result === "success") {
+								let list = $("input:checkbox[name=cart_ck]:checked").each(function(){
+									//삭제 성공하면, checked되어있던 tr은 삭제
+									$(this).parent().parent().remove();
+								});
 							}
-						});
-						
-					}
+						},
+						error: function(request,status,error) {
+							console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						}
+					});
+					
+				}
 	         }
 			
 			 function checkData(form) {
@@ -258,15 +244,16 @@
 						contentType: 'application/json',
 						success: function(data) {
 							if(data.result === "success") {
-								alert("수량 변경 저장");
+								let price = parseInt($("#c-input-price"+index).val());
+								$("#c-span-totalprice"+index).text(data.amount * price);
 							}
 						},
 						error: function(request,status,error) {
 							console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
 						}
 					}); 
-				 
 			 }
+			 
 	
 	</script>
 	
@@ -277,7 +264,7 @@
 		</div>
 		<form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart/orderForm">
 		<div>
-			<table class="table table-bordered cart-table" onload="cartInit()">
+			<table class="table table-bordered cart-table">
 				<colgroup>
 					<col style="width: 10px;" />
 					<col />
@@ -349,7 +336,7 @@
 							<div class="justify-content-center">
 								<div class="center">
 									<button class="qty_left" type="button" onclick="reduceSum(${status.index})">-</button>
-									<input type="text" id="c-input-pamount${status.index}" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3" onchange="change();">
+									<input type="text" id="c-input-pamount${status.index}" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3">
 									<button class="qty_right" type="button" onclick="increaseSum(${status.index})">+</button>
 								</div>
 								<!-- //qty_sel -->
@@ -362,7 +349,7 @@
 							<!-- 가격 -->
 							<div>
 								<input type="hidden" value="${cart.price}" id="c-input-price${status.index}"/>
-								<span class="pd-text">₩<span id="c-span-totalprice${status.index}">${cart.price}</span></span> 
+								<span class="pd-text">₩<span id="c-span-totalprice${status.index}">${cart.price * cart.amount}</span></span> 
 							</div> 
 						</td>
 						<td>
