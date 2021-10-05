@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.PaymentDAO">
 	<insert id="insertPayment" parameterType="payment">
-		INSERT INTO payment(payment_type,order_no,price)values(#{paymentType},#{orderNo},#{price})
+		INSERT INTO payment(payment_type,order_no,price,company,pay_account)values(#{paymentType},#{orderNo},#{price},#{company},#{payAccount})
 	</insert>
 	
 	<select id="selectPaymentsById" parameterType="string" resultType="payment">

@@ -36,6 +36,45 @@
 							</tr>
 						</thead>
 						<tbody>
+             				<tr style="text-align: center; height: 132px;">
+								<td class="detail-id" style="display:none">TH2BAWJM311M_KK</td>
+								<td class="d-flex"><img src="http://newmedia.thehandsome.com/TH/2B/FW/TH2BAWJM311M_KK_W01.jpg/dims/resize/684x1032/" alt=""
+									style="width: 98px; height: 98px;">
+									<div style="text-align: left; margin-left: 20px;">
+										<a style="color: black;" href="#">TIME HOMME</br> 퀼티드 칼라리스 점퍼
+										</a>
+										<p style="margin-top: 10px;">color : <p class="detail-color">BK</p> / size : <p class="detail-size">100</p>
+									</div></td>
+								<td
+									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
+								<td  style="vertical-align: middle;"><span class="detail-price">690000</span>₩</td>
+							</tr>
+							 <tr style="text-align: center; height: 132px;">
+								<td class="detail-id" style="display:none">TH2BBKPC022M_NY</td>
+								<td class="d-flex"><img src="http://newmedia.thehandsome.com/TH/2B/FW/TH2BBKPC022M_NY_W01.jpg/dims/resize/684x1032/" alt=""
+									style="width: 98px; height: 98px;">
+									<div style="text-align: left; margin-left: 20px;">
+										<a style="color: black;" href="#">TIME HOMME</br> 캐시미어 블렌드 니트 팬츠
+										</a>
+										<p style="margin-top: 10px;">color : <p class="detail-color">NY</p> / size : <p class="detail-size">82</p>
+									</div></td>
+								<td
+									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
+								<td style="vertical-align: middle;"><span class="detail-price">365000</span>₩</td>
+							</tr>
+							             				<tr style="text-align: center; height: 132px;">
+								<td class="detail-id" style="display:none">YS2B9WSH003WAC_IV</td>
+								<td class="d-flex"><img src="http://newmedia.thehandsome.com/YS/2B/FW/YS2B9WSH003WAC_IV_W01.jpg/dims/resize/684x1032/" alt=""
+									style="width: 98px; height: 98px;">
+									<div style="text-align: left; margin-left: 20px;">
+										<a style="color: black;" href="#">TIME HOMME</br> [ALEXA CHUNG] 플로럴 셔츠
+										</a>
+										<p style="margin-top: 10px;">color : <p class="detail-color">IV</p> / size : <p class="detail-size">82</p>
+									</div></td>
+								<td
+									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
+								<td style="vertical-align: middle;"><span class="detail-price">438000</span>₩</td>
+							</tr>
             <c:forEach var="order" items="${orderList}" varStatus="status">
              <tr style="text-align: center; height: 132px;">
 								<td class="detail-id" style="display:none">${order.productDetailNo}</td>
@@ -141,18 +180,17 @@
 										<div
 											style="display: inline-block; margin-left: 8px; margin-right: 8px">-</div>
 										<input id="hp2" name="hp2" title="휴대폰 가운데자리" type="text"
-										maxLength=4 style="width: 80px" value="1234">
+										maxLength=4 style="width: 80px" value="${memberDTO.phone.substring(4,8)}">
 									<div
 											style="display: inline-block; margin-left: 8px; margin-right: 8px">-</div>
 										<input id="hp3" name="hp3" title="휴대폰 마지막자리" type="text"
-										maxLength=4 style="width: 80px" value="5370"></td>
+										maxLength=4 style="width: 80px" value="${memberDTO.phone.substring(9,13)}"></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">연락처</td>
 									<td><select name="ph1" id="ph1" title="연락처 앞자리"
 										style="width: 80px">
-											<option value="">선택</option>
 											<option value="02">02</option>
 											<option value="031">031</option>
 											<option value="032">032</option>
@@ -192,7 +230,8 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">수령인 E-mail</td>
 									<td>
-	                      			<input id="rec-email1" name="rec-email1" title="이메일앞자리" type="text" style="width:120px" value="kjw1234"><div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="rec-email2" name="rec-email2" title="이메일주소" type="text" style="width:120px">
+	                      			<input id="rec-email1" name="rec-email1" title="이메일앞자리" type="text" style="width:120px" value="${memberDTO.email.substring(0,fn:indexOf(memberDTO.email,'@'))}">
+	                      			<div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="rec-email2"name="rec-email2" title="이메일주소" type="text" style="width:120px">
 	                      			<select title="이메일 계정" id="emailSel" onchange="emailChange()">
 											<option value="">직접입력</option>
 											<option value="naver.com">naver.com</option>
@@ -245,19 +284,62 @@
 								<div style="width: 20%; background-color: #F5F5F5; display: flex; align-items: center;">
 									<p style="font-weight: bold;margin-left:15px">결제수단 선택</p>
 								</div>
-								<div
-									style="height: 100%; width: 80%; display: flex; padding: 10px">
-									<div style="margin-top: 3px;" class="form-check">
-										<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
-											id="credit"> <label style="margin-right: 20px;"
-											class="form-check-label" for="credit"> 신용카드 </label>
+								<div style="height: 100%; width: 80%;">
+									<div
+										style="height: 100%; display: flex; padding: 10px;">
+										<div style="margin-top: 3px;" class="form-check">
+											<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
+												id="credit" checked onClick="payChange()"> <label style="margin-right: 20px;"
+												class="form-check-label" for="credit" > 신용카드 </label>
+										</div>
+										<div style="margin-top: 3px;" class="form-check">
+											<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
+												id="transfer" onClick="payChange()"> <label class="form-check-label"
+												for="transfer" > 계좌이체 </label>
+										</div>
 									</div>
-									<div style="margin-top: 3px;" class="form-check">
-										<input class="form-check-input payment-way" type="radio" name="purchaseCheck"
-											id="transfer" checked> <label class="form-check-label"
-											for="transfer"> 실시간 계좌이체 </label>
+									<div class="card-box" style="height:200px; padding:30px; border-top: 1px solid #cccccc;display:flex">
+										<button onClick="clickLeft()">left</button>
+										<c:forEach items="${cardList}" var="card" varStatus="status">
+											<div class=" card									
+											<c:if test="${status.index eq 0}">
+	    										show
+											</c:if>
+											"
+											style=" height:140px; width:300px; margin:0px auto; border:1px solid #cccccc; background-color: #F5F5F5;											
+											<c:if test="${status.index != 0}">
+	    										display:none
+											</c:if>
+											<c:if test="${status.index eq 0}">
+	    										display:block
+											</c:if>
+											">
+												<div style="height:70%; border-bottom:1px solid #cccccc;padding-left:5px">
+													<p id="card-company">${card.company}</p>
+													<fmt:formatDate var="resultRegDt" value="${card.expireDate}" pattern="yyyy-MM-dd"/>
+													<div style="margin-top:45px">
+														<p>유효기간: ${resultRegDt}</p>
+													</div>
+												</div>
+												<div style="height:30%; texg-align:center;padding-top:10px;padding-left:5px">카드번호: <span id="card-no">${card.cardNo}</span></div>
+											</div>
+
+										</c:forEach>
+										<button onClick="clickRight()">right</button>
 									</div>
-									
+									<div class="transfer-box" style="height:100px; padding:30px; border-top: 1px solid #cccccc;display:none; justify-content:space-between">
+										<div style="display:flex">
+											<p style="line-height: 40px;margin-right:10px">가상계좌: </p>
+											<select name="accounts" id="account-select" onChange="accountSelected()">
+												<c:forEach items="${virtureAccountList}" var="virtureAccount">
+													<option value="${virtureAccount.accountNo}">${virtureAccount.company}</option>
+												</c:forEach>
+											</select>
+										</div>
+										<input style="width:200px;" id="account-input" readonly>
+										
+										</input>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -328,6 +410,59 @@
 		</div>
 </div>
 <script>
+
+	function accountSelected(){
+		let accountNum = $("#account-select option:selected").val();
+		$("#account-input").val(accountNum);
+	}
+
+
+	function payChange(){
+		console.log(event.currentTarget.id);
+		cardBox = document.querySelector(".card-box");
+		transferBox = document.querySelector(".transfer-box");
+		if(event.currentTarget.id==="transfer"){
+			cardBox.style.display="none";
+			transferBox.style.display="flex";
+		}else{
+			cardBox.style.display="flex";
+			transferBox.style.display="none";
+		}
+		console.log("-----")
+	}
+
+	function clickRight(){
+		//console.log("------");
+		let showEle = document.querySelector(".show");
+		console.log(showEle.classList.contains("card"))
+		if(showEle.nextElementSibling.classList.contains("card")){
+			
+			//console.log(showEle.nextElementSibling.nextElementSibling);
+			
+
+			showEle.nextElementSibling.classList.add("show");
+			showEle.classList.remove("show");
+			showEle.style.display="none";
+			showEle.nextElementSibling.style.display="block";			
+		}
+
+		
+		
+	}
+	
+	function clickLeft(){
+		let showEle = document.querySelector(".show");
+		if(showEle.previousElementSibling.classList.contains("card")){
+			
+			//console.log(showEle.nextElementSibling.nextElementSibling);
+			
+	
+			showEle.previousElementSibling.classList.add("show");
+			showEle.classList.remove("show");
+			showEle.style.display="none";
+			showEle.previousElementSibling.style.display="block";
+		}
+	}
 
 	function convertNum(price){
 		let temp = "";
@@ -410,18 +545,31 @@
 		let addr = $("#addr").val();
 		let detailAddr = $("#detail-addr").val();
 		let paymentType = "";
+		let payAccount = "";
+		let company = "";
 		let point = discountPrice;
 		let zipCode = 12435;
 		
 		
-		
+		console.log(orderList);
 		let radios = document.querySelectorAll(".payment-way");
 		
 		console.log(radios);
 		for(radio of radios){
 			console.log(radio.id);
 			if(radio.checked){
-				paymentType = radio.id;	
+				if(radio.id=="transfer"){
+					paymentType = "계좌이체";
+					company = $("#account-select option:selected").text();;
+					payAccount = $("#account-select").val();	
+					
+				}else{
+					paymentType = "신용카드";
+					console.log(document.querySelector(".show"));
+					company = document.querySelector(".show  #card-company").innerHTML;
+					payAccount = document.querySelector(".show  #card-no").innerHTML;
+				}
+					
 			}
 		}
 		
@@ -449,6 +597,7 @@
 			 
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
+			 console.log(orderList[index].querySelector(".detail-price").innerHTML);
 			 let price = parseInt(orderList[index].querySelector(".detail-price").innerHTML);
 			 let state = 2;
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
@@ -463,14 +612,16 @@
 		
 		data['paymentList[' + 0 +'].paymentType'] = paymentType;
 		data['paymentList[' + 0 +'].price'] = priceTotal-discountPrice;
+		data['paymentList[' + 0 +'].payAccount'] = payAccount;
+		data['paymentList[' + 0 +'].company'] = company;
 		
 		if(point>0){
-			data['paymentList[' + 1 +'].paymentType'] = "point";
+			data['paymentList[' + 1 +'].paymentType'] = "포인트";
 			data['paymentList[' + 1 +'].price'] = point;
 		}
 		console.log(data);
 		
-
+		
 		
 		$.ajax({
 			type:"POST",
@@ -483,6 +634,7 @@
 				console.log("------");
 			}
 		});
+		
 	}
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

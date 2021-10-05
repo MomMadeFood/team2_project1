@@ -21,7 +21,9 @@
             <p  style="font-weight:bold; font-size:15px">주문번호 : </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">${mOrderDTO.orderNo}</p>
           </div>
           <div style="width: 30%;display:flex; padding:18px;align-items: center;">
-            <p style="font-size:15px">주문일시: ${mOrderDTO.orderDate}</p>
+  			<p style="font-size:15px">주문일시:<fmt:formatDate var="resultRegDt" value="${mOrderDTO.orderDate}" pattern="yyyy-MM-dd HH:mm"/>
+				${resultRegDt}
+			</p>
           </div>
         </div>
         <div style="display:flex; justify-content: space-between ;margin-top:40px">
@@ -66,8 +68,29 @@
 	              </td>
 	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p> ${orderDetail.amount}</p></td>
 	              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price}" pattern="#,###"/></p></td>
-	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price}" pattern="#,###"/></p></td>
-	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.state}</p></td>
+	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price - mOrderDTO.priceDiscount/fn:length(productList)}" pattern="#,###"/></p></td>
+	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
+	              	<p>
+	              		<c:if test="${orderDetail.state==1}">
+	              			입금대기중
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==2}">
+	              			주문완료
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==3}">
+	              			 배송준비중
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==4}">
+	              			 배송중
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==5}">
+	              			 배송완료
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==6}">
+	              			 주문취소
+	              		</c:if>           		
+	              	</p>
+	              </td>
 	            </tr>         	
           	</c:forEach>
 
@@ -97,17 +120,18 @@
             <tr style="height:20px;">
               <td style=" vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal+mOrderDTO.priceDiscount}" pattern="#,###"/></p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩0</p></td>
-              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩$0</p></td>
+              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩0</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal+mOrderDTO.priceDiscount}" pattern="#,###"/></p></td>
             </tr>
             <tr style="height:80px;">
               <td colspan='2' style="vertical-align: middle; text-align:right; "></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right">
                 <div style="display:flex; justify-content: space-between;"><p>쿠폰할인</p><p>- ₩ 0</p></div>
-                <div style="display:flex; justify-content: space-between;"><p>플러스포인트쿠폰</p><p>- ₩ 0</p></div>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
-                <div style="display:flex; justify-content: space-between;"><p>신용카드</p><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal}" pattern="#,###"/></p></div>
-                <div style="display:flex; justify-content: space-between;"><p>한섬마일리지</p><p>0M</p></div>
+                <div style="display:flex; justify-content: space-between;">
+                	<p>${paymentList[0].paymentType}</p>
+                	<p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal}" pattern="#,###"/></p>
+                </div>
                 <div style="display:flex; justify-content: space-between;"><p>H.Point</p><p><fmt:formatNumber value="${mOrderDTO.priceDiscount}" pattern="#,###"/>P</p></div>
               </td>
             </tr>
@@ -117,7 +141,12 @@
           <div style="display:flex; height: 33%; border-top:1px black solid;border-bottom: 1px solid #cccccc">
             <div style=" width:20%; background-color: #F5F5F5;padding-left:20px;padding-top:10px"><p style="font-weight:bold">주 결제수단</p></div>
             <div style=" width:80%;padding:10px;">
-              <p>KB 국민카드 (9429-****-****-****)</p>
+              <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
+              	<p>${mOrderDTO.paymentList[0].company} (${mOrderDTO.paymentList[0].payAccount})</p>
+              </c:if>
+              <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
+              	<p>계좌이체: ${mOrderDTO.paymentList[0].company} (${mOrderDTO.paymentList[0].payAccount})</p>
+              </c:if>
             </div>
           </div>
           <div style="display:flex; height: 33%; width:100%; border-bottom: 1px solid #cccccc">
@@ -127,9 +156,21 @@
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;">
-            <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">할부 개월 수</p></div>
+            <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px">
+	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
+	              <p style="font-weight:bold">할부 개월 수</p>
+	           </c:if>            
+ 	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
+	              <p style="font-weight:bold">결제정보</p>
+	           </c:if>               	
+            </div>
             <div style=" width:80%; display:flex; padding:10px">
-              <p>일시불</p>
+	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
+	              <p>일시불</p>
+	           </c:if>  
+ 	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
+	              <p>입금대기</p>
+	           </c:if>  	           
             </div>
           </div>
         </div>

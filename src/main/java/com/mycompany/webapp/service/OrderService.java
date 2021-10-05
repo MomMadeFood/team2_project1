@@ -12,6 +12,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mycompany.webapp.controller.OrderController;
 import com.mycompany.webapp.dao.MOrderDAO;
@@ -25,6 +26,7 @@ import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.exception.NotEnoughtStockException;
 
 @Service
 public class OrderService {
@@ -114,6 +116,8 @@ public class OrderService {
 		return orderDetailDAO.selectOrderListByOrderNo(param);
 	}
 
+	
+	@Transactional
 	public OrderResult insertMOrder(MOrderDTO mOrderDTO) {
 		//try {
 			
@@ -129,6 +133,11 @@ public class OrderService {
 			logger.info("삽입 시작1");
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
 				int updateResult = stockDAO.updateStockByODIdSize(orderDetailDTO);
+				
+				if(updateResult==0) {
+					 throw new NotEnoughtStockException("재고가 충분하지 않습니다.");
+				}
+				
 				logger.info("개수: "+updateResult);
 			}
 			
@@ -156,6 +165,8 @@ public class OrderService {
 			}
 			
 			logger.info("삽입 시작4");
+			
+			
 			// 결제타입을 삽입하는 코드
 			for(PaymentDTO paymentDTO:  paymentList) {
 				paymentDTO.setOrderNo(orderNo);
@@ -166,7 +177,7 @@ public class OrderService {
 			
 
 		//}catch (Exception e) {
-			// TODO: handle exception
+		//	return OrderResult.FAIL_NOT_ENOUGH_STOCK;
 		//}
 		return OrderResult.SUCCESS;
 	}
