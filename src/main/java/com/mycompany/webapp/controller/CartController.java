@@ -187,5 +187,23 @@ public class CartController {
 		String json = jsonObject.toString();
 		return json;
 	}
+	
+	@PostMapping(value="/updateAmount", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateAmount(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		logger.info("실행");
+		
+		cartDTO.setMemberId(principal.getName());
+		logger.info(cartDTO.toString());
+		
+		cartService.updateAmount(cartDTO);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
 
 }  

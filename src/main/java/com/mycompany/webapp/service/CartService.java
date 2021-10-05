@@ -102,4 +102,8 @@ public class CartService {
 	public void updateCart(CartDTO cartDTO) {
 		cartDAO.updateCart(cartDTO);
 	}
+
+	public void updateAmount(CartDTO cartDTO) {
+		cartDAO.updateAmountByCart(cartDTO);
+	}
 }

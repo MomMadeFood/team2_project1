@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.ProductDetailService;
@@ -69,7 +70,8 @@ public class ProductController {
 		model.addAttribute("sizeList", sizeList);
 			return "product/productDetail";
 		}
-		
+	
+	@Secured({"ROLE_USER"})
 	@RequestMapping("/cart")
 	public String cart(
 			HttpServletRequest request,
