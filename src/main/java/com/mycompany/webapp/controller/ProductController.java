@@ -1,6 +1,7 @@
 package com.mycompany.webapp.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +17,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.mycompany.webapp.dto.CategoryDTO;
 import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
@@ -49,7 +49,6 @@ public class ProductController {
 		for(ProductDTO temp : productDetailList) {
 			if(temp.getProductDetailNo().equals(no)) {
 				model.addAttribute("productDetail", temp);
-				System.out.println(temp);
 				break; 
 			}
 		}
@@ -82,34 +81,31 @@ public class ProductController {
 		cartService.setCart(cartDTO);
 		
 		return "redirect:/cart";
-		
 	}
 	
 		@RequestMapping("/productList")
 		public String productList(Model model) {
 			
 			List<ProductCategoryDTO> productList = productService.getProductList("WO01");
-			System.out.println(productList);
 			
 			model.addAttribute("productList", productList);
+
+			Map<String, List<String>> productColorMap = new HashMap<>();
+			
+			for(ProductCategoryDTO product : productList) {
+				if(!productColorMap.containsKey(product.getProductNo())) {
+					List<String> colorList = new ArrayList<>();
+					colorList.add(product.getColorChip());
+					productColorMap.put(product.getProductNo(), colorList);
+				}else {
+					productColorMap.get(product.getProductNo()).add(product.getColorChip());
+				}
+			}
+			model.addAttribute("productColorMap", productColorMap);
+			
+			System.out.println(productList);
+			
 			return "product/productList";
 		}
 		
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
