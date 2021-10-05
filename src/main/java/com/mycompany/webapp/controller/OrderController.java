@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -26,7 +28,6 @@ import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.OrderService.OrderResult;
@@ -43,34 +44,44 @@ public class OrderController {
 	
 	@Resource
 	private MemberService memberService;
-	
-	@Resource
-	private CardService cardService;
 
 	
 	@RequestMapping("/orderForm")
-	public String orderForm(Principal principal,Model model) {
+	public String orderForm(Principal principal,Model model,HttpServletRequest request) {
 		logger.info("실행");
-		Map<String,Object> map = memberService.getMemberInfo(principal.getName());
+		
+		HttpSession session = request.getSession();
+		List<ProductDTO> orderList = (List<ProductDTO>) session.getAttribute("orderList");
+		int totalPrice = 0;
+		
+		
+		
+		Map<String,Object> map = memberService.getMemberOrderInfo(principal.getName(),orderList);
 		MemberDTO memberDTO = (MemberDTO)map.get("memberDTO");
 		List<CardDTO> cardList = (List<CardDTO>)map.get("cardList");
 		List<VirtureAccountDTO> virtureAccountList = (List<VirtureAccountDTO>)map.get("virtureAccountList");
+		List<ProductDTO> productList = (List<ProductDTO>)map.get("productList");
+		
+		
+		for(int i = 0; i < productList.size(); i++) {
+			productList.get(i).setPsize(orderList.get(i).getPsize());
+			productList.get(i).setAmount(orderList.get(i).getAmount());
+			productList.get(i).setPrice(productList.get(i).getPrice()*orderList.get(i).getAmount());
+			totalPrice += productList.get(i).getPrice();
+		}
 		
 		
 		model.addAttribute("memberDTO",memberDTO);
 		model.addAttribute("cardList",cardList);
 		model.addAttribute("virtureAccountList",virtureAccountList);
-
-		for(CardDTO cardDTO :cardList) {
-			System.out.println(cardDTO.getCardNo());
-		}
+		model.addAttribute("productList",productList);
+		model.addAttribute("totalPrice",totalPrice);
 
 		return "order/orderForm";
 	}
 	
 	@RequestMapping("/orderDetail")
 	public String orderDetail(Model model,String orderNo) {
-		
 		Map<String,Object> map = orderService.getMOrder(orderNo);
 		/*
 		MOrderDTO mOrderDTO = (MOrderDTO) map.get("mOrderDTO");
@@ -222,6 +233,8 @@ public class OrderController {
 	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormProc(MOrderDTO mOrderDTO) {
+		
+		System.out.println(mOrderDTO.toString());
 		OrderResult orderResult = orderService.insertMOrder(mOrderDTO);
 		
 		JSONObject jsonObject = new JSONObject();

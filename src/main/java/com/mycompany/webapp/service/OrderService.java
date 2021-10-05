@@ -193,7 +193,10 @@ public class OrderService {
 		mOrderDTO.setPaymentList(paymentDAO.selectPaymentsById(orderNo));
 		
 		for(OrderDetailDTO orderDetail : mOrderDTO.getDetailList()) {
-			productList.add(productDAO.selectProductById(orderDetail.getProductDetailNo()));
+			ProductDTO productDTO = new ProductDTO();
+			productDTO.setProductNo(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-4));
+			productDTO.setProductDetailNo(orderDetail.getProductDetailNo());
+			productList.add(productDAO.selectProductById(productDTO));
 		}
 		mp.put("mOrderDTO", mOrderDTO);
 		mp.put("productList",productList);
