@@ -1,21 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
-	<script type="text/javascript">
-			
-
+	<script type="text/javascript"> 
 			function hideOption()  {
-			  const row = document.getElementById('pid-option');
-			  row.style.display = 'none';
+				$("#option").css("display","none");
 			}
-			
 			
 			//Option창
 			//Color Btn 동적 생성
 			//Option창 이미지 변경
-			function showOption(productNo) {
-				const row = document.getElementById('pid-option');
-				row.style.display = '';
+			function showOption(index, productNo) {
+				$("#cart-tr-"+index).after($("#option")); // 누른 tr 다음에 option tr 넣기
+				$("#option").css("display","");
+				//옵션 이미지를 이미지로 초기화
+				$("#option-img").attr("src", $("#product-img-"+index).attr("src")); 
 				
 				$.ajax({
 					url: "cart/optionColor",
@@ -38,9 +36,12 @@
 							var sizeTag = "";
 							for(var i=0; i<data.sizeList.length; i++) {
 								if(data.sizeList[i].amount > 0) {
-									sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
+									sizeTag += "<label><input type='radio' name='psize' value="+data.sizeList[i].psize+"/><span>"+data.sizeList[i].psize+"</span></label>"; 
+									//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
 								} else {
-									sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize + 매진 +"</a>";
+									//매진 상품
+									sizeTag += "<label><input type='radio' name='psize' value="+data.sizeList[i].psize+" disabled/><span>"+data.sizeList[i].psize+"</span></label>";
+									//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize +  +"</a>";
 								}
 							}
 							$("#size_span").html(sizeTag);
@@ -65,7 +66,8 @@
 						var sizeTag = "";
 						for(var i=0; i<data.sizeList.length; i++) {
 							if(data.sizeList[i].amount > 0) {
-								sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
+                	 			sizeTag += "<label><input type='radio' name='psize' value="+data.sizeList[i].psize+"/><span>"+data.sizeList[i].psize+"</span></label>"; 
+								//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
 							} else {
 								sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize + 매진 +"</a>";
 							}
@@ -90,24 +92,60 @@
 				change();
 			}
 			
-
-			function add () {
-				let sell_price = document.getElementById('pid_price').value;
-				let amount = document.getElementById('pid_amount');
-				let sum = document.getElementById('pid_sum');
-				amount.value ++ ;
-
-				sum.value = parseInt(amount) * parseInt(sell_price);
-			}
-
-			function del () {
-				let sell_price = document.getElementById('pid_price').value;
-				let amount = document.getElementById('pid_amount');
-				let sum = document.getElementById('pid_sum');
-					if (amount.value > 1) {
-						amount.value -- ;
-						sum.value = parseInt(amount) *  parseInt(sell_price);
+			function reduceSum(index) {
+				let sum = parseInt($("input[name=cartDTOList["+index+"].amount]").val());
+				let total = document.querySelector(".pd-price span").innerHTML
+						.substr(1);
+				if (sum > 1) {
+					sum = sum - 1;
+				}
+				$("input[name=cartDTOList["+index+"].amount]").val(sum);
+				let temp = "";
+				for (var i = 0; i < total.length; i++) {
+					if (total.charAt(i) != ',') {
+						temp = temp + total.charAt(i);
 					}
+				}
+				temp = parseInt(temp);
+				temp = temp * sum;
+				let price = String(temp);
+				let ans = "";
+				let cnt = 0;
+				for (var i = price.length - 1; i >= 0; i--) {
+					cnt++;
+					ans = price.charAt(i) + ans;
+					if (i > 0 && cnt % 3 == 0) {
+						ans = "," + ans;
+					}
+				}
+				document.querySelector("#totalPrice"+index).innerHTML = "₩" + ans;
+			}
+			
+			function increaseSum(index) {
+				let sum = parseInt($("input[name=cartDTOList["+index+"].amount]").val());
+				let total = document.querySelector(".pd-price span").innerHTML
+						.substr(1);
+				sum = sum + 1;
+				$("input[name=cartDTOList["+index+"].amount]").val(sum);
+				let temp = "";
+				for (var i = 0; i < total.length; i++) {
+					if (total.charAt(i) != ',') {
+						temp = temp + total.charAt(i);
+					}
+				}
+				temp = parseInt(temp);
+				temp = temp * sum;
+				let price = String(temp);
+				let ans = "";
+				let cnt = 0;
+				for (var i = price.length - 1; i >= 0; i--) {
+					cnt++;
+					ans = price.charAt(i) + ans;
+					if (i > 0 && cnt % 3 == 0) {
+						ans = "," + ans;
+					}
+				}
+				document.querySelector("#totalPrice"+index).innerHTML = "₩" + ans;
 			}
 
 			function change () {
@@ -120,6 +158,25 @@
 					}
 				sum.value = parseInt(amount) *  parseInt(sell_price);
 			}  
+			
+			function delCart(index, productDetailNo, psize) {
+				let result = confirm("삭제하시겠습니까?");
+				if(result) {
+					$.ajax({
+						url: "/cart/deleteOneCart",
+						type: "POST",
+						data: {pdno : productDetailNo, size : psize},
+						success: function(data) {
+							if(data.result === "success") {
+								$("#cart-tr-"+index).remove();
+							}
+						},
+						error: function(request,status,error) {
+							console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						}
+					}) 
+				}
+			}
 	
 	</script>
 	
@@ -159,7 +216,7 @@
 						<input type="hidden" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
 						<!-- //Form 전송 데이터 -->
 						
-					<tr>
+					<tr id="cart-tr-${status.index}">
 						<td>
 								<!-- 선택 상품 -->
 							
@@ -171,7 +228,7 @@
 								<!--상품 정보-->
 								<div>
 									<a href="#" > 
-										<img src="${cart.img1}" alt="" class="cart_product_img" style="width:98px; height:98px;" />
+										<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" style="width:98px; height:98px;" />
 										<span class="cart_product" >
 											<span class="cart_product_link">
 												${cart.brand}
@@ -185,7 +242,7 @@
 									<div class="d-flex justify-content-between">
 										
 										<p> color : ${cart.colorCode}<span>/</span> size : ${cart.psize}</p>
-										<a class="cart-option" onclick="javascript:showOption('${cart.productNo}')">옵션변경</a>
+										<a class="cart-option" onclick="showOption(${status.index},'${cart.productNo}')">옵션변경</a>
 										
 									</div>
 								</div>
@@ -197,9 +254,9 @@
 								<!-- qty_sel -->
 							<div class="justify-content-center">
 								<div class="center">
-									<input type="button" value=" - " onclick="del();">
-									<input type="text" name="cartDTOList[${status.index}].amount" value="1" size="3" onchange="change();">
-									<input type="button" value=" + " onclick="add();">
+									<button class="qty_left" type="button" onclick="reduceSum(${status.index})">-</button>
+									<input type="text" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3" onchange="change();">
+									<button class="qty_right" type="button" onclick="increaseSum(${status.index})">+</button>
 								</div>
 								<!-- //qty_sel -->
 								<div class="center">
@@ -210,22 +267,25 @@
 						<td>
 							<!-- 가격 -->
 							<div>
-								<span class="cart_span text-center" >₩${cart.price} 
-								
-								<br><input type="text" id="pid_sum" size="11" readonly></span>
+								<span class="cart_span text-center" >₩${cart.price} </span>
+								<span class="pd-text" id="totalPrice${status.index}">₩${cart.price}</span> 
 							</div> 
 						</td>
 						<td>
 							<div>
 								<!-- 삭제 -->
-								<a class="cart_button_wt" href="">삭제</a>
+								<a class="cart_button_wt" onclick="delCart(${status.index},'${cart.productDetailNo}', '${cart.psize}')">삭제</a>
 							</div> 
 						</td>
 					</tr>
 					
+					
+					
+					</c:forEach>
+					
 					<!-- Option -->
 					
-					<tr class="cart-table-option" id="pid-option" style="display:none;">
+					<tr class="cart-table-option" id="option" style="display:none;">
 						<td></td>
 						<td colspan="3" class="c-td-option" >
 							<div>
@@ -259,8 +319,6 @@
 							<!-- //btns -->
 						</td>
 					</tr>
-					
-					</c:forEach>
 					
 					
 					<tr class="cart-table-total">

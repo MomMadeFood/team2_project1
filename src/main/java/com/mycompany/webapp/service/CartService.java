@@ -93,4 +93,9 @@ public class CartService {
 			cartDAO.insertCart(cartDTO);
 		}
 	}
+	
+	
+	public void deleteCart(CartDTO cartDTO) {
+		cartDAO.deleteCart(cartDTO);
+	}
 }

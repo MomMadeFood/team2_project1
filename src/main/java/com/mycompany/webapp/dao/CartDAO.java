@@ -30,4 +30,9 @@ public interface CartDAO {
 	 * @param cartDTO
 	 */
 	void updateAmountByCart(CartDTO cartDTO);
+	
+	/**
+	 * 카트에 담겨있는 품목을 삭제
+	 */
+	void deleteCart(CartDTO cartDTO);
 }
