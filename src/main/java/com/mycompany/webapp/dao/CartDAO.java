@@ -35,4 +35,9 @@ public interface CartDAO {
 	 * 카트에 담겨있는 품목을 삭제
 	 */
 	void deleteCart(CartDTO cartDTO);
+	
+	/**
+	 * 카트에 담겨있는 품목의 ProductDetailId와 size를 수정
+	 */
+	void updateCart(CartDTO cartDTO);
 }

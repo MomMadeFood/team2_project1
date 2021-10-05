@@ -12,8 +12,16 @@
 			function showOption(index, productNo) {
 				$("#cart-tr-"+index).after($("#option")); // 누른 tr 다음에 option tr 넣기
 				$("#option").css("display","");
-				//옵션 이미지를 이미지로 초기화
+				
+				//옵션 이미지/상품정보를 초기화
 				$("#option-img").attr("src", $("#product-img-"+index).attr("src")); 
+				$("#c-span-obrand").text($("#c-span-pbrand"+ index).text());
+				$("#c-span-oname").text($("#c-span-pname"+index).text() );
+				$("#c-span-ocolor").text($("#c-span-pcolor"+index).text() );
+				$("#c-span-osize").text($("#c-span-psize"+index).text() );
+				
+				//cart 수정을 위해 hidden에 index정보저장
+				$("#option-open-index").text(index);
 				
 				$.ajax({
 					url: "cart/optionColor",
@@ -36,19 +44,16 @@
 							var sizeTag = "";
 							for(var i=0; i<data.sizeList.length; i++) {
 								if(data.sizeList[i].amount > 0) {
-									sizeTag += "<label><input type='radio' name='psize' value="+data.sizeList[i].psize+"/><span>"+data.sizeList[i].psize+"</span></label>"; 
+									sizeTag += "<label><input type='radio' value="+data.sizeList[i].psize + " name='size_option_btn'/><span>"+data.sizeList[i].psize+"</span></label>"; 
 									//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
 								} else {
 									//매진 상품
-									sizeTag += "<label><input type='radio' name='psize' value="+data.sizeList[i].psize+" disabled/><span>"+data.sizeList[i].psize+"</span></label>";
+									sizeTag += "<label><input type='radio' name='size_option_btn' value="+data.sizeList[i].psize+" disabled/><span>"+data.sizeList[i].psize+"</span></label>";
 									//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize +  +"</a>";
 								}
 							}
 							$("#size_span").html(sizeTag);
 						}
-					})
-					.done((data) => {
-						
 					});
 				});
 			}
@@ -57,32 +62,37 @@
 			//동적할당 태그 이벤트 처리
 			//Color별 사이즈 버튼 제공
 			$(document).on("click","a[name='color_option_btn']",function readSize() {
+				let strArray = $(this).attr('value').split("_");
+				$("#c-span-ocolor").text(strArray[1]);
+				$("#c-option-pdid").text(strArray[0] + "_" + strArray[1]);
 				let productDetailNo = $(this).attr('value');
 				$.ajax({
 					url: "cart/optionSizePdno",
 					data: {pdno : productDetailNo},
 					success: function(data) {
-						console.log(data);
 						var sizeTag = "";
 						for(var i=0; i<data.sizeList.length; i++) {
 							if(data.sizeList[i].amount > 0) {
-                	 			sizeTag += "<label><input type='radio' name='psize' value="+data.sizeList[i].psize+"/><span>"+data.sizeList[i].psize+"</span></label>"; 
+								sizeTag += "<label><input type='radio' value="+data.sizeList[i].psize + " name='size_option_btn' /><span>"+data.sizeList[i].psize+"</span></label>"; 
 								//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize+"</a>";
 							} else {
-								sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize + 매진 +"</a>";
+								//매진 상품
+								sizeTag += "<label><input type='radio' name='size_option_btn' value="+data.sizeList[i].psize+" disabled/><span>"+data.sizeList[i].psize+"</span></label>";
+								//sizeTag += "<a class='cart_select_btn'>"+data.sizeList[i].psize +  +"</a>";
 							}
 						}
 						$("#size_span").html(sizeTag);
 						
 						$("#option-img").attr("src", data.img); 
 					}
-				})
-				.done((data) => {
-					
 				});
 			});
 			
-			
+			//Size Option 버튼
+			//동적할당 태그 이벤트 처리
+			$(document).on("click","input[name='size_option_btn']",function clickSize() {
+				$("#c-span-osize").text($(this).attr('value'));
+			});
 				
 			
 			function cartInit () {
@@ -177,6 +187,92 @@
 					}) 
 				}
 			}
+			
+			function selectRemove() {
+					let result = confirm("삭제하시겠습니까?");
+					if(result) {
+						//JSON 변환
+						let pdsnoList = new Array();
+						let list = $("input:checkbox[name=cart_ck]:checked").each(function(){
+							let p = new Object();
+							p.pdsno = $(this).val();
+							pdsnoList.push(p);
+						});
+						let jsonData = JSON.stringify(pdsnoList);
+						
+						$.ajax({
+							url: "/cart/deleteCarts",
+							type: "POST",
+							data: jsonData,
+							dataType : "json",
+							success: function(data) {
+								if(data.result === "success") {
+									$("#cart-tr-"+index).remove();
+								}
+							},
+							error: function(request,status,error) {
+								console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+							}
+						});
+						
+					}
+	         }
+			
+			 function checkData(form) {
+	        	   //form의 제출 기능 off
+	        	   event.preventDefault();
+	        	   
+	        	   //유효성 검사 결과 변수
+	        	   let checkResult = true;
+	        	   
+	        	   //check box 갯수 체크
+	        	   if($('input[name=cart_ck]:checked').length == 0) {
+	        		   alert("결제하실 상품을 선택하세요");
+	        		   checkResult = false;
+	        	   }
+	        	   
+	        	   //서버로 제출할지 말지 결정
+	        	   if(checkResult) {
+	        		   form.submit();
+	        	   }
+	           }
+			 
+			 function updateCart() {
+				//UPDATE를 위한 JSON 변환
+				//기존의 pdi와 color와
+				//새로운 pdid와 color코드를 생성
+				let cartData = new Object();
+				let orgIndex = $("#option-open-index").text();
+				let orgProductId = $("#c-input-pid"+orgIndex).val();
+				cartData.productDetailNo = $("#c-input-pdid"+orgIndex).val();
+				cartData.newProductDetailNo = orgProductId + "_" + $("#c-span-ocolor").text();
+				cartData.psize = $("#c-input-psize" + orgIndex).val();
+				cartData.newPsize = $("#c-span-osize").text();
+				
+				let jsonData = JSON.stringify(cartData);
+				console.log(jsonData);
+				
+				 $.ajax({
+						url: "/cart/updateCart",
+						type: "POST",
+						data: jsonData,
+						dataType : "json",
+						contentType: 'application/json',
+						success: function(data) {
+							if(data.result === "success") {
+								//상품 이미지/상품정보를 초기화
+								 $("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
+								 $("#c-span-pcolor"+orgIndex).text($("#c-span-ocolor").text());
+								 $("#c-span-psize"+orgIndex).text($("#c-span-osize").text()); 
+								 
+								 hideOption();
+							}
+						},
+						error: function(request,status,error) {
+							console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+						}
+					}); 
+			 }
 	
 	</script>
 	
@@ -212,8 +308,10 @@
 					
 					<c:forEach var="cart" items="${cartList}" varStatus="status">
 						<!-- Form 전송 hidden 데이터 -->
-						<input type="hidden" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
-						<input type="hidden" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
+						
+						<input type="hidden" id="c-input-pid${status.index}" value="${cart.productNo}"/>
+						<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
+						<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
 						<!-- //Form 전송 데이터 -->
 						
 					<tr id="cart-tr-${status.index}">
@@ -230,18 +328,20 @@
 									<a href="#" > 
 										<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" style="width:98px; height:98px;" />
 										<span class="cart_product" >
-											<span class="cart_product_link">
+											<span class="cart_product_link" id="c-span-pbrand${status.index}">
 												${cart.brand}
 											</span>
-											<span class="cart_product_link">
+											<span class="cart_product_link" id="c-span-pname${status.index}">
 												${cart.name}
+											</span>
+											<span class="cart_product_link" >
+												color : <span id="c-span-pcolor${status.index}">${cart.colorCode}</span><span>/</span> size : <span id="c-span-psize${status.index}">${cart.psize}</span>
 											</span>
 										</span>
 									</a>
 							<!--옵션-->
 									<div class="d-flex justify-content-between">
 										
-										<p> color : ${cart.colorCode}<span>/</span> size : ${cart.psize}</p>
 										<a class="cart-option" onclick="showOption(${status.index},'${cart.productNo}')">옵션변경</a>
 										
 									</div>
@@ -291,13 +391,17 @@
 							<div>
 								<a href="#">
 									<img src="${cart.img1}" alt="" class="cart_product_img" id="option-img" />
+									<input type="hidden" id="option-open-index">
 									<span class="cart_product" >
-										<span class="cart_product_link">
-											${cart.brand}
-										</span>
-										<span class="cart_product_link">
-											${cart.name }
-										</span>
+											<span class="cart_product_link" id="c-span-obrand">
+												${cart.brand}
+											</span>
+											<span class="cart_product_link" id="c-span-oname">
+												${cart.name}
+											</span>
+											<span class="cart_product_link" >
+												color : <span id="c-span-ocolor"></span><span>/</span> size : <span id="c-span-osize"></span>
+											</span>
 									</span>
 								</a>
 								<div class="mt-2">
@@ -313,7 +417,7 @@
 						<td>
 							<!-- btns -->
 							<div>
-								<a class="cart_button_wt" href="#">변경</a>
+								<a class="cart_button_wt" onclick="updateCart()">변경</a>
 								<a class="cart_button_wt" onclick="hideOption()">취소</a>
 							</div>
 							<!-- //btns -->
@@ -343,29 +447,15 @@
 		</div>
 
 		<div class="center mb-5" style="width:290px">
-			<a class="cart_lg_btn_wt">선택상품삭제</a>
+			<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
 			<input class="cart_lg_btn_gr" style="width:40%" type="submit" value="선택상품주문">
 		</div>
 		</form:form>
-		<script>
-           function checkData(form) {
-        	   //form의 제출 기능 off
-        	   event.preventDefault();
-        	   
-        	   //유효성 검사 결과 변수
-        	   let checkResult = true;
-        	   
-        	   //check box 갯수 체크
-        	   if($('input[name=cart_ck]:checked').length == 0) {
-        		   checkResult = false;
-        	   }
-        	   
-        	   //서버로 제출할지 말지 결정
-        	   if(checkResult) {
-        		   form.submit();
-        	   }
-           }
-	        </script>
+          
+           
+           
+           
+           
 		
 		
 	</div>

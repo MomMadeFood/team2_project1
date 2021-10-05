@@ -98,4 +98,8 @@ public class CartService {
 	public void deleteCart(CartDTO cartDTO) {
 		cartDAO.deleteCart(cartDTO);
 	}
+	
+	public void updateCart(CartDTO cartDTO) {
+		cartDAO.updateCart(cartDTO);
+	}
 }

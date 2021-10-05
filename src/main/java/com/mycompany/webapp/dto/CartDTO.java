@@ -11,6 +11,9 @@ public class CartDTO {
 	private String psize;
 	private int amount;
 	
+	//변경을 위한 데이터
+	private String newProductDetailNo;
+	private String newPsize;
 	
 	private List<CartDTO> cartDTOList;
 	
