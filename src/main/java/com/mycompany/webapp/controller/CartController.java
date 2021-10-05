@@ -140,28 +140,15 @@ public class CartController {
 	@PostMapping(value="/deleteCarts",  produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String deleteCarts(
-			String jsonData,
+			@RequestBody List<CartDTO> cartList,
 			Principal principal) {
-		//pdsno : 제품번호_색상_사이즈 형식 코드
-		logger.info("실행");
-		//StringTokenizer st;
 		
-		CartDTO cartDTO = new CartDTO();
-		cartDTO.setMemberId(principal.getName());
+		logger.info(cartList.toString());
 		
-		
-		
-		//for(String p : jsonData) {
-			logger.info(jsonData);
-			/*
-			 * st = new StringTokenizer(p, "_");
-			 * 
-			 * cartDTO.setProductDetailNo(st.nextToken() + "_" + st.countTokens());
-			 * cartDTO.setPsize(st.nextToken());
-			 * 
-			 * cartService.deleteCart(cartDTO);
-			 */
-		//}
+		for(CartDTO cart : cartList) {
+			cart.setMemberId(principal.getName());
+			cartService.deleteCart(cart);
+		}
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
@@ -202,6 +189,7 @@ public class CartController {
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
+		jsonObject.put("amount", cartDTO.getAmount());
 		String json = jsonObject.toString();
 		return json;
 	}
