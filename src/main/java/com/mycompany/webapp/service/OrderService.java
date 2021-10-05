@@ -118,8 +118,8 @@ public class OrderService {
 
 	
 	@Transactional
-	public OrderResult insertMOrder(MOrderDTO mOrderDTO) {
-		//try {
+	public String insertMOrder(MOrderDTO mOrderDTO) {
+		try {
 			
 			List<OrderDetailDTO> detailList = mOrderDTO.getDetailList();
 			List<PaymentDTO> paymentList = mOrderDTO.getPaymentList();
@@ -132,10 +132,15 @@ public class OrderService {
 			// 상품의 재고를 확인하는 동시에 감소시키는 로직
 			logger.info("삽입 시작1");
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
+				ProductDTO productDTO = new ProductDTO();
+				productDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
+				productDTO.setProductNo(productDTO.getProductDetailNo().substring(0, productDTO.getProductDetailNo().length()-3));
+				ProductDTO product = productDAO.selectProductById(productDTO);
 				int updateResult = stockDAO.updateStockByODIdSize(orderDetailDTO);
 				
 				if(updateResult==0) {
-					 throw new NotEnoughtStockException("재고가 충분하지 않습니다.");
+					 logger.info(orderDetailDTO.toString());
+					 throw new NotEnoughtStockException(product.getName());
 				}
 				
 				logger.info("개수: "+updateResult);
@@ -176,10 +181,14 @@ public class OrderService {
 			
 			
 
-		//}catch (Exception e) {
-		//	return OrderResult.FAIL_NOT_ENOUGH_STOCK;
-		//}
-		return OrderResult.SUCCESS;
+		}
+		catch (NotEnoughtStockException e) {
+			logger.info(e.getMessage());
+			return e.getMessage();
+		}catch(Exception e) {
+			return "fail";
+		}
+		return "success";
 	}
 	
 	

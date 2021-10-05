@@ -214,10 +214,12 @@ public class OrderController {
 	public String orderFormProc(MOrderDTO mOrderDTO) {
 		
 		System.out.println(mOrderDTO.toString());
-		OrderResult orderResult = orderService.insertMOrder(mOrderDTO);
+		String orderResult = orderService.insertMOrder(mOrderDTO);
 		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		
+		jsonObject.put("result", orderResult);
+		
 		String json = jsonObject.toString();
 		return json;
 	}
