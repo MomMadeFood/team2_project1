@@ -83,28 +83,7 @@ public class OrderController {
 	@RequestMapping("/orderDetail")
 	public String orderDetail(Model model,String orderNo) {
 		Map<String,Object> map = orderService.getMOrder(orderNo);
-		/*
-		MOrderDTO mOrderDTO = (MOrderDTO) map.get("mOrderDTO");
-		ProductDTO productDTO = (ProductDTO) map.get("productDTO");
-		OrderDetailDTO orderDetailDTO = (OrderDetailDTO) map.get("orderDetailDTO");
-		List<PaymentDTO> paymentList = (List<PaymentDTO>)map.get("paymentList");
-		
-		model.addAttribute("mOrderDTO",mOrderDTO);
-		model.addAttribute("productDTO",productDTO);
-		model.addAttribute("orderDetailDTO",orderDetailDTO);
-		model.addAttribute("paymentList",paymentList);
-
-		logger.info(mOrderDTO.toString());
-		logger.info(productDTO.toString());
-		logger.info(orderDetailDTO.toString());
-		
-		for(PaymentDTO paymentDTO: paymentList) {
-			logger.info(paymentDTO.toString());
-		}
-		*/
-		
 		System.out.println(((MOrderDTO)map.get("mOrderDTO")).toString());
-		
 		model.addAttribute("mOrderDTO",(MOrderDTO)map.get("mOrderDTO"));
 		model.addAttribute("productList",map.get("productList"));
 		return "order/orderDetail";

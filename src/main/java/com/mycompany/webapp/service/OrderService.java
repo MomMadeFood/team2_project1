@@ -194,7 +194,8 @@ public class OrderService {
 		
 		for(OrderDetailDTO orderDetail : mOrderDTO.getDetailList()) {
 			ProductDTO productDTO = new ProductDTO();
-			productDTO.setProductNo(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-4));
+			productDTO.setProductNo(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
+			System.out.println(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
 			productDTO.setProductDetailNo(orderDetail.getProductDetailNo());
 			productList.add(productDAO.selectProductById(productDTO));
 		}
