@@ -226,8 +226,8 @@
 												name="pointBox">
 											<p
 												style="margin-left: 10px; font-size: 12px; font-weight: bold; padding-top: 5px">P
-												사용 (잔액 : <span id="remain-point">50,000</span>P)</p>
-											<div id="cur-point" style="display:none">50000</div>
+												사용 (잔액 : <span id="remain-point"><fmt:formatNumber value="${memberDTO.point}" pattern="#,###"/></span>P)</p>
+											<div id="cur-point" style="display:none">${memberDTO.point}</div>
 										</div>
 										<div style="display: flex;">
 											<div style="padding-top: 2px">
@@ -365,12 +365,36 @@
 							<div style="margin:0px auto; width:90px">
 								<button onclick="postOrderForm()"
 											class="btn btn btn-secondary">결제하기</button>
+								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  									Launch
+								</button>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">원클릭 결제 서비스</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        ...
+      </div>
+      <div class="modal-footer"
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
 </div>
 <script>
 

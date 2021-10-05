@@ -16,12 +16,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mycompany.webapp.controller.OrderController;
 import com.mycompany.webapp.dao.MOrderDAO;
+import com.mycompany.webapp.dao.MemberDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dao.PaymentDAO;
 import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.MOrderDTO;
+import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
@@ -47,6 +49,9 @@ public class OrderService {
 	
 	@Resource
 	private ProductDAO productDAO;
+	
+	@Resource
+	private MemberDAO memberDAO;
 	
 	public enum OrderResult{
 		SUCCESS,
@@ -172,10 +177,17 @@ public class OrderService {
 			logger.info("삽입 시작4");
 			
 			
-			// 결제타입을 삽입하는 코드
+			// 결제타입을 삽입하는 코드 포인트를 사용했다면 포인트도 차감함
 			for(PaymentDTO paymentDTO:  paymentList) {
 				paymentDTO.setOrderNo(orderNo);
 				int paymentInsertResult = paymentDAO.insertPayment(paymentDTO);
+				
+				if(paymentDTO.getPaymentType().equals("포인트")) {
+					MemberDTO memberDTO = new MemberDTO();
+					memberDTO.setId(mOrderDTO.getMemberId());
+					memberDTO.setPoint(paymentDTO.getPrice());
+					memberDAO.updatePointById(memberDTO);
+				}
 				logger.info("개수: "+paymentInsertResult);
 			}
 			
