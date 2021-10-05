@@ -65,6 +65,7 @@
 	</select>
 	
 	<select id="selectProductListByPCId" parameterType="string" resultType="productCategory">
+	<![CDATA[
 		SELECT d.product_detail_no, d.img1,d.img3, c.CATEGORY_ID, c.PARENT_CATEGORY_ID, c.CATEGORY_NAME, c.BRAND, c.NAME, c.PRICE, c.product_no, d.COLOR_CHIP
 			FROM (SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
 			FROM (SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
@@ -72,5 +73,6 @@
 				WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID) a, PRODUCT b
 			WHERE a.PRODUCT_NO = b.PRODUCT_NO AND a.PARENT_CATEGORY_ID = #{value}) c, PRODUCT_DETAIL d
 			WHERE c.product_no = d.product_no AND rownum <= 12
+			]]>
 	</select>
 </mapper>
