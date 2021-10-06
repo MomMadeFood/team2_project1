@@ -147,7 +147,7 @@ public class OrderService {
 				ProductDTO productDTO = new ProductDTO();
 				productDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
 				productDTO.setProductNo(productDTO.getProductDetailNo().substring(0, productDTO.getProductDetailNo().length()-3));
-				ProductDTO product = productDAO.selectProductById(productDTO);
+				ProductDTO product = productDAO.selectProductByProduct(productDTO);
 				int updateResult = stockDAO.updateStockByODIdSize(orderDetailDTO);
 				
 				if(updateResult==0) {
@@ -241,7 +241,7 @@ public class OrderService {
 			productDTO.setProductNo(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
 			System.out.println(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
 			productDTO.setProductDetailNo(orderDetail.getProductDetailNo());
-			productList.add(productDAO.selectProductById(productDTO));
+			productList.add(productDAO.selectProductByProduct(productDTO));
 		}
 		mp.put("mOrderDTO", mOrderDTO);
 		mp.put("productList",productList);

@@ -50,7 +50,7 @@ public class MemberService {
 		
 		System.out.println(productList.get(0));
 		for(ProductDTO productDTO :  productList) {
-			productDetailList.add(productDAO.selectProductById(productDTO));
+			productDetailList.add(productDAO.selectProductByProduct(productDTO));
 		}
 				
 

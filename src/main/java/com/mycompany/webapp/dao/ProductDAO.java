@@ -36,7 +36,7 @@ public interface ProductDAO {
 	 * @param productDetailNo, psize
 	 * @return ProductDTO
 	 */
-  public ProductDTO selectProductById(ProductDTO productDTO);
+  public ProductDTO selectProductByProduct(ProductDTO productDTO);
 	
   public List<ProductDTO> selectProductById(String productDetailNo);
 

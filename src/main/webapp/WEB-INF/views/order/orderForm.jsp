@@ -717,7 +717,7 @@
 		
 		$.ajax({
 			type:"POST",
-			url:"orderFormProc",
+			url:"orderFormAjax",
 			data: data
 		}).done((data)=>{
 			if(data.result=="success"){

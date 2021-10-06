@@ -142,5 +142,9 @@
 					WHERE rnum >= #{startRowNo}
 				]]>
 		</select>
+		
+	<select id="selectProductByProduct" parameterType="product" resultType="product">
+		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = #{productNo}
+	</select>
 
 </mapper>
