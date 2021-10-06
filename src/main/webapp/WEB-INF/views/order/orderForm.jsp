@@ -4,10 +4,34 @@
 
 	
     <style>
+   	 .arrow-btn {
+		  text-decoration: none;
+		  display: inline-block;
+		  padding: 8px 16px;
+		}
+		
+	.arrow-btn:hover {
+		  background-color: #ddd;
+		  color: white;
+		}
       p{
         padding: 0px;
         margin: 0px;
       }
+      
+     .previous {
+	  background-color: #f1f1f1;
+	  color: black;
+	}
+	
+	.next {
+	  background-color: #f1f1f1;
+	  color: black;
+	}
+	
+	.round {
+	  border-radius: 50%;
+	}
     </style>
 
 <div>
@@ -262,14 +286,35 @@
 										</div>
 									</div>
 									<div class="card-box" style="height:200px; padding:30px; border-top: 1px solid #cccccc;display:flex">
-										<button onClick="clickLeft()">left</button>
+										<div style="display: flex; align-items: center;">
+											<div>
+												<a onClick="clickLeft()" class="arrow-btn previous round">&#8249;</a>
+											</div>
+										</div>
 										<c:forEach items="${cardList}" var="card" varStatus="status">
-											<div class=" card									
+											<div class=" card 
+											<c:choose>
+											  <c:when test="${card.company=='삼성카드'}">
+											     bg-primary
+											  </c:when>
+											  <c:when test="${card.company=='KB국민카드'}">
+											     bg-warning
+											  </c:when>
+											  <c:when test="${card.company=='현대카드'}">
+											     bg-secondary
+											  </c:when>
+											  <c:when test="${card.company=='롯데카드'}">
+											     bg-danger
+											  </c:when>
+											  <c:otherwise>
+											     bg-secondary
+											  </c:otherwise>
+											</c:choose>   									
 											<c:if test="${status.index eq 0}">
 	    										show
 											</c:if>
 											"
-											style=" height:140px; width:300px; margin:0px auto; border:1px solid #cccccc; background-color: #F5F5F5;											
+											style=" height:140px; width:315px; margin:0px auto; border:1px solid black; background-color: #F5F5F5;											
 											<c:if test="${status.index != 0}">
 	    										display:none
 											</c:if>
@@ -277,7 +322,7 @@
 	    										display:block
 											</c:if>
 											">
-												<div style="height:70%; border-bottom:1px solid #cccccc;padding-left:5px">
+												<div style="height:70%; border-bottom:1px solid black;padding-left:5px">
 													<p id="card-company">${card.company}</p>
 													<fmt:formatDate var="resultRegDt" value="${card.expireDate}" pattern="yyyy-MM-dd"/>
 													<div style="margin-top:45px">
@@ -288,7 +333,12 @@
 											</div>
 
 										</c:forEach>
-										<button onClick="clickRight()">right</button>
+										<div style="display: flex; align-items: center;">
+											<div>
+												<a onClick="clickRight()" class="arrow-btn next round">&#8250;</a>
+											</div>
+										</div>
+										<%-- <button >right</button>--%>
 									</div>
 									<div class="transfer-box" style="height:100px; padding:30px; border-top: 1px solid #cccccc;display:none; justify-content:space-between">
 										<div style="display:flex">
@@ -363,7 +413,10 @@
 					</div>
 						<div style="margin-top:15px; width:100%">
 							<div style="margin:0px auto; width:90px">
-								<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+								<button id="card-btn" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+  									결제하기
+								</button>
+								<button id="transfer-btn" style="display:none" type="button" class="btn btn-secondary" onClick="postOrderForm()">
   									결제하기
 								</button>
 							</div>
@@ -385,8 +438,19 @@
         </button>
       </div>
       <div class="modal-body" style="display:flex; justify-content:space-between">
-       	<input type="password" class="form-control" id="oneClickPassword" placeholder="Password" style="width:70%">
-       	<a type="button" class="btn btn-primary" onClick="oneClikAjax()">확인</a>
+      	<div style="width:30%">
+      		<select class="form-control" name="installment" id="installment" title="할부"style="width:95px; margin:0px">
+				<option value="일시불">일시불</option>
+				<option value="1개월">1개월</option>
+				<option value="3개월">3개월</option>
+				<option value="6개월">6개월</option>
+				<option value="12개월">12개월</option>
+				<option value="18개월">18개월</option>
+				<option value="24개월">24개월</option>
+			</select>
+      	</div>
+       	<input type="password" class="form-control" id="oneClickPassword" placeholder="Password" style="width:50%">
+       	<a type="button" class="btn btn-sm btn-primary" style="height:40px" onClick="oneClikAjax()">확인</a>
       </div>
       <div class="modal-footer" style="display:flex; justify-content:space-between">
       	<div id="passwordAlert" style="border:1px solid #ced4da; width:70%; height:35px; border-radius:5px;padding-top:4px; padding-left:8px; background-color:#f9d7db; color:#af7175; display:none">*비밀번호가 맞지 않습니다.</div>
@@ -442,12 +506,18 @@
 		console.log(event.currentTarget.id);
 		cardBox = document.querySelector(".card-box");
 		transferBox = document.querySelector(".transfer-box");
+		cardBtn = document.querySelector("#card-btn");
+		transferBtn = document.querySelector("#transfer-btn");
 		if(event.currentTarget.id==="transfer"){
 			cardBox.style.display="none";
 			transferBox.style.display="flex";
+			transferBtn.style.display = "block";
+			cardBtn.style.display = "none";
 		}else{
 			cardBox.style.display="flex";
 			transferBox.style.display="none";
+			transferBtn.style.display = "none";
+			cardBtn.style.display = "block";
 		}
 		console.log("-----")
 	}
@@ -568,6 +638,7 @@
 		let paymentType = "";
 		let payAccount = "";
 		let company = "";
+		let installment = $("#installment").val();
 		let point = discountPrice;
 		let zipCode = 12435;
 		
@@ -635,6 +706,9 @@
 		data['paymentList[' + 0 +'].payAccount'] = payAccount;
 		data['paymentList[' + 0 +'].company'] = company;
 		
+		if(paymentType=='신용카드'){
+			data['paymentList[' + 0 +'].installment'] = installment;
+		}
 		if(point>0){
 			data['paymentList[' + 1 +'].paymentType'] = "포인트";
 			data['paymentList[' + 1 +'].price'] = point;

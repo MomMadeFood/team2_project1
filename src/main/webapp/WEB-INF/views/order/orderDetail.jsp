@@ -166,7 +166,7 @@
             </div>
             <div style=" width:80%; display:flex; padding:10px">
 	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
-	              <p>일시불</p>
+	              <p>${mOrderDTO.paymentList[0].installment}</p>
 	           </c:if>  
  	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
 	              <p>입금대기</p>
