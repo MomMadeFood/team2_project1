@@ -18,6 +18,7 @@ public class Pager {
 	private int endRowNo;		//페이지의 마지막 행 번호
 	private int endRowIndex;	//페이지의 마지막 행 인덱스
 
+	// 페이지당 행 수, 그룹별 페이지 수, 전체 데이터 수, 현재 페이지
 	public Pager(int rowsPerPage, int pagesPerGroup, int totalRows, int pageNo) {
 		this.rowsPerPage = rowsPerPage;
 		this.pagesPerGroup = pagesPerGroup;
@@ -30,7 +31,7 @@ public class Pager {
 		totalGroupNo = totalPageNo / pagesPerGroup;
 		if(totalPageNo % pagesPerGroup != 0) totalGroupNo++;
 		
-		groupNo = (pageNo - 1) / pagesPerGroup + 1;
+		groupNo = (pageNo - 1) / pagesPerGroup + 1; 
 		
 		startPageNo = (groupNo-1) * pagesPerGroup + 1;
 		
@@ -42,10 +43,7 @@ public class Pager {
 		endRowNo = pageNo * rowsPerPage;
 		endRowIndex = endRowNo - 1; 
 	}
-
 }
-
-
 
 
 
