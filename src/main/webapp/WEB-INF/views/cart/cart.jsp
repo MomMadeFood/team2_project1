@@ -20,6 +20,7 @@
 		//Color Btn 동적 생성
 		//Option창 이미지 변경
 		function showOption(index, productNo) {
+			console.log(index);
 			$("#cart-tr-"+index).after($("#option")); // 누른 tr 다음에 option tr 넣기
 			$("#option").css("display","");
 			
@@ -407,12 +408,7 @@
 							<input type="hidden" id="c-input-pid${status.index}" value="${cart.productNo}"/>
 							<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
 							<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
-							<!-- //Form 전송 데이터 -->
-
-						<tr class="cart-tr-product" id="cart-tr-${status.index}">
-							
-							<!-- //Form 전송 데이터 -->
-							
+						<!-- //Form 전송 데이터 -->
 						<tr class="cart-tr-product" id="cart-tr-${status.index}">
 							<td>
 									<!-- 선택 상품 -->
