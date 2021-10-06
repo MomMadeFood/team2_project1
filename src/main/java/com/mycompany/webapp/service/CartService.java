@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +21,16 @@ import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
 public class CartService {
+	Logger logger = LoggerFactory.getLogger(CartService.class);
 	
 	public enum CartResult{
 		SUCCESS,
 		FAIL,
 		FAIL_DUPLICATE,
+		SUCCESS_NOT_ENOUGH_STOCK,
+		FAIL_NOT_ENOUGH_STOCK,
+		FAIL_SAME_VALUE,
+		SUCCESS_ADD_AMOUNT
 	}
 
 	@Autowired private CartDAO cartDAO;
@@ -89,14 +96,31 @@ public class CartService {
 		return orderList;
 	}
 	
-	public void setCart(CartDTO cartDTO) {
+	public CartResult setCart(CartDTO cartDTO) {
 		int amount = cartDAO.selectAmountByCart(cartDTO);
 		
 		if(amount > 0) {
-			cartDTO.setAmount(cartDTO.getAmount()+amount);
-			cartDAO.updateAmountByCart(cartDTO);
+			//이미 담긴 상품의 경우, 최대 수량은 재고량 만큼
+			int sum = cartDTO.getAmount()+amount;
+			
+			StockDTO stockDTO = new StockDTO();
+			stockDTO.setProductDetailNo(cartDTO.getProductDetailNo());
+			stockDTO.setPsize(cartDTO.getPsize());
+			int stock = stockDAO.selectAmountByStock(stockDTO);
+			if(stock == 0) {
+				return CartResult.FAIL_NOT_ENOUGH_STOCK;
+			}
+			if(sum>stock) {
+				cartDTO.setAmount(Math.min(sum, stock));
+				cartDAO.updateAmountByCart(cartDTO);
+				return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
+			} else {
+				cartDAO.updateAmountByCart(cartDTO);
+				return CartResult.SUCCESS_ADD_AMOUNT;
+			}
 		} else {
 			cartDAO.insertCart(cartDTO);
+			return CartResult.SUCCESS;
 		}
 	}
 	
@@ -106,19 +130,56 @@ public class CartService {
 	}
 	
 	public CartResult updateCart(CartDTO cartDTO) {
+		logger.info("실행 : "+ cartDTO.toString());
+		if( cartDTO.getProductDetailNo().equals( cartDTO.getNewProductDetailNo())
+				&& cartDTO.getPsize().equals(cartDTO.getNewPsize()) ) {
+			return CartResult.FAIL_SAME_VALUE;
+		}
 		//변경할 상품이 이미 카트에 존재하는지 확인
 		CartDTO newCart = new CartDTO();
 		newCart.setMemberId(cartDTO.getMemberId());
 		newCart.setProductDetailNo(cartDTO.getNewProductDetailNo());
 		newCart.setPsize(cartDTO.getNewPsize());
-		if(cartDAO.selectAmountByCart(newCart)>0) return CartResult.FAIL_DUPLICATE;
-		else {
-			cartDAO.updateCart(cartDTO);
-			return CartResult.SUCCESS;
+		int newCartAmount = cartDAO.selectAmountByCart(newCart);
+		if(newCartAmount>0) {
+			return CartResult.FAIL_DUPLICATE;
 		}
+		//재고량 확인
+		StockDTO stockDTO = new StockDTO();
+		stockDTO.setProductDetailNo(cartDTO.getNewProductDetailNo());
+		stockDTO.setPsize(cartDTO.getNewPsize());
+		int stock = stockDAO.selectAmountByStock(stockDTO);
+		int amount = cartDTO.getAmount();
+		logger.info("UPDATE:" + stockDTO.toString());
+		if(stock < amount) {
+			cartDTO.setAmount(stock);
+			cartDAO.updateCart(cartDTO);
+			logger.info("UPDATED:" + stockDTO.toString());
+			return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
+		}
+		cartDAO.updateCart(cartDTO);
+		return CartResult.SUCCESS;
+		
 	}
 
-	public void updateAmount(CartDTO cartDTO) {
+	public CartResult updateAmount(CartDTO cartDTO) {
+		//재고량 비교
+		StockDTO stockDTO = new StockDTO();
+		stockDTO.setProductDetailNo(cartDTO.getProductDetailNo());
+		stockDTO.setPsize(cartDTO.getPsize());
+		int stock = stockDAO.selectAmountByStock(stockDTO);
+		logger.info("재고 수량" + stock);
+		logger.info("장바구니에 넣고 싶은 수량 : " + cartDTO.getAmount());
+		if(stock < cartDTO.getAmount()) {
+			cartDTO.setAmount(stock);
+			cartDAO.updateAmountByCart(cartDTO);
+			return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
+		}
 		cartDAO.updateAmountByCart(cartDTO);
+		return CartResult.SUCCESS;
+	}
+
+	public int getAmountByCart(CartDTO cartDTO) {
+		return cartDAO.selectAmountByCart(cartDTO);
 	}
 }

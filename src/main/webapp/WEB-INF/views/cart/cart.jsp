@@ -132,6 +132,8 @@
 					success: function(data) {
 						if(data.result === "success") {
 							$("#cart-tr-"+index).remove();
+						} else if(data.result === "errer-login") {
+							location.href="/member/loginForm";
 						}
 						updateTotal();
 					},
@@ -174,6 +176,8 @@
 								$(this).parent().parent().remove();
 							});
 							updateTotal();
+						} else if(data.result === "errer-login") {
+							location.href="/member/loginForm";
 						}
 					},
 					error: function(request,status,error) {
@@ -204,20 +208,26 @@
            }
 		 
 		 function updateCart() {
-			 $("#cart-alert").hide();
+			closeAllAlert();
 			//UPDATE를 위한 JSON 변환
 			//기존의 pdi와 color와
 			//새로운 pdid와 color코드를 생성
 			let cartData = new Object();
 			let orgIndex = $("#option-open-index").text();
+			
 			let orgProductId = $("#c-input-pid"+orgIndex).val();
 			cartData.productDetailNo = $("#c-input-pdid"+orgIndex).val();
+			cartData.psize = $("#c-span-psize" + orgIndex).text();
+			
 			cartData.newProductDetailNo = orgProductId + "_" + $("#c-span-ocolor").text();
-			cartData.psize = $("#c-input-psize" + orgIndex).val();
 			cartData.newPsize = $("#c-span-osize").text();
+			
+			cartData.amount = $("#c-input-pamount" + orgIndex).val();
 			
 			let jsonData = JSON.stringify(cartData);
 			console.log(jsonData);
+			
+			let price = parseInt($("#c-input-price"+orgIndex).val());
 			
 			$.ajax({
 				url: "/cart/updateCart",
@@ -226,16 +236,28 @@
 				dataType : "json",
 				contentType: 'application/json',
 				success: function(data) {
-					if(data.result === "success") {
-						//상품 이미지/상품정보를 초기화
+					if(data.result === "error-duplicate") {
+						$("#cart-error-message").text("카트에 중복된 상품이 존재합니다.");
+						$("#cart-error-alert").show();
+					} else if(data.result === "warn-stock") {
+						$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
+						$("#c-input-pamount"+orgIndex).val(data.amount);
+						$("#c-span-totalprice"+orgIndex).text(data.amount * price);
+						updateTotal();
+						$("#cart-warn-alert").show();
+					} else if(data.result === "errer-login") {
+						location.href="/member/loginForm";
+					} else if(data.result === "error-same") {
+						$("#cart-error-message").text("옵션을 변경해주세요.");
+						$("#cart-error-alert").show();
+					} else { //성공
+						//성공시 태그들의 정보를 바꿔준다
 						 $("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
 						 $("#c-span-pcolor"+orgIndex).text($("#c-span-ocolor").text());
 						 $("#c-span-psize"+orgIndex).text($("#c-span-osize").text()); 
-						 
+						 $("#c-input-pdid"+orgIndex).val(data.newpdid);
 						 hideOption();
 						 updateTotal();
-					} else if(data.result === "error-duplicate") {
-						$("#cart-alert").show();
 					}
 				},
 				error: function(request,status,error) {
@@ -245,10 +267,12 @@
 		 }
 		 
 		 function updateAmount(index) {
+			closeAllAlert();
 			let cartData = new Object();
 			cartData.productDetailNo = $("#c-input-pdid"+index).val();
-			cartData.psize = $("#c-input-psize" + index).val();
+			cartData.psize = $("#c-span-psize" + index).text();
 			cartData.amount = $("#c-input-pamount"+index).val();
+			let price = parseInt($("#c-input-price"+index).val());
 			
 			let jsonData = JSON.stringify(cartData);
 			console.log(jsonData);
@@ -260,10 +284,18 @@
 					dataType : "json",
 					contentType: 'application/json',
 					success: function(data) {
+						console.log(data);
 						if(data.result === "success") {
-							let price = parseInt($("#c-input-price"+index).val());
 							$("#c-span-totalprice"+index).text(data.amount * price);
 							updateTotal();
+						} else if(data.result === "warn-stock") {
+							$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
+							$("#c-input-pamount"+index).val(data.amount);
+							$("#c-span-totalprice"+index).text(data.amount * price);
+							updateTotal();
+							$("#cart-warn-alert").show();
+						} else if(data.result === "errer-login") {
+							location.href="/member/loginForm";
 						}
 					},
 					error: function(request,status,error) {
@@ -283,16 +315,29 @@
 			 $("#cart-total-amount").text(total); 
 		 }
 		 
-			function closeAlert() {
-				$('#cart-alert').hide();
+			function closeErrorAlert() {
+				$('#cart-error-alert').hide();
 			}	 
-	
+			function closeWarnAlert() {
+				$('#cart-warn-alert').hide();
+			}	
+			
+			function closeAllAlert() {
+				closeErrorAlert();
+				closeWarnAlert();
+			}
 	</script>
 	
 	<div class="position-fixed c-div-alert">
-		<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
-			 카트에 중복된 상품이 존재합니다.
-			  <button type="button" class="close" onclick="closeAlert()">
+		<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="cart-error-alert" role="alert">
+			 <span id="cart-error-message"></span>
+			  <button type="button" class="close" onclick="closeErrorAlert()">
+			  <span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+		<div class="alert alert-warning alert-dismissible fade show" style="display:none;" id="cart-warn-alert" role="alert">
+			 <span id="cart-warn-message"></span>
+			  <button type="button" class="close" onclick="closeWarnAlert()">
 			  <span aria-hidden="true">&times;</span>
   			</button>
 		</div>
@@ -335,7 +380,6 @@
 							
 							<input type="hidden" id="c-input-pid${status.index}" value="${cart.productNo}"/>
 							<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
-							<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
 							<!-- //Form 전송 데이터 -->
 							
 						<tr class="cart-tr-product" id="cart-tr-${status.index}">
