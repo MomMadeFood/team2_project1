@@ -95,6 +95,7 @@ public class OrderController {
 		
 		Map<String,Object> map = orderService.getMOrder(orderNo);
 		System.out.println(((MOrderDTO)map.get("mOrderDTO")).toString());
+		
 		model.addAttribute("mOrderDTO",(MOrderDTO)map.get("mOrderDTO"));
 		model.addAttribute("productList",map.get("productList"));
 		

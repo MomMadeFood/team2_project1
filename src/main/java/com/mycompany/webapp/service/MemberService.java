@@ -57,7 +57,7 @@ public class MemberService {
 		map.put("virtureAccountList",virtureAccountList);
 		map.put("productList",productDetailList);
 		
-		logger.info("--------------");
+
 
 		return map;
 	}
