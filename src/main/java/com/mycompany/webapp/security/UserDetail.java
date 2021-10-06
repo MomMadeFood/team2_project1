@@ -24,7 +24,6 @@ public class UserDetail extends User{
 	public UserDetail( String id, String password, String name, Date birth, String tel, String phone, String email, String zipcode, String addr, String detailAddr, int enabled, int point, int payPassword, List<GrantedAuthority> mauthorities) {
 		super(id,password,true,true,true,true,mauthorities);
 		
-		
 		this.name = name;
 		this.birth = birth;
 		this.tel = tel;
@@ -77,11 +76,11 @@ public class UserDetail extends User{
 	}
 
 	public int getEnabled() {
-		return point;
+		return enabled;
 	}
 	
 	public int getPoint() {
-		return enabled;
+		return point;
 	}
 
 	public int getPayPassword() {

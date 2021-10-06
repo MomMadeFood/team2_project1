@@ -35,7 +35,7 @@
     </style>
 
 <div>
-	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
+	<div id="memberIdDiv" style="display:none">${memberDTO.username}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
 		<div
@@ -370,17 +370,17 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>상품 합계</div>
-										<div><span id="prod-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
+										<div><span id="prod-price">₩<fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>배송비</div>
-										<div>0</div>
+										<div>₩0</div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>할인 금액</div>
-										<div>- <span id="discount-point">0</span>₩</div>
+										<div>-₩<span id="discount-point">0</span></div>
 									</div>
 								</div>
 							</div>
@@ -389,7 +389,7 @@
 									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
-										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
+										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">₩<span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
 								</div>
 							</div>
 						</div>

@@ -60,17 +60,14 @@ public class OrderController {
 
 	
 	@RequestMapping("/orderForm")
-	public String orderForm(Principal principal,Model model,HttpServletRequest request) {
-		logger.info("실행");
+	public String orderForm(Authentication authentication,Model model,HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		List<ProductDTO> orderList = (List<ProductDTO>) session.getAttribute("orderList");
 		int totalPrice = 0;
 		
-		
-		
-		Map<String,Object> map = memberService.getMemberOrderInfo(principal.getName(),orderList);
-		MemberDTO memberDTO = (MemberDTO)map.get("memberDTO");
+		Map<String,Object> map = memberService.getMemberOrderInfo(authentication.getName(),orderList);
+		UserDetail memberDTO = (UserDetail)authentication.getPrincipal();
 		List<CardDTO> cardList = (List<CardDTO>)map.get("cardList");
 		List<VirtureAccountDTO> virtureAccountList = (List<VirtureAccountDTO>)map.get("virtureAccountList");
 		List<ProductDTO> productList = (List<ProductDTO>)map.get("productList");
