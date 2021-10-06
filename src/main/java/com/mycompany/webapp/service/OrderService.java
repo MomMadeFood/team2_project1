@@ -160,7 +160,7 @@ public class OrderService {
 			
 			
 			// 주문 정보를 삽입하는 코드
-			int cnt = 10000000+mOrderDAO.selectMOrderCount();
+			int cnt = (10000000+mOrderDAO.selectMOrderCount())%100000000;
 			String conv = Integer.toString(cnt);
 			Date time = new Date();
 			String time1 = format1.format(time);

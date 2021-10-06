@@ -36,13 +36,6 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 
-	// 우편번호 찾기 화면을 넣을 element
-	var element_layer = document.getElementById('layer');
-	
-	function closeDaumPostcode() {
-	    // iframe을 넣은 element를 안보이게 한다.
-	    element_layer.style.display = 'none';
-	}
 
 	function callAddrAPi(){
 	    new daum.Postcode({
@@ -55,7 +48,7 @@
 
 </script>
 <div>
-	<div id="memberIdDiv" style="display:none">${memberDTO.username}</div>
+	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
 		<div
@@ -229,7 +222,7 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">배송요청사항</td>
 									<td><input style="width: 80%;" id="request"
-										name="ship_req" type="text" value="파손 조심하셈">
+										name="ship_req" type="text" value="">
 									<div style="display: inline-block; margin-left: 10px;">0 /
 											20자</div></td>
 								</tr>
@@ -238,7 +231,7 @@
 										class="th_space">수령인 E-mail</td>
 									<td>
 	                      			<input id="rec-email1" name="rec-email1" title="이메일앞자리" type="text" style="width:120px" value="${memberDTO.email.substring(0,fn:indexOf(memberDTO.email,'@'))}">
-	                      			<div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="rec-email2"name="rec-email2" title="이메일주소" type="text" style="width:120px">
+	                      			<div  style="display: inline-block;  margin-left:8px; margin-right:8px">@</div><input id="rec-email2"name="rec-email2" title="이메일주소" type="text" style="width:120px" value="${memberDTO.email.substring(fn:indexOf(memberDTO.email,'@')+1,fn:length(memberDTO.email))}">
 	                      			<select title="이메일 계정" id="emailSel" onchange="emailChange()">
 											<option value="">직접입력</option>
 											<option value="naver.com">naver.com</option>
@@ -487,6 +480,7 @@
 	}
 
 	function oneClikAjax(){
+		
 		let modal = document.querySelector(".modal");
 		let password = $("#oneClickPassword").val();
 		let memberId = document.querySelector("#memberIdDiv").innerHTML;
@@ -663,7 +657,7 @@
 		let installment = $("#installment").val();
 		let point = discountPrice;
 		let zipCode = 12435;
-		let state = 1;
+		let state = 2;
 		
 		
 		

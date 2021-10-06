@@ -3,10 +3,10 @@
 
 <mapper namespace="com.mycompany.webapp.dao.CardDAO">
 	<select id="selectCardsById" parameterType="string" resultType="card">
-		SELECT * FROM card WHERE member_id = #{memberId}
+		SELECT * FROM card WHERE member_id = #{memberId} order by card_no
 	</select>
 	
 	<select id="selectCountById" parameterType="card" resultType="int">
-		SELECT count(*) FROM card WHERE card_no = #{cardNo} and member_id = #{memberId} and company = #{company} and pay_password = #{payPassword}
+		SELECT count(*) FROM card WHERE card_no = #{cardNo} and member_id = #{memberId} and company = #{company} and pay_password = #{payPassword} 
 	</select>
 </mapper> 
