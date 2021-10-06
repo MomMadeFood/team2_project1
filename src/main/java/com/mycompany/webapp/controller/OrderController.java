@@ -28,6 +28,7 @@ import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.OrderService.OrderResult;
@@ -44,6 +45,9 @@ public class OrderController {
 	
 	@Resource
 	private MemberService memberService;
+	
+	@Resource
+	private CardService cardService;
 
 	
 	@RequestMapping("/orderForm")
@@ -222,5 +226,22 @@ public class OrderController {
 		
 		String json = jsonObject.toString();
 		return json;
+	}
+	
+	@PostMapping(value="/oneClickAjax", produces= "application/json; charset=UTF-8")
+	@ResponseBody
+	public String oneClickAjax(CardDTO cardDTO) {
+		int result = cardService.checkOneClickPassword(cardDTO);
+		logger.info("result: "+result);
+		JSONObject jsonObject = new JSONObject();
+		if(result==1) {
+			jsonObject.put("result","success");
+		}else {
+			jsonObject.put("result","fail");
+		}
+		
+		String json = jsonObject.toString();
+		return json;
+		
 	}
 }
