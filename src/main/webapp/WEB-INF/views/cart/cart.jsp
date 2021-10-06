@@ -240,7 +240,7 @@
 						$("#cart-error-message").text("카트에 중복된 상품이 존재합니다.");
 						$("#cart-error-alert").show();
 					} else if(data.result === "warn-stock") {
-						$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
+						$("#cart-warn-message").text("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 						$("#c-input-pamount"+orgIndex).val(data.amount);
 						$("#c-span-totalprice"+orgIndex).text(data.amount * price);
 						updateTotal();
