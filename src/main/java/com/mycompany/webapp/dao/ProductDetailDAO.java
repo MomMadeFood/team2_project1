@@ -14,4 +14,6 @@ public interface ProductDetailDAO {
 	public List<ProductDTO> selectPdColSizeById (String productNo);
 	
 	public String selectOneImgByPdId (String productDetailNo);
+	
+	public ProductDTO selectWithProductByPdId (String productDetailNo);
 }

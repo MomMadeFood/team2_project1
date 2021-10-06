@@ -57,7 +57,7 @@
 		FROM product_detail
 		WHERE product_no = #{value}
 	</select>
-	
+
 	<select id="selectProductById" parameterType="string" resultType="product">
 				<![CDATA[
 					SELECT *
@@ -74,31 +74,6 @@
 					WHERE rownum <=12
 			]]>
 	</select>
-	
-	<select id="selectProductListByPCId" parameterType="string" resultType="productCategory">
-			<![CDATA[
-					SELECT *
-					FROM(
-						SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
-						FROM(
-								SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
-								FROM (
-										SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
-										FROM (
-											SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
-											FROM CATEGORY, PRODUCT_CATEGORY
-											WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{value}
-										) a, PRODUCT b
-										WHERE a.PRODUCT_NO = b.PRODUCT_NO
-								) c, PRODUCT_DETAIL D
-								WHERE c.product_no = d.product_no
-						)
-					)
-					WHERE RNUM = 1 and rownum <=12
-			]]>
-	</select>
-	
-		
 			
 	<select id="selectColorListByPCId"  parameterType="map" resultType="productCategory">
 			SELECT A.PRODUCT_NO , pd.COLOR_CHIP 

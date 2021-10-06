@@ -55,6 +55,9 @@
 	width: 32%;
 	height: 330px;
 	border: 2px solid black;
+	margin-left: 12px;
+	margin-right: 0px;
+	margin-top: 12px;
 }
 
 .nav-tabs .nav-link {

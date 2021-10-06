@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -49,51 +51,43 @@ public class OrderController {
 
 	
 	@RequestMapping("/orderForm")
-	public String orderForm(Principal principal,Model model) {
+	public String orderForm(Principal principal,Model model,HttpServletRequest request) {
 		logger.info("실행");
-		Map<String,Object> map = memberService.getMemberInfo(principal.getName());
+		
+		HttpSession session = request.getSession();
+		List<ProductDTO> orderList = (List<ProductDTO>) session.getAttribute("orderList");
+		int totalPrice = 0;
+		
+		
+		
+		Map<String,Object> map = memberService.getMemberOrderInfo(principal.getName(),orderList);
 		MemberDTO memberDTO = (MemberDTO)map.get("memberDTO");
 		List<CardDTO> cardList = (List<CardDTO>)map.get("cardList");
 		List<VirtureAccountDTO> virtureAccountList = (List<VirtureAccountDTO>)map.get("virtureAccountList");
+		List<ProductDTO> productList = (List<ProductDTO>)map.get("productList");
+		
+		
+		for(int i = 0; i < productList.size(); i++) {
+			productList.get(i).setPsize(orderList.get(i).getPsize());
+			productList.get(i).setAmount(orderList.get(i).getAmount());
+			productList.get(i).setPrice(productList.get(i).getPrice()*orderList.get(i).getAmount());
+			totalPrice += productList.get(i).getPrice();
+		}
 		
 		
 		model.addAttribute("memberDTO",memberDTO);
 		model.addAttribute("cardList",cardList);
 		model.addAttribute("virtureAccountList",virtureAccountList);
-
-		for(CardDTO cardDTO :cardList) {
-			System.out.println(cardDTO.getCardNo());
-		}
+		model.addAttribute("productList",productList);
+		model.addAttribute("totalPrice",totalPrice);
 
 		return "order/orderForm";
 	}
 	
 	@RequestMapping("/orderDetail")
 	public String orderDetail(Model model,String orderNo) {
-		
 		Map<String,Object> map = orderService.getMOrder(orderNo);
-		/*
-		MOrderDTO mOrderDTO = (MOrderDTO) map.get("mOrderDTO");
-		ProductDTO productDTO = (ProductDTO) map.get("productDTO");
-		OrderDetailDTO orderDetailDTO = (OrderDetailDTO) map.get("orderDetailDTO");
-		List<PaymentDTO> paymentList = (List<PaymentDTO>)map.get("paymentList");
-		
-		model.addAttribute("mOrderDTO",mOrderDTO);
-		model.addAttribute("productDTO",productDTO);
-		model.addAttribute("orderDetailDTO",orderDetailDTO);
-		model.addAttribute("paymentList",paymentList);
-
-		logger.info(mOrderDTO.toString());
-		logger.info(productDTO.toString());
-		logger.info(orderDetailDTO.toString());
-		
-		for(PaymentDTO paymentDTO: paymentList) {
-			logger.info(paymentDTO.toString());
-		}
-		*/
-		
 		System.out.println(((MOrderDTO)map.get("mOrderDTO")).toString());
-		
 		model.addAttribute("mOrderDTO",(MOrderDTO)map.get("mOrderDTO"));
 		model.addAttribute("productList",map.get("productList"));
 		return "order/orderDetail";
@@ -222,11 +216,40 @@ public class OrderController {
 	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormProc(MOrderDTO mOrderDTO) {
-		OrderResult orderResult = orderService.insertMOrder(mOrderDTO);
+		
+		System.out.println(mOrderDTO.toString());
+		Map<String,String> resultMap = orderService.insertMOrder(mOrderDTO);
 		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		
+		if(resultMap.get("result").equals("success")) {
+			jsonObject.put("result", resultMap.get("result"));
+			jsonObject.put("orderNo", resultMap.get("orderNo"));
+		}else if(resultMap.get("result").equals("fail")) {
+			jsonObject.put("result", resultMap.get("result"));
+		}else {
+			jsonObject.put("result", resultMap.get("result"));
+			jsonObject.put("productName", resultMap.get("productName"));
+		}
+		
 		String json = jsonObject.toString();
 		return json;
+	}
+	
+	@PostMapping(value="/oneClickAjax", produces= "application/json; charset=UTF-8")
+	@ResponseBody
+	public String oneClickAjax(CardDTO cardDTO) {
+		int result = cardService.checkOneClickPassword(cardDTO);
+		logger.info("result: "+result);
+		JSONObject jsonObject = new JSONObject();
+		if(result==1) {
+			jsonObject.put("result","success");
+		}else {
+			jsonObject.put("result","fail");
+		}
+		
+		String json = jsonObject.toString();
+		return json;
+		
 	}
 }

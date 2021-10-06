@@ -9,4 +9,5 @@ public class PaymentDTO {
 	private int price;
 	private String payAccount;
 	private String company;
+	private String installment;
 }

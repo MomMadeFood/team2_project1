@@ -8,11 +8,12 @@ import lombok.Data;
 public class CouponDTO {
 	//Coupon
 	private String couponNo;
+	private int couponType;
 	private int totalAmount;
 	private int remainAmount;
 	private String title;
 	private String content;
-	private String type;
+	private String discountType;
 	private int discount;
 	private String img;
 	private Date issueDate;

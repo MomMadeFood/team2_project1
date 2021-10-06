@@ -4,14 +4,38 @@
 
 	
     <style>
+   	 .arrow-btn {
+		  text-decoration: none;
+		  display: inline-block;
+		  padding: 8px 16px;
+		}
+		
+	.arrow-btn:hover {
+		  background-color: #ddd;
+		  color: white;
+		}
       p{
         padding: 0px;
         margin: 0px;
       }
+      
+     .previous {
+	  background-color: #f1f1f1;
+	  color: black;
+	}
+	
+	.next {
+	  background-color: #f1f1f1;
+	  color: black;
+	}
+	
+	.round {
+	  border-radius: 50%;
+	}
     </style>
 
 <div>
-
+	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
 		<div
@@ -36,60 +60,23 @@
 							</tr>
 						</thead>
 						<tbody>
-             				<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">TH2BAWJM311M_KK</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/TH/2B/FW/TH2BAWJM311M_KK_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">TIME HOMME</br> 퀼티드 칼라리스 점퍼
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">BK</p> / size : <p class="detail-size">100</p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td  style="vertical-align: middle;"><span class="detail-price">690000</span>₩</td>
-							</tr>
-							 <tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">TH2BBKPC022M_NY</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/TH/2B/FW/TH2BBKPC022M_NY_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">TIME HOMME</br> 캐시미어 블렌드 니트 팬츠
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">NY</p> / size : <p class="detail-size">82</p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;"><span class="detail-price">365000</span>₩</td>
-							</tr>
-							             				<tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">YS2B9WSH003WAC_IV</td>
-								<td class="d-flex"><img src="http://newmedia.thehandsome.com/YS/2B/FW/YS2B9WSH003WAC_IV_W01.jpg/dims/resize/684x1032/" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">TIME HOMME</br> [ALEXA CHUNG] 플로럴 셔츠
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">IV</p> / size : <p class="detail-size">82</p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">1</td>
-								<td style="vertical-align: middle;"><span class="detail-price">438000</span>₩</td>
-							</tr>
-            <c:forEach var="order" items="${orderList}" varStatus="status">
-             <tr style="text-align: center; height: 132px;">
-								<td class="detail-id" style="display:none">${order.productDetailNo}</td>
-								<td class="d-flex"><img src="${order.img1}" alt=""
-									style="width: 98px; height: 98px;">
-									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">${order.brand}</br> ${order.name}
-										</a>
-										<p style="margin-top: 10px;">color : <p class="detail-color">${order.colorCode}</p> / size : <p class="detail-size">${order.psize} </p>
-									</div></td>
-								<td
-									class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${order.amount}</td>
-								<td class="detail-price" style="vertical-align: middle;">${order.price}₩</td>
-							</tr>
-						</c:forEach>
+            				<c:forEach var="product" items="${productList}" varStatus="status">
+	             				<tr style="text-align: center; height: 132px;">
+									<td class="detail-id" style="display:none">${product.productDetailNo}</td>
+									<td class="d-flex"><img src="${product.img1}" alt=""
+										style="width: 98px; height: 98px;">
+										<div style="text-align: left; margin-left: 20px;">
+											<a style="color: black;" href="#">${product.brand}</br> ${product.name}
+											</a>
+											<div style="display:flex">
+											 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
+											</div>
+										</div></td>
+									<td
+										class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
+									<td style="vertical-align: middle;">₩<span class="detail-price" ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
 					<div style="margin-top: 40px;">
@@ -263,8 +250,8 @@
 												name="pointBox">
 											<p
 												style="margin-left: 10px; font-size: 12px; font-weight: bold; padding-top: 5px">P
-												사용 (잔액 : <span id="remain-point">50,000</span>P)</p>
-											<div id="cur-point" style="display:none">50000</div>
+												사용 (잔액 : <span id="remain-point"><fmt:formatNumber value="${memberDTO.point}" pattern="#,###"/></span>P)</p>
+											<div id="cur-point" style="display:none">${memberDTO.point}</div>
 										</div>
 										<div style="display: flex;">
 											<div style="padding-top: 2px">
@@ -299,14 +286,35 @@
 										</div>
 									</div>
 									<div class="card-box" style="height:200px; padding:30px; border-top: 1px solid #cccccc;display:flex">
-										<button onClick="clickLeft()">left</button>
+										<div style="display: flex; align-items: center;">
+											<div>
+												<a onClick="clickLeft()" class="arrow-btn previous round">&#8249;</a>
+											</div>
+										</div>
 										<c:forEach items="${cardList}" var="card" varStatus="status">
-											<div class=" card									
+											<div class=" card 
+											<c:choose>
+											  <c:when test="${card.company=='삼성카드'}">
+											     bg-primary
+											  </c:when>
+											  <c:when test="${card.company=='KB국민카드'}">
+											     bg-warning
+											  </c:when>
+											  <c:when test="${card.company=='현대카드'}">
+											     bg-secondary
+											  </c:when>
+											  <c:when test="${card.company=='롯데카드'}">
+											     bg-danger
+											  </c:when>
+											  <c:otherwise>
+											     bg-secondary
+											  </c:otherwise>
+											</c:choose>   									
 											<c:if test="${status.index eq 0}">
 	    										show
 											</c:if>
 											"
-											style=" height:140px; width:300px; margin:0px auto; border:1px solid #cccccc; background-color: #F5F5F5;											
+											style=" height:140px; width:315px; margin:0px auto; border:1px solid black; background-color: #F5F5F5;											
 											<c:if test="${status.index != 0}">
 	    										display:none
 											</c:if>
@@ -314,7 +322,7 @@
 	    										display:block
 											</c:if>
 											">
-												<div style="height:70%; border-bottom:1px solid #cccccc;padding-left:5px">
+												<div style="height:70%; border-bottom:1px solid black;padding-left:5px">
 													<p id="card-company">${card.company}</p>
 													<fmt:formatDate var="resultRegDt" value="${card.expireDate}" pattern="yyyy-MM-dd"/>
 													<div style="margin-top:45px">
@@ -325,12 +333,18 @@
 											</div>
 
 										</c:forEach>
-										<button onClick="clickRight()">right</button>
+										<div style="display: flex; align-items: center;">
+											<div>
+												<a onClick="clickRight()" class="arrow-btn next round">&#8250;</a>
+											</div>
+										</div>
+										<%-- <button >right</button>--%>
 									</div>
 									<div class="transfer-box" style="height:100px; padding:30px; border-top: 1px solid #cccccc;display:none; justify-content:space-between">
 										<div style="display:flex">
 											<p style="line-height: 40px;margin-right:10px">가상계좌: </p>
 											<select name="accounts" id="account-select" onChange="accountSelected()">
+												<option value="">--선택하세요--</option>
 												<c:forEach items="${virtureAccountList}" var="virtureAccount">
 													<option value="${virtureAccount.accountNo}">${virtureAccount.company}</option>
 												</c:forEach>
@@ -346,7 +360,7 @@
 					</div>
 				</div>
 				<div style="width:32%; margin-left:40px">
-					<div style="position:sticky;top:20px;">
+					<div style="position:sticky;top:110px;">
 						<div style="width: 310px; height: 220px; border: 1px solid black">
 							<div style="height: 70%;">
 								<div
@@ -356,7 +370,7 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>상품 합계</div>
-										<div><span id="prod-price">1,795,000</span>₩</div>
+										<div><span id="prod-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
@@ -375,7 +389,7 @@
 									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
-										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price">1,795,000</span>₩</div>
+										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
 								</div>
 							</div>
 						</div>
@@ -400,8 +414,12 @@
 					</div>
 						<div style="margin-top:15px; width:100%">
 							<div style="margin:0px auto; width:90px">
-								<button onclick="postOrderForm()"
-											class="btn btn btn-secondary">결제하기</button>
+								<button id="card-btn" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+  									결제하기
+								</button>
+								<button id="transfer-btn" style="display:none" type="button" class="btn btn-secondary" onClick="postOrderForm()">
+  									결제하기
+								</button>
 							</div>
 						</div>
 					</div>
@@ -409,7 +427,72 @@
 			</div>
 		</div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">원클릭 결제 서비스</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body" style="display:flex; justify-content:space-between">
+      	<div style="width:30%">
+      		<select class="form-control" name="installment" id="installment" title="할부"style="width:95px; margin:0px">
+				<option value="일시불">일시불</option>
+				<option value="1개월">1개월</option>
+				<option value="3개월">3개월</option>
+				<option value="6개월">6개월</option>
+				<option value="12개월">12개월</option>
+				<option value="18개월">18개월</option>
+				<option value="24개월">24개월</option>
+			</select>
+      	</div>
+       	<input type="password" class="form-control" id="oneClickPassword" placeholder="Password" style="width:50%">
+       	<a type="button" class="btn btn-sm btn-primary" style="height:40px" onClick="oneClikAjax()">확인</a>
+      </div>
+      <div class="modal-footer" style="display:flex; justify-content:space-between">
+      	<div id="passwordAlert" style="border:1px solid #ced4da; width:70%; height:35px; border-radius:5px;padding-top:4px; padding-left:8px; background-color:#f9d7db; color:#af7175; display:none">*비밀번호가 맞지 않습니다.</div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 <script>
+
+	function oneClikAjax(){
+		let modal = document.querySelector(".modal");
+		let password = $("#oneClickPassword").val();
+		let memberId = document.querySelector("#memberIdDiv").innerHTML;
+		let cardNo = document.querySelector(".show #card-no").innerHTML;
+		let company = document.querySelector(".show #card-company").innerHTML;
+		let data = {"payPassword":password,"memberId":memberId,"cardNo":cardNo,"company":company}
+		let alretBox = document.querySelector("#passwordAlert");
+		let flag = 0;
+		
+		$.ajax({
+			type:"POST",
+			url:"oneClickAjax",
+			data:data
+		}).done((data)=>{
+			console.log(data);
+			if(data.result=="success"){
+				flag = 1;
+				console.log("비밀번호가 맞음");
+			}else{
+				flag = 2
+				console.log("비밀번호가 맞지 않음")
+				alretBox.style.display="block";
+			}
+		}).done(()=>{
+			if(flag==1){
+				$('.modal').modal("hide"); 
+				postOrderForm();
+			}
+		})		
+	}
 
 	function accountSelected(){
 		let accountNum = $("#account-select option:selected").val();
@@ -421,12 +504,18 @@
 		console.log(event.currentTarget.id);
 		cardBox = document.querySelector(".card-box");
 		transferBox = document.querySelector(".transfer-box");
+		cardBtn = document.querySelector("#card-btn");
+		transferBtn = document.querySelector("#transfer-btn");
 		if(event.currentTarget.id==="transfer"){
 			cardBox.style.display="none";
 			transferBox.style.display="flex";
+			transferBtn.style.display = "block";
+			cardBtn.style.display = "none";
 		}else{
 			cardBox.style.display="flex";
 			transferBox.style.display="none";
+			transferBtn.style.display = "none";
+			cardBtn.style.display = "block";
 		}
 		console.log("-----")
 	}
@@ -521,7 +610,6 @@
 	}
 	
 	function allPointApply(box){
-		console.log("aaaaa");
 		let curPoint = convertNum(document.querySelector("#remain-point").innerHTML);
 		if(box.checked==true){
 			$("#apply-point").val(curPoint);
@@ -532,6 +620,7 @@
 	}
 
 	function postOrderForm() {
+		
 		let orderList = document.querySelectorAll("#orderTable tbody tr");
 		let memberId = document.querySelector(".member-id").innerHTML;
 		let recName = $("#rec-name").val();
@@ -547,6 +636,7 @@
 		let paymentType = "";
 		let payAccount = "";
 		let company = "";
+		let installment = $("#installment").val();
 		let point = discountPrice;
 		let zipCode = 12435;
 		
@@ -597,8 +687,7 @@
 			 
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
-			 console.log(orderList[index].querySelector(".detail-price").innerHTML);
-			 let price = parseInt(orderList[index].querySelector(".detail-price").innerHTML);
+			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
 			 let state = 2;
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
@@ -615,6 +704,9 @@
 		data['paymentList[' + 0 +'].payAccount'] = payAccount;
 		data['paymentList[' + 0 +'].company'] = company;
 		
+		if(paymentType=='신용카드'){
+			data['paymentList[' + 0 +'].installment'] = installment;
+		}
 		if(point>0){
 			data['paymentList[' + 1 +'].paymentType'] = "포인트";
 			data['paymentList[' + 1 +'].price'] = point;
@@ -629,9 +721,13 @@
 			data: data
 		}).done((data)=>{
 			if(data.result=="success"){
-				location.href="/order/orderList";
+				alert("주문이 완료됐습니다.");
+				location.href="/order/orderDetail?orderNo="+data.orderNo;
+			}else if(data.result=="fail"){
+				alert("예상치 못한 오류가 발생했습니다.");
+				location.href="/";
 			}else{
-				console.log("------");
+				alert(data.productName+"의 재고가 부족합니다.");
 			}
 		});
 		

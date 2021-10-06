@@ -7,6 +7,7 @@
 
 <div class="container-fluid">
 	<script type="text/javascript">
+	
 		function reduceSum() {
 			let sum = parseInt($(".qty_input").val());
 			let total = document.querySelector(".pd-price span").innerHTML
@@ -61,8 +62,44 @@
 			}
 			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
 		}
+		
+		function putCart() {
+			let cartData = new Object();
+			cartData.productDetailNo = $("input[name=productDetailNo]").val();
+			cartData.amount = $("input[name=amount]").val();
+			cartData.psize = $("input[name=psize]:checked").val();
+			
+			let jsonData = JSON.stringify(cartData);
+			console.log(jsonData);
+			
+			$.ajax({
+				url: "putCart",
+				type: "POST",
+				data: jsonData,
+				dataType : "json",
+				contentType: 'application/json',
+				success: function(data) {
+					if(data.result === "success") {
+						$('#cart-alert').show();
+					} else if(data.result === "errer-login") {
+						location.href="/member/loginForm";
+					}
+				},
+				error: function(request,status,error) {
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			}); 
+		 }
+		
+		function closeAlert() {
+			$('#cart-alert').hide();
+		}
+		
 	
 	</script>	
+	<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
+	  장바구니에 상품이 담겼습니다. <a href="/cart" class="alert-link">장바구니 바로가기</a><button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
+	</div>
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
@@ -114,22 +151,11 @@
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
 									<div class="pd-round-style"
 										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-										<p class="pd_p description">${productDetail.content}</p>
+										<p class="pd_p description mb-4">${productDetail.content}</p>
 									</div>      
                                 </div>
                                </div>
-                                <div class="info_sect">
-                                    <ul class="pd_ul">
-                                        <li class="pd_li li_sect">
-                                            <span class="pd-title">배송비</span>
-                                            <span class="pd-text">30,000원 이상 무료배송 (실결제 기준)</span>
-                                            <br/>
-                                            <span class="pd-text">30,000원 미만 배송비 2,500원</span>
-                                            <br/>
-                                        </li>
-                                    </ul>
-                                </div>
-                                <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart">
+                                <%-- <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart"> --%>
                                 	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
                                 <div class="pd-info">
                                 	<ul>
@@ -167,11 +193,13 @@
                                      	</li>
                                      </ul>	
                                 </div>
+                                 <button class="cart_lg_btn_wt" style="width:300px" onclick="putCart()">쇼핑백 담기</button>
                                 
-                                <input type="submit" class="go-cart float-left pd_a" style="width:250px" value="쇼핑백 담기">
-	                        	</form:form>
 	                        </div>
 	                    </div>
+	                    <div id="pd-div-putCartResult">
+                                	
+                        </div>
 	                </div>
             	</div>
         	</div>  

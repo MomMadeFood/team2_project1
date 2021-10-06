@@ -36,23 +36,23 @@ public interface ProductDAO {
 	 * @param productDetailNo, psize
 	 * @return ProductDTO
 	 */
-	public List<ProductDTO> selectProductById(String productDetailNo);
+  public ProductDTO selectProductById(ProductDTO productDTO);
 	
+  public List<ProductDTO> selectProductById(String productDetailNo);
+
 	//	부모 카테고리 id로 해당하는 상품 번호 조회
 	public List<ProductCategoryDTO> selectProductListByPCId(String parentCategoryId);
 	
+
 	//	부모 카테고리 id에 따른 제품 번호로 컬러 종류  조회
 	public List<ProductCategoryDTO> selectColorListByPCId(Map<String, Object> param);
 
 	// 전체 상품 목록 수 count
-	
 	public int countBoard();
 	
 	//	부모 카테고리 id로 상품 번호 조회 한 것을 페이지 별로
 	public List<ProductCategoryDTO> selectByPage(Pager pager);
-	
-	
-	
+  
 }
 
 	

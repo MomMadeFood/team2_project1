@@ -8,4 +8,6 @@ import com.mycompany.webapp.dto.MemberDTO;
 public interface MemberDAO {
 	
 	public MemberDTO selectMemberById(String memberId);
+	
+	public int updatePointById(MemberDTO memberDTO);
 }

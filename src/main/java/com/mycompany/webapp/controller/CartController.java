@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -70,7 +71,7 @@ public class CartController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("orderList", orderList);
-		rttr.addFlashAttribute("orderFormAccessRoot", "cart");
+		session.setAttribute("orderFormAccessRoot", "cart");
 		
 		return "redirect:/order/orderForm";
 	}
@@ -131,6 +132,64 @@ public class CartController {
 		
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
+	
+	
+	@PostMapping(value="/deleteCarts",  produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String deleteCarts(
+			@RequestBody List<CartDTO> cartList,
+			Principal principal) {
+		
+		logger.info(cartList.toString());
+		
+		for(CartDTO cart : cartList) {
+			cart.setMemberId(principal.getName());
+			cartService.deleteCart(cart);
+		}
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
+	
+	
+	@PostMapping(value="/updateCart", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateCart(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		logger.info("실행");
+		
+		cartDTO.setMemberId(principal.getName());
+		logger.info(cartDTO.toString());
+		
+		cartService.updateCart(cartDTO);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		String json = jsonObject.toString();
+		return json;
+	}
+	
+	@PostMapping(value="/updateAmount", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateAmount(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		logger.info("실행");
+		
+		cartDTO.setMemberId(principal.getName());
+		logger.info(cartDTO.toString());
+		
+		cartService.updateAmount(cartDTO);
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result", "success");
+		jsonObject.put("amount", cartDTO.getAmount());
 		String json = jsonObject.toString();
 		return json;
 	}

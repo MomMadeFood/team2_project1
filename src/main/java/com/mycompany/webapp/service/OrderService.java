@@ -15,13 +15,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mycompany.webapp.controller.OrderController;
+import com.mycompany.webapp.dao.CardDAO;
+import com.mycompany.webapp.dao.CartDAO;
 import com.mycompany.webapp.dao.MOrderDAO;
+import com.mycompany.webapp.dao.MemberDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dao.PaymentDAO;
 import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dao.StockDAO;
+import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
+import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
@@ -47,6 +52,12 @@ public class OrderService {
 	
 	@Resource
 	private ProductDAO productDAO;
+	
+	@Resource
+	private MemberDAO memberDAO;
+	
+	@Resource
+	CartDAO cartDAO;
 	
 	public enum OrderResult{
 		SUCCESS,
@@ -118,8 +129,9 @@ public class OrderService {
 
 	
 	@Transactional
-	public OrderResult insertMOrder(MOrderDTO mOrderDTO) {
-		//try {
+	public Map<String,String> insertMOrder(MOrderDTO mOrderDTO) {
+		Map<String,String> resultMap = new HashMap();
+		try {
 			
 			List<OrderDetailDTO> detailList = mOrderDTO.getDetailList();
 			List<PaymentDTO> paymentList = mOrderDTO.getPaymentList();
@@ -132,10 +144,15 @@ public class OrderService {
 			// 상품의 재고를 확인하는 동시에 감소시키는 로직
 			logger.info("삽입 시작1");
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
+				ProductDTO productDTO = new ProductDTO();
+				productDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
+				productDTO.setProductNo(productDTO.getProductDetailNo().substring(0, productDTO.getProductDetailNo().length()-3));
+				ProductDTO product = productDAO.selectProductById(productDTO);
 				int updateResult = stockDAO.updateStockByODIdSize(orderDetailDTO);
 				
 				if(updateResult==0) {
-					 throw new NotEnoughtStockException("재고가 충분하지 않습니다.");
+					 logger.info(orderDetailDTO.toString());
+					 throw new NotEnoughtStockException(product.getName());
 				}
 				
 				logger.info("개수: "+updateResult);
@@ -158,28 +175,55 @@ public class OrderService {
 			
 			logger.info("삽입 시작3");
 			// 주문 상세정보를 삽입하는 코드 
+			// 상세정보를 삽입하는 동시에 카트에서 해당 정보를 삭제한다.
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
 				orderDetailDTO.setOrderNo(orderNo);
 				int orderDetailInsertResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+				
+				CartDTO cartDTO = new CartDTO();
+				cartDTO.setMemberId(mOrderDTO.getMemberId());
+				cartDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
+				cartDTO.setPsize(orderDetailDTO.getPsize());
+				
+				cartDAO.deleteCart(cartDTO);
+				
 				logger.info("개수: "+orderDetailInsertResult);
 			}
 			
 			logger.info("삽입 시작4");
 			
 			
-			// 결제타입을 삽입하는 코드
+			// 결제타입을 삽입하는 코드 포인트를 사용했다면 포인트도 차감함
 			for(PaymentDTO paymentDTO:  paymentList) {
 				paymentDTO.setOrderNo(orderNo);
 				int paymentInsertResult = paymentDAO.insertPayment(paymentDTO);
+				
+				if(paymentDTO.getPaymentType().equals("포인트")) {
+					MemberDTO memberDTO = new MemberDTO();
+					memberDTO.setId(mOrderDTO.getMemberId());
+					memberDTO.setPoint(paymentDTO.getPrice());
+					memberDAO.updatePointById(memberDTO);
+				}
 				logger.info("개수: "+paymentInsertResult);
 			}
 			
 			
 
-		//}catch (Exception e) {
-		//	return OrderResult.FAIL_NOT_ENOUGH_STOCK;
-		//}
-		return OrderResult.SUCCESS;
+		}
+		catch (NotEnoughtStockException e) {
+			logger.info(e.getMessage());
+			resultMap.put("result","soldout");
+			resultMap.put("productName",e.getMessage());
+			return resultMap;
+		}catch(Exception e) {
+			resultMap.put("result","fail");
+			return resultMap;
+		}
+		
+		resultMap.put("result","success");
+		resultMap.put("orderNo",mOrderDTO.getOrderNo());
+		
+		return resultMap;
 	}
 	
 	
@@ -193,7 +237,11 @@ public class OrderService {
 		mOrderDTO.setPaymentList(paymentDAO.selectPaymentsById(orderNo));
 		
 		for(OrderDetailDTO orderDetail : mOrderDTO.getDetailList()) {
-			productList.add(productDAO.selectProductById(orderDetail.getProductDetailNo()));
+			ProductDTO productDTO = new ProductDTO();
+			productDTO.setProductNo(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
+			System.out.println(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
+			productDTO.setProductDetailNo(orderDetail.getProductDetailNo());
+			productList.add(productDAO.selectProductById(productDTO));
 		}
 		mp.put("mOrderDTO", mOrderDTO);
 		mp.put("productList",productList);

@@ -5,4 +5,8 @@
 	<select id="selectMemberById" parameterType="string" resultType="member">
 		SELECT * FROM member WHERE id = #{memberId}
 	</select>
+	
+	<update id="updatePointById" parameterType="member">
+		UPDATE member SET point = point - #{point} WHERE id = #{id}
+	</update>
 </mapper>

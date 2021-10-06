@@ -7,6 +7,9 @@
 
 	<!-- 인증 절차가 필요없는 경로 설정 -->
 	<security:http pattern="/resources/**" security="none"/>
+	
+	<!-- Security 어노테이션  -->
+	<security:global-method-security secured-annotations="enabled"/>
 
 	<!-- 인증 절차를 설정 -->
 	<security:http>

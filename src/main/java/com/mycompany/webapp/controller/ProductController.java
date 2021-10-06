@@ -11,16 +11,22 @@ import java.util.Set;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
-import com.mycompany.webapp.dto.product.ProductCategoryDTO;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.Pager;
+import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.ProductDetailService;
@@ -71,19 +77,6 @@ public class ProductController {
 		model.addAttribute("sizeList", sizeList);
 			return "product/productDetail";
 		}
-		
-	@RequestMapping("/cart")
-	public String cart(
-			HttpServletRequest request,
-			Principal principal,
-			CartDTO cartDTO
-			) {
-		cartDTO.setMemberId(principal.getName());
-		
-		cartService.setCart(cartDTO);
-		
-		return "redirect:/cart";
-	}
 	
 		@RequestMapping("/productList")
 		public String productList(@RequestParam(defaultValue="1") int pageNo, Model model) {
@@ -120,5 +113,40 @@ public class ProductController {
 		
 			model.addAttribute("productColorMap", productColorMap);
 			return "product/productList";
+		}
+
+		
+		@Secured("ROLE_USER")
+		@RequestMapping("/cart")
+		public String cart(
+				HttpServletRequest request,
+				Principal principal,
+				CartDTO cartDTO
+				) {
+			cartDTO.setMemberId(principal.getName());
+			
+			cartService.setCart(cartDTO);
+			
+			return "redirect:/cart";
+		}
+		
+		@PostMapping(value="/putCart", produces="application/json; charset=UTF-8")
+		@ResponseBody
+		public String updateAmount(
+				@RequestBody CartDTO cartDTO,
+				Principal principal) {
+			logger.info("실행");
+			JSONObject jsonObject = new JSONObject();
+			
+			if(principal == null) {
+				jsonObject.put("result", "errer-login");
+			} else {
+				String loginId = principal.getName();
+				cartDTO.setMemberId(loginId);
+				cartService.setCart(cartDTO);
+				jsonObject.put("result", "success");
+			}
+			String json = jsonObject.toString();
+			return json;
 		}
 	}
