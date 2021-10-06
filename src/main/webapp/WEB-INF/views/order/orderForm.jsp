@@ -33,9 +33,29 @@
 	  border-radius: 50%;
 	}
     </style>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
 
+	// 우편번호 찾기 화면을 넣을 element
+	var element_layer = document.getElementById('layer');
+	
+	function closeDaumPostcode() {
+	    // iframe을 넣은 element를 안보이게 한다.
+	    element_layer.style.display = 'none';
+	}
+
+	function callAddrAPi(){
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	        	$("#addr").val(data.address);
+	        	$("#zipcode").val(data.zonecode);
+	        }       
+	    }).open();
+	}
+
+</script>
 <div>
-	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
+	<div id="memberIdDiv" style="display:none">${memberDTO.username}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
 		<div
@@ -133,8 +153,8 @@
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>배송지 주소</td>
 									<td><input style="width: 80px" title="우편번호" id="zipcode"
-										name="postcode" type="text" value="${memberDTO.zipcode}"> <input
-										value="조회" id="adressBtn" name="adressBtn" type="button">
+										name="postcode" type="text" value="${memberDTO.zipcode}"> <button
+										class="btn btn-sm btn-secondary" value="조회" id="adressBtn" type="button" onClick="callAddrAPi()">조회</button>
 										<div style="margin-top: 10px;">
 											<input style="width: 100%;" id="addr" name="adress"
 												type="text" value="${memberDTO.addr}">
@@ -370,17 +390,17 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>상품 합계</div>
-										<div><span id="prod-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
+										<div>₩<span id="prod-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>배송비</div>
-										<div>0</div>
+										<div>₩0</div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>할인 금액</div>
-										<div>- <span id="discount-point">0</span>₩</div>
+										<div>-₩<span id="discount-point">0</span></div>
 									</div>
 								</div>
 							</div>
@@ -389,7 +409,7 @@
 									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
-										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;"><span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span>₩</div>
+										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">₩<span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
 								</div>
 							</div>
 						</div>
@@ -461,6 +481,10 @@
   </div>
 </div>
 <script>
+
+	function validation(){
+		
+	}
 
 	function oneClikAjax(){
 		let modal = document.querySelector(".modal");
@@ -598,7 +622,7 @@
 		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
 		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
 		
-		console.log(remainPoint - applyPoint);
+		console.log(applyPoint+" "+remainPoint+" "+discountPoint+" "+prodPrice);
 		if(applyPoint>remainPoint){
 			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
 		}else{
@@ -639,6 +663,9 @@
 		let installment = $("#installment").val();
 		let point = discountPrice;
 		let zipCode = 12435;
+		let state = 1;
+		
+		
 		
 		
 		console.log(orderList);
@@ -652,6 +679,7 @@
 					paymentType = "계좌이체";
 					company = $("#account-select option:selected").text();;
 					payAccount = $("#account-select").val();	
+					state = 1;
 					
 				}else{
 					paymentType = "신용카드";
@@ -684,11 +712,10 @@
 		}
 		for (let index = 0; index <orderList.length; index++) {			
 			 let productDetailNo = orderList[index].querySelector(".detail-id").innerHTML;
-			 
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
 			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
-			 let state = 2;
+			 
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
 			 console.log(productDetailNo+" "+amount+" "+size+" "+price+" "+state);
@@ -717,7 +744,7 @@
 		
 		$.ajax({
 			type:"POST",
-			url:"orderFormProc",
+			url:"orderFormAjax",
 			data: data
 		}).done((data)=>{
 			if(data.result=="success"){

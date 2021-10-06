@@ -42,7 +42,6 @@ public class MemberService {
 
 		Map<String,Object> map = new HashMap<String, Object>();
 
-		MemberDTO memberDTO = memberDAO.selectMemberById(memberId);
 		List<CardDTO> cardList = cardDAO.selectCardsById(memberId);
 		List<VirtureAccountDTO> virtureAccountList = virtureAccountDAO.selectVirtureAccounts();
 		List<ProductDTO> productDetailList = new ArrayList<ProductDTO>();
@@ -50,11 +49,10 @@ public class MemberService {
 		
 		System.out.println(productList.get(0));
 		for(ProductDTO productDTO :  productList) {
-			productDetailList.add(productDAO.selectProductById(productDTO));
+			productDetailList.add(productDAO.selectProductByProduct(productDTO));
 		}
 				
 
-		map.put("memberDTO", memberDTO);
 		map.put("cardList",cardList);
 		map.put("virtureAccountList",virtureAccountList);
 		map.put("productList",productDetailList);

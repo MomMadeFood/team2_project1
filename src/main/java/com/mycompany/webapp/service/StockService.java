@@ -20,5 +20,9 @@ public class StockService {
 	public List<StockDTO> getStocksByPdid(String productDetailId) {
 		return stockDAO.selectStocksByPdid(productDetailId);
 	}
+	
+	public int getAmountByStock(StockDTO stockDTO) {
+		return stockDAO.selectAmountByStock(stockDTO);
+	}
 
 }

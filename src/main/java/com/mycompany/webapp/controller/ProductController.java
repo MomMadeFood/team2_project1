@@ -28,6 +28,7 @@ import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
+import com.mycompany.webapp.service.CartService.CartResult;
 import com.mycompany.webapp.service.ProductDetailService;
 import com.mycompany.webapp.service.ProductService;
 
@@ -154,8 +155,21 @@ public class ProductController {
 			} else {
 				String loginId = principal.getName();
 				cartDTO.setMemberId(loginId);
-				cartService.setCart(cartDTO);
-				jsonObject.put("result", "success");
+				CartResult cr = cartService.setCart(cartDTO);
+				if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+					jsonObject.put("result", "error-stock");
+				} else if (cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+					jsonObject.put("result", "warn-stock");
+					int amount = cartService.getAmountByCart(cartDTO);
+					jsonObject.put("amount", amount);
+				} else if (cr == CartResult.SUCCESS_ADD_AMOUNT){
+					jsonObject.put("result", "warn-add");
+					int amount = cartService.getAmountByCart(cartDTO);
+					jsonObject.put("amount", amount);
+				} else {
+					jsonObject.put("result", "success");
+				}
+				
 			}
 			String json = jsonObject.toString();
 			return json;
