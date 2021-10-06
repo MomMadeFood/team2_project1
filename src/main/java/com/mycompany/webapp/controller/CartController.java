@@ -24,6 +24,7 @@ import com.mycompany.webapp.dto.StockDTO;
 import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
+import com.mycompany.webapp.service.CartService.CartResult;
 import com.mycompany.webapp.service.ProductDetailService;
 
 @Controller
@@ -167,10 +168,14 @@ public class CartController {
 		cartDTO.setMemberId(principal.getName());
 		logger.info(cartDTO.toString());
 		
-		cartService.updateCart(cartDTO);
 		
+		CartResult cr = cartService.updateCart(cartDTO);
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		if(cr == CartResult.SUCCESS) {
+			jsonObject.put("result", "success");
+		} else if(cr == CartResult.FAIL_DUPLICATE) {
+			jsonObject.put("result", "error-duplicate");
+		}
 		String json = jsonObject.toString();
 		return json;
 	}

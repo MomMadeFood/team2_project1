@@ -269,3 +269,12 @@ a:link { text-decoration: none;}
   background:white;
   color:#dfdfdf;
 }
+
+.c-div-alert {
+	 z-index: 2;
+	 width:100%;
+}
+
+.c-div-content {
+	 z-index: 1;
+}

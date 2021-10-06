@@ -204,6 +204,7 @@
            }
 		 
 		 function updateCart() {
+			 $("#cart-alert").hide();
 			//UPDATE를 위한 JSON 변환
 			//기존의 pdi와 color와
 			//새로운 pdid와 color코드를 생성
@@ -233,6 +234,8 @@
 						 
 						 hideOption();
 						 updateTotal();
+					} else if(data.result === "error-duplicate") {
+						$("#cart-alert").show();
 					}
 				},
 				error: function(request,status,error) {
@@ -270,7 +273,6 @@
 		 }
 		 
 		 function updateTotal() {
-			 console.log("실행");
 			 let sum = 0;
 			 $(".c-span-totalprice").each(function(){
 					sum = sum + parseInt($(this).text());
@@ -281,201 +283,202 @@
 			 $("#cart-total-amount").text(total); 
 		 }
 		 
-			 
+			function closeAlert() {
+				$('#cart-alert').hide();
+			}	 
 	
 	</script>
 	
-	<!--content-->
-    <div style="width: 990px; margin:0px auto;">
-		<div class="m-5">
-			<h3 class="center">쇼핑백</h3>
+	<div class="position-fixed c-div-alert">
+		<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
+			 카트에 중복된 상품이 존재합니다.
+			  <button type="button" class="close" onclick="closeAlert()">
+			  <span aria-hidden="true">&times;</span>
+  			</button>
 		</div>
-		<form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart/orderForm">
-		<div>
-			<table class="table table-bordered cart-table">
-				<colgroup>
-					<col style="width: 10px;" />
-					<col />
-					<col style="width: 225px" />
-					<col style="width: 140px" />
-					<col style="width: 110px" />
-				</colgroup>
-				<thead >
-					<tr class="center cart-table-head">
-						<th scope="col">
-							<!--전체 상품 선택-->
-							<input type="checkbox" id="checkall">
-						</th>
-						<th scope="col">상품정보</th>
-						<th scope="col">수량</th>
-						<th scope="col">판매가</th>
-						<th scope="col">선택</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- cartList -->
-					
-					<c:forEach var="cart" items="${cartList}" varStatus="status">
-						<!-- Form 전송 hidden 데이터 -->
-						
-						<input type="hidden" id="c-input-pid${status.index}" value="${cart.productNo}"/>
-						<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
-						<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
-						<!-- //Form 전송 데이터 -->
-						
-					<tr class="cart-tr-product" id="cart-tr-${status.index}">
-						<td>
-								<!-- 선택 상품 -->
-							
-							<input type="checkbox" name="cart_ck" value="${cart.productDetailNo}_${cart.psize}">
-						</td>
-						<td class="c-td-product">
-							<!-- pt_list_all -->
-							<div>
-								<!--상품 정보-->
-								<div class="product-info d-flex justify-content-start">
-										<div>
-											<a href="${pageContext.request.contextPath}/product/productDetail?no=${cart.productDetailNo}">
-											<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" />
-											</a>
-										</div>
-										<div class="cart_product mt-2" style="width:350px;" >
-											<a href="${pageContext.request.contextPath}/product/productDetail?no=${cart.productDetailNo}">
-												<span class="cart_product_link" id="c-span-pbrand${status.index}">
-													${cart.brand}
-												</span>
-												<span class="cart_product_link" id="c-span-pname${status.index}">
-													${cart.name}
-												</span>
-											</a>
-											<div class="cart_product_link mt-5" >
-												color : <span id="c-span-pcolor${status.index}">${cart.colorCode}</span><span>/</span> size : <span id="c-span-psize${status.index}">${cart.psize}</span>
-											</div>
-											<span class="cart_product_link d-flex flex-row-reverse bd-highlight" >
-												<a class="cart-option" onclick="showOption(${status.index},'${cart.productNo}')">옵션변경</a>
-											</span>
-										</div>
-										
-									
-									
-							<!--옵션-->
-									
-								</div>
-							</div>
-							<!-- //pt_list_all-->
-						</td>
-						<td style="vertical-align:middle;  text-align: center;">
-							<!-- 장바구니 수량 업데이트 -->
-								<!-- qty_sel -->
-							<div class="justify-content-center">
-								<div class="center ">
-									<button class="qty_left" type="button" onclick="reduceSum(${status.index})">-</button>
-									<input type="text" class="qty_input" id="c-input-pamount${status.index}" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3">
-									<button class="qty_right" type="button" onclick="increaseSum(${status.index})">+</button>
-								</div>
-								<div style="text-align:center;">
-									<a class="qty_change" onclick="updateAmount(${status.index});">변경</a>
-								</div>
-							</div>
-							
-						</td>
-						<td style="vertical-align:middle;  text-align: center;">
-							<!-- 가격 -->
-							<div>
-								<input type="hidden" value="${cart.price}" id="c-input-price${status.index}"/>
-								<span class="pd-text">₩<span class="c-span-totalprice" id="c-span-totalprice${status.index}">${cart.price * cart.amount}</span></span> 
-							</div> 
-						</td>
-						<td style="vertical-align:middle;  text-align: center;">
-							<div>
-								<!-- 삭제 -->
-								<a class="cart_button_wt" onclick="delCart(${status.index},'${cart.productDetailNo}', '${cart.psize}')">삭제</a>
-							</div> 
-						</td>
-					</tr>
-					
-					
-					
-					</c:forEach>
-					
-					<!-- Option -->
-					
-					<tr class="cart-table-option" id="option" style="display:none;">
-						<td></td>
-						<td class="c-td-option">
-							<div class="product-info d-flex justify-content-start">
-								<div>
-									<img src="${cart.img1}" alt="" class="cart_product_img" id="option-img" />
-								</div>
-								<input type="hidden" id="option-open-index">
-								<div class="cart_product mt-3"  >
-										<span class="cart_product_link" id="c-span-obrand">
-											${cart.brand}
-										</span>
-										<span class="cart_product_link" id="c-span-oname">
-											${cart.name}
-										</span>
-										<span class="cart_product_link mt-5" >
-											color : <span id="c-span-ocolor"></span><span>/</span> size : <span id="c-span-osize"></span>
-										</span>
-								</div>
-							</div>
-						</td>
-						<td colspan="2" class="c-td-option"  style="vertical-align:middle;">
-							<div class="ml-4">
-								<div>
-									<span class="mr-2">color</span>  <span id="color_span"></span>
-								</div>
-								<div class="mt-4">
-									<span class="mr-3 ">size</span>  <span id="size_span"></span>
-								</div>
-							</div>
-						</td>
-						<td style="vertical-align:middle;">
-							<!-- btns -->
-							<div style="margin-top : -10px;">
-								<a class="cart_button_wt" onclick="updateCart()">변경</a>
-								<a class="cart_button_wt" onclick="hideOption()">취소</a>
-							</div>
-							<!-- //btns -->
-						</td>
-					</tr>
-					
-					
-					<tr class="cart-table-total">
-						<td colspan="2"></td>
-						<td >
-							<span class="cart_span"> 총 <span id="cart-total-amount"></span>개 상품 </span>
-						</td>
-						<td>
-							<span class="cart_span" > 상품 합계 </span>
-						</td>
-						<td colspan="2" class="text-right">
-							<span class="cart_span" id="cart-total-productprice" > </span>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-		</div>
-
-		<div class="center mb-5 mt-5" style="width:290px">
-			<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
-			<input class="cart_lg_btn_gr ml-2" style="width:40%" type="submit" value="선택상품주문">
-		</div>
-		</form:form>
-          
-           
-           
-         
-           
-		
-		
 	</div>
+
+	<!--content-->
+	<div class="container-fluid c-div-content">
+		
+	    <div style="width: 990px; margin:0px auto;">
+			<div class="m-5">
+				<h3 class="center">쇼핑백</h3>
+			</div>
+			<form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart/orderForm">
+			<div>
+				<table class="table table-bordered cart-table">
+					<colgroup>
+						<col style="width: 10px;" />
+						<col />
+						<col style="width: 225px" />
+						<col style="width: 140px" />
+						<col style="width: 110px" />
+					</colgroup>
+					<thead >
+						<tr class="center cart-table-head">
+							<th scope="col">
+								<!--전체 상품 선택-->
+								<input type="checkbox" id="checkall">
+							</th>
+							<th scope="col">상품정보</th>
+							<th scope="col">수량</th>
+							<th scope="col">판매가</th>
+							<th scope="col">선택</th>
+						</tr>
+					</thead>
+					<tbody>
+						<!-- cartList -->
+						
+						<c:forEach var="cart" items="${cartList}" varStatus="status">
+							<!-- Form 전송 hidden 데이터 -->
+							
+							<input type="hidden" id="c-input-pid${status.index}" value="${cart.productNo}"/>
+							<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
+							<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
+							<!-- //Form 전송 데이터 -->
+							
+						<tr class="cart-tr-product" id="cart-tr-${status.index}">
+							<td>
+									<!-- 선택 상품 -->
+								
+								<input type="checkbox" name="cart_ck" value="${cart.productDetailNo}_${cart.psize}">
+							</td>
+							<td class="c-td-product">
+								<!-- pt_list_all -->
+								<div>
+									<!--상품 정보-->
+									<div class="product-info d-flex justify-content-start">
+											<div>
+												<a href="${pageContext.request.contextPath}/product/productDetail?no=${cart.productDetailNo}">
+												<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" />
+												</a>
+											</div>
+											<div class="cart_product mt-2" style="width:350px;" >
+												<a href="${pageContext.request.contextPath}/product/productDetail?no=${cart.productDetailNo}">
+													<span class="cart_product_link" id="c-span-pbrand${status.index}">
+														${cart.brand}
+													</span>
+													<span class="cart_product_link" id="c-span-pname${status.index}">
+														${cart.name}
+													</span>
+												</a>
+												<div class="cart_product_link mt-5" >
+													color : <span id="c-span-pcolor${status.index}">${cart.colorCode}</span><span>/</span> size : <span id="c-span-psize${status.index}">${cart.psize}</span>
+												</div>
+												<span class="cart_product_link d-flex flex-row-reverse bd-highlight" >
+													<a class="cart-option" onclick="showOption(${status.index},'${cart.productNo}')">옵션변경</a>
+												</span>
+											</div>
+								<!--옵션-->
+									</div>
+								</div>
+								<!-- //pt_list_all-->
+							</td>
+							<td style="vertical-align:middle;  text-align: center;">
+								<!-- 장바구니 수량 업데이트 -->
+									<!-- qty_sel -->
+								<div class="justify-content-center">
+									<div class="center ">
+										<button class="qty_left" type="button" onclick="reduceSum(${status.index})">-</button>
+										<input type="text" class="qty_input" id="c-input-pamount${status.index}" name="cartDTOList[${status.index}].amount" value="${cart.amount}" size="3">
+										<button class="qty_right" type="button" onclick="increaseSum(${status.index})">+</button>
+									</div>
+									<div style="text-align:center;">
+										<a class="qty_change" onclick="updateAmount(${status.index});">변경</a>
+									</div>
+								</div>
+								
+							</td>
+							<td style="vertical-align:middle;  text-align: center;">
+								<!-- 가격 -->
+								<div>
+									<input type="hidden" value="${cart.price}" id="c-input-price${status.index}"/>
+									<span class="pd-text">₩<span class="c-span-totalprice" id="c-span-totalprice${status.index}">${cart.price * cart.amount}</span></span> 
+								</div> 
+							</td>
+							<td style="vertical-align:middle;  text-align: center;">
+								<div>
+									<!-- 삭제 -->
+									<a class="cart_button_wt" onclick="delCart(${status.index},'${cart.productDetailNo}', '${cart.psize}')">삭제</a>
+								</div> 
+							</td>
+						</tr>
+						
+						
+						
+						</c:forEach>
+						
+						<!-- Option -->
+						
+						<tr class="cart-table-option" id="option" style="display:none;">
+							<td></td>
+							<td class="c-td-option">
+								<div class="product-info d-flex justify-content-start">
+									<div>
+										<img src="${cart.img1}" alt="" class="cart_product_img" id="option-img" />
+									</div>
+									<input type="hidden" id="option-open-index">
+									<div class="cart_product mt-3"  >
+											<span class="cart_product_link" id="c-span-obrand">
+												${cart.brand}
+											</span>
+											<span class="cart_product_link" id="c-span-oname">
+												${cart.name}
+											</span>
+											<span class="cart_product_link mt-5" >
+												color : <span id="c-span-ocolor"></span><span>/</span> size : <span id="c-span-osize"></span>
+											</span>
+									</div>
+								</div>
+							</td>
+							<td colspan="2" class="c-td-option"  style="vertical-align:middle;">
+								<div class="ml-4">
+									<div>
+										<span class="mr-2">color</span>  <span id="color_span"></span>
+									</div>
+									<div class="mt-4">
+										<span class="mr-3 ">size</span>  <span id="size_span"></span>
+									</div>
+								</div>
+							</td>
+							<td style="vertical-align:middle;">
+								<!-- btns -->
+								<div style="margin-top : -10px;">
+									<a class="cart_button_wt" onclick="updateCart()">변경</a>
+									<a class="cart_button_wt" onclick="hideOption()">취소</a>
+								</div>
+								<!-- //btns -->
+							</td>
+						</tr>
+						
+						
+						<tr class="cart-table-total">
+							<td colspan="2"></td>
+							<td >
+								<span class="cart_span"> 총 <span id="cart-total-amount"></span>개 상품 </span>
+							</td>
+							<td>
+								<span class="cart_span" > 상품 합계 </span>
+							</td>
+							<td colspan="2" class="text-right">
+								<span class="cart_span" id="cart-total-productprice" > </span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+			</div>
 	
-	
-	
-	
+			<div class="center mb-5 mt-5" style="width:290px">
+				<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
+				<input class="cart_lg_btn_gr ml-2" style="width:40%" type="submit" value="선택상품주문">
+			</div>
+			</form:form>
+	          
+		</div>
+	</div>
+
 	<script>
        updateTotal();
     </script>
