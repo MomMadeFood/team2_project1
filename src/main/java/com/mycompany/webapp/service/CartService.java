@@ -19,6 +19,12 @@ import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
 public class CartService {
+	
+	public enum CartResult{
+		SUCCESS,
+		FAIL,
+		FAIL_DUPLICATE,
+	}
 
 	@Autowired private CartDAO cartDAO;
 	@Autowired private ProductDAO productDAO;
@@ -99,8 +105,16 @@ public class CartService {
 		cartDAO.deleteCart(cartDTO);
 	}
 	
-	public void updateCart(CartDTO cartDTO) {
-		cartDAO.updateCart(cartDTO);
+	public CartResult updateCart(CartDTO cartDTO) {
+		CartDTO newCart = new CartDTO();
+		newCart.setMemberId(cartDTO.getMemberId());
+		newCart.setProductDetailNo(cartDTO.getNewProductDetailNo());
+		newCart.setPsize(cartDTO.getNewPsize());
+		if(cartDAO.selectAmountByCart(newCart)>0) return CartResult.FAIL_DUPLICATE;
+		else {
+			cartDAO.updateCart(cartDTO);
+			return CartResult.SUCCESS;
+		}
 	}
 
 	public void updateAmount(CartDTO cartDTO) {

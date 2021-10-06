@@ -4,9 +4,7 @@
 <style type="text/css">
 	@import url("/resources/css/productDetail.css");
 </style>
-
-<div class="container-fluid">
-	<script type="text/javascript">
+<script type="text/javascript">
 	
 		function reduceSum() {
 			let sum = parseInt($(".qty_input").val());
@@ -97,9 +95,16 @@
 		
 	
 	</script>	
-	<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
-	  장바구니에 상품이 담겼습니다. <a href="/cart" class="alert-link">장바구니 바로가기</a><button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
+	
+	<div class="position-fixed pd-div-alert">
+		<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
+			  장바구니에 상품이 담겼습니다. <a href="/cart" class="alert-link">장바구니 바로가기</a><button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
+		</div>
 	</div>
+
+
+<div class="container-fluid pd-div-content">
+	
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
