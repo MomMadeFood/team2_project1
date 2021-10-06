@@ -470,11 +470,11 @@
 		let data = {"payPassword":password,"memberId":memberId,"cardNo":cardNo,"company":company}
 		let alretBox = document.querySelector("#passwordAlert");
 		let flag = 0;
+		
 		$.ajax({
 			type:"POST",
 			url:"oneClickAjax",
-			data:data,
-			async:false
+			data:data
 		}).done((data)=>{
 			console.log(data);
 			if(data.result=="success"){
@@ -485,15 +485,12 @@
 				console.log("비밀번호가 맞지 않음")
 				alretBox.style.display="block";
 			}
-		});
-		
-		
-		if(flag==1){
-			$('.modal').modal("hide"); 
-			postOrderForm();
-		}
-		
-		
+		}).done(()=>{
+			if(flag==1){
+				$('.modal').modal("hide"); 
+				postOrderForm();
+			}
+		})		
 	}
 
 	function accountSelected(){
@@ -612,7 +609,6 @@
 	}
 	
 	function allPointApply(box){
-		console.log("aaaaa");
 		let curPoint = convertNum(document.querySelector("#remain-point").innerHTML);
 		if(box.checked==true){
 			$("#apply-point").val(curPoint);
