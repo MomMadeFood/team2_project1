@@ -20,7 +20,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -79,27 +78,38 @@ public class ProductController {
 		}
 	
 		@RequestMapping("/productList")
-		public String productList(@RequestParam(defaultValue="1") int pageNo, Model model) {
+		public String productList(@RequestParam String categoryId, @RequestParam(defaultValue="1") int pageNo, Model model) {
+			Pager pager= null;
+			if(categoryId.length() == 4) {
+				int totalRows = productService.getTotalProductList(categoryId);   
+				pager = new Pager(12, 5, totalRows, pageNo);
+			}else {
+				int totalRows = productService.getTotalProductListBySex(categoryId);  
+				pager = new Pager(12, 5, totalRows, pageNo);
+			}
 			
-			List<ProductCategoryDTO> productList = productService.getProductList("WO01");
-			model.addAttribute("productList", productList);
-			
-			int totalRows = productService.getTotalBoardNum();   
-			Pager pager = new Pager(12, 5, totalRows, pageNo);
 			model.addAttribute("pager", pager);
 			
-			List<ProductCategoryDTO> boards = productService.getBoards(pager);
-			model.addAttribute("boards", boards);
+			Map<String, Object> param = new HashMap<>();
+			param.put("startRowNo",pager.getStartRowNo());
+			param.put("endRowNo", pager.getEndRowNo());
+			param.put("categoryId", categoryId);
+			
+			
+			List<ProductCategoryDTO> productList;
+			if(categoryId.length() == 4) {
+				productList = productService.getProductList(param);
+			}else {
+				productList = productService.getProductListBySex(param);
+			}
+			
+			model.addAttribute("productList", productList);
 			
 			Map<String, List<String>> productColorMap = new HashMap<>();
-			
-			
-			Map<String, Object> param = new HashMap<>();
 			for(ProductCategoryDTO product : productList) {
 				param.put("productNo", product.getProductNo());
-				param.put("parentCategoryId", "WO01");
+				param.put("categoryId", categoryId);
 				List<ProductCategoryDTO> productColorList = productService.getColorChip(param);
-				
 				for(ProductCategoryDTO productColor : productColorList) {
 					if(!productColorMap.containsKey(productColor.getProductNo())) {
 						List<String> colorList = new ArrayList<>();
@@ -109,13 +119,14 @@ public class ProductController {
 						productColorMap.get(productColor.getProductNo()).add(productColor.getColorChip());
 					}
 				}
+				
 			}
-		
+			model.addAttribute("categoryId", categoryId);
 			model.addAttribute("productColorMap", productColorMap);
+			
 			return "product/productList";
 		}
 
-		
 		@Secured("ROLE_USER")
 		@RequestMapping("/cart")
 		public String cart(
@@ -149,4 +160,5 @@ public class ProductController {
 			String json = jsonObject.toString();
 			return json;
 		}
+		
 	}

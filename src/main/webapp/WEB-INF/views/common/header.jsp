@@ -68,72 +68,72 @@
                 <ul class="site-menu main-menu js-clone-nav ml-auto d-none d-lg-block">
 
                   <li class="has-children">
-                    <a href="#WO" class="nav-link h-a-lg" style="font-size:13pt;">WOMEN</a>
+                    <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO" class="nav-link h-a-lg" style="font-size:13pt;">WOMEN</a>
                     <ul class="dropdown arrow-top">
                       <li>
-                        <a href="#WO01">OUTER</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO01">OUTER</a>
                       </li>
                       <li>
-                        <a href="#WO02">DRESS</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO02">DRESS</a>
                       </li>
                       <li>
-                        <a href="#WO03">SKIRT</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO03">SKIRT</a>
                       </li>
                       <li>
-                        <a href="#WO04">TOP</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO04">TOP</a>
                       </li>
                       <li>
-                        <a href="#WO05">PANTS</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO05">PANTS</a>
                       </li>
                       <li>
-                        <a href="#WO10">SPECIAL SHOP</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO10">SPECIAL SHOP</a>
                       </li>
                       <li>
-                        <a href="#WO11">FASHION ACC</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO11">FASHION ACC</a>
                       </li>
                     </ul>
                   </li>
                   <li class="has-children">
-                    <a href="#ME" class="nav-link" style="font-size:13pt;">MEN</a>
+                    <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME" class="nav-link" style="font-size:13pt;">MEN</a>
                     <ul class="dropdown arrow-top">
                       <li>
-                        <a href="#ME01">OUTER</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME01">OUTER</a>
                       </li>
                       <li>
-                        <a href="#WO04">TOP</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO04">TOP</a>
                       </li>
                       <li>
-                        <a href="#ME05">PANTS</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME05">PANTS</a>
                       </li>
                       <li>
-                        <a href="#ME10">SPECIAL SHOP</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME10">SPECIAL SHOP</a>
                       </li>
                       <li>
-                        <a href="#ME11">FASHION ACC</a>
-                      </li>
-                    </ul>
-                  </li>
-                  
-                  <li class="has-children">
-                    <a href="#KI" class="nav-link h-a-lg" style="font-size:13pt;">KIDS</a>
-                    <ul class="dropdown arrow-top">
-                      <li>
-                        <a href="#KI06">CLOTHING</a>
-                      </li>
-                      <li>
-                        <a href="#KI08">KIDS ACC</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME11">FASHION ACC</a>
                       </li>
                     </ul>
                   </li>
                   
                   <li class="has-children">
-                    <a href="#LI" class="nav-link h-a-lg" style="font-size:13pt;">LIFE</a>
+                    <a href="${pageContext.request.contextPath}/product/productList?categoryId=KI" class="nav-link h-a-lg" style="font-size:13pt;">KIDS</a>
                     <ul class="dropdown arrow-top">
                       <li>
-                        <a href="#LI07">BATH</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=KI06">CLOTHING</a>
                       </li>
                       <li>
-                        <a href="#LI09">HOME</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=KI08">KIDS ACC</a>
+                      </li>
+                    </ul>
+                  </li>
+                  
+                  <li class="has-children">
+                    <a href="${pageContext.request.contextPath}/product/productList?categoryId=LI" class="nav-link h-a-lg" style="font-size:13pt;">LIFE</a>
+                    <ul class="dropdown arrow-top">
+                      <li>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=LI07">BATH</a>
+                      </li>
+                      <li>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=LI09">HOME</a>
                       </li>
                     </ul>
                   </li>
