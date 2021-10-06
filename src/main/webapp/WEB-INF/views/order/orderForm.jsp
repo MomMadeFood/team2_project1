@@ -724,6 +724,7 @@
 				alert("주문이 완료됐습니다.");
 				location.href="/order/orderDetail?orderNo="+data.orderNo;
 			}else if(data.result=="fail"){
+				alert("예상치 못한 오류가 발생했습니다.");
 				location.href="/";
 			}else{
 				alert(data.productName+"의 재고가 부족합니다.");
