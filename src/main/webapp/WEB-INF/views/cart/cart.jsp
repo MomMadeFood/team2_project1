@@ -326,6 +326,32 @@
 				closeErrorAlert();
 				closeWarnAlert();
 			}
+			//금액에서 ,을 제거해주는 함수
+			function convertNum(price){
+				let temp = "";
+				for (var i = 0; i < price.length; i++) {
+					if (price.charAt(i) != ',') {
+						temp = temp + price.charAt(i);
+					}
+				}
+				temp = parseInt(temp);
+				return temp;
+			}
+			
+			//숫자에 ,을 추가해주는 함수
+			function convertPrice(num){
+				num = String(num);
+				let ans = "";
+				let cnt = 0;
+				for (var i = num.length - 1; i >= 0; i--) {
+					cnt++;
+					ans = num.charAt(i) + ans;
+					if (i > 0 && cnt % 3 == 0) {
+						ans = "," + ans;
+					}
+				}
+				return ans;
+			}
 	</script>
 	
 	<div class="position-fixed c-div-alert">
