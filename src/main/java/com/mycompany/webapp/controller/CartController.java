@@ -124,15 +124,19 @@ public class CartController {
 	public String deleteOneCart(
 			String pdno, String size,
 			Principal principal) {
-		logger.info("실행");
-		CartDTO cartDTO = new CartDTO();
-		cartDTO.setProductDetailNo(pdno);
-		cartDTO.setPsize(size);
-		cartDTO.setMemberId(principal.getName());
-		cartService.deleteCart(cartDTO);
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			CartDTO cartDTO = new CartDTO();
+			cartDTO.setProductDetailNo(pdno);
+			cartDTO.setPsize(size);
+			cartDTO.setMemberId(principal.getName());
+			cartService.deleteCart(cartDTO);
+			
+			
+			jsonObject.put("result", "success");
+		}
 		String json = jsonObject.toString();
 		return json;
 	}
@@ -143,16 +147,16 @@ public class CartController {
 	public String deleteCarts(
 			@RequestBody List<CartDTO> cartList,
 			Principal principal) {
-		
-		logger.info(cartList.toString());
-		
-		for(CartDTO cart : cartList) {
-			cart.setMemberId(principal.getName());
-			cartService.deleteCart(cart);
-		}
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			for(CartDTO cart : cartList) {
+				cart.setMemberId(principal.getName());
+				cartService.deleteCart(cart);
+			}
+			jsonObject.put("result", "success");
+		}
 		String json = jsonObject.toString();
 		return json;
 	}
@@ -163,18 +167,31 @@ public class CartController {
 	public String updateCart(
 			@RequestBody CartDTO cartDTO,
 			Principal principal) {
-		logger.info("실행");
-		
-		cartDTO.setMemberId(principal.getName());
-		logger.info(cartDTO.toString());
-		
-		
-		CartResult cr = cartService.updateCart(cartDTO);
 		JSONObject jsonObject = new JSONObject();
-		if(cr == CartResult.SUCCESS) {
-			jsonObject.put("result", "success");
-		} else if(cr == CartResult.FAIL_DUPLICATE) {
-			jsonObject.put("result", "error-duplicate");
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			cartDTO.setMemberId(principal.getName());
+			logger.info(cartDTO.toString());
+
+			CartResult cr = cartService.updateCart(cartDTO);
+			
+			if(cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "warn-stock");
+				CartDTO newCartDTO = new CartDTO();
+				newCartDTO.setMemberId(cartDTO.getMemberId());
+				newCartDTO.setProductDetailNo(cartDTO.getNewProductDetailNo());
+				newCartDTO.setPsize(cartDTO.getNewPsize());
+				int amount = cartService.getAmountByCart(newCartDTO);
+				jsonObject.put("amount", amount);
+			} else if(cr == CartResult.FAIL_DUPLICATE) {
+				jsonObject.put("result", "error-duplicate");
+			} else if(cr ==CartResult.FAIL_SAME_VALUE){
+				jsonObject.put("result", "error-same");
+			} else {
+				jsonObject.put("result", "success");
+				jsonObject.put("newpdid", cartDTO.getNewProductDetailNo());
+			}
 		}
 		String json = jsonObject.toString();
 		return json;
@@ -185,16 +202,24 @@ public class CartController {
 	public String updateAmount(
 			@RequestBody CartDTO cartDTO,
 			Principal principal) {
-		logger.info("실행");
-		
-		cartDTO.setMemberId(principal.getName());
-		logger.info(cartDTO.toString());
-		
-		cartService.updateAmount(cartDTO);
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
-		jsonObject.put("amount", cartDTO.getAmount());
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			cartDTO.setMemberId(principal.getName());
+			logger.info(cartDTO.toString());
+			
+			CartResult cr = cartService.updateAmount(cartDTO);
+			if(cr== CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "warn-stock");
+				logger.info(cartDTO.toString());
+				int amount = cartService.getAmountByCart(cartDTO);
+				jsonObject.put("amount", amount);
+			} else {
+				jsonObject.put("result", "success");
+				jsonObject.put("amount", cartDTO.getAmount());
+			}
+		}
 		String json = jsonObject.toString();
 		return json;
 	}
