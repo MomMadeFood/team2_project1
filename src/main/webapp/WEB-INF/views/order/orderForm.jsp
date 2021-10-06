@@ -639,6 +639,9 @@
 		let installment = $("#installment").val();
 		let point = discountPrice;
 		let zipCode = 12435;
+		let state = 1;
+		
+		
 		
 		
 		console.log(orderList);
@@ -652,6 +655,7 @@
 					paymentType = "계좌이체";
 					company = $("#account-select option:selected").text();;
 					payAccount = $("#account-select").val();	
+					state = 1;
 					
 				}else{
 					paymentType = "신용카드";
@@ -684,11 +688,10 @@
 		}
 		for (let index = 0; index <orderList.length; index++) {			
 			 let productDetailNo = orderList[index].querySelector(".detail-id").innerHTML;
-			 
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
 			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
-			 let state = 2;
+			 
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
 			 console.log(productDetailNo+" "+amount+" "+size+" "+price+" "+state);

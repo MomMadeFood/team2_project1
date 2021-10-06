@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,6 +34,7 @@ import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.security.UserDetail;
 import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
@@ -93,10 +95,12 @@ public class OrderController {
 	
 	@RequestMapping("/orderDetail")
 	public String orderDetail(Model model,String orderNo) {
+		
 		Map<String,Object> map = orderService.getMOrder(orderNo);
 		System.out.println(((MOrderDTO)map.get("mOrderDTO")).toString());
 		model.addAttribute("mOrderDTO",(MOrderDTO)map.get("mOrderDTO"));
 		model.addAttribute("productList",map.get("productList"));
+		
 		return "order/orderDetail";
 	}
 	
@@ -223,7 +227,7 @@ public class OrderController {
 	@PostMapping(value="/orderFormAjax",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormAjax(MOrderDTO mOrderDTO) throws InterruptedException, ExecutionException {
-		System.out.println(mOrderDTO.toString());
+		
 		
 		
 		Callable< Map<String,String> > task = new Callable<Map<String,String>>() {
