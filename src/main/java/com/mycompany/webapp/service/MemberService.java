@@ -45,6 +45,7 @@ public class MemberService {
 		List<CardDTO> cardList = cardDAO.selectCardsById(memberId);
 		List<VirtureAccountDTO> virtureAccountList = virtureAccountDAO.selectVirtureAccounts();
 		List<ProductDTO> productDetailList = new ArrayList<ProductDTO>();
+		MemberDTO memberDTO = memberDAO.selectMemberById(memberId);
 		
 		
 		System.out.println(productList.get(0));
@@ -56,6 +57,7 @@ public class MemberService {
 		map.put("cardList",cardList);
 		map.put("virtureAccountList",virtureAccountList);
 		map.put("productList",productDetailList);
+		map.put("memberDTO",memberDTO);
 		
 
 
