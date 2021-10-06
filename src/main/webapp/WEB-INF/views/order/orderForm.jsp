@@ -33,7 +33,27 @@
 	  border-radius: 50%;
 	}
     </style>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
 
+	// 우편번호 찾기 화면을 넣을 element
+	var element_layer = document.getElementById('layer');
+	
+	function closeDaumPostcode() {
+	    // iframe을 넣은 element를 안보이게 한다.
+	    element_layer.style.display = 'none';
+	}
+
+	function callAddrAPi(){
+	    new daum.Postcode({
+	        oncomplete: function(data) {
+	        	$("#addr").val(data.address);
+	        	$("#zipcode").val(data.zonecode);
+	        }       
+	    }).open();
+	}
+
+</script>
 <div>
 	<div id="memberIdDiv" style="display:none">${memberDTO.username}</div>
 	<div
@@ -133,8 +153,8 @@
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>배송지 주소</td>
 									<td><input style="width: 80px" title="우편번호" id="zipcode"
-										name="postcode" type="text" value="${memberDTO.zipcode}"> <input
-										value="조회" id="adressBtn" name="adressBtn" type="button">
+										name="postcode" type="text" value="${memberDTO.zipcode}"> <button
+										class="btn btn-sm btn-secondary" value="조회" id="adressBtn" type="button" onClick="callAddrAPi()">조회</button>
 										<div style="margin-top: 10px;">
 											<input style="width: 100%;" id="addr" name="adress"
 												type="text" value="${memberDTO.addr}">
