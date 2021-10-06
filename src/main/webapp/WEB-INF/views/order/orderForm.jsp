@@ -482,6 +482,10 @@
 </div>
 <script>
 
+	function validation(){
+		
+	}
+
 	function oneClikAjax(){
 		let modal = document.querySelector(".modal");
 		let password = $("#oneClickPassword").val();
