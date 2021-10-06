@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.mycompany.webapp.controller.OrderController;
+import com.mycompany.webapp.dao.CardDAO;
+import com.mycompany.webapp.dao.CartDAO;
 import com.mycompany.webapp.dao.MOrderDAO;
 import com.mycompany.webapp.dao.MemberDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
@@ -22,6 +24,7 @@ import com.mycompany.webapp.dao.PaymentDAO;
 import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dao.StockDAO;
+import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
@@ -52,6 +55,9 @@ public class OrderService {
 	
 	@Resource
 	private MemberDAO memberDAO;
+	
+	@Resource
+	CartDAO cartDAO;
 	
 	public enum OrderResult{
 		SUCCESS,
@@ -169,9 +175,18 @@ public class OrderService {
 			
 			logger.info("삽입 시작3");
 			// 주문 상세정보를 삽입하는 코드 
+			// 상세정보를 삽입하는 동시에 카트에서 해당 정보를 삭제한다.
 			for(OrderDetailDTO orderDetailDTO:  detailList) {
 				orderDetailDTO.setOrderNo(orderNo);
 				int orderDetailInsertResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+				
+				CartDTO cartDTO = new CartDTO();
+				cartDTO.setMemberId(mOrderDTO.getMemberId());
+				cartDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
+				cartDTO.setPsize(orderDetailDTO.getPsize());
+				
+				cartDAO.deleteCart(cartDTO);
+				
 				logger.info("개수: "+orderDetailInsertResult);
 			}
 			
