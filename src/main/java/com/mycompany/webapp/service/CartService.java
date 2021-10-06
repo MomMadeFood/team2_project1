@@ -106,6 +106,7 @@ public class CartService {
 	}
 	
 	public CartResult updateCart(CartDTO cartDTO) {
+		//변경할 상품이 이미 카트에 존재하는지 확인
 		CartDTO newCart = new CartDTO();
 		newCart.setMemberId(cartDTO.getMemberId());
 		newCart.setProductDetailNo(cartDTO.getNewProductDetailNo());

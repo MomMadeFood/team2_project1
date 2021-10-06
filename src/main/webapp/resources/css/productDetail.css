@@ -267,12 +267,3 @@ div.info_sect {
 .color-selected{
 	border-bottom: 3px solid black;
 }
-
-.pd-div-alert {
-	 z-index: 2;
-	 width:100%;
-}
-
-.pd-div-content {
-	 z-index: 1;
-}
