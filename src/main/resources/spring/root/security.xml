@@ -99,7 +99,7 @@
 	<security:authentication-manager>
 		<security:authentication-provider ref="daoAuthenticationProvider"/>
 	</security:authentication-manager>
-	
+	<!--  
 	<bean id="daoAuthenticationProvider"
 		  class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService" ref="jdbcUserService"/>
@@ -110,7 +110,13 @@
 								data-source-ref="dataSource"
 								users-by-username-query="SELECT id, password, enabled FROM member WHERE id=?"
 								authorities-by-username-query="SELECT id, role FROM member WHERE id=?"/>
+-->
 
+	<bean id="daoAuthenticationProvider"
+		  class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="memberUserDetailService"/>
+		<property name="authoritiesMapper" ref="roleHierarchyAuthoritiesMapper"/>
+	</bean>
 	<!-- 인증 성공 또는 실패시 실행되는 핸들러 객체 설정 -->
 	<bean id="authenticationSuccessHandler" 
 		  class="com.mycompany.webapp.security.MemberLoginSuccessHandler">
