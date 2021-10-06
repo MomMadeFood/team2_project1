@@ -81,6 +81,8 @@
 				success: function(data) {
 					if(data.result === "success") {
 						$('#cart-alert').show();
+					} else if(data.result === "errer-login") {
+						location.href="/member/loginForm";
 					}
 				},
 				error: function(request,status,error) {
@@ -149,7 +151,7 @@
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
 									<div class="pd-round-style"
 										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-										<p class="pd_p description">${productDetail.content}</p>
+										<p class="pd_p description mb-4">${productDetail.content}</p>
 									</div>      
                                 </div>
                                </div>

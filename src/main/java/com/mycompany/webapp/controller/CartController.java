@@ -71,7 +71,7 @@ public class CartController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("orderList", orderList);
-		rttr.addFlashAttribute("orderFormAccessRoot", "cart");
+		session.setAttribute("orderFormAccessRoot", "cart");
 		
 		return "redirect:/order/orderForm";
 	}

@@ -100,7 +100,7 @@ public class ProductController {
 			return "product/productList";
 		}
 		
-		@Secured({"ROLE_USER"})
+		@Secured("ROLE_USER")
 		@RequestMapping("/cart")
 		public String cart(
 				HttpServletRequest request,
@@ -120,14 +120,16 @@ public class ProductController {
 				@RequestBody CartDTO cartDTO,
 				Principal principal) {
 			logger.info("실행");
-			
-			cartDTO.setMemberId(principal.getName());
-			logger.info(cartDTO.toString());
-			
-			cartService.setCart(cartDTO);
-			
 			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("result", "success");
+			
+			if(principal == null) {
+				jsonObject.put("result", "errer-login");
+			} else {
+				String loginId = principal.getName();
+				cartDTO.setMemberId(loginId);
+				cartService.setCart(cartDTO);
+				jsonObject.put("result", "success");
+			}
 			String json = jsonObject.toString();
 			return json;
 		}
