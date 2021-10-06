@@ -11,7 +11,7 @@
     </style>
 
 <div>
-
+	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
 		<div
@@ -386,17 +386,53 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        ...
+      <div class="modal-body" style="display:flex; justify-content:space-between">
+       	<input type="password" class="form-control" id="oneClickPassword" placeholder="Password" style="width:70%">
+       	<a type="button" class="btn btn-primary" onClick="oneClikAjax()">확인</a>
       </div>
-      <div class="modal-footer"
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+      <div class="modal-footer" style="display:flex; justify-content:space-between">
+      	<div id="passwordAlert" style="border:1px solid #ced4da; width:70%; height:35px; border-radius:5px;padding-top:4px; padding-left:8px; background-color:#f9d7db; color:#af7175; display:none">*비밀번호가 맞지 않습니다.</div>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
       </div>
     </div>
   </div>
 </div>
 <script>
+
+	function oneClikAjax(){
+		let modal = document.querySelector(".modal");
+		let password = $("#oneClickPassword").val();
+		let memberId = document.querySelector("#memberIdDiv").innerHTML;
+		let cardNo = document.querySelector(".show #card-no").innerHTML;
+		let company = document.querySelector(".show #card-company").innerHTML;
+		let data = {"payPassword":password,"memberId":memberId,"cardNo":cardNo,"company":company}
+		let alretBox = document.querySelector("#passwordAlert");
+		let flag = 0;
+		$.ajax({
+			type:"POST",
+			url:"oneClickAjax",
+			data:data,
+			async:false
+		}).done((data)=>{
+			console.log(data);
+			if(data.result=="success"){
+				flag = 1;
+				console.log("비밀번호가 맞음");
+			}else{
+				flag = 2
+				console.log("비밀번호가 맞지 않음")
+				alretBox.style.display="block";
+			}
+		});
+		
+		
+		if(flag==1){
+			$('.modal').modal("hide"); 
+			postOrderForm();
+		}
+		
+		
+	}
 
 	function accountSelected(){
 		let accountNum = $("#account-select option:selected").val();
