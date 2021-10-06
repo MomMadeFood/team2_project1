@@ -60,46 +60,81 @@
     line-height: 11px;
     margin-left: 5px;
     width: 80px;
-    display: block;
     margin-top: 20px;
+    display: inline-block;
 }
 
 .cart_product_img {
     left: 0;
     top: 0;
     width: 98px;
-    height: 98px;
+    height: 130px;
     display : inline;
+    margin : 10px;
 }
 
 .qty_input {
-    width: 30px;
+    width: 60px;
     height: 24px;
     line-height: 24px;
     border-color: #cccccc;
     text-align: center;
     text-indent: 0;
     background: #f8f8f8;
+    padding: 0;
+	border: none;
 }
 
 .qty_left {
-    width: 24px;
+    width: 35px;
     height: 24px;
     line-height: 24px;
     border-color: #cccccc;
     text-align: center;
     text-indent: 0;
     background: #f8f8f8;
+    padding: 0;
+	border: none;
 }
 
 .qty_right {
-    width: 24px;
+    width: 35px;
     height: 24px;
     line-height: 24px;
     border-color: #cccccc;
     text-align: center;
     text-indent: 0;
     background: #f8f8f8;
+	padding: 0;
+	border: none;
+}
+
+.qty_change {
+    -webkit-text-size-adjust: none;
+    -webkit-user-select: none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+    font-family: "Malgun Gothic","맑은 고딕","Dotum","돋움", AppleGothic,sans-serif;
+    border-collapse: collapse;
+    border-spacing: 0;
+    word-break: break-all;
+    outline: none;
+    margin-right: 0;
+    color: #363636;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    text-decoration: none;
+    padding: 6px 10px 7px;
+    min-width: 50px;
+    border: 1px solid #ccc;
+    background: #fff;
+    font-size: 11px;
+    line-height: 11px;
+    margin-left: 5px;
+    width: 140px;
+    margin-top: 20px;
+    display: inline-block;
 }
 
 .cart_span {
@@ -191,13 +226,46 @@ a:link { text-decoration: none;}
     border-bottom:none;
 }
 
+
 .cart-table-total>td {
     border-left:none;
     border-right: none;
+    
 
 }
 
 .noline-btn {
 	border:none;
 	background-color:white;
+}
+
+
+
+
+.cart-box-radio-input input[type="radio"]{
+  display:none;
+}
+
+.cart-box-radio-input input[type="radio"] + span{
+  display:inline-block;
+  background:none;
+  border:1px solid #dfdfdf;  
+  padding:0px 10px;
+  text-align:center;
+  height:35px;
+  line-height:33px;
+  font-weight:500;
+  cursor:pointer;
+}
+
+.cart-box-radio-input input[type="radio"]:checked + span{
+  border:1px solid #4a4a4a;
+  background:#4a4a4a;
+  color:#fff;
+}
+
+.cart-box-radio-input input[type="radio"]:disabled + span{
+  border:1px solid white;
+  background:white;
+  color:#dfdfdf;
 }
