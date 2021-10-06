@@ -363,10 +363,8 @@
 					</div>
 						<div style="margin-top:15px; width:100%">
 							<div style="margin:0px auto; width:90px">
-								<button onclick="postOrderForm()"
-											class="btn btn btn-secondary">결제하기</button>
-								<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-  									Launch
+								<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+  									결제하기
 								</button>
 							</div>
 						</div>
