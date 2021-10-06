@@ -184,7 +184,7 @@
 						<div class="info">
 							<div class="info_sect">
 								<div class="brand-name">
-									<a class= "pd_a" href="http://www.thehandsome.com/ko/c/br45/br45"></a>
+									<span class= "pd-name">${productDetail.brand }</span>
 								</div>
 								<h4 class="item_name">
 									<span class="pd-name">${productDetail.name}</span> 
