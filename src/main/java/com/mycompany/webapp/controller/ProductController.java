@@ -16,9 +16,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.ProductDetailService;
@@ -84,28 +86,39 @@ public class ProductController {
 	}
 	
 		@RequestMapping("/productList")
-		public String productList(Model model) {
+		public String productList(@RequestParam(defaultValue="1") int pageNo, Model model) {
 			
 			List<ProductCategoryDTO> productList = productService.getProductList("WO01");
-			
 			model.addAttribute("productList", productList);
-
+			
+			int totalRows = productService.getTotalBoardNum();   
+			Pager pager = new Pager(12, 5, totalRows, pageNo);
+			model.addAttribute("pager", pager);
+			
+			List<ProductCategoryDTO> boards = productService.getBoards(pager);
+			model.addAttribute("boards", boards);
+			
 			Map<String, List<String>> productColorMap = new HashMap<>();
 			
+			
+			Map<String, Object> param = new HashMap<>();
 			for(ProductCategoryDTO product : productList) {
-				if(!productColorMap.containsKey(product.getProductNo())) {
-					List<String> colorList = new ArrayList<>();
-					colorList.add(product.getColorChip());
-					productColorMap.put(product.getProductNo(), colorList);
-				}else {
-					productColorMap.get(product.getProductNo()).add(product.getColorChip());
+				param.put("productNo", product.getProductNo());
+				param.put("parentCategoryId", "WO01");
+				List<ProductCategoryDTO> productColorList = productService.getColorChip(param);
+				
+				for(ProductCategoryDTO productColor : productColorList) {
+					if(!productColorMap.containsKey(productColor.getProductNo())) {
+						List<String> colorList = new ArrayList<>();
+						colorList.add(productColor.getColorChip());
+						productColorMap.put(productColor.getProductNo(), colorList);
+					}else {
+						productColorMap.get(productColor.getProductNo()).add(productColor.getColorChip());
+					}
 				}
 			}
+		
 			model.addAttribute("productColorMap", productColorMap);
-			
-			System.out.println(productList);
-			
 			return "product/productList";
 		}
-		
 	}

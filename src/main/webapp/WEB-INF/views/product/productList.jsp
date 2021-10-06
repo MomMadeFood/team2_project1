@@ -5,7 +5,7 @@
 <div class="card-deck mb-3">
 <div class="row d-flex" style="width: 990px; margin:0px auto;">
 	<div style="width:100%">
-		<c:forEach varStatus="status"  items="${productList}" var="product">
+		<c:forEach varStatus="status"  items="${boards}" var="product">
 		 <div class="card" style="width:25%; float:left; margin:0px; padding: 10px 10px; border:none;">
 		 <a href="${pageContext.request.contextPath}/product/productDetail?no=${product.productDetailNo}">
 		     <img src="${product.img1}" class="d-block w-100 img-fluid card-img-top">
@@ -32,5 +32,31 @@
 </div>
 </div>
 
+<!-- paging -->
+<tr>
+   	<td colspan="4" class="text-center">
+   		<div>
+   			<a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}productList?pageNo=1">처음</a>
+   			<c:if test="${pager.groupNo>1}">
+   				<a class="btn btn-outline-info btn-sm" href="${pageContext.request.contextPath}productList?pageNo=${pager.startPageNo-1}">이전</a>
+   			</c:if>
+   			
+   			<c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
+   				<c:if test ="${pager.pageNo != i}">
+   					<a class="btn btn-outline-success btn-sm" href="${pageContext.request.contextPath}productList?pageNo=${i}">${i}</a>
+   				</c:if>
+		    <c:if test ="${pager.pageNo == i}">
+   					<a class="btn btn-danger btn-sm">${i}</a>
+   				</c:if>
+   			</c:forEach>
+   			
+   			<c:if test="${pager.groupNo<pager.totalGroupNo}">
+   				<a class="btn btn-outline-info btn-sm" href="${pageContext.request.contextPath}productList?pageNo=${pager.endPageNo+1}">다음</a>
+   			</c:if>
+   			<a class="btn btn-outline-primary btn-sm" href="${pageContext.request.contextPath}productList?pageNo=${pager.totalPageNo}">맨끝</a>
+   		</div>
+   	</td>
+   </tr>
+   
 
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>
