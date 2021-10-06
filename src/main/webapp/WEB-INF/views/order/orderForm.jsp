@@ -390,7 +390,7 @@
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
 										<div>상품 합계</div>
-										<div><span id="prod-price">₩<fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
+										<div>₩<span id="prod-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
@@ -618,7 +618,7 @@
 		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
 		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
 		
-		console.log(remainPoint - applyPoint);
+		console.log(applyPoint+" "+remainPoint+" "+discountPoint+" "+prodPrice);
 		if(applyPoint>remainPoint){
 			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
 		}else{
