@@ -377,9 +377,14 @@
 						
 						<c:forEach var="cart" items="${cartList}" varStatus="status">
 							<!-- Form 전송 hidden 데이터 -->
-							
+							<!-- !!!!!!!!!지우면 Form 전송시 오류 발생!!!!!!!! -->
 							<input type="hidden" id="c-input-pid${status.index}" value="${cart.productNo}"/>
 							<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
+							<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
+							<!-- //Form 전송 데이터 -->
+
+						<tr class="cart-tr-product" id="cart-tr-${status.index}">
+							
 							<!-- //Form 전송 데이터 -->
 							
 						<tr class="cart-tr-product" id="cart-tr-${status.index}">
