@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +44,8 @@ import com.mycompany.webapp.service.OrderService.OrderResult;
 public class OrderController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(OrderController.class);
+	
+	private ExecutorService executorService = Executors.newFixedThreadPool(1);
 	
 	@Resource
 	private OrderService orderService;
@@ -213,12 +220,24 @@ public class OrderController {
 		return json;
 	}
 
-	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
+	@PostMapping(value="/orderFormAjax",produces = "application/json; charset=UTF-8")
 	@ResponseBody
-	public String orderFormProc(MOrderDTO mOrderDTO) {
-		
+	public String orderFormAjax(MOrderDTO mOrderDTO) throws InterruptedException, ExecutionException {
 		System.out.println(mOrderDTO.toString());
-		Map<String,String> resultMap = orderService.insertMOrder(mOrderDTO);
+		
+		
+		Callable< Map<String,String> > task = new Callable<Map<String,String>>() {
+			@Override
+			public Map<String,String> call() throws Exception {
+
+				Map<String,String> resultMap = orderService.insertMOrder(mOrderDTO);
+				
+				return resultMap;
+			}
+		};
+		
+		Future< Map<String,String> > future = executorService.submit(task);
+		Map<String,String> resultMap = future.get();
 		
 		JSONObject jsonObject = new JSONObject();
 		
