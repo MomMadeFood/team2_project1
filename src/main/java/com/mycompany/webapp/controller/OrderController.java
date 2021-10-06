@@ -218,11 +218,19 @@ public class OrderController {
 	public String orderFormProc(MOrderDTO mOrderDTO) {
 		
 		System.out.println(mOrderDTO.toString());
-		String orderResult = orderService.insertMOrder(mOrderDTO);
+		Map<String,String> resultMap = orderService.insertMOrder(mOrderDTO);
 		
 		JSONObject jsonObject = new JSONObject();
 		
-		jsonObject.put("result", orderResult);
+		if(resultMap.get("result").equals("success")) {
+			jsonObject.put("result", resultMap.get("result"));
+			jsonObject.put("orderNo", resultMap.get("orderNo"));
+		}else if(resultMap.get("result").equals("fail")) {
+			jsonObject.put("result", resultMap.get("result"));
+		}else {
+			jsonObject.put("result", resultMap.get("result"));
+			jsonObject.put("productName", resultMap.get("productName"));
+		}
 		
 		String json = jsonObject.toString();
 		return json;
