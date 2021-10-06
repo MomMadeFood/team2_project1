@@ -123,7 +123,8 @@ public class OrderService {
 
 	
 	@Transactional
-	public String insertMOrder(MOrderDTO mOrderDTO) {
+	public Map<String,String> insertMOrder(MOrderDTO mOrderDTO) {
+		Map<String,String> resultMap = new HashMap();
 		try {
 			
 			List<OrderDetailDTO> detailList = mOrderDTO.getDetailList();
@@ -196,11 +197,18 @@ public class OrderService {
 		}
 		catch (NotEnoughtStockException e) {
 			logger.info(e.getMessage());
-			return e.getMessage();
+			resultMap.put("result","soldout");
+			resultMap.put("productName",e.getMessage());
+			return resultMap;
 		}catch(Exception e) {
-			return "fail";
+			resultMap.put("result","fail");
+			return resultMap;
 		}
-		return "success";
+		
+		resultMap.put("result","success");
+		resultMap.put("orderNo",mOrderDTO.getOrderNo());
+		
+		return resultMap;
 	}
 	
 	

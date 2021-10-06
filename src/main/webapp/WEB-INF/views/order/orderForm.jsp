@@ -344,6 +344,7 @@
 										<div style="display:flex">
 											<p style="line-height: 40px;margin-right:10px">가상계좌: </p>
 											<select name="accounts" id="account-select" onChange="accountSelected()">
+												<option value="">--선택하세요--</option>
 												<c:forEach items="${virtureAccountList}" var="virtureAccount">
 													<option value="${virtureAccount.accountNo}">${virtureAccount.company}</option>
 												</c:forEach>
@@ -359,7 +360,7 @@
 					</div>
 				</div>
 				<div style="width:32%; margin-left:40px">
-					<div style="position:sticky;top:20px;">
+					<div style="position:sticky;top:110px;">
 						<div style="width: 310px; height: 220px; border: 1px solid black">
 							<div style="height: 70%;">
 								<div
@@ -619,6 +620,7 @@
 	}
 
 	function postOrderForm() {
+		
 		let orderList = document.querySelectorAll("#orderTable tbody tr");
 		let memberId = document.querySelector(".member-id").innerHTML;
 		let recName = $("#rec-name").val();
@@ -719,11 +721,12 @@
 			data: data
 		}).done((data)=>{
 			if(data.result=="success"){
-				location.href="/order/orderList";
+				alert("주문이 완료됐습니다.");
+				location.href="/order/orderDetail?orderNo="+data.orderNo;
 			}else if(data.result=="fail"){
 				location.href="/";
 			}else{
-				alert(data.result+"의 재고가 부족합니다.");
+				alert(data.productName+"의 재고가 부족합니다.");
 			}
 		});
 		
