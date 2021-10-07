@@ -56,6 +56,8 @@ public interface ProductDAO {
 	//부모 카테고리가 남자 혹은 여자일 때 페이지 조회
 	public List<ProductCategoryDTO> selectProductListBySex(Map<String, Object> param2);
 
+	// withproduct 조회
+	public List<ProductDTO> selectWithProductByPdId (String productDetailNo);
 	
 }
 
