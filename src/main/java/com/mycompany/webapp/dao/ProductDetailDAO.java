@@ -5,7 +5,6 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.dto.product.ProductDetailDTO;
 
 @Mapper
 public interface ProductDetailDAO {
@@ -16,5 +15,5 @@ public interface ProductDetailDAO {
 	
 	public String selectOneImgByPdId (String productDetailNo);
 	
-	
+	public ProductDTO selectWithProductByPdId (String productDetailNo);
 }

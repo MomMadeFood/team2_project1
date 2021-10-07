@@ -108,6 +108,9 @@
                       <li>
                         <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME10">SPECIAL SHOP</a>
                       </li>
+                      <li>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME11">FASHION ACC</a>
+                      </li>
                     </ul>
                   </li>
                   

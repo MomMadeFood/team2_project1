@@ -1,9 +1,9 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <div class="mt-3" style="border-top:solid 1px #e5e5e5"></div>
-	<div id="footerWrap-1">
+	<div id="footerWrap">
 	<!--footer_cnts2 -->
-	<div class="footer_cnts2-1">
-		<div class="footer-2">
+	<div class="footer_cnts2 clearfix">
+		<div class="footer">
 			<div class="cnts2_left">
 				<a>서비스이용약관</a> <a><strong>개인정보처리방침<!-- 개인정보처리방침 --></strong></a>
 				<p class="top_p">

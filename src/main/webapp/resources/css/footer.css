@@ -1,43 +1,42 @@
-.footer_cnts2-1 {
+div .footer_cnts2 {
 	/* Font & Text */
-	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic, sans-serif !important ;
-	font-size: 12px !important ;
-	font-style: normal !important ;
-	font-variant: normal !important ;
-	font-weight: 400 !important ;
-	letter-spacing: normal !important ;
-	line-height: 20px !important ;
+	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic, sans-serif;
+	font-size: 12px;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: 400;
+	letter-spacing: normal;
+	line-height: 20px;
 	text-decoration: none solid rgb(85, 85, 85);
-	text-align: start !important ;
-	text-indent: 0px !important ;
-	text-transform: none !important ;
-	vertical-align: top !important ;
-	white-space: normal !important ;
-	word-spacing: 0px !important ;
+	text-align: start;
+	text-indent: 0px;
+	text-transform: none;
+	vertical-align: top;
+	white-space: normal;
+	word-spacing: 0px;
 
 	/* Color & Background */
-	background-attachment: scroll !important ;
-	background-color: rgb(245, 245, 245) !important ;
-	background-image: none !important ;
-	background-position: 0% 0%!important ;
-	background-repeat: repeat!important ;
-	color: rgb(85, 85, 85)!important ;
+	background-attachment: scroll;
+	background-color: rgb(245, 245, 245);
+	background-image: none;
+	background-position: 0% 0%;
+	background-repeat: repeat;
+	color: rgb(85, 85, 85);
 
 	/* List */
-	list-style-image: none!important ;
-	list-style-type: disc !important ;
-	list-style-position: outside !important ;
+	list-style-image: none;
+	list-style-type: disc;
+	list-style-position: outside;
 
 	/* Table */
-	border-collapse: separate !important ;
-	border-spacing: 0px 0px !important ;
-	caption-side: top !important ;
-	empty-cells: show !important ;
-	table-layout: auto !important ;
+	border-collapse: separate;
+	border-spacing: 0px 0px;
+	caption-side: top;
+	empty-cells: show;
+	table-layout: auto;
 
 	/* Miscellaneous */
-	overflow: visible !important ; 
-	cursor: auto !important ;
-	visibility: visible !important ;
-
+	overflow: visible;
+	cursor: auto;
+	visibility: visible;
 }
