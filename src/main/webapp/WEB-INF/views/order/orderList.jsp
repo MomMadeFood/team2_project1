@@ -128,50 +128,52 @@
   <div class="mt-5">
 	<div style="width: 990px; margin: 0px auto;">
 	  <div style="display:flex; justify-content:center; width:100%">
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination">
-		  
-		    <li class="page-item">
-		      <a class="page-link" href="orderList?pageno=1" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    
-		    <c:if test="${pager.groupNo!=1}">
-			  <li class="page-item">
-		        <a class="page-link" href="orderList?pageno=${pager.startPageNo-1}" aria-label="Next">
-		          <span aria-hidden="true">&lt;</span>
-		         </a>
-		      </li>
-			</c:if>
-			
-		   <c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
-			 <c:if test="${pager.pageNo !=i}">
-			   <li class="page-item">
-			     <a class="page-link" href="orderList?pageno=${i}">${i}</a>
-			   </li>
-			 </c:if>
-			 <c:if test="${pager.pageNo ==i}">
-			   <li class="page-item active">
-			     <a class="page-link " href="orderList?pageno=${i}">${i}</a>
-			   </li>
-			  </c:if>
-			</c:forEach>
-			
-			<c:if test="${pager.groupNo!=pager.totalGroupNo}">
-			  <li class="page-item">
-		        <a class="page-link" href="orderList?pageno=${pager.endPageNo+1}" aria-label="Next">
-		          <span aria-hidden="true">&gt;</span>
-		         </a>
-		      </li>
-			</c:if>
-		    <li class="page-item">
-		      <a class="page-link" href="orderList?pageno=${pager.totalPageNo}" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		       </a>
-		    </li>
-   	      </ul>
-	    </nav>
+	  	<c:if test="${pager.totalRows != 0}">
+	  		<nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			  
+			    <li class="page-item">
+			      <a class="page-link" href="orderList?pageno=1" aria-label="Previous">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    
+			    <c:if test="${pager.groupNo!=1}">
+				  <li class="page-item">
+			        <a class="page-link" href="orderList?pageno=${pager.startPageNo-1}" aria-label="Next">
+			          <span aria-hidden="true">&lt;</span>
+			         </a>
+			      </li>
+				</c:if>
+				
+			   <c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
+				 <c:if test="${pager.pageNo !=i}">
+				   <li class="page-item">
+				     <a class="page-link" href="orderList?pageno=${i}">${i}</a>
+				   </li>
+				 </c:if>
+				 <c:if test="${pager.pageNo ==i}">
+				   <li class="page-item active">
+				     <a class="page-link " href="orderList?pageno=${i}">${i}</a>
+				   </li>
+				  </c:if>
+				</c:forEach>
+				
+				<c:if test="${pager.groupNo!=pager.totalGroupNo}">
+				  <li class="page-item">
+			        <a class="page-link" href="orderList?pageno=${pager.endPageNo+1}" aria-label="Next">
+			          <span aria-hidden="true">&gt;</span>
+			         </a>
+			      </li>
+				</c:if>
+			    <li class="page-item">
+			      <a class="page-link" href="orderList?pageno=${pager.totalPageNo}" aria-label="Next">
+			        <span aria-hidden="true">&raquo;</span>
+			       </a>
+			    </li>
+	   	      </ul>
+		    </nav>
+	  	</c:if>
 	  </div>
     </div>
   </div>
@@ -214,9 +216,40 @@
 		} else if(endDate && !startDate){
 			alert("날짜를 올바르게 입력하세요.");
 		}else{
+			sessionStorage.setItem("startDate", startDate);
+			sessionStorage.setItem("endDate", endDate);
+			console.log("searchType "+ searchType);
+			sessionStorage.setItem("searchType", searchType);
+			sessionStorage.setItem("searchTerm", searchTerm);
 			$.ajax({
 				url: "orderListAjax",
-				data: {startDate, endDate, searchType, searchTerm}
+				data: {
+					pageno : 1,
+					pageno : 1,
+					startDate,
+					endDate,
+					searchType,
+					searchTerm
+				}
+			}).done(data=>{
+				$("#orderContent").html(data);
+			});
+		}
+	}
+	
+	function pageBtn(pageno){
+		var startDate = sessionStorage.getItem("startDate");
+		var endDate = sessionStorage.getItem("endDate");
+		var searchType = sessionStorage.getItem("searchType");
+		var searchTerm = sessionStorage.getItem("searchTerm");
+		if(startDate && !endDate){
+			alert("날짜를 올바르게 입력하세요.");
+		} else if(endDate && !startDate){
+			alert("날짜를 올바르게 입력하세요.");
+		}else{
+			$.ajax({
+				url: "orderListAjax",
+				data: {pageno, startDate, endDate, searchType, searchTerm}
 			}).done(data=>{
 				$("#orderContent").html(data);
 			});

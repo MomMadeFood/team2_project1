@@ -132,7 +132,7 @@ public class OrderService {
 	}
 	
 	public int getCntOrderListByOrderNo(Map<String, Object> param) {
-		return orderDetailDAO.selectCountOrderList(param);
+		return orderDetailDAO.selectCountOrderListByOrderNo(param);
 	}
 	
 	public List<OrderListDTO> getOrderListByOrderNo(Map<String, Object> param){
