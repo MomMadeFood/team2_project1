@@ -11,7 +11,7 @@
 		        }
 		    })
 		})
-	
+		
 		function hideOption()  {
 			$("#option").css("display","none");
 		}
@@ -133,6 +133,8 @@
 					success: function(data) {
 						if(data.result === "success") {
 							$("#cart-tr-"+index).remove();
+							let totalAmount = parseInt($("#cart-total-amount").text());
+							$("#cart-total-amount").text(totalAmount-1);
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						}
@@ -176,6 +178,9 @@
 								//삭제 성공하면, checked되어있던 tr은 삭제
 								$(this).parent().parent().remove();
 							});
+							
+							let total = parseInt($("#cart-total-amount").text());
+							$("#cart-total-amount").text(total-count);
 							updateTotal();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
@@ -244,7 +249,7 @@
 						$("#cart-warn-message").text("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 						//재고 수량 view 변경
 						$("#c-input-pamount"+orgIndex).val(data.amount);
-						$("#c-span-totalprice"+orgIndex).text(data.amount * price);
+						$("#c-span-totalprice"+orgIndex).text(convertPrice(data.amount * price));
 						//상품 view 변경
 						$("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
 						 $("#c-span-pcolor"+orgIndex).text(data.colorCode);
@@ -304,12 +309,12 @@
 					success: function(data) {
 						console.log(data);
 						if(data.result === "success") {
-							$("#c-span-totalprice"+index).text(data.amount * price);
+							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
 							updateTotal();
 						} else if(data.result === "warn-stock") {
 							$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
 							$("#c-input-pamount"+index).val(data.amount);
-							$("#c-span-totalprice"+index).text(data.amount * price);
+							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
 							updateTotal();
 							$("#cart-warn-alert").show();
 						} else if(data.result === "errer-login") {
@@ -325,12 +330,10 @@
 		 function updateTotal() {
 			 let sum = 0;
 			 $(".c-span-totalprice").each(function(){
-					sum = sum + parseInt($(this).text());
+				sum = sum + convertNum($(this).text());
 			 });
 			 
-			 $("#cart-total-productprice").text(sum);
-			 let total = $(".cart-tr-product").length;
-			 $("#cart-total-amount").text(total); 
+			 $("#cart-total-productprice").text(convertPrice(sum));
 		 }
 		 
 			function closeErrorAlert() {
@@ -482,7 +485,7 @@
 								<!-- 가격 -->
 								<div>
 									<input type="hidden" value="${cart.price}" id="c-input-price${status.index}"/>
-									<span class="pd-text">₩<span class="c-span-totalprice" id="c-span-totalprice${status.index}">${cart.price * cart.amount}</span></span> 
+									<span class="pd-text">₩<span class="c-span-totalprice" id="c-span-totalprice${status.index}"><fmt:formatNumber value="${cart.price * cart.amount}" pattern="#,###"/></span></span> 
 								</div> 
 							</td>
 							<td style="vertical-align:middle;  text-align: center;">
@@ -544,13 +547,12 @@
 						<tr class="cart-table-total">
 							<td colspan="2"></td>
 							<td >
-								<span class="cart_span"> 총 <span id="cart-total-amount"></span>개 상품 </span>
+								<span class=" cart-info"> 총 <span id="cart-total-amount">${cartList.size() }</span>개 상품 </span>
 							</td>
-							<td>
-								<span class="cart_span" > 상품 합계 </span>
-							</td>
-							<td colspan="2" class="text-right">
-								<span class="cart_span" id="cart-total-productprice" > </span>
+							<td colspan="2"  align="right">
+								<span class=" cart-info" > 상품 합계 : </span>
+								₩<span class=" cart-info" id="cart-total-productprice" > <fmt:formatNumber value="${totalPrice }" pattern="#,###"/></span>
+								
 							</td>
 						</tr>
 					</tbody>
@@ -566,11 +568,6 @@
 	          
 		</div>
 	</div>
-
-	<script>
-       updateTotal();
-    </script>
-
 	
 
 	
