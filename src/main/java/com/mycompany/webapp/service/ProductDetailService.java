@@ -2,20 +2,20 @@ package com.mycompany.webapp.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CartDAO;
 import com.mycompany.webapp.dao.ProductDetailDAO;
-import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 
 @Service
 public class ProductDetailService {
 
-	@Autowired
+	@Resource
 	private ProductDetailDAO productDetailDAO;
-	@Autowired
+	@Resource
 	private CartDAO cartDAO;
 	
 	//사이즈, 색상 제외 product detail 1004

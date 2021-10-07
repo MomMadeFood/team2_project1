@@ -6,9 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 
+import javax.annotation.Resource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CartDAO;
@@ -33,9 +34,9 @@ public class CartService {
 		SUCCESS_ADD_AMOUNT
 	}
 
-	@Autowired private CartDAO cartDAO;
-	@Autowired private ProductDAO productDAO;
-	@Autowired private StockDAO stockDAO;
+	@Resource private CartDAO cartDAO;
+	@Resource private ProductDAO productDAO;
+	@Resource private StockDAO stockDAO;
 	
 	public List<ProductDTO> getCarts(String mid) {
 		List<ProductDTO> carts = cartDAO.selectCartsById(mid);
@@ -97,30 +98,36 @@ public class CartService {
 	}
 	
 	public CartResult setCart(CartDTO cartDTO) {
-		int amount = cartDAO.selectAmountByCart(cartDTO);
-		
-		if(amount > 0) {
-			//이미 담긴 상품의 경우, 최대 수량은 재고량 만큼
-			int sum = cartDTO.getAmount()+amount;
-			
-			StockDTO stockDTO = new StockDTO();
-			stockDTO.setProductDetailNo(cartDTO.getProductDetailNo());
-			stockDTO.setPsize(cartDTO.getPsize());
-			int stock = stockDAO.selectAmountByStock(stockDTO);
-			if(stock == 0) {
-				return CartResult.FAIL_NOT_ENOUGH_STOCK;
-			}
-			if(sum>stock) {
-				cartDTO.setAmount(Math.min(sum, stock));
-				cartDAO.updateAmountByCart(cartDTO);
-				return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
-			} else {
-				cartDAO.updateAmountByCart(cartDTO);
-				return CartResult.SUCCESS_ADD_AMOUNT;
-			}
+		StockDTO stockDTO = new StockDTO();
+		stockDTO.setProductDetailNo(cartDTO.getProductDetailNo());
+		stockDTO.setPsize(cartDTO.getPsize());
+		int stock = stockDAO.selectAmountByStock(stockDTO);
+		if(stock == 0) {
+			return CartResult.FAIL_NOT_ENOUGH_STOCK;
 		} else {
-			cartDAO.insertCart(cartDTO);
-			return CartResult.SUCCESS;
+			int amount = cartDAO.selectAmountByCart(cartDTO);
+			if(amount > 0) {
+				//이미 담긴 상품
+				int sum = cartDTO.getAmount()+amount;
+				if(sum>stock) {
+					cartDTO.setAmount(stock);
+					cartDAO.updateAmountByCart(cartDTO);
+					return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
+				} else {
+					cartDAO.updateAmountByCart(cartDTO);
+					return CartResult.SUCCESS_ADD_AMOUNT;
+				}
+			} else {
+				//새로 담는 상품
+				if(cartDTO.getAmount()>stock) {
+					cartDTO.setAmount(stock);
+					cartDAO.insertCart(cartDTO);
+					return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
+				} else {
+					cartDAO.insertCart(cartDTO);
+					return CartResult.SUCCESS;
+				}
+			}
 		}
 	}
 	
