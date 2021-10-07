@@ -158,7 +158,7 @@ public class OrderService {
 
 	public Map<String,String> insertMOrder(MOrderDTO mOrderDTO) {
 		Map<String,String> resultMap = new HashMap();
-		logger.info("실행");
+
 		
 		Map<String,String> result = transactionTemplate.execute(new TransactionCallback<Map<String,String> >() {
 			@Override
@@ -203,13 +203,31 @@ public class OrderService {
 					mOrderDAO.insertMOrder(mOrderDTO);
 					
 					logger.info("----");
+					// 현재 포인트의 개수를 구하는 것 
+					int pointCnt = (10000000+pointDAO.selectCounts())%100000000;
 					
 					logger.info("삽입 시작3");
 					// 주문 상세정보를 삽입하는 코드 
 					// 상세정보를 삽입하는 동시에 카트에서 해당 정보를 삭제한다.
+					// 포인트를 사용했다면 포인트 사용내역을 포인트 테이블에 삽입함
 					for(OrderDetailDTO orderDetailDTO:  detailList) {
 						orderDetailDTO.setOrderNo(orderNo);
 						int orderDetailInsertResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+						
+						if(orderDetailDTO.getDiscount()>0) {
+							PointDTO pointDTO = new PointDTO();
+							pointDTO.setAmount(orderDetailDTO.getDiscount());
+							pointDTO.setMemberId(mOrderDTO.getMemberId());
+							pointDTO.setName("사용");
+							pointDTO.setOrderDetailNo(orderDetailDTO.getOrderDetailNo());
+							conv = Integer.toString(pointCnt);
+							String pointNo = time1+"T"+conv;
+							pointDTO.setPointNo(pointNo);
+							int pointResult = pointDAO.insertPoint(pointDTO);
+							if(pointResult==0)
+								throw new Exception();
+							pointCnt++;
+						}
 						
 						CartDTO cartDTO = new CartDTO();
 						cartDTO.setMemberId(mOrderDTO.getMemberId());
@@ -223,32 +241,25 @@ public class OrderService {
 					logger.info("삽입 시작4");
 					
 					
-					// 결제타입을 삽입하는 코드 포인트를 사용했다면 포인트도 차감함
+					
+					
+					// 결제타입을 삽입하는 코드 포인트를 사용했다면 사용내역을 삽입함
 					for(PaymentDTO paymentDTO:  paymentList) {
 						paymentDTO.setOrderNo(orderNo);
 						int paymentInsertResult = paymentDAO.insertPayment(paymentDTO);
-						
-						if(paymentDTO.getPaymentType().equals("포인트")) {
-							MemberDTO memberDTO = new MemberDTO();
-							memberDTO.setId(mOrderDTO.getMemberId());
-							memberDTO.setPoint(paymentDTO.getPrice());
-							memberDAO.updatePointById(memberDTO);
-						}
 						logger.info("개수: "+paymentInsertResult);
 					}
 					
 					// 결제가 완료됐으면 신용카드의 경우 즉시 포인트를 적립할 수 있게 함
 					if(paymentList.get(0).getPaymentType().equals("신용카드")) {
-						int pointCnt = (10000000+pointDAO.selectCounts())%100000000;
 						for(OrderDetailDTO orderDetailDTO:  detailList) {
 							PointDTO pointDTO = new PointDTO();
 							pointDTO.setAmount((int)(orderDetailDTO.getPrice()/100));
-							pointDTO.setRemain(pointDTO.getAmount());
 							pointDTO.setMemberId(mOrderDTO.getMemberId());
 							pointDTO.setName("구매적립");
-							pointDTO.setState(0);
+							pointDTO.setOrderDetailNo(orderDetailDTO.getOrderDetailNo());
 							conv = Integer.toString(pointCnt);
-							String pointNo = time1+"P"+conv;
+							String pointNo = time1+"T"+conv;
 							pointDTO.setPointNo(pointNo);
 							int pointResult = pointDAO.insertPoint(pointDTO);
 							if(pointResult==0)
@@ -256,6 +267,7 @@ public class OrderService {
 							pointCnt++;
 						}	
 					}
+					
 					resultMap.put("result","success");
 					resultMap.put("orderNo",mOrderDTO.getOrderNo());
 					return resultMap;
