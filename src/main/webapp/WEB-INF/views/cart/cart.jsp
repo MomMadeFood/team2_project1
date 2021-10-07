@@ -48,9 +48,10 @@
 				}
 			})
 			.done((data) => {
+				let colorCode = $("#c-span-pcolor"+index).text();
 				$.ajax({
 					url: "cart/optionSizePno",
-					data: {pno : productNo, color:data.colorList[0].colorCode},
+					data: {pno : productNo, color:colorCode},
 					success: function(data) {
 						var sizeTag = "";
 						for(var i=0; i<data.sizeList.length; i++) {
