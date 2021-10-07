@@ -1,57 +1,19 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
-<%@ include file="/WEB-INF/views/common/header.jsp"%>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/orderList.css" />
-
-<div class="mt-5">
-	<div style="width: 990px; margin: 0px auto;">
-	  <div style="display:flex; justify-content:center; width:100%">
-			<h4>주문/배송/반품/취소</h4>
-	  </div>
-  </div>
-</div>
-
-
-<div class="mt-5">
-	<div style="width: 990px; margin: 0px auto; background-color: #f5f5f5;">
-		<form>
-			<div style="display:flex; justify-content:between; width:100%">
-				<div class="search-order-input">
-					<div class="date-search-order ">
-						<span class="txt" style="padding-right: 10px"> 조회기간</span> 
-						<input type="date" id="startDate" name="findStartDate"/> - 
-						<input type="date" id="endDate" name="findEndDate"/>
-						<button type="button" class="btn btn-sm btn-outline-secondary btn-search" onclick="oneWeekBtn()">1주일</button>
-						<button type="button" class="btn btn-sm btn-outline-secondary btn-search" onclick="oneMonthBtn()">1개월</button>
-						<button type="button" class="btn btn-sm btn-outline-secondary btn-search" onclick="threeMonthBtn()">3개월</button>
-					</div>
-					<div class="content-search-order">
-						<span class="txt" style="padding-right: 10px"> 검색구분 </span> 
-						<select name="searchType" id="searchType">
-							<option value="0" selected>상품명</option>
-							<option value="1">주문번호</option>
-						</select> 
-						<input type="text" id="searchTerm" name="searchTerm" style="width:418px"/>
-					</div>
-				</div>
-				<div class="search-order-input2" style="padding-top:17px; padding-left:10px;">
-					<button type="button" class="btn btn-md btn-dark mt-3" style="width:100px; height:70px;" onclick="searchBtn()">조회하기</button>
-					<button type="reset" class="btn btn-md btn-outline-dark mt-3" style="width:100px; height:70px;">초기화</button>
-				</div>
-			</div>
-		</form>
-	</div>
-</div>
-
-<div id="orderContent">
-	<div class="mt-5" >
+<div class="mt-5" >
 	<div style="width:990px; margin: 0px auto;">
 		<div style="display:flex; justify-content: space-between ;margin-top:40px">
 		  <div>
 		    <h5 style="font-weight:700">주문상품</h5>
 		  </div>
 		</div>
-	    <div>
+	    <div id="orderContent">
 		  	<table class="table" style="border-bottom:1px solid #E5E5E5; margin-top:20px">
 			  <colgroup>
 			    <col width="15%"/>
@@ -123,23 +85,23 @@
 			</table>
 		</div>
 	</div>
-  </div>
+</div>
 
-  <div class="mt-5">
+<div class="mt-5">
 	<div style="width: 990px; margin: 0px auto;">
 	  <div style="display:flex; justify-content:center; width:100%">
 		<nav aria-label="Page navigation example">
 		  <ul class="pagination">
 		  
 		    <li class="page-item">
-		      <a class="page-link" href="orderList?pageno=1" aria-label="Previous">
+		      <a class="page-link" href="orderListAjax?pageno=1&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Previous">
 		        <span aria-hidden="true">&laquo;</span>
 		      </a>
 		    </li>
 		    
 		    <c:if test="${pager.groupNo!=1}">
 			  <li class="page-item">
-		        <a class="page-link" href="orderList?pageno=${pager.startPageNo-1}" aria-label="Next">
+		        <a class="page-link" href="orderListAjax?pageno=${pager.startPageNo-1}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Next">
 		          <span aria-hidden="true">&lt;</span>
 		         </a>
 		      </li>
@@ -148,81 +110,29 @@
 		   <c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
 			 <c:if test="${pager.pageNo !=i}">
 			   <li class="page-item">
-			     <a class="page-link" href="orderList?pageno=${i}">${i}</a>
+			     <a class="page-link" href="orderListAjax?pageno=${i}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}">${i}</a>
 			   </li>
 			 </c:if>
 			 <c:if test="${pager.pageNo ==i}">
 			   <li class="page-item active">
-			     <a class="page-link " href="orderList?pageno=${i}">${i}</a>
+			     <a class="page-link " href="orderListAjax?pageno=${i}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}">${i}</a>
 			   </li>
 			  </c:if>
 			</c:forEach>
-			
 			<c:if test="${pager.groupNo!=pager.totalGroupNo}">
 			  <li class="page-item">
-		        <a class="page-link" href="orderList?pageno=${pager.endPageNo+1}" aria-label="Next">
+		        <a class="page-link" href="orderListAjax?pageno=${pager.endPageNo+1}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Next">
 		          <span aria-hidden="true">&gt;</span>
 		         </a>
 		      </li>
 			</c:if>
 		    <li class="page-item">
-		      <a class="page-link" href="orderList?pageno=${pager.totalPageNo}" aria-label="Next">
+		      <a class="page-link" href="orderListAjax?pageno=${pager.totalPageNo}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Next">
 		        <span aria-hidden="true">&raquo;</span>
 		       </a>
 		    </li>
    	      </ul>
 	    </nav>
 	  </div>
-    </div>
   </div>
 </div>
-
-
-
-<script>
-	function oneWeekBtn(){
-		var endDate = new Date();
-		document.getElementById("endDate").valueAsDate = endDate;
-		var now = new Date();
-		var startDate = new Date(now.setDate(now.getDate()-7));
-		document.getElementById("startDate").valueAsDate = startDate;
-	}
-	
-	function oneMonthBtn(){
-		var endDate = new Date();
-		document.getElementById("endDate").valueAsDate = endDate;
-		var now = new Date();
-		var startDate = new Date(now.setMonth(now.getMonth()-1));
-		document.getElementById("startDate").valueAsDate = startDate;
-	}
-	
-	function threeMonthBtn(){
-		var endDate = new Date();
-		document.getElementById("endDate").valueAsDate = endDate;
-		var now = new Date();
-		var startDate =  new Date(now.setMonth(now.getMonth()-3));
-		document.getElementById("startDate").valueAsDate = startDate;
-	}
-	
-	function searchBtn(){
-		var startDate = $("#startDate").val();
-		var endDate = $("#endDate").val();
-		var searchType = $("#searchType  option:selected").val();
-		var searchTerm = $("#searchTerm").val();
-		if(startDate && !endDate){
-			alert("날짜를 올바르게 입력하세요.");
-		} else if(endDate && !startDate){
-			alert("날짜를 올바르게 입력하세요.");
-		}else{
-			$.ajax({
-				url: "orderListAjax",
-				data: {startDate, endDate, searchType, searchTerm}
-			}).done(data=>{
-				$("#orderContent").html(data);
-			});
-		}
-	}
-</script>
-
-
-<%@ include file="/WEB-INF/views/common/footer.jsp"%> 
