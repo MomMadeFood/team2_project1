@@ -2,7 +2,8 @@ package com.mycompany.webapp.service;
 
 import java.util.List;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.StockDAO;
@@ -10,7 +11,7 @@ import com.mycompany.webapp.dto.StockDTO;
 
 @Service
 public class StockService {
-	@Autowired
+	@Resource
 	private StockDAO stockDAO;
 	
 	public List<StockDTO> getStocksByPid(String productId) {
