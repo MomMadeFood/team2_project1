@@ -201,6 +201,8 @@ public class CartController {
 				jsonObject.put("result", "error-duplicate");
 			} else if(cr ==CartResult.FAIL_SAME_VALUE){
 				jsonObject.put("result", "error-same");
+			} else if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "error-stock");
 			} else {
 				jsonObject.put("result", "success");
 				jsonObject.put("psize", cartDTO.getNewPsize());
@@ -231,6 +233,8 @@ public class CartController {
 				logger.info(cartDTO.toString());
 				int amount = cartService.getAmountByCart(cartDTO);
 				jsonObject.put("amount", amount);
+			} else if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "error-stock");
 			} else {
 				jsonObject.put("result", "success");
 				jsonObject.put("amount", cartDTO.getAmount());

@@ -247,6 +247,9 @@
 					if(data.result === "error-duplicate") {
 						$("#cart-error-message").text("카트에 중복된 상품이 존재합니다.");
 						$("#cart-error-alert").show();
+					} else if(data.result === "error-stock") {
+						$("#cart-error-message").text("매진된 상품입니다.");
+						$("#cart-error-alert").show();
 					} else if(data.result === "warn-stock") {
 						$("#cart-warn-message").text("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 						//재고 수량 view 변경
@@ -320,6 +323,9 @@
 							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
 							updateTotal();
 							$("#cart-warn-alert").show();
+						} else if(data.result === "error-stock") {
+								$("#cart-error-message").text("매진된 상품입니다.");
+								$("#cart-error-alert").show();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						}
