@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.CartDAO">
+
+ <select id="selectCartsById" resultType="product" parameterType="string">
+ 	SELECT p.product_no, p.name, p.brand, p.price,
+		pd.product_detail_no, pd.color_code, pd.img1,
+		c.psize, c.amount
+	FROM product p, product_detail pd, cart c
+	WHERE c.product_detail_no = pd.product_detail_no AND p.product_no = pd.product_no
+		AND c.member_id = #{value}
+ </select>
+ 
+  <insert id="insertCart" parameterType="cart">
+ 	INSERT INTO cart (member_id, product_detail_no, psize, amount)
+	VALUES (#{memberId}, #{productDetailNo}, #{psize}, #{amount})
+ </insert>
+ 
+ <select id="selectAmountByCart" parameterType="cart" resultType="int">
+ 	SELECT nvl(sum(amount),0) as amount 
+ 	FROM cart
+ 	WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
+ </select>
+ 
+ <update id="updateAmountByCart" parameterType="cart">
+ 	UPDATE cart
+ 	SET amount = #{amount}
+ 	WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
+ </update>
+ 
+ <delete id="deleteCart" parameterType="cart">
+ 	DELETE FROM cart WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
+ </delete>
+
+<update id="updateCart" parameterType="cart">
+	UPDATE cart
+	SET product_detail_no = #{newProductDetailNo}, psize = #{newPsize}, amount = #{amount}
+	WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
+</update>
+
+</mapper>

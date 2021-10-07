@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.StockDAO">
+
+	<select id="selectStocksByPdid" resultType="stock" parameterType="string">
+		SELECT psize, amount
+		FROM stock
+		WHERE product_detail_no = #{value}
+	</select>
+
+	<select id="selectStocksByPid" resultType="stock" parameterType="string">
+		SELECT pd.product_detail_no, pd.color_code, pd.color_chip, s.psize, s.amount
+		FROM product_detail pd, stock s
+		WHERE pd.product_detail_no = s.product_detail_no
+		    AND pd.product_no = #{value}
+	</select>
+	
+	
+	<select id="selectSizeIsStockedByPdid" resultType="map">
+		SELECT product_detail_no, psize, 
+	        CASE WHEN amount > 0 THEN 'STOCKED'
+	        ELSE 'SOLD_OUT'
+	        END AS "is_stock"
+	    FROM stock
+	    WHERE product_detail_no = #{value}
+	</select>
+	
+	<update id="updateStockByODIdSize" parameterType="orderDetail">
+		UPDATE stock SET amount = amount - #{amount} where product_detail_no = #{productDetailNo} and psize = #{psize} and amount>=#{amount}
+	</update>
+	 
+	<select id="selectAmountByStock" parameterType="stock" resultType="int">
+		SELECT NVL(amount,0)
+		FROM stock
+		WHERE product_detail_no = #{productDetailNo} and psize = #{psize}
+	</select>
+	
+</mapper>

@@ -7,6 +7,9 @@
 
 	<!-- 인증 절차가 필요없는 경로 설정 -->
 	<security:http pattern="/resources/**" security="none"/>
+	
+	<!-- Security 어노테이션  -->
+	<security:global-method-security secured-annotations="enabled"/>
 
 	<!-- 인증 절차를 설정 -->
 	<security:http>
@@ -25,8 +28,8 @@
 		
 		<security:form-login
 			login-page="/member/loginForm"
-			username-parameter="mid"
-			password-parameter="mpassword"
+			username-parameter="id"
+			password-parameter="password"
 			login-processing-url="/login"
 			authentication-success-handler-ref="authenticationSuccessHandler"
 			authentication-failure-handler-ref="authenticationFailureHandler"/>		
@@ -46,6 +49,11 @@
 		<security:csrf disabled="true"/>
 		
 		<!-- 요청 URL 권한 설정 -->
+		<security:intercept-url pattern="/member/loginForm" access="permitAll"/>
+		<security:intercept-url pattern="/cart/**" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/order/**" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/member/**" access="isAuthenticated()"/>
+		<security:intercept-url pattern="/event/**" access="isAuthenticated()"/>
 		<security:intercept-url pattern="/**" access="permitAll"/>
 		
 		<!-- 권한 없음일 경우 보여줄 페이지 설정 -->
@@ -91,7 +99,7 @@
 	<security:authentication-manager>
 		<security:authentication-provider ref="daoAuthenticationProvider"/>
 	</security:authentication-manager>
-	
+	<!--  
 	<bean id="daoAuthenticationProvider"
 		  class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
 		<property name="userDetailsService" ref="jdbcUserService"/>
@@ -100,25 +108,30 @@
 	
 	<security:jdbc-user-service id="jdbcUserService"
 								data-source-ref="dataSource"
-								users-by-username-query="SELECT mid, mpassword, menabled FROM member WHERE mid=?"
-								authorities-by-username-query="SELECT mid, mrole FROM member WHERE mid=?"/>
+								users-by-username-query="SELECT id, password, enabled FROM member WHERE id=?"
+								authorities-by-username-query="SELECT id, role FROM member WHERE id=?"/>
+-->
 
+	<bean id="daoAuthenticationProvider"
+		  class="org.springframework.security.authentication.dao.DaoAuthenticationProvider">
+		<property name="userDetailsService" ref="memberUserDetailService"/>
+		<property name="authoritiesMapper" ref="roleHierarchyAuthoritiesMapper"/>
+	</bean>
 	<!-- 인증 성공 또는 실패시 실행되는 핸들러 객체 설정 -->
 	<bean id="authenticationSuccessHandler" 
-		  class="com.mycompany.webapp.security.AuthenticationSuccessHandler">
+		  class="com.mycompany.webapp.security.MemberLoginSuccessHandler">
 		<!-- 로그인 성공후 리다이렉트로 이동할 경로 -->
 		<property name="alwaysUseDefaultTargetUrl" value="false"/>
 		<property name="defaultTargetUrl" value="/"/>	  
 	</bean>
 		  
 	<bean id="authenticationFailureHandler" 
-		  class="com.mycompany.webapp.security.AuthenticationFailureHandler">
+		  class="com.mycompany.webapp.security.MemberLoginFailureHandler">
 		<!-- 로그인 실패후 리다이렉트로 이동할 경로 -->
-		<property name="defaultFailureUrl" value="/loginForm"/>
 	</bean>
 	
 	<bean id="logoutSuccessHandler"
-		  class="com.mycompany.webapp.security.LogoutSuccessHandler">
+		  class="com.mycompany.webapp.security.MemberLogoutSuccessHandler">
 		<!-- 로그아웃 성공시 리다이렉트로 이동할 경로 -->
 		<property name="defaultTargetUrl" value="/"/>
 	</bean>

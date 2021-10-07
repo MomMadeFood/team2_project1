@@ -1,0 +1,70 @@
+@charset "UTF-8";
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+.coupon {
+	margin: 0px auto;
+	width: 300px;
+	height: 200px;
+	border-radius: 10px;
+	border: 1px solid black;
+	display: flex;
+	align-items: center;
+}
+
+#c1 {
+	background-image:
+		url("${pageContext.request.contextPath}/resources/images/coupon1.png");
+	opacity: 0.4;
+	background-size: 100% 100%;
+}
+
+#c2 {
+	background:
+		url("${pageContext.request.contextPath}/resources/images/coupon2.png");
+	background-color: white;
+	background-blend-mode: multiply;
+	background-size: 100% 100%;
+}
+
+#c3 {
+	background-image:
+		url("${pageContext.request.contextPath}/resources/images/coupon3.png");
+	opacity: 0.4;
+	background-size: 100% 100%;
+}
+
+.coupon-tab {
+	width: 100%;
+}
+
+.coupon-tab-item {
+	width: 33%;
+}
+
+.coupon-tab-item-a {
+	text-align: center;
+	font-size: 15px;
+}
+
+.coupon-item {
+	float: left;
+	width: 32%;
+	height: 330px;
+	border: 2px solid black;
+	margin-left: 12px;
+	margin-right: 0px;
+	margin-top: 12px;
+}
+
+.nav-tabs .nav-link {
+	font-size: 20px;
+}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+	font-weight: 800;
+	font-size: 25px;
+}

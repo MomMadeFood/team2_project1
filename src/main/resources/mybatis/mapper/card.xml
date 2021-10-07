@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.CardDAO">
+	<select id="selectCardsById" parameterType="string" resultType="card">
+		SELECT * FROM card WHERE member_id = #{memberId} order by card_no
+	</select>
+	
+	<select id="selectCountById" parameterType="card" resultType="int">
+		SELECT count(*) FROM card WHERE card_no = #{cardNo} and member_id = #{memberId} and company = #{company} and pay_password = #{payPassword} 
+	</select>
+</mapper> 
