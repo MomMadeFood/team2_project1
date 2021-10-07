@@ -169,5 +169,18 @@
 	<select id="selectProductByProduct" parameterType="product" resultType="product">
 		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = #{productNo}
 	</select>
+	
+	<select id="selectColorsByPid" resultType="string">
+		SELECT color_code
+		FROM product_detail
+		WHERE product_no = #{value}
+	</select>
+	
+	<select id="selectColorChipByPid" resultType="color">
+		SELECT color_code, color_chip
+		FROM product_detail
+		WHERE product_no = #{value}
+	</select>
+	
 
 </mapper>
