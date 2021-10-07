@@ -4,13 +4,13 @@ import java.security.Principal;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,8 +33,8 @@ import com.mycompany.webapp.service.ProductDetailService;
 public class CartController {
 	private static final Logger logger = LoggerFactory.getLogger(CartController.class);
 	
-	@Autowired private CartService cartService;
-	@Autowired private ProductDetailService productDetailService;
+	@Resource private CartService cartService;
+	@Resource private ProductDetailService productDetailService;
 	
 	@RequestMapping("")
 	public String cart(
