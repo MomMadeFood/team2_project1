@@ -90,49 +90,48 @@
 <div class="mt-5">
 	<div style="width: 990px; margin: 0px auto;">
 	  <div style="display:flex; justify-content:center; width:100%">
-		<nav aria-label="Page navigation example">
-		  <ul class="pagination">
-		  
-		    <li class="page-item">
-		      <a class="page-link" href="orderListAjax?pageno=1&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    
-		    <c:if test="${pager.groupNo!=1}">
-			  <li class="page-item">
-		        <a class="page-link" href="orderListAjax?pageno=${pager.startPageNo-1}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Next">
-		          <span aria-hidden="true">&lt;</span>
-		         </a>
-		      </li>
-			</c:if>
-			
-		   <c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
-			 <c:if test="${pager.pageNo !=i}">
-			   <li class="page-item">
-			     <a class="page-link" href="orderListAjax?pageno=${i}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}">${i}</a>
-			   </li>
-			 </c:if>
-			 <c:if test="${pager.pageNo ==i}">
-			   <li class="page-item active">
-			     <a class="page-link " href="orderListAjax?pageno=${i}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}">${i}</a>
-			   </li>
-			  </c:if>
-			</c:forEach>
-			<c:if test="${pager.groupNo!=pager.totalGroupNo}">
-			  <li class="page-item">
-		        <a class="page-link" href="orderListAjax?pageno=${pager.endPageNo+1}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Next">
-		          <span aria-hidden="true">&gt;</span>
-		         </a>
-		      </li>
-			</c:if>
-		    <li class="page-item">
-		      <a class="page-link" href="orderListAjax?pageno=${pager.totalPageNo}&startDate=${startDate}&endDate=${endDate}&searchType=${searchType}&searchTerm=${searchTerm}" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		       </a>
-		    </li>
-   	      </ul>
-	    </nav>
+	  	<c:if test="${pager.totalRows != 0}">
+		    <nav aria-label="Page navigation example">
+			  <ul class="pagination">
+			    <li class="page-item">
+			      <a class="page-link" href="javascript:pageBtn(1)" aria-label="frist">
+			        <span aria-hidden="true">&laquo;</span>
+			      </a>
+			    </li>
+			    <c:if test="${pager.groupNo!=1}">
+				  <li class="page-item">
+			        <a class="page-link" href="javascript:pageBtn(${pager.startPageNo-1})" aria-label="previous">
+			          <span aria-hidden="true">&lt;</span>
+			         </a>
+			      </li>
+				</c:if>
+			   <c:forEach var="i" begin="${pager.startPageNo}" end="${pager.endPageNo}">
+				 <c:if test="${pager.pageNo!=i}">
+				   <li class="page-item">
+				     <a class="page-link" href="javascript:pageBtn(${i})">${i}</a>
+				   </li>
+				 </c:if>
+				 <c:if test="${pager.pageNo==i}">
+				   <li class="page-item active">
+				     <a class="page-link " href="javascript:pageBtn(${i})">${i}</a>
+				   </li>
+				  </c:if>
+				</c:forEach>
+				<c:if test="${pager.groupNo!=pager.totalGroupNo}">
+				  <li class="page-item">
+			        <a class="page-link" href="javascript:pageBtn(${pager.endPageNo+1})" aria-label="next">
+			          <span aria-hidden="true">&gt;</span>
+			         </a>
+			      </li>
+				</c:if>
+			    <li class="page-item">
+			      <a class="page-link" href="javascript:pageBtn(${pager.totalPageNo})" aria-label="end">
+			        <span aria-hidden="true">&raquo;</span>
+			       </a>
+			    </li>
+	   	      </ul>
+		    </nav>
+	    </c:if>
 	  </div>
   </div>
 </div>

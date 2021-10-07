@@ -178,8 +178,12 @@ public class OrderController {
 		
 		Pager pager = null;
 		List<OrderListDTO> tempOrderList = null;
-		if (searchTerm.trim().isEmpty() || searchTerm == null ) {
-			return "redirect:order/orderList";
+		if (searchTerm.trim().isEmpty() || searchTerm == null ) { // 날짜로만 필터한 경우
+			int totalRows = orderService.getCntOrderList(param);
+			pager = new Pager(5, 5, totalRows, pageno);
+			param.put("startRowNo", pager.getStartRowNo());
+			param.put("endRowNo", pager.getEndRowNo());
+			tempOrderList = orderService.getOrderList(param);
 		}
 		else{
 			if(searchType==0) {
@@ -191,6 +195,12 @@ public class OrderController {
 				tempOrderList = orderService.getOrderListByName(param);
 			}else if(searchType==1) {
 				param.put("orderNo", searchTerm);
+				int totalRows = orderService.getCntOrderListByOrderNo(param);
+				System.out.println(">>>>>>>>>>>>>>>>" + totalRows);
+				pager = new Pager(5, 5, totalRows, pageno);
+				param.put("startRowNo", pager.getStartRowNo());
+				param.put("endRowNo", pager.getEndRowNo());
+				tempOrderList = orderService.getOrderListByOrderNo(param);
 			}
 		}
 		
