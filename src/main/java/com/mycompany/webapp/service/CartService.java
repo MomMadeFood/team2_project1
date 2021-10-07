@@ -114,6 +114,7 @@ public class CartService {
 					cartDAO.updateAmountByCart(cartDTO);
 					return CartResult.SUCCESS_NOT_ENOUGH_STOCK;
 				} else {
+					cartDTO.setAmount(sum);
 					cartDAO.updateAmountByCart(cartDTO);
 					return CartResult.SUCCESS_ADD_AMOUNT;
 				}
