@@ -169,7 +169,26 @@
 	              <p>${mOrderDTO.paymentList[0].installment}</p>
 	           </c:if>  
  	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
-	              <p>입금대기</p>
+	              <p>
+	              		<c:if test="${orderDetail.state==1}">
+	              			입금대기중
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==2}">
+	              			주문완료
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==3}">
+	              			 배송준비중
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==4}">
+	              			 배송중
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==5}">
+	              			 배송완료
+	              		</c:if>
+	              		<c:if test="${orderDetail.state==6}">
+	              			 주문취소
+	              		</c:if>  
+	              </p>
 	           </c:if>  	           
             </div>
           </div>
