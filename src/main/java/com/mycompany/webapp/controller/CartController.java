@@ -43,7 +43,11 @@ public class CartController {
 		logger.info("실행");
 		
 		List<ProductDTO> cartList = cartService.getCarts(principal.getName());
-		
+		int totalPrice = 0;
+		for(ProductDTO p : cartList) {
+			totalPrice += p.getAmount() * p.getPrice();
+		}
+		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("cartList", cartList);
 		return "cart/cart";
 	}
