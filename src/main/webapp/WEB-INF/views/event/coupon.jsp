@@ -3,7 +3,74 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/coupon.css" />
 
-<body>
+<script type="text/javascript">
+	function issueCoupon(cNo) {
+		closeAllAlert();
+		$.ajax({
+			url: "/event/issueCoupon",
+			type: "POST",
+			data: {couponNo : cNo},
+			success: function(data) {
+				console.log(data);
+				if(data.result === "success") {
+					$("#coupon-message").text("쿠폰이 발급되었습니다.");
+					$("#coupon-alert").show();
+				} if(data.result === "success-expire") {
+					$("#coupon-message").text("쿠폰이 발급되었습니다. 쿠폰 유효기간 내에 사용하시기 바랍니다.");
+					$("#coupon-alert").show();
+				} else if(data.result === "errer-login") {
+					location.href="/member/loginForm";
+				} else if(data.result === "error-duplicate") {
+					$("#coupon-error-message").text("이미 발급된 쿠폰입니다.");
+					$("#coupon-error-alert").show();
+				} else if(data.result === "error-end") {
+					$("#cart-warn-message").text("종료된 이벤트입니다.");
+					$("#cart-warn-alert").show();
+				} else if(data.result === "error-stock") {
+					$("#cart-warn-message").text("쿠폰 발급 가능 개수가 없습니다.");
+					$("#cart-warn-alert").show();
+				}
+			},
+			error: function(request,status,error) {
+				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+			}
+		}) 
+		
+	}
+	
+	function closeAlert() {
+		$('#coupon-alert').hide();
+	}
+	function closeWarnAlert() {
+		$('#coupon-warn-alert').hide();
+	}
+	function closeErrorAlert() {
+		$('#coupon-error-alert').hide();
+	}
+	function closeAllAlert() {
+		closeAlert();
+		closeWarnAlert();
+		closeErrorAlert();
+	}
+	</script>
+		<div class="position-fixed c-div-alert">
+		<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="coupon-error-alert" role="alert">
+			 <span id="coupon-error-message"></span>
+			  <button type="button" class="close" onclick="closeErrorAlert()">
+			  <span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+		<div class="alert alert-warning alert-dismissible fade show" style="display:none;" id="coupon-warn-alert" role="alert">
+			 <span id="coupon-warn-message"></span>
+			  <button type="button" class="close" onclick="closeWarnAlert()">
+			  <span aria-hidden="true">&times;</span>
+  			</button>
+		</div>
+		<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="coupon-alert" role="alert">
+			<span id="coupon-message"></span> <button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
+		</div>
+	</div>
+	
     <div>
       <div style="border-bottom: 1px solid #E5E5E5; height:100px; vertical-align:center;margin-bottom:40px;">
         <div style="margin:auto; padding-top:30px; width:300px; text-align:center; vertical-align:middle;">
@@ -35,7 +102,7 @@
 				    	  <b>${brandCoupon.discount}<c:if test="${brandCoupon.discountType==1}">% </c:if><c:if test="${brandCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
 				      	  ${brandCoupon.content}
 				      </p>
-				      <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				       <a onclick="issueCoupon('${brandCoupon.couponNo}')" href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
 				    </div>
 				  </div>
 				</c:forEach>
@@ -50,7 +117,7 @@
 				    	  <b>${welcomeCoupon.discount}<c:if test="${welcomeCoupon.discountType==1}">% </c:if><c:if test="${welcomeCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
 				      	  ${welcomeCoupon.content}
 				      </p>
-				      <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				       <a onclick="issueCoupon('${welcomeCoupon.couponNo}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
 				    </div>
 				  </div>
 				</c:forEach>
@@ -65,7 +132,7 @@
 				    	  <b>${eventCoupon.discount}<c:if test="${eventCoupon.discountType==1}">% </c:if><c:if test="${eventCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
 				      	  ${eventCoupon.content}
 				      </p>
-				      <a href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				      <a onclick="issueCoupon('${eventCoupon.couponNo}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
 				    </div>
 				  </div>
 				</c:forEach>
@@ -74,12 +141,10 @@
   	    </div>
     </div>
   </div>
-</body>
-  
   
   <script>
 
-    function colorChange(){
+/*     function colorChange(){
       if(document.querySelector("#c2").style.backgroundColor == "white"){
         document.querySelector("#c2").style.backgroundColor = "red";
       }else{
@@ -127,7 +192,7 @@
       },10000);
     })
 
-    
+     */
 
 
   </script>
