@@ -2,6 +2,7 @@ package com.mycompany.webapp.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -172,25 +173,36 @@ public class CartController {
 			jsonObject.put("result", "errer-login");
 		} else {
 			cartDTO.setMemberId(principal.getName());
+			StringTokenizer st = new StringTokenizer(cartDTO.getNewProductDetailNo(),"_");
+			String productNo = st.nextToken();
+			String colorCode = st.nextToken();
+			
 			logger.info(cartDTO.toString());
 
 			CartResult cr = cartService.updateCart(cartDTO);
 			
 			if(cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
-				jsonObject.put("result", "warn-stock");
 				CartDTO newCartDTO = new CartDTO();
 				newCartDTO.setMemberId(cartDTO.getMemberId());
 				newCartDTO.setProductDetailNo(cartDTO.getNewProductDetailNo());
 				newCartDTO.setPsize(cartDTO.getNewPsize());
 				int amount = cartService.getAmountByCart(newCartDTO);
+				jsonObject.put("result", "warn-stock");
 				jsonObject.put("amount", amount);
+				jsonObject.put("psize", cartDTO.getNewPsize());
+				jsonObject.put("productDetailNo", cartDTO.getNewProductDetailNo());
+				jsonObject.put("colorCode", colorCode);
+				jsonObject.put("productNo", productNo);
 			} else if(cr == CartResult.FAIL_DUPLICATE) {
 				jsonObject.put("result", "error-duplicate");
 			} else if(cr ==CartResult.FAIL_SAME_VALUE){
 				jsonObject.put("result", "error-same");
 			} else {
 				jsonObject.put("result", "success");
-				jsonObject.put("newpdid", cartDTO.getNewProductDetailNo());
+				jsonObject.put("psize", cartDTO.getNewPsize());
+				jsonObject.put("productDetailNo", cartDTO.getNewProductDetailNo());
+				jsonObject.put("colorCode", colorCode);
+				jsonObject.put("productNo", productNo);
 			}
 		}
 		String json = jsonObject.toString();
