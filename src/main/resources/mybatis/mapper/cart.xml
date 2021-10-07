@@ -34,7 +34,7 @@
 
 <update id="updateCart" parameterType="cart">
 	UPDATE cart
-	SET product_detail_no = #{newProductDetailNo}, psize = #{newPsize}
+	SET product_detail_no = #{newProductDetailNo}, psize = #{newPsize}, amount = #{amount}
 	WHERE product_detail_no = #{productDetailNo} and psize = #{psize} and member_id = #{memberId}
 </update>
 

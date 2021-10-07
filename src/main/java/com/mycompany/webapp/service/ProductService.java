@@ -1,6 +1,7 @@
 package com.mycompany.webapp.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -24,7 +25,24 @@ public class ProductService {
 		return productDao.selectBestProductBySex(sex);
 	}
 	
-	public List<ProductCategoryDTO> getProductList(String parentCategoryId){
-		return productDao.selectProductListByPCId(parentCategoryId);
+	public int getTotalProductList(String categoryId) {
+		return productDao.countProductList(categoryId);
 	}
+	
+	public List<ProductCategoryDTO> getProductList(Map<String, Object> param) {
+		return productDao.selectProductListByPCId(param);
+	}
+	
+	public int getTotalProductListBySex(String categoryId2) {
+		return productDao.countProductListBySex(categoryId2);
+	}
+	
+	public List<ProductCategoryDTO> getProductListBySex(Map<String, Object> param2) {
+		return productDao.selectProductListBySex(param2);
+	}
+	
+	public List<ProductCategoryDTO> getColorChip(Map<String, Object> param){
+		return productDao.selectColorListByPCId(param);
+	}
+	
 }

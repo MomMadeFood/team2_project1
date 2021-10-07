@@ -2,6 +2,7 @@ package com.mycompany.webapp.controller;
 
 import java.security.Principal;
 import java.util.List;
+import java.util.StringTokenizer;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,6 +25,7 @@ import com.mycompany.webapp.dto.StockDTO;
 import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
+import com.mycompany.webapp.service.CartService.CartResult;
 import com.mycompany.webapp.service.ProductDetailService;
 
 @Controller
@@ -71,7 +73,7 @@ public class CartController {
 		
 		HttpSession session = request.getSession();
 		session.setAttribute("orderList", orderList);
-		rttr.addFlashAttribute("orderFormAccessRoot", "cart");
+		session.setAttribute("orderFormAccessRoot", "cart");
 		
 		return "redirect:/order/orderForm";
 	}
@@ -123,15 +125,19 @@ public class CartController {
 	public String deleteOneCart(
 			String pdno, String size,
 			Principal principal) {
-		logger.info("실행");
-		CartDTO cartDTO = new CartDTO();
-		cartDTO.setProductDetailNo(pdno);
-		cartDTO.setPsize(size);
-		cartDTO.setMemberId(principal.getName());
-		cartService.deleteCart(cartDTO);
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			CartDTO cartDTO = new CartDTO();
+			cartDTO.setProductDetailNo(pdno);
+			cartDTO.setPsize(size);
+			cartDTO.setMemberId(principal.getName());
+			cartService.deleteCart(cartDTO);
+			
+			
+			jsonObject.put("result", "success");
+		}
 		String json = jsonObject.toString();
 		return json;
 	}
@@ -140,31 +146,18 @@ public class CartController {
 	@PostMapping(value="/deleteCarts",  produces="application/json; charset=UTF-8")
 	@ResponseBody
 	public String deleteCarts(
-			String jsonData,
+			@RequestBody List<CartDTO> cartList,
 			Principal principal) {
-		//pdsno : 제품번호_색상_사이즈 형식 코드
-		logger.info("실행");
-		//StringTokenizer st;
-		
-		CartDTO cartDTO = new CartDTO();
-		cartDTO.setMemberId(principal.getName());
-		
-		
-		
-		//for(String p : jsonData) {
-			logger.info(jsonData);
-			/*
-			 * st = new StringTokenizer(p, "_");
-			 * 
-			 * cartDTO.setProductDetailNo(st.nextToken() + "_" + st.countTokens());
-			 * cartDTO.setPsize(st.nextToken());
-			 * 
-			 * cartService.deleteCart(cartDTO);
-			 */
-		//}
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			for(CartDTO cart : cartList) {
+				cart.setMemberId(principal.getName());
+				cartService.deleteCart(cart);
+			}
+			jsonObject.put("result", "success");
+		}
 		String json = jsonObject.toString();
 		return json;
 	}
@@ -175,15 +168,70 @@ public class CartController {
 	public String updateCart(
 			@RequestBody CartDTO cartDTO,
 			Principal principal) {
-		logger.info("실행");
-		
-		cartDTO.setMemberId(principal.getName());
-		logger.info(cartDTO.toString());
-		
-		cartService.updateCart(cartDTO);
-		
 		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result", "success");
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			cartDTO.setMemberId(principal.getName());
+			StringTokenizer st = new StringTokenizer(cartDTO.getNewProductDetailNo(),"_");
+			String productNo = st.nextToken();
+			String colorCode = st.nextToken();
+			
+			logger.info(cartDTO.toString());
+
+			CartResult cr = cartService.updateCart(cartDTO);
+			
+			if(cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+				CartDTO newCartDTO = new CartDTO();
+				newCartDTO.setMemberId(cartDTO.getMemberId());
+				newCartDTO.setProductDetailNo(cartDTO.getNewProductDetailNo());
+				newCartDTO.setPsize(cartDTO.getNewPsize());
+				int amount = cartService.getAmountByCart(newCartDTO);
+				jsonObject.put("result", "warn-stock");
+				jsonObject.put("amount", amount);
+				jsonObject.put("psize", cartDTO.getNewPsize());
+				jsonObject.put("productDetailNo", cartDTO.getNewProductDetailNo());
+				jsonObject.put("colorCode", colorCode);
+				jsonObject.put("productNo", productNo);
+			} else if(cr == CartResult.FAIL_DUPLICATE) {
+				jsonObject.put("result", "error-duplicate");
+			} else if(cr ==CartResult.FAIL_SAME_VALUE){
+				jsonObject.put("result", "error-same");
+			} else {
+				jsonObject.put("result", "success");
+				jsonObject.put("psize", cartDTO.getNewPsize());
+				jsonObject.put("productDetailNo", cartDTO.getNewProductDetailNo());
+				jsonObject.put("colorCode", colorCode);
+				jsonObject.put("productNo", productNo);
+			}
+		}
+		String json = jsonObject.toString();
+		return json;
+	}
+	
+	@PostMapping(value="/updateAmount", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateAmount(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		JSONObject jsonObject = new JSONObject();
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			cartDTO.setMemberId(principal.getName());
+			logger.info(cartDTO.toString());
+			
+			CartResult cr = cartService.updateAmount(cartDTO);
+			if(cr== CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "warn-stock");
+				logger.info(cartDTO.toString());
+				int amount = cartService.getAmountByCart(cartDTO);
+				jsonObject.put("amount", amount);
+			} else {
+				jsonObject.put("result", "success");
+				jsonObject.put("amount", cartDTO.getAmount());
+			}
+		}
 		String json = jsonObject.toString();
 		return json;
 	}

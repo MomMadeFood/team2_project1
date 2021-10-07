@@ -18,4 +18,6 @@ public class MemberDTO {
 	private String detailAddr;
 	private int enabled;
 	private String role;
+	private int point;
+	private int payPassword;
 }

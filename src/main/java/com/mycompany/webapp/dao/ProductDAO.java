@@ -1,6 +1,8 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.product.ProductCategoryDTO;
@@ -33,11 +35,26 @@ public interface ProductDAO {
 	 * @param productDetailNo, psize
 	 * @return ProductDTO
 	 */
-	public ProductDTO selectProductById(ProductDTO productDTO);
+  public ProductDTO selectProductByProduct(ProductDTO productDTO);
 	
-	//	부모 카테고리 id로 해당하는 상품 번호 조회
-	public List<ProductCategoryDTO> selectProductListByPCId(String parentCategoryId);
+
+  	// -- productList
+	// 전체 상품 목록 수 count
+	public int countProductList(String categoryId);
 	
+	//	부모 카테고리 id로 상품 번호 조회 한 것을 페이지 별로
+	public List<ProductCategoryDTO> selectProductListByPCId(Map<String, Object> param);
+	
+	//	부모 카테고리 id에 따른 제품 번호로 컬러 종류  조회
+	public List<ProductCategoryDTO> selectColorListByPCId(Map<String, Object> param);
+	
+	//-- productList 남자 혹은 여자 일 때
+	
+	// 전체 상품 목록 수 count
+	public int countProductListBySex(String categoryId2);
+	
+	//부모 카테고리가 남자 혹은 여자일 때 페이지 조회
+	public List<ProductCategoryDTO> selectProductListBySex(Map<String, Object> param2);
 
 	
 }

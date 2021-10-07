@@ -58,11 +58,11 @@
 									style="width: 98px; height: 98px;">
 	                  </div>
 	                  <div style="text-align:left; margin-left:20px;">
-	                    <a style="color:black;" href="#" >
+	                    <a style="color:black;" href="/product/productDetail?no=${productList[status.index].productDetailNo}" >
 	                      ${productList[status.index].brand}</br>
 	                      ${productList[status.index].name}
 	                    </a>
-	                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productList[status.index].colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${mOrderDTO.detailList[i].psize}</p>
+	                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productList[status.index].colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${mOrderDTO.detailList[status.index].psize}</p>
 	                  </div>
 	                </div>
 	              </td>
@@ -166,7 +166,7 @@
             </div>
             <div style=" width:80%; display:flex; padding:10px">
 	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
-	              <p>일시불</p>
+	              <p>${mOrderDTO.paymentList[0].installment}</p>
 	           </c:if>  
  	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
 	              <p>입금대기</p>
