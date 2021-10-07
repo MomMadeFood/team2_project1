@@ -251,8 +251,8 @@
 												  		<img class="card" src="${withProduct.img1}"  style="width:100%">
 												  	</a>
 												  </div>
-												  <div  style="width:50% margin-bottom:10px;" >
-												    <p class="card-title" style="11px">${withProduct.brand}</p>
+												  <div  class="container mb-3" style="width:100%; margin-bottom:5px;" >
+												    <h4 class="card-title" style="11px">${withProduct.brand}</h4>
 												    <p class="card-text" style="11px">${withProduct.name}</p>
 												    <p class="card-text" style="11px">₩${withProduct.price}</p>
 												</div>
