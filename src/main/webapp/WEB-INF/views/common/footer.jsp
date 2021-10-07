@@ -1,5 +1,4 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-
 <div class="mt-3" style="border-top:solid 1px #e5e5e5"></div>
 	<div id="footerWrap">
 	<!--footer_cnts2 -->
