@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CartDAO;
+import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 
@@ -15,12 +16,16 @@ public class ProductDetailService {
 
 	@Resource
 	private ProductDetailDAO productDetailDAO;
+	
 	@Resource
 	private CartDAO cartDAO;
 	
+	@Resource
+	private ProductDAO productDAO;
+	
 	//사이즈, 색상 제외 product detail 1004
-	public List<ProductDTO> getProductDetail(String productNo) {
-		List<ProductDTO> productDetail = productDetailDAO.selectProductDetailById(productNo);
+	public List<ProductDTO> getProductDetail(String productDetailNo) {
+		List<ProductDTO> productDetail = productDetailDAO.selectProductDetailById(productDetailNo);
 		return productDetail;
 		
 	}
@@ -35,5 +40,10 @@ public class ProductDetailService {
 	// 상품의 대표 이미지 가져오기
 	public String getOneImgByPdId(String productDetailNo) {
 		return productDetailDAO.selectOneImgByPdId(productDetailNo);
+	}
+	
+	// with product 추천
+	public List<ProductDTO> getWithproductByPdId(String productDetailNo) {
+		return productDAO.selectWithProductByPdId(productDetailNo);
 	}
 }
