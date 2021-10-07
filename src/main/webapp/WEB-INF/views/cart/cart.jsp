@@ -242,8 +242,19 @@
 						$("#cart-error-alert").show();
 					} else if(data.result === "warn-stock") {
 						$("#cart-warn-message").text("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
+						//재고 수량 view 변경
 						$("#c-input-pamount"+orgIndex).val(data.amount);
 						$("#c-span-totalprice"+orgIndex).text(data.amount * price);
+						//상품 view 변경
+						$("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
+						 $("#c-span-pcolor"+orgIndex).text(data.colorCode);
+						 $("#c-span-psize"+orgIndex).text(data.psize); 
+						//hidden 값 수정
+						 $("#c-input-psize"+orgIndex).val(data.psize);
+						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
+						 //checkbox 값 수정
+						 $("#c-checkbox-pdsid"+orgIndex).val(data.productDetailNo + "_" + data.psize);
+						console.log($("#c-checkbox-pdsid"+orgIndex).val());
 						updateTotal();
 						$("#cart-warn-alert").show();
 					} else if(data.result === "errer-login") {
@@ -260,6 +271,9 @@
 						 //hidden 값 수정
 						 $("#c-input-psize"+orgIndex).val(data.psize);
 						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
+						//checkbox 값 수정
+						 $("#c-checkbox-pdsid"+orgIndex).val(data.productDetailNo + "_" + data.psize);
+						console.log($("#c-checkbox-pdsid"+orgIndex).val());
 						 hideOption();
 						 updateTotal();
 					}
@@ -416,7 +430,7 @@
 							<td>
 									<!-- 선택 상품 -->
 								
-								<input type="checkbox" name="cart_ck" value="${cart.productDetailNo}_${cart.psize}">
+								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}">
 							</td>
 							<td class="c-td-product">
 								<!-- pt_list_all -->
