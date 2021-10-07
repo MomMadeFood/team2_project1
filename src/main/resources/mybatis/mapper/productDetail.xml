@@ -30,17 +30,6 @@
 		WHERE product_detail_no = #{value}
 	</select>
   
-  	<select id="selectWithProductByPdId" resultType="product">
-  		SELECT pd.img1, pd.img2, pd.img3, pd.color_code, pd.color_chip,
-        		p.name, p.price, p.content, p.brand
-		FROM product_detail pd, product p
-		WHERE p.product_no = pd.product_no AND pd.product_detail_no = (
-		    SELECT with_product
-		    FROM product_detail
-		    WHERE product_detail_no = #{value}
-		)
-  	 </select>
-  
 </mapper>
 
 
