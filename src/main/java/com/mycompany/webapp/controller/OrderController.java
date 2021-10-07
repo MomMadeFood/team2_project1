@@ -148,6 +148,7 @@ public class OrderController {
 			orderDetail.setAmount(order.getAmount());
 			orderDetail.setPrice(order.getPrice());
 			orderDetail.setState(order.getState());
+			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
 			orderDetailList.add(orderDetail);
 		}
 		if(cnt!=-1) {
@@ -286,5 +287,24 @@ public class OrderController {
 		String json = jsonObject.toString();
 		return json;
 		
+	}
+	
+	
+	@PostMapping(value="/cancelOrderAjax",produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String cancelOrderAjax(OrderDetailDTO orderDetailDTO) {
+		
+		logger.info(orderDetailDTO.toString());
+		
+		Map<String,String> resultMap = orderService.deleteOrderDetail(orderDetailDTO);
+		
+		
+		
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result",resultMap.get("result"));
+		jsonObject.put("message",resultMap.get("message"));
+		
+		String json = jsonObject.toString();
+		return json;
 	}
 }

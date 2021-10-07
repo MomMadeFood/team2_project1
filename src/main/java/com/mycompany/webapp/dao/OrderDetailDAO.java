@@ -84,4 +84,13 @@ public interface OrderDetailDAO {
 	 */
 	
 	public List<OrderDetailDTO> selectOrderDetailsById(String orderNo);
+	
+	
+	/**
+	 * orderDetail의 상태를 주문취소로 변경함
+	 * @param orderDetailNo
+	 * @return 반영된 row 수
+	 */
+	
+	public int updateStateByOrderDetail(OrderDetailDTO orderDetailDTO);
 }

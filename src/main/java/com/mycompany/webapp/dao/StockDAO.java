@@ -47,5 +47,12 @@ public interface StockDAO {
 	 * @return amount
 	 */
 	int selectAmountByStock(StockDTO stockDTO);
+	
+	/**
+	 * STOCK 객체로 재고량 수정
+	 * @param stockDTO (상세제품번호, 사이즈, 재고량)
+	 * @return 반영된 row수
+	 */
+	int updateAmountByStock(StockDTO stockDTO);
 
 }
