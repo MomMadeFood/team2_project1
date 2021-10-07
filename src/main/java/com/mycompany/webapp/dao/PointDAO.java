@@ -9,4 +9,6 @@ public interface PointDAO {
 	public int insertPoint(PointDTO pointDTO);
 	
 	public int selectCounts();
+	
+	public int selectSumById(String memberId);
 }

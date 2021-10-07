@@ -36,7 +36,6 @@ import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.security.UserDetail;
 import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;

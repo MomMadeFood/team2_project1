@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CardDAO;
 import com.mycompany.webapp.dao.MemberDAO;
+import com.mycompany.webapp.dao.PointDAO;
 import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.VirtureAccountDAO;
 import com.mycompany.webapp.dto.CardDTO;
@@ -37,6 +38,9 @@ public class MemberService {
 	@Resource
 	private ProductDAO productDAO;
 	
+	@Resource
+	private PointDAO pointDAO;
+	
 	
 	public Map<String,Object> getMemberOrderInfo(String memberId, List<ProductDTO> productList) {
 
@@ -45,8 +49,9 @@ public class MemberService {
 		List<CardDTO> cardList = cardDAO.selectCardsById(memberId);
 		List<VirtureAccountDTO> virtureAccountList = virtureAccountDAO.selectVirtureAccounts();
 		List<ProductDTO> productDetailList = new ArrayList<ProductDTO>();
+		int point = pointDAO.selectSumById(memberId);
 		MemberDTO memberDTO = memberDAO.selectMemberById(memberId);
-		
+		memberDTO.setPoint(point);
 		
 		System.out.println(productList.get(0));
 		for(ProductDTO productDTO :  productList) {

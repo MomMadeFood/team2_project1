@@ -98,7 +98,7 @@
 					        </div>
 					      </td>
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.amount}</p></td>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price}"/></p></td>
+					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price+orderDetail.discount}"/></p></td>
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
 					      	<p>
 					      		<c:if test="${orderDetail.state == 1}">입금대기중</c:if>
