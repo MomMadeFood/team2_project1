@@ -96,7 +96,7 @@
 	<select id="selectCountOrderListByOrderNo" resultType="int" parameterType="map">
 		select count(*)
 		from m_order
-		where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no like '%'||#{orderNo}||'%'
+		where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no = ${orderNo}
 	</select>
 	
 	<select id="selectOrderListByOrderNo" resultType="orderList" parameterType="map">
@@ -112,7 +112,7 @@
 		                from (
 		                    select order_no, order_date, state
 		                    from m_order
-		                    where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no like '%'||#{orderNo}||'%'
+		                    where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no = ${orderNo}
 		                    order by order_date desc
 		                ) order by rnum desc
 		        ) A, order_detail od, product_detail pd, product p WHERE A.order_no = od.order_no AND od.product_detail_no = pd.product_detail_no AND pd.product_no = p.product_no
@@ -122,9 +122,9 @@
 	</select>
 	
 	<insert id="insertOrderDetail" parameterType="orderDetail">
-		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state)
+		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state,discount)
 		values((select TO_CHAR(SYSDATE, 'YYYYMMDD') from dual) || 'D'||(select 10000000+(SELECT count(*) FROM order_detail)from 
-		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state})
+		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state},#{discount})
 	</insert>
 	
 	<select id="selectOrderDetailsById" parameterType="string" resultType="orderDetail">
