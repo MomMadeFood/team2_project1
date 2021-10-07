@@ -3,6 +3,7 @@ package com.mycompany.webapp.controller;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -29,6 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.mycompany.webapp.dto.CardDTO;
+import com.mycompany.webapp.dto.CouponDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
@@ -38,9 +40,11 @@ import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.security.UserDetail;
 import com.mycompany.webapp.service.CardService;
+import com.mycompany.webapp.service.CouponService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
 import com.mycompany.webapp.service.OrderService.OrderResult;
+import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 
 @Controller
@@ -59,6 +63,9 @@ public class OrderController {
 	
 	@Resource
 	private CardService cardService;
+	
+	@Resource
+	private CouponService couponService;
 
 	
 	@RequestMapping("/orderForm")
@@ -296,5 +303,45 @@ public class OrderController {
 		String json = jsonObject.toString();
 		return json;
 		
+	}
+	
+	
+	@GetMapping("/couponPopup")
+	public String couponPopup(int price, String brand, Principal principal, Model model) {
+		System.out.println(">>>>>>>>>>>>>>>>>" + brand);
+		Map<String, Object> param = new HashMap<>();
+		param.put("memberId", principal.getName());
+		param.put("price", price);
+		
+		List<CouponDTO> tempCouponList = couponService.getAvaliableCouponList(param);
+		
+		List<CouponDTO> couponList = new ArrayList<>();
+		
+		for(CouponDTO coupon : tempCouponList) {
+			if(coupon.getCouponType() == 1) { // 브랜드 쿠폰인 경우
+				if(coupon.getTitle().equals(brand)) {
+					couponList.add(coupon);
+					continue;
+				}
+			}else {
+				couponList.add(coupon);
+			}
+		}
+		Iterator<CouponDTO> iterator = couponList.iterator(); 
+		while(iterator.hasNext()) {
+			CouponDTO coupon = iterator.next();
+			if(coupon.getDiscountType().equals("1")) { // 할인타입이 %인 경우
+				coupon.setTotalDiscountPrice((int) (price*((double)coupon.getDiscount()/100)));
+			}else { // 할인 타입이 원인 경우
+				coupon.setTotalDiscountPrice(coupon.getDiscount()*10000);
+			}
+		}
+		java.util.Collections.sort(couponList);
+		
+		for(CouponDTO coupon : couponList) {
+			System.out.println(">>>>>>>>>>>>>>>>>" + coupon.getTitle() + " "+coupon.getTotalDiscountPrice());
+		}
+		model.addAttribute("couponList", couponList);
+		return "order/couponPopup";
 	}
 }

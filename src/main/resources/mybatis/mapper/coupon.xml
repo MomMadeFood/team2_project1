@@ -5,4 +5,16 @@
 		select * from coupon
 		where coupon_type = #{value}
 	</select>
+	
+	<select id="selectAvailableCouponListByMemberId" parameterType="map" resultType="coupon">
+		<![CDATA[
+			select c.coupon_no, title, content, discount, discount_type, coupon_type
+			from(
+				select m.id, cd.coupon_no
+				from coupon_detail cd join member m on m.id = cd.member_id
+				where cd.member_id = #{memberId} and cd.state = 1
+			) A join coupon c on A.coupon_no = c.coupon_no
+			where  min_price <= #{price}
+		]]>
+	</select>
 </mapper>
