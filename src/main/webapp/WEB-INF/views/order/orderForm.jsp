@@ -61,37 +61,41 @@
 				<div style="width:68%">
 					<table id="orderTable" class="table .txt" style="border-bottom: 1px solid #E5E5E5;">
 						<colgroup>
-							<col width="60%" />
-							<col width="18%" />
+							<col width="51%" />
+							<col width="9%" />
 							<col width="22%" />
+							<col width="12%" />
 						</colgroup>
 						<thead style="background-color: #F5F5F5;">
 							<tr style="text-align: center; height: 47px; font-size: 15px;">
 								<th scope="col">상품정보</th>
 								<th scope="col">수량</th>
 								<th scope="col">판매가</th>
+								<th scope="col">쿠폰</th>
 							</tr>
 						</thead>
 						<tbody>
-            				<c:forEach var="product" items="${productList}" varStatus="status">
+            	  <c:forEach var="product" items="${productList}" varStatus="status">
 	             				<tr style="text-align: center; height: 132px;">
 									<td class="detail-id" style="display:none">${product.productDetailNo}</td>
 									<td class="d-flex"><img src="${product.img1}" alt=""
 										style="width: 98px; height: 98px;">
 										<div style="text-align: left; margin-left: 20px;">
-											<a style="color: black;" href="#">${product.brand}</br> ${product.name}
+											<a style="color: black;" href="#">${product.brand}<br/> ${product.name}
 											</a>
 											<div style="display:flex">
 											 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
 											</div>
-										</div></td>
-									<td
-										class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
+										</div>
+                 </td>
+
+									<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
 									<td class="priceList" style="vertical-align: middle;">
 										<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
 										<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
 										<div style="display:none" class="appliedPoint">0</div>
 									</td>
+                  <td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -430,8 +434,8 @@
 						</div>
 					</div>
 						<div style="margin-top:15px; width:100%">
-							<div style="margin:0px auto; width:90px">
-								<button id="card-btn" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+							<div style="margin:0px auto; width:100%">
+								<button id="card-btn" type="button" class="btn btn-lg btn-dark" data-toggle="modal" data-target="#exampleModal" style="width:100%">
   									결제하기
 								</button>
 								<button id="transfer-btn" style="display:none" type="button" class="btn btn-secondary" onClick="postOrderForm()">
@@ -780,8 +784,21 @@
 			}else{
 				alert(data.productName+"의 재고가 부족합니다.");
 			}
-		});
-		
+		});		
 	}
+	
+	
+	function couponSelect(price, brand){
+		console.log(price +"  " + brand);
+		var x = (window.screen.width / 2) - (700 / 2);
+		var y= (window.screen.height /2) - (400 / 2);
+		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand, "쿠폰 적용", "width=700, height=400, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y);
+		popUp.focus();
+	}
+	
+	function responseDiscountInfo(totalDiscountPrice,couponNo){
+		alert("부모 " + totalDiscountPrice + " / " + couponNo);
+	}
+	
 </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

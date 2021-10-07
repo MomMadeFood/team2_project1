@@ -3,6 +3,7 @@ package com.mycompany.webapp.service;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -68,6 +69,10 @@ public class CouponService {
 			}
 			
 		}
+	}
+	
+	public List<CouponDTO> getAvaliableCouponList(Map<String, Object> param){
+		return couponDao.selectAvailableCouponListByMemberId(param);
 	}
 }
 

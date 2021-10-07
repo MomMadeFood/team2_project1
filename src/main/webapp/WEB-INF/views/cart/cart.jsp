@@ -443,7 +443,7 @@
 							<td>
 									<!-- 선택 상품 -->
 								
-								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}">
+								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}" checked>
 							</td>
 							<td class="c-td-product">
 								<!-- pt_list_all -->

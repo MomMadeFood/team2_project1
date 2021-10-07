@@ -100,7 +100,7 @@
                         <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME01">OUTER</a>
                       </li>
                       <li>
-                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO04">TOP</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME04">TOP</a>
                       </li>
                       <li>
                         <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME05">PANTS</a>
