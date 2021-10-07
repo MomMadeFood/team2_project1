@@ -253,10 +253,13 @@
 						$("#cart-error-alert").show();
 					} else { //성공
 						//성공시 태그들의 정보를 바꿔준다
+						//view 수정
 						 $("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
-						 $("#c-span-pcolor"+orgIndex).text($("#c-span-ocolor").text());
-						 $("#c-span-psize"+orgIndex).text($("#c-span-osize").text()); 
-						 $("#c-input-pdid"+orgIndex).val(data.newpdid);
+						 $("#c-span-pcolor"+orgIndex).text(data.colorCode);
+						 $("#c-span-psize"+orgIndex).text(data.psize); 
+						 //hidden 값 수정
+						 $("#c-input-psize"+orgIndex).val(data.psize);
+						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
 						 hideOption();
 						 updateTotal();
 					}
