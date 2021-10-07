@@ -32,3 +32,8 @@ a:hover, a:active, a:visited, a:focus {
 	color: #ecd795
 }
 
+.page-item.active .page-link {
+    color: #fff;
+    background-color: #8193a7;
+    border-color: #8193a7;
+}

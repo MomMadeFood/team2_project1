@@ -103,16 +103,28 @@ public class OrderService {
 		
 		return orderDetailMap;
 	} 
+	
+	public int getCntOrderList(Map<String, Object> param) {
+		return orderDetailDAO.selectCountOrderList(param);
+	}
+	
 	public List<OrderListDTO> getOrderList(Map<String, Object> param){
 		return orderDetailDAO.selectOrderListByMemberNo(param);
 	}
 	
+	public int getCntOrderListByName(Map<String, Object> param) {
+		return orderDetailDAO.selectCountOrderListByName(param);
+	}
 
 	public List<OrderListDTO> getOrderListByName(Map<String, Object> param){
 		return orderDetailDAO.selectOrderListByName(param);
 	}
 	
-	public List<OrderListDTO> getOrderListByOderNo(Map<String, Object> param){
+	public int getCntOrderListByOrderNo(Map<String, Object> param) {
+		return orderDetailDAO.selectCountOrderList(param);
+	}
+	
+	public List<OrderListDTO> getOrderListByOrderNo(Map<String, Object> param){
 		return orderDetailDAO.selectOrderListByOrderNo(param);
 	}
 

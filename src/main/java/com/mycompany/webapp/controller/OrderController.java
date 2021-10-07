@@ -15,8 +15,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
@@ -25,7 +27,7 @@ import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
-import com.mycompany.webapp.dto.PaymentDTO;
+import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.MemberService;
@@ -110,15 +112,21 @@ public class OrderController {
 		return "order/orderDetail";
 	}
 	
-	@RequestMapping("/orderList")
-	public String orderList(Principal principal, Model model) {
+	@GetMapping("/orderList")
+	public String orderList(@RequestParam(defaultValue="1") int pageno, Principal principal, Model model) {
 		
 		Map<String, Object> param = new HashMap<>();
 		param.put("ID", principal.getName());
 		param.put("startDate", "1970-01-01");
 		param.put("endDate", "2999-01-01");
 		
+		int totalRows = orderService.getCntOrderList(param);
+		Pager pager = new Pager(5, 5, totalRows, pageno);
+		param.put("startRowNo", pager.getStartRowNo());
+		param.put("endRowNo", pager.getEndRowNo());
+		
 		List<OrderListDTO> tempOrderList = orderService.getOrderList(param);
+		
 		String temp = "";
 		int cnt = -1;
 		List<MOrderDTO> orderList =  new ArrayList<>();
@@ -151,14 +159,14 @@ public class OrderController {
 		if(cnt!=-1) {
 			orderList.get(cnt).setDetailList(orderDetailList);
 		}
-		System.out.println(orderList);
 		model.addAttribute("orderList", orderList);
+		model.addAttribute("pager", pager);
+		
 		return "order/orderList";
 	}
 	
-	@ResponseBody
-	@RequestMapping(value="/orderListAjax", produces="application/json; charset=utf-8")
-	public String orderListAjax(String startDate, String endDate, int searchType, String searchTerm, Principal principal, Model model) {
+	@GetMapping("/orderListAjax")
+	public String orderListAjax(@RequestParam(defaultValue="1") int pageno, String startDate, String endDate, int searchType, String searchTerm, Principal principal, Model model) {
 		System.out.println(startDate);
 		System.out.println(endDate);
 		System.out.println(searchType);
@@ -174,19 +182,21 @@ public class OrderController {
 			param.put("endDate", endDate);
 		}
 		
-		
+		Pager pager = null;
 		List<OrderListDTO> tempOrderList = null;
-		
 		if (searchTerm.trim().isEmpty() || searchTerm == null ) {
-			tempOrderList = orderService.getOrderList(param);
+			return "redirect:order/orderList";
 		}
 		else{
 			if(searchType==0) {
 				param.put("name", searchTerm);
+				int totalRows = orderService.getCntOrderListByName(param);
+				pager = new Pager(5, 5, totalRows, pageno);
+				param.put("startRowNo", pager.getStartRowNo());
+				param.put("endRowNo", pager.getEndRowNo());
 				tempOrderList = orderService.getOrderListByName(param);
 			}else if(searchType==1) {
 				param.put("orderNo", searchTerm);
-				tempOrderList = orderService.getOrderListByOderNo(param);
 			}
 		}
 		
@@ -222,12 +232,14 @@ public class OrderController {
 		if(cnt!=-1) {
 			orderList.get(cnt).setDetailList(orderDetailList);
 		}
-		
-		System.out.println(orderList);
-		
-		Gson gson = new Gson();
-		String json = gson.toJson(orderList);
-		return json;
+
+		model.addAttribute("orderList", orderList);
+		model.addAttribute("pager", pager);
+		model.addAttribute("startDate", startDate);
+		model.addAttribute("endDate", endDate);
+		model.addAttribute("searchType", searchType);
+		model.addAttribute("searchTerm", searchTerm);
+		return "order/orderListAjax";
 	}
 
 	@PostMapping(value="/orderFormProc",produces = "application/json; charset=UTF-8")
