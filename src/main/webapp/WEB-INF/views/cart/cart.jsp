@@ -135,6 +135,7 @@
 							$("#cart-tr-"+index).remove();
 							let totalAmount = parseInt($("#cart-total-amount").text());
 							$("#cart-total-amount").text(totalAmount-1);
+							hideOption();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						}
@@ -177,6 +178,7 @@
 							let list = $("input:checkbox[name=cart_ck]:checked").each(function(){
 								//삭제 성공하면, checked되어있던 tr은 삭제
 								$(this).parent().parent().remove();
+								hideOption();
 							});
 							
 							let total = parseInt($("#cart-total-amount").text());
@@ -310,6 +312,7 @@
 						console.log(data);
 						if(data.result === "success") {
 							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
+							hideOption();
 							updateTotal();
 						} else if(data.result === "warn-stock") {
 							$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
