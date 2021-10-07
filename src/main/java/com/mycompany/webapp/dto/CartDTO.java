@@ -15,6 +15,9 @@ public class CartDTO {
 	private String newProductDetailNo;
 	private String newPsize;
 	
+	//List 데이터
+	private int totalPrice;
+	
 	private List<CartDTO> cartDTOList;
 	
 	public List<CartDTO> getCartDTOList() {

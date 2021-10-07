@@ -75,7 +75,7 @@
 							</tr>
 						</thead>
 						<tbody>
-            				<c:forEach var="product" items="${productList}" varStatus="status">
+            	  <c:forEach var="product" items="${productList}" varStatus="status">
 	             				<tr style="text-align: center; height: 132px;">
 									<td class="detail-id" style="display:none">${product.productDetailNo}</td>
 									<td class="d-flex"><img src="${product.img1}" alt=""
@@ -86,10 +86,16 @@
 											<div style="display:flex">
 											 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
 											</div>
-										</div></td>
+										</div>
+                 </td>
+
 									<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
-									<td style="vertical-align: middle; border-right: 1px solid #E5E5E5">₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></td>
-									<td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
+									<td class="priceList" style="vertical-align: middle;">
+										<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+										<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+										<div style="display:none" class="appliedPoint">0</div>
+									</td>
+                  <td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -609,6 +615,15 @@
 		$("#apply-point").val(0);
 		document.querySelector("#total-price").innerHTML = document.querySelector("#prod-price").innerHTML;
 		
+		let priceList = document.querySelectorAll(".priceList");
+		
+		for(let element of priceList){
+			let detailPrice = element.querySelector(".detail-price");
+			let originPrice  = element.querySelector(".originPrice").innerHTML;
+			detailPrice.innerHTML = originPrice;
+			element.querySelector(".originBox").style.display="none";
+			element.querySelector(".appliedPoint").innerHTML = 0;
+		}
 	}
 	
 	function applyPoint(){
@@ -618,6 +633,10 @@
 		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
 		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
 		
+		let priceList = document.querySelectorAll(".priceList");
+		
+
+		
 		console.log(applyPoint+" "+remainPoint+" "+discountPoint+" "+prodPrice);
 		if(applyPoint>remainPoint){
 			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
@@ -625,6 +644,17 @@
 			document.querySelector("#remain-point").innerHTML = convertPrice(remainPoint - applyPoint);
 			document.querySelector("#discount-point").innerHTML = convertPrice(discountPoint+applyPoint);
 			document.querySelector("#total-price").innerHTML = convertPrice(prodPrice-(discountPoint+applyPoint));
+			
+			let len = priceList.length;
+			let dPoint = parseInt(applyPoint/len);
+			
+			for(let element of priceList){
+				let detailPrice = element.querySelector(".detail-price");
+				let price  = convertNum(detailPrice.innerHTML);
+				detailPrice.innerHTML = convertPrice(price-dPoint);
+				element.querySelector(".originBox").style.display="block";
+				element.querySelector(".appliedPoint").innerHTML = dPoint;
+			}
 		}
 		$("#apply-point").val(0);
 	}
@@ -711,6 +741,7 @@
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
 			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
+			 let point = parseInt(orderList[index].querySelector(".appliedPoint").innerHTML);
 			 
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
@@ -720,6 +751,7 @@
 			 data['detailList[' + index +'].psize'] = size; 
 			 data['detailList[' + index +'].price'] = price; 
 			 data['detailList[' + index +'].state'] = state; 
+			 data['detailList[' + index +'].discount'] = point; 
 		}
 		
 		data['paymentList[' + 0 +'].paymentType'] = paymentType;

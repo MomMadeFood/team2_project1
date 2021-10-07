@@ -75,6 +75,11 @@ public class ProductController {
 		}
 		Object[] sizeList = sizeSet.toArray();
 		model.addAttribute("sizeList", sizeList);
+		
+		List<ProductDTO> withProductList = productDetailService.getWithproductByPdId(no);
+		
+		model.addAttribute("withProductList", withProductList);
+		
 			return "product/productDetail";
 		}
 	

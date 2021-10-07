@@ -38,7 +38,6 @@ import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.security.UserDetail;
 import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.CouponService;
 import com.mycompany.webapp.service.MemberService;
@@ -155,6 +154,7 @@ public class OrderController {
 			orderDetail.setAmount(order.getAmount());
 			orderDetail.setPrice(order.getPrice());
 			orderDetail.setState(order.getState());
+			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
 			orderDetailList.add(orderDetail);
 		}
 		if(cnt!=-1) {
@@ -304,11 +304,9 @@ public class OrderController {
 		return json;
 		
 	}
-	
-	
+
 	@GetMapping("/couponPopup")
 	public String couponPopup(int price, String brand, Principal principal, Model model) {
-		System.out.println(">>>>>>>>>>>>>>>>>" + brand);
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", principal.getName());
 		param.put("price", price);
@@ -338,10 +336,21 @@ public class OrderController {
 		}
 		java.util.Collections.sort(couponList);
 		
-		for(CouponDTO coupon : couponList) {
-			System.out.println(">>>>>>>>>>>>>>>>>" + coupon.getTitle() + " "+coupon.getTotalDiscountPrice());
-		}
 		model.addAttribute("couponList", couponList);
 		return "order/couponPopup";
+  }
+  
+	@PostMapping(value="/cancelOrderAjax",produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String cancelOrderAjax(OrderDetailDTO orderDetailDTO) {
+
+		Map<String,String> resultMap = orderService.deleteOrderDetail(orderDetailDTO);
+
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result",resultMap.get("result"));
+		jsonObject.put("message",resultMap.get("message"));
+		
+		String json = jsonObject.toString();
+		return json;
 	}
 }

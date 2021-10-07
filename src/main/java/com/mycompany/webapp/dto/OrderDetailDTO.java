@@ -14,5 +14,6 @@ public class OrderDetailDTO {
 	private String psize;
 	private int amount;
 	private int price;
+	private int discount;
 	private int state;
 }

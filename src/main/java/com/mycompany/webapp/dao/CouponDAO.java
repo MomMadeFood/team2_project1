@@ -10,6 +10,11 @@ import com.mycompany.webapp.dto.CouponDTO;
 @Mapper
 public interface CouponDAO {
 	public List<CouponDTO> selectCouponListByCouponType(int couponType);
-	
+
 	public List<CouponDTO> selectAvailableCouponListByMemberId(Map<String, Object> param);
+
+	public CouponDTO selectCouponById(String couponNo);
+  
+	public void reduceRemainById(String couponNo);
+
 }

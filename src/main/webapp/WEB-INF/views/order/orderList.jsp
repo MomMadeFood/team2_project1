@@ -98,7 +98,7 @@
 					        </div>
 					      </td>
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.amount}</p></td>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price}"/></p></td>
+					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price+orderDetail.discount}"/></p></td>
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
 					      	<p>
 					      		<c:if test="${orderDetail.state == 1}">입금대기중</c:if>
@@ -112,7 +112,13 @@
 					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
 					      	<p>
 					      		<c:if test="${orderDetail.state == 1}">
-									<button class="btn btn-sm btn-outline-secondary btn-search">주문취소</button>					      		
+									<a href="javascript:cancelOrderAjax(
+									{'orderDetailNo':'${orderDetail.orderDetailNo}',
+									'productDetailNo':'${orderDetail.productDetailNo}',
+									'psize':'${orderDetail.psize}',
+									'amount':${orderDetail.amount},
+									'price':${orderDetail.price}
+									})" class="btn btn-sm btn-outline-secondary btn-search">주문취소</a>					      		
 					      		</c:if>
 					      	</p>
 			      		</td>
@@ -254,6 +260,23 @@
 				$("#orderContent").html(data);
 			});
 		}
+	}
+	
+	
+	function cancelOrderAjax(data){
+		console.log(data);
+		
+		
+		
+		$.ajax({
+			type:"POST",
+			url:"cancelOrderAjax",
+			data: data
+		}).done((data)=>{
+			alert(data.message);
+		})
+		
+		
 	}
 </script>
 

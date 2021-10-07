@@ -9,10 +9,6 @@ public class PointDTO {
 	private String pointNo;
 	private String memberId;
 	private String name;
-	private String content;
-	private String type;
 	private int amount;
-	private Date issueDate;
-	private Date expireDate;
-	private int state;
+	private String orderDetailNo;
 }

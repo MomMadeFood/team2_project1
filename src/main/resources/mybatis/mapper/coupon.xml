@@ -5,7 +5,7 @@
 		select * from coupon
 		where coupon_type = #{value}
 	</select>
-	
+
 	<select id="selectAvailableCouponListByMemberId" parameterType="map" resultType="coupon">
 		<![CDATA[
 			select c.coupon_no, title, content, discount, discount_type, coupon_type
@@ -17,4 +17,14 @@
 			where  min_price <= #{price}
 		]]>
 	</select>
+
+	<select id="selectCouponById" parameterType="string" resultType="coupon">
+		SELECT * FROM coupon WHERE coupon_no = #{value}
+	</select>
+	<update id="reduceRemainById">
+		UPDATE coupon
+		SET remain_amount = remain_amount - 1 
+		WHERE coupon_no = #{value}
+	</update>
+
 </mapper>

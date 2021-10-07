@@ -142,7 +142,6 @@
 			</div>
 	</div>
 
-
 <div class="container-fluid c-div-content">
 	
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
@@ -184,7 +183,7 @@
 						<div class="info">
 							<div class="info_sect">
 								<div class="brand-name">
-									<span class= "pd-name">${productDetail.brand }</span>
+									<span class= "pd-name">${productDetail.brand}</span>
 								</div>
 								<h4 class="item_name">
 									<span class="pd-name">${productDetail.name}</span> 
@@ -238,10 +237,36 @@
                                      	</li>
                                      </ul>	
                                 </div>
-                                 <button class="cart_lg_btn_wt" style="width:300px" onclick="putCart()">쇼핑백 담기</button>
-                                
+                               <ul>
+                                 <li>
+                                 <button class="cart_lg_btn_wt mb-3" style="width:300px;" onclick="putCart()">쇼핑백 담기</button>
+                                 
+                                 <c:forEach items="${withProductList}" var="withProduct">
+                                 
+               						<div class="card container" style="width: 300px; margin: 0px; padding:2px">
+        	 								<div class="container">
+        	 								<span style="font-weight:bold;">함께 착용한 상품</span>
+			 									<div>
+			 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}">
+												  		<img class="card" src="${withProduct.img1}"  style="width:100%">
+												  	</a>
+												  </div>
+												  <div  class="container mb-3" style="width:100%; margin-bottom:5px;" >
+												    <h4 class="card-title" style="11px">${withProduct.brand}</h4>
+												    <p class="card-text" style="11px">${withProduct.name}</p>
+												    <p class="card-text" style="11px">₩${withProduct.price}</p>
+												</div>
+											</div>
+									</div>
+									</c:forEach>
+                                 	</li>
+	 							</ul>    
+                                 
+                                 
+                                 
 	                        </div>
 	                    </div>
+	                    
 	                    <div id="pd-div-putCartResult">
                                 	
                         </div>

@@ -26,7 +26,7 @@
 		        select A.rnum, A.order_no order_no, A.order_date order_date, 
 		               od.psize psize, od.amount amount, od.price price, od.state state, od.product_detail_no product_detail_no, 
 		               pd.img1 img1, pd.color_chip, 
-		               p.brand, p.name
+		               p.brand, p.name, od.order_detail_no order_detail_no
 		        from (       
 		                select rownum as rnum, order_no, order_date, state
 		                from (
@@ -61,7 +61,7 @@
 		    select A.rnum, A.order_no, A.order_date,
 		          od.psize, od.amount, od.price price, od.state, od.product_detail_no, 
 		          pd.img1, pd.color_chip, 
-		          p.brand, p.name 
+		          p.brand, p.name , od.order_detail_no order_detail_no
 		    from (   
 		        select rownum as rnum, order_no, order_date ,state
 		        from (
@@ -96,7 +96,7 @@
 	<select id="selectCountOrderListByOrderNo" resultType="int" parameterType="map">
 		select count(*)
 		from m_order
-		where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no like '%'||#{orderNo}||'%'
+		where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no = ${orderNo}
 	</select>
 	
 	<select id="selectOrderListByOrderNo" resultType="orderList" parameterType="map">
@@ -106,13 +106,13 @@
 		        select A.rnum, A.order_no order_no, A.order_date order_date, 
 		               od.psize psize, od.amount amount, od.price price, od.state state, od.product_detail_no product_detail_no, 
 		               pd.img1 img1, pd.color_chip, 
-		               p.brand, p.name
+		               p.brand, p.name, od.order_detail_no order_detail_no
 		        from (       
 		                select rownum as rnum, order_no, order_date, state
 		                from (
 		                    select order_no, order_date, state
 		                    from m_order
-		                    where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no like '%'||#{orderNo}||'%'
+		                    where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no = ${orderNo}
 		                    order by order_date desc
 		                ) order by rnum desc
 		        ) A, order_detail od, product_detail pd, product p WHERE A.order_no = od.order_no AND od.product_detail_no = pd.product_detail_no AND pd.product_no = p.product_no
@@ -122,12 +122,16 @@
 	</select>
 	
 	<insert id="insertOrderDetail" parameterType="orderDetail">
-		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state)
+		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state,discount)
 		values((select TO_CHAR(SYSDATE, 'YYYYMMDD') from dual) || 'D'||(select 10000000+(SELECT count(*) FROM order_detail)from 
-		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state})
+		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state},#{discount})
 	</insert>
 	
 	<select id="selectOrderDetailsById" parameterType="string" resultType="orderDetail">
 		SELECT * FROM order_detail WHERE order_no = #{orderNo}
 	</select>
+	
+	<update id="updateStateByOrderDetail" parameterType="orderDetail">
+		UPDATE order_detail SET state = #{state} where order_detail_no = #{orderDetailNo}
+	</update>
 </mapper>
