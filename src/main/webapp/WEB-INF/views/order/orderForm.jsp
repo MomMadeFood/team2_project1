@@ -90,7 +90,7 @@
 									<td class="priceList" style="vertical-align: middle;">
 										<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
 										<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
-										<div class="appledPoint"></div>
+										<div style="display:none" class="appliedPoint">0</div>
 									</td>
 								</tr>
 							</c:forEach>
@@ -618,6 +618,7 @@
 			let originPrice  = element.querySelector(".originPrice").innerHTML;
 			detailPrice.innerHTML = originPrice;
 			element.querySelector(".originBox").style.display="none";
+			element.querySelector(".appliedPoint").innerHTML = 0;
 		}
 	}
 	
@@ -648,7 +649,7 @@
 				let price  = convertNum(detailPrice.innerHTML);
 				detailPrice.innerHTML = convertPrice(price-dPoint);
 				element.querySelector(".originBox").style.display="block";
-				element.querySelector(".apliedPoint").innerHTML(dPoint);
+				element.querySelector(".appliedPoint").innerHTML = dPoint;
 			}
 		}
 		$("#apply-point").val(0);
@@ -736,6 +737,7 @@
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
 			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
+			 let point = parseInt(orderList[index].querySelector(".appliedPoint").innerHTML);
 			 
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
@@ -745,6 +747,7 @@
 			 data['detailList[' + index +'].psize'] = size; 
 			 data['detailList[' + index +'].price'] = price; 
 			 data['detailList[' + index +'].state'] = state; 
+			 data['detailList[' + index +'].discount'] = point; 
 		}
 		
 		data['paymentList[' + 0 +'].paymentType'] = paymentType;

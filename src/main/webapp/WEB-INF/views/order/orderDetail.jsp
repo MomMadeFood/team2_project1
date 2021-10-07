@@ -67,8 +67,8 @@
 	                </div>
 	              </td>
 	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p> ${orderDetail.amount}</p></td>
-	              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price}" pattern="#,###"/></p></td>
-	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price - mOrderDTO.priceDiscount/fn:length(productList)}" pattern="#,###"/></p></td>
+	              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price+orderDetail.discount}" pattern="#,###"/></p></td>
+	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber value="${orderDetail.price}" pattern="#,###"/></p></td>
 	              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
 	              	<p>
 	              		<c:if test="${orderDetail.state==1}">
