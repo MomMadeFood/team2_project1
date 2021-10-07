@@ -30,7 +30,9 @@ import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
+import com.mycompany.webapp.dto.StockDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.exception.DeleteOrderException;
 import com.mycompany.webapp.exception.NotEnoughtStockException;
 
 @Service
@@ -258,6 +260,39 @@ public class OrderService {
 		mp.put("mOrderDTO", mOrderDTO);
 		mp.put("productList",productList);
 		return mp;
+	}
+	
+	@Transactional
+	public Map<String,String> deleteOrderDetail(OrderDetailDTO orderDetailDTO) {
+		Map<String,String> resultMap = new HashMap<String, String>();
+		try {
+			orderDetailDTO.setState(6);
+			StockDTO stockDTO = new StockDTO();
+			
+			stockDTO.setAmount(orderDetailDTO.getAmount());
+			stockDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
+			stockDTO.setPsize(orderDetailDTO.getPsize());
+			
+			int updateResult = orderDetailDAO.updateStateByOrderDetail(orderDetailDTO);
+			if(updateResult==0) {
+				throw new DeleteOrderException("결재상태 변경중 오류 발생");
+			}
+			updateResult = stockDAO.updateAmountByStock(stockDTO);
+			if(updateResult==0) {
+				throw new DeleteOrderException("재고상태 변경중 오류 발생");
+			}
+		}catch(DeleteOrderException e) {
+			resultMap.put("result","fail");
+			resultMap.put("message",e.getMessage());
+			return resultMap;
+		}catch(Exception e){
+			resultMap.put("result","fail");
+			resultMap.put("message","예상치 못한 오류 발생");
+			return resultMap;
+		}
+		resultMap.put("result","success");
+		resultMap.put("message","주문이 취소되었습니다.");
+		return resultMap;
 	}
 	
 }

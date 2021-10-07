@@ -87,7 +87,11 @@
 										</div></td>
 									<td
 										class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
-									<td style="vertical-align: middle;">₩<span class="detail-price" ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></td>
+									<td class="priceList" style="vertical-align: middle;">
+										<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+										<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+										<div class="appledPoint"></div>
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -607,6 +611,14 @@
 		$("#apply-point").val(0);
 		document.querySelector("#total-price").innerHTML = document.querySelector("#prod-price").innerHTML;
 		
+		let priceList = document.querySelectorAll(".priceList");
+		
+		for(let element of priceList){
+			let detailPrice = element.querySelector(".detail-price");
+			let originPrice  = element.querySelector(".originPrice").innerHTML;
+			detailPrice.innerHTML = originPrice;
+			element.querySelector(".originBox").style.display="none";
+		}
 	}
 	
 	function applyPoint(){
@@ -616,6 +628,10 @@
 		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
 		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
 		
+		let priceList = document.querySelectorAll(".priceList");
+		
+
+		
 		console.log(applyPoint+" "+remainPoint+" "+discountPoint+" "+prodPrice);
 		if(applyPoint>remainPoint){
 			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
@@ -623,6 +639,17 @@
 			document.querySelector("#remain-point").innerHTML = convertPrice(remainPoint - applyPoint);
 			document.querySelector("#discount-point").innerHTML = convertPrice(discountPoint+applyPoint);
 			document.querySelector("#total-price").innerHTML = convertPrice(prodPrice-(discountPoint+applyPoint));
+			
+			let len = priceList.length;
+			let dPoint = parseInt(applyPoint/len);
+			
+			for(let element of priceList){
+				let detailPrice = element.querySelector(".detail-price");
+				let price  = convertNum(detailPrice.innerHTML);
+				detailPrice.innerHTML = convertPrice(price-dPoint);
+				element.querySelector(".originBox").style.display="block";
+				element.querySelector(".apliedPoint").innerHTML(dPoint);
+			}
 		}
 		$("#apply-point").val(0);
 	}
