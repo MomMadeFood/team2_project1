@@ -72,7 +72,7 @@ public class CouponService {
 	}
 	
 	public List<CouponDTO> getAvaliableCouponList(Map<String, Object> param){
-		return couponDao.selectAvailableCouponListByMemberId(param);
+		return couponDAO.selectAvailableCouponListByMemberId(param);
 	}
 }
 
