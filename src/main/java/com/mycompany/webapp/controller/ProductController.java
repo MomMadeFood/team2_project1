@@ -24,11 +24,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.CategoryDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.CartService.CartResult;
+import com.mycompany.webapp.service.CategoryService;
 import com.mycompany.webapp.service.ProductDetailService;
 import com.mycompany.webapp.service.ProductService;
 
@@ -45,6 +47,8 @@ public class ProductController {
 	
 	@Resource
 	private ProductService productService;
+	
+	@Resource private CategoryService categoryService;
 	
 	@RequestMapping("/productDetail")
 	public String productDetail(String no, Model model) {
@@ -129,6 +133,10 @@ public class ProductController {
 			}
 			model.addAttribute("categoryId", categoryId);
 			model.addAttribute("productColorMap", productColorMap);
+			
+			//subCategory
+			List<CategoryDTO> subCategoryList = categoryService.getSubCategorys(categoryId);
+			model.addAttribute("subCategoryList", subCategoryList);
 			
 			return "product/productList";
 		}

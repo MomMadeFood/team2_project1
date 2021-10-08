@@ -257,11 +257,11 @@
 											    <span class="txt">₩<fmt:formatNumber value="${withProduct.price}" pattern="#,###"/></span><br/>
 								  			</a>
 								  		</div>
-						  			</div> 
-											
+						  			</div> 			
 								</div>
+								<hr/>
 							</c:forEach>    
-							<hr/>
+							
                         	</div>
 	                    </div>
 	                </div>
