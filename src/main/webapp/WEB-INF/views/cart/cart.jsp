@@ -401,7 +401,7 @@
 	</div>
 
 	<!--content-->
-	<div class="container-fluid c-div-content">
+	<div class="container-fluid c-div-content txt">
 		
 	    <div style="width: 990px; margin:0px auto;">
 			<div class="m-5">
@@ -452,7 +452,7 @@
 									<div class="product-info d-flex justify-content-start">
 											<div>
 												<a href="${pageContext.request.contextPath}/product/productDetail?no=${cart.productDetailNo}">
-												<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" />
+													<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" />
 												</a>
 											</div>
 											<div class="cart_product mt-2" style="width:350px;" >

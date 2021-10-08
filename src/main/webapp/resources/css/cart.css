@@ -145,7 +145,7 @@
 
 .cart_product_link {
     color : #444;
-    font-size: 15px;
+    font-size: 13px;
     display: block;
     
 }
@@ -275,4 +275,10 @@ a:link { text-decoration: none;}
 .cart-info {
 	font-size : 14pt;
 	display: inline;
+}
+
+.txt {
+	margin-top: 15px;
+	font-size: 13px;
+	line-height: 22px;
 }
