@@ -159,6 +159,11 @@
     text-decoration:none;
 }
 
+.cart_lg_btn_wt:hover {
+    background: #f5f5f5;
+    color: black;
+}
+
 .cart_lg_btn_gr {
     padding: 8px 20px 10px;
     min-width: 140px;
@@ -167,6 +172,11 @@
     color: #fff;
     font-size: 14px;
     text-decoration:none;
+}
+
+.cart_lg_btn_gr:hover {
+	background: #363636;
+    color: #fff;
 }
 
 .cart_select_btn {
