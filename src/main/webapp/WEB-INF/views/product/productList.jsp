@@ -7,7 +7,7 @@
 			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 			    <div class="navbar-nav d-flex flex-wrap">
 			    	<c:forEach items="${subCategoryList}" var="category" >
-			    	 <a class="nav-link inline-block" style="width:220px;" href="productList?categoryId=${category.categoryId}">${category.categoryName}</a>
+			    	 <a class="nav-link inline-block" style="width:220px; text-align:left;" href="productList?categoryId=${category.categoryId}">${category.categoryName}</a>
 			    	</c:forEach>
 			    </div>
 			  </div>
