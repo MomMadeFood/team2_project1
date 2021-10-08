@@ -561,11 +561,11 @@
 						<tr class="cart-table-total">
 							<td colspan="2"></td>
 							<td >
-								<span class=" cart-info"> 총 <span id="cart-total-amount">${cartList.size() }</span>개 상품 </span>
+								<span class="cart-info"> 총 <span id="cart-total-amount">${cartList.size() }</span>개 상품 </span>
 							</td>
-							<td colspan="2"  align="right">
-								<span class=" cart-info" > 상품 합계 : </span>
-								₩<span class=" cart-info" id="cart-total-productprice" > <fmt:formatNumber value="${totalPrice }" pattern="#,###"/></span>
+							<td colspan="2" align="right">
+								<span class="cart-info" > 상품 합계 : </span>
+								₩<span class="cart-info" id="cart-total-productprice" > <fmt:formatNumber value="${totalPrice }" pattern="#,###"/></span>
 								
 							</td>
 						</tr>
