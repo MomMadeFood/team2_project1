@@ -147,7 +147,7 @@
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
 			<div class="row">
-				<div style="width: 55%;"> 
+				<div style="width: 55%;" class="mt-4"> 
 					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 						  <ol class="carousel-indicators">
 						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -173,7 +173,11 @@
 						    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 						    <span class="sr-only">Next</span>
 						  </a>
-						</div>		
+						</div>
+						<div class="pd-round-style"
+										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
+										<p class="pd_p description mb-4">${productDetail.content}</p>
+									</div>    		
 				</div>
 				<div style="width:5%;">
 				</div>
@@ -192,14 +196,12 @@
 								</p>
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
-									<div class="pd-round-style"
-										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-										<p class="pd_p description mb-4">${productDetail.content}</p>
-									</div>      
+									  
                                 </div>
                                </div>
                                 <%-- <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart"> --%>
                                 	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
+                                	<hr/>
                                 <div class="pd-info">
                                 	<ul>
                                  		<li style="display:flex" class="pd-colors">
@@ -217,11 +219,6 @@
                                     	 			<label><input type="radio" name="psize" value="${size}" style="width:30px"/><span style="padding: 0px 5px;">${size}</span></label>
                                    	 			</c:forEach>	                                      
                                    		</li>
-                                   
-                                 		<li>
-                                 			<span class="product-subtitle">남은 수량</span>
-                                 			<span style="mr-2">${productSizePrice.amount}</span> <!-- 나중에 ajax이용  -->
-                                 		</li>
                                      	<li>
                                      		<span class="product-subtitle">수량</span>
                                              <button class="qty_left" type="button" onclick="reduceSum()" style="width:20px">-</button>
@@ -236,27 +233,35 @@
                                      	</li>
                                      </ul>	
                                 </div>
+                                
                                <ul>
                                  <li>
-	                                 <button class="cart_lg_btn_wt mb-3" style="width:300px;" onclick="putCart()">쇼핑백 담기</button>
-	                                 <c:forEach items="${withProductList}" var="withProduct">
-	               						<div class="container" style="width:300px; margin: 0px; padding:2px">
-	        	 								<div style="width:60%">
-				 									<div>
-				 										<span class="pd-with-name">함께 착용한 상품</span>
-				 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
-													  		<img class="card" src="${withProduct.img1}" style="width:100%">
-													  	</a>
-													  	<span class="pd-with-name" >${withProduct.brand}</span><br/>
-													    <span class="pd-with-name">${withProduct.name}</span><br/>
-													    <span class="txt">₩<fmt:formatNumber value="${withProduct.price}" pattern="#,###"/></span><br/>
-												  </div> 
-													
-												</div>
-										</div>
-									</c:forEach>
+	                                 <button class="cart_lg_btn_wt mb-3" style="width:100%;" onclick="putCart()">쇼핑백 담기</button>
+	                                 
                                	</li>
- 							</ul>    
+ 							</ul>
+ 							<hr/>
+ 							<c:forEach items="${withProductList}" var="withProduct">
+           						<div style="width:100%; margin: 0px;">
+									<div class="pd-with-name">함께 착용한 상품</div>
+									<div class="row mt-2">
+										<div style="width:45%; padding:10px">
+	 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
+										  		<img class="card" src="${withProduct.img1}" style="width:100%;">
+										  	</a>
+									  	</div>
+									  	<div style="width:55%; padding:10px">
+									  		<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
+											  	<span class="pd-with-name" >${withProduct.brand}</span><br/>
+											    <span class="pd-with-name">${withProduct.name}</span><br/>
+											    <span class="txt">₩<fmt:formatNumber value="${withProduct.price}" pattern="#,###"/></span><br/>
+								  			</a>
+								  		</div>
+						  			</div> 
+											
+								</div>
+							</c:forEach>    
+							<hr/>
                         	</div>
 	                    </div>
 	                </div>
