@@ -143,7 +143,6 @@
 	</div>
 
 <div class="container-fluid c-div-content">
-	
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
@@ -176,9 +175,9 @@
 						  </a>
 						</div>		
 				</div>
-				<div style="width: 5%;">
+				<div style="width:5%;">
 				</div>
-				<div style="width: 40%;">
+				<div style="width:40%;">
 					<div class="pd_item_detail_info float_right" id="contentDiv">
 						<div class="info">
 							<div class="info_sect">
@@ -189,7 +188,7 @@
 									<span class="pd-name">${productDetail.name}</span> 
 								</h4>
 								<p class="pd-price">
-									<span>₩${productDetail.price}</span>
+									<span class="txt">₩<fmt:formatNumber pattern="#,###" value="${productDetail.price}"/></span>
 								</p>
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
@@ -215,7 +214,7 @@
                                  		 <li class="pd-size">
                                     	 		<span class="product-subtitle">사이즈</span>
                                     	 		<c:forEach items="${sizeList}" var="size">
-                                    	 			<label><input type="radio" name="psize" value="${size}"/><span>${size}</span></label>
+                                    	 			<label><input type="radio" name="psize" value="${size}" style="width:30px"/><span style="padding: 0px 5px;">${size}</span></label>
                                    	 			</c:forEach>	                                      
                                    		</li>
                                    
@@ -225,58 +224,44 @@
                                  		</li>
                                      	<li>
                                      		<span class="product-subtitle">수량</span>
-                                             <button class="qty_left" type="button" onclick="reduceSum()">-</button>
-                                             <input type="text" name="amount" value="1" class="qty_input" />
-                                             <button class="qty_right" type="button" onclick="increaseSum()">+</button>
+                                             <button class="qty_left" type="button" onclick="reduceSum()" style="width:20px">-</button>
+                                             <input type="text" name="amount" value="1" class="qty_input"  style="width:40px;"/>
+                                             <button class="qty_right" type="button" onclick="increaseSum()" style="width:20px">+</button>
                                          </li>
                                      </ul>
                                      <ul>
                                      	<li>
                                      		<span class="pd-title">총 합계</span>
-                                     		<span class="pd-text" id="totalPrice">₩${productDetail.price}</span> 
+                                     		<span class="pd-text" id="totalPrice">₩<fmt:formatNumber pattern="#,###" value="${productDetail.price}"/></span>
                                      	</li>
                                      </ul>	
                                 </div>
                                <ul>
                                  <li>
-                                 <button class="cart_lg_btn_wt mb-3" style="width:300px;" onclick="putCart()">쇼핑백 담기</button>
-                                 
-                                 <c:forEach items="${withProductList}" var="withProduct">
-                                 
-               						<div class="card container" style="width: 300px; margin: 0px; padding:2px">
-        	 								<div class="container">
-        	 								<span style="font-weight:bold;">함께 착용한 상품</span>
-			 									<div>
-			 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}">
-												  		<img class="card" src="${withProduct.img1}"  style="width:100%">
-												  	</a>
-												  </div>
-												  <div  class="container mb-3" style="width:100%; margin-bottom:5px;" >
-												    <h4 class="card-title" style="11px">${withProduct.brand}</h4>
-												    <p class="card-text" style="11px">${withProduct.name}</p>
-												    <p class="card-text" style="11px">₩${withProduct.price}</p>
+	                                 <button class="cart_lg_btn_wt mb-3" style="width:300px;" onclick="putCart()">쇼핑백 담기</button>
+	                                 <c:forEach items="${withProductList}" var="withProduct">
+	               						<div class="container" style="width:300px; margin: 0px; padding:2px">
+	        	 								<div style="width:60%">
+				 									<div>
+				 										<span class="pd-with-name">함께 착용한 상품</span>
+				 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
+													  		<img class="card" src="${withProduct.img1}" style="width:100%">
+													  	</a>
+													  	<span class="pd-with-name" >${withProduct.brand}</span><br/>
+													    <span class="pd-with-name">${withProduct.name}</span><br/>
+													    <span class="txt">₩<fmt:formatNumber value="${withProduct.price}" pattern="#,###"/></span><br/>
+												  </div> 
+													
 												</div>
-											</div>
-									</div>
+										</div>
 									</c:forEach>
-                                 	</li>
-	 							</ul>    
-                                 
-                                 
-                                 
-	                        </div>
+                               	</li>
+ 							</ul>    
+                        	</div>
 	                    </div>
-	                    
-	                    <div id="pd-div-putCartResult">
-                                	
-                        </div>
 	                </div>
             	</div>
         	</div>  
      	</div>
-       	<div style="width: 10%;"></div>
 	</div>   
-
-	
-
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
