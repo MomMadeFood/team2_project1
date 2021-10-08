@@ -12,4 +12,13 @@
 	<select id="selectCouponDetailByCoupon" parameterType="coupon" resultType="coupon">
 		SELECT * FROM coupon_detail WHERE member_id = #{memberId} AND coupon_no = #{couponNo}
 	</select>
+	
+	<update id="updateStateByCouponDetail" parameterType="couponDetail">
+		UPDATE coupon_detail set state = #{state} where coupon_no = #{couponNo}
+	</update>
+	
+	<update id="updateStateByOrderDetailNo" parameterType="couponDetail">
+		UPDATE coupon_detail set state = 1 where coupon_no = #{couponNo}
+	</update>
+
 </mapper>

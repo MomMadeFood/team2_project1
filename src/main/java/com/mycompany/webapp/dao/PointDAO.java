@@ -15,5 +15,9 @@ public interface PointDAO {
 	public int updatePoint(String orderDetailNo);
 	
 	public int insertRefundPoint(PointDTO pointDTO);
+
+	public int selectCountsByOrderDetailNo(String orderDetailNo);
+
+
 	
 }

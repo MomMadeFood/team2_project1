@@ -10,6 +10,7 @@
    	  <typeAlias type="com.mycompany.webapp.dto.CartDTO" alias="cart"/>
    	  <typeAlias type="com.mycompany.webapp.dto.CategoryDTO" alias="category"/>
    	  <typeAlias type="com.mycompany.webapp.dto.CouponDTO" alias="coupon"/>
+   	  <typeAlias type="com.mycompany.webapp.dto.CouponDetailDTO" alias="couponDetail"/>
    	  <typeAlias type="com.mycompany.webapp.dto.MemberDTO" alias="member"/>
    	  <typeAlias type="com.mycompany.webapp.dto.MOrderDTO" alias="morder"/>
       <typeAlias type="com.mycompany.webapp.dto.OrderDetailDTO" alias="orderDetail"/>

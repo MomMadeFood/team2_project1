@@ -10,8 +10,6 @@ public class MOrderDTO {
 	private String orderNo;
 	private String memberId;
 	private Date orderDate;
-	private int priceTotal;
-	private int priceDiscount;
 	private int state;
 	private String request;
 	private String addr;

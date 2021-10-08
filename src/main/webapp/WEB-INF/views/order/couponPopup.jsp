@@ -18,8 +18,8 @@
 		}else{
 			var totalDiscountPrice = $("#totalDiscountPrice"+chkIdx).val();
 			var couponNo = $("#couponNo"+chkIdx).val();
-			
-			window.opener.responseDiscountInfo(totalDiscountPrice,couponNo);
+			var index = $("#indexBox").text();
+			window.opener.responseDiscountInfo(totalDiscountPrice,couponNo,index);
 			window.close();
 		}
 	}
@@ -74,5 +74,5 @@
 			<button class="cp_lg_btn_black" onclick="javascript:applyCoupon()">쿠폰선택</button>
 		</div>
 	</div>
-	
+	<div id="indexBox" style="display:none">${index}</div>
 </div>

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.CouponDTO;
+import com.mycompany.webapp.dto.CouponDetailDTO;
 
 @Mapper
 public interface CouponDAO {
@@ -16,5 +17,7 @@ public interface CouponDAO {
 	public CouponDTO selectCouponById(String couponNo);
   
 	public void reduceRemainById(String couponNo);
+
+	public int updateStateByCoupon(CouponDetailDTO couponDetailDTO);
 
 }

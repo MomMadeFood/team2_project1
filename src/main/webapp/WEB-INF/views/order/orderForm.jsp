@@ -98,10 +98,15 @@
 						<td class="priceList" style="vertical-align: middle; border-right: 1px solid #E5E5E5;">
 							<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
 							<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
-							<div style="display:none" class="appliedPoint">-<span class="pointAmount">0</span>P</div>
+							<div style="" class="appliedPoint">-<span class="pointAmount">0</span>P</div>
 							<div style="display:none" class="appliedCoupon">0</div>
 						</td>
-                  		<td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
+                  		<td style="vertical-align: middle;">
+                  			<button class="btn btn-sm btn-outline-secondary btn-search cpBtn" onclick="couponSelect(${product.price/product.amount},'${product.brand}',${status.index})">적용</button>
+                  			<button style="display:none; margin:0px" class="btn btn-sm btn-outline-secondary btn-search resetCpBtn" onclick="resetCoupon()">취소</button>	
+                  		</td>
+                  		
+                  		<td style="display:none" class="couponId">none</td>
 
 								</tr>
 							</c:forEach>
@@ -449,7 +454,7 @@
 								<button id="card-btn" type="button" class="btn btn-lg btn-dark" data-toggle="modal" data-target="#exampleModal" style="width:100%">
   									결제하기
 								</button>
-								<button id="transfer-btn" style="display:none" type="button" class="btn btn-secondary" onClick="postOrderForm()">
+								<button id="transfer-btn" style="display:none;width:100%" type="button" class="btn btn-lg btn-dark" onClick="postOrderForm()">
   									결제하기
 								</button>
 							</div>
@@ -633,7 +638,7 @@
 			let originPrice  = element.querySelector(".originPrice").innerHTML;
 			detailPrice.innerHTML = originPrice;
 			element.querySelector(".originBox").style.display="none";
-			element.querySelector(".appliedPoint").innerHTML = 0;
+			element.querySelector(".pointAmount").innerHTML = 0;
 		}
 	}
 	
@@ -664,7 +669,7 @@
 				let price  = convertNum(detailPrice.innerHTML);
 				detailPrice.innerHTML = convertPrice(price-dPoint);
 				element.querySelector(".originBox").style.display="block";
-				element.querySelector(".appliedPoint").innerHTML = dPoint;
+				element.querySelector(".pointAmount").innerHTML = dPoint;
 			}
 		}
 		$("#apply-point").val(0);
@@ -682,15 +687,15 @@
 
 	function postOrderForm() {
 		
+		
 		let orderList = document.querySelectorAll("#orderTable tbody tr");
 		let memberId = document.querySelector(".member-id").innerHTML;
 		let recName = $("#rec-name").val();
 		let hp = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
 		let tel = $("#ph1").val()+"-"+$("#ph2").val()+"-"+$("#ph3").val();
+		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
 		let request = $("#request").val();
 		let recEmail = $("#rec-email1").val()+"@"+$("#rec-email2").val();
-		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
-		let discountPrice = convertNum(document.querySelector("#discount-point").innerHTML);
 		let zipcode = $("#zipcode").val();
 		let addr = $("#addr").val();
 		let detailAddr = $("#detail-addr").val();
@@ -698,9 +703,12 @@
 		let payAccount = "";
 		let company = "";
 		let installment = $("#installment").val();
-		let point = discountPrice;
 		let zipCode = 12435;
 		let state = 2;
+		let pointTotal = convertNum(document.querySelector("#discount-point").innerHTML);
+		let couponTotal = convertNum(document.querySelector("#coupon").innerHTML);
+		
+		
 		
 		
 		
@@ -728,14 +736,13 @@
 			}
 		}
 		
-		console.log(orderList,memberId,recName,hp,tel,request,recEmail,priceTotal,discountPrice,zipcode,addr,detailAddr,paymentType,point);
+		//console.log(orderList,memberId,recName,hp,tel,request,recEmail,priceTotal,zipcode,addr,detailAddr,paymentType,point);
 		
 
 		let detailList = [];
 		let data = {
 				"memberId":memberId,
 				"priceTotal":priceTotal,
-				"priceDiscount":discountPrice,
 				"request":request,
 				"addr":addr,
 				"detailAddr":detailAddr,
@@ -743,7 +750,6 @@
 				"tel":tel,
 				"phone":hp,
 				"paymentType":paymentType,
-				"point":point,
 				"zipCode":zipCode,
 				"recName":recName
 		}
@@ -752,7 +758,9 @@
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
 			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
-			 let point = parseInt(orderList[index].querySelector(".appliedPoint").innerHTML);
+			 let point = parseInt(orderList[index].querySelector(".pointAmount").innerHTML);
+			 let couponSum = convertNum(orderList[index].querySelector(".appliedCoupon").innerHTML);
+			 let couponNo = orderList[index].querySelector(".couponId").innerHTML;
 			 
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
@@ -762,22 +770,35 @@
 			 data['detailList[' + index +'].psize'] = size; 
 			 data['detailList[' + index +'].price'] = price; 
 			 data['detailList[' + index +'].state'] = state; 
-			 data['detailList[' + index +'].discount'] = point; 
+			 data['detailList[' + index +'].discount'] = point+couponSum; 
+			 data['detailList[' + index +'].point'] = point;
+			 
+			 console.log(point+couponSum+" "+point);
+			 if(couponNo != 'none'){
+				 data['detailList[' + index +'].couponNo'] = couponNo;
+			 }
 		}
 		
 		data['paymentList[' + 0 +'].paymentType'] = paymentType;
-		data['paymentList[' + 0 +'].price'] = priceTotal-discountPrice;
+		data['paymentList[' + 0 +'].price'] = priceTotal;
 		data['paymentList[' + 0 +'].payAccount'] = payAccount;
 		data['paymentList[' + 0 +'].company'] = company;
 		
 		if(paymentType=='신용카드'){
 			data['paymentList[' + 0 +'].installment'] = installment;
 		}
-		if(point>0){
-			data['paymentList[' + 1 +'].paymentType'] = "포인트";
-			data['paymentList[' + 1 +'].price'] = point;
+		let payIdx = 1;
+		if(pointTotal>0){
+			data['paymentList[' + payIdx +'].paymentType'] = "포인트";
+			data['paymentList[' + payIdx +'].price'] = pointTotal;
+			payIdx++;
+		}
+		if(couponTotal>0){
+			data['paymentList[' + payIdx +'].paymentType'] = "쿠폰";
+			data['paymentList[' + payIdx +'].price'] = couponTotal;
 		}
 		console.log(data);
+		
 		
 		$.ajax({
 			type:"POST",
@@ -793,21 +814,94 @@
 			}else{
 				alert(data.productName+"의 재고가 부족합니다.");
 			}
-		});		
+		});	
+		
 	}
 	
 	
-	function couponSelect(price, brand){
+	function couponSelect(price, brand,index){
 		console.log(price +"  " + brand);
 		var x = (window.screen.width / 2) - (600 / 2);
 		var y= (window.screen.height /2) - (400 / 2);
-		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand, "쿠폰 적용", "width=490, height=300, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y + ",scrollbars = yes, resizable= no");
+		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand+"&index="+index, "쿠폰 적용", "width=490, height=300, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y + ",scrollbars = yes, resizable= no");
 		popUp.focus();
+		let parent = event.currentTarget.parentNode.parentNode;
+		$(".appliedCoupon")
 	}
 	
-	function responseDiscountInfo(totalDiscountPrice,couponNo){
-		alert("부모 " + totalDiscountPrice + " / " + couponNo);
+	function responseDiscountInfo(totalDiscountPrice,couponNo,index){
+		console.log(index);
+		let parent = document.querySelectorAll("#orderTable tbody > tr")[index];
+		let appliedCoupon = parent.querySelector(".appliedCoupon");
+		let couponIdBox = parent.querySelector(".couponId");
+		let couponSum = convertNum($("#coupon").text());
+		let totalPrice = convertNum(document.querySelector("#total-price").innerHTML);
+		
+		let detailPrice = parent.querySelector(".detail-price");
+		let price  = convertNum(detailPrice.innerHTML);
+		
+		console.log(couponSum);
+		couponSum  = couponSum + parseInt(totalDiscountPrice);
+		$("#coupon").text(convertPrice(couponSum));
+		
+		appliedCoupon.innerHTML = convertPrice(totalDiscountPrice);
+		couponIdBox.innerHTML = couponNo;
+		document.querySelector("#total-price").innerHTML = convertPrice(totalPrice - parseInt(totalDiscountPrice));
+		detailPrice.innerHTML = convertPrice(price - parseInt(totalDiscountPrice));
+		
+		appliedCoupon.style.display="block";
+		console.log(couponIdBox.innerHTML);
+		
+		let cpBtn = parent.querySelector(".cpBtn");
+		let resetCpBtn = parent.querySelector(".resetCpBtn");
+		
+		console.log(cpBtn);
+		console.log(resetCpBtn);
+		
+		cpBtn.style.display = "none";
+		resetCpBtn.style.display="block";
 	}
 	
+	function resetCoupon(){
+		
+		let parent = event.currentTarget.parentNode.parentNode;
+		console.log(event.currentTarget.parentNode.parentNode);
+		
+		let couponIdBox = parent.querySelector(".couponId");
+		let appliedCoupon = parent.querySelector(".appliedCoupon");
+		let totalDiscountPrice = convertNum(appliedCoupon.innerHTML);
+		
+		let totalPrice = convertNum(document.querySelector("#total-price").innerHTML);
+		
+		let detailPrice = parent.querySelector(".detail-price");
+		let price  = convertNum(detailPrice.innerHTML);
+		
+		
+		detailPrice.innerHTML = convertPrice(price + parseInt(totalDiscountPrice));
+		
+		let couponSum = convertNum($("#coupon").text());
+		
+		console.log(couponSum);
+		
+		couponSum  = couponSum - totalDiscountPrice;
+		
+		document.querySelector("#total-price").innerHTML = convertPrice(totalPrice + totalDiscountPrice)
+		
+		$("#coupon").text(convertPrice(couponSum));
+		
+		couponIdBox.innerHTML = 'none';
+		appliedCoupon.innerHTML = 0;
+		
+		let cpBtn = parent.querySelector(".cpBtn");
+		let resetCpBtn = parent.querySelector(".resetCpBtn");
+		
+		console.log(cpBtn);
+		console.log(resetCpBtn);
+		
+		cpBtn.style.display = "block";
+		resetCpBtn.style.display="none";
+		
+	}
 </script>
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+</body>
+</html>

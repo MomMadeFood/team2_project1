@@ -14,6 +14,8 @@ public class OrderDetailDTO {
 	private String psize;
 	private int amount;
 	private int price;
+	private int point;
 	private int discount;
 	private int state;
+	private String couponNo;
 }

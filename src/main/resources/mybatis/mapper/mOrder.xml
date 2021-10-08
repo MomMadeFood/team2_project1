@@ -5,8 +5,8 @@
 
 
 	<insert id="insertMOrder" parameterType="mOrder">
-		INSERT INTO m_order(order_no,member_id,order_date,price_total,price_discount,state,request,addr,detail_addr,zip_code,tel,phone,rec_name)
-		values(#{orderNo},#{memberId},sysdate,#{priceTotal},#{priceDiscount},#{state},#{request},#{addr},#{detailAddr},#{zipCode},#{tel},#{phone},#{recName})
+		INSERT INTO m_order(order_no,member_id,order_date,state,request,addr,detail_addr,zip_code,tel,phone,rec_name)
+		values(#{orderNo},#{memberId},sysdate,#{state},#{request},#{addr},#{detailAddr},#{zipCode},#{tel},#{phone},#{recName})
 	</insert>
 	
 	<select id="selectMOrderCount" resultType="int">

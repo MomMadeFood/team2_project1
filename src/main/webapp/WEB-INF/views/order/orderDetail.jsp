@@ -118,21 +118,21 @@
           </thead>
           <tbody>
             <tr style="height:20px;">
-              <td style=" vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal+mOrderDTO.priceDiscount}" pattern="#,###"/></p></td>
+              <td style=" vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${totalPrice+pointSum}" pattern="#,###"/></p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩0</p></td>
-              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩0</p></td>
-              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal+mOrderDTO.priceDiscount}" pattern="#,###"/></p></td>
+              <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩${couponSum}</p></td>
+              <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${priceTotal+pointSum}" pattern="#,###"/></p></td>
             </tr>
             <tr style="height:80px;">
               <td colspan='2' style="vertical-align: middle; text-align:right; "></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right">
-                <div style="display:flex; justify-content: space-between;"><p>쿠폰할인</p><p>- ₩ 0</p></div>
+                <div style="display:flex; justify-content: space-between;"><p>쿠폰할인</p><p>- ₩${couponSum}</p></div>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
                 <div style="display:flex; justify-content: space-between;">
                 	<p>${paymentList[0].paymentType}</p>
-                	<p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal}" pattern="#,###"/></p>
+                	<p>₩<fmt:formatNumber value="${priceTotal}" pattern="#,###"/></p>
                 </div>
-                <div style="display:flex; justify-content: space-between;"><p>H.Point</p><p><fmt:formatNumber value="${mOrderDTO.priceDiscount}" pattern="#,###"/>P</p></div>
+                <div style="display:flex; justify-content: space-between;"><p>H.Point</p><p><fmt:formatNumber value="${pointSum}" pattern="#,###"/>P</p></div>
               </td>
             </tr>
           </tbody>
@@ -152,7 +152,7 @@
           <div style="display:flex; height: 33%; width:100%; border-bottom: 1px solid #cccccc">
             <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px"><p style="font-weight:bold">실 결제금액</p></div>
             <div style=" width:80%; display:flex; padding:10px">
-              <p>₩<fmt:formatNumber value="${mOrderDTO.priceTotal}" pattern="#,###"/></p>
+              <p>₩<fmt:formatNumber value="${priceTotal}" pattern="#,###"/></p>
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;">

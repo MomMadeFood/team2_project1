@@ -22,4 +22,7 @@ public interface PaymentDAO {
 	 * @return List<PaymentDTO>
 	 */
 	public List<PaymentDTO> selectPaymentsById(String orderNo);
+
+	
+
 }
