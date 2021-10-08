@@ -10,19 +10,25 @@
 
 <script>
 	function applyCoupon(){
-		var chkIdx = $('input:radio[name=chk_coupon]:checked').val();
-		var totalDiscountPrice = $("#totalDiscountPrice"+chkIdx).val();
-		var couponNo = $("#couponNo"+chkIdx).val();
 		
-		window.opener.responseDiscountInfo(totalDiscountPrice,couponNo);
-		window.close();
+		var chkIdx = $('input:radio[name=chk_coupon]:checked').val();
+		
+		if(chkIdx==null){
+			alert("쿠폰을 선택해 주세요.")
+		}else{
+			var totalDiscountPrice = $("#totalDiscountPrice"+chkIdx).val();
+			var couponNo = $("#couponNo"+chkIdx).val();
+			
+			window.opener.responseDiscountInfo(totalDiscountPrice,couponNo);
+			window.close();
+		}
 	}
 </script>
 
 <div>
-		<table id="orderTable" class="table .txt" style="border-bottom: 1px solid #E5E5E5;">
+	<table style="border-bottom: 1px solid #E5E5E5;">
 		<colgroup>
-			<col width="30%" />
+			<col width="45%" />
 			<col width="20%" />
 			<col width="15%" />
 			<col width="20%" />
@@ -30,16 +36,19 @@
 		<thead style="background-color: #F5F5F5;">
 			<tr style="text-align: center; height: 47px; font-size: 15px;">
 				<th scope="col">쿠폰명</th>
-				<th scope="col">적용 가능 수량</th>
+				<th scope="col">적용가능수량</th>
 				<th scope="col">할인</th>
 				<th scope="col">할인금액</th>
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="coupon" items="${couponList}" varStatus="status">
-      			<tr style="text-align: center; height: 132px;">
-					<td class="detail-id" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5">
-						<input type="radio" name="chk_coupon" value="${status.count}"/>　${coupon.title}
+      			<tr class="cp-tr txt">
+					<td class="detail-id" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5;">
+						<div style="text-align:left; margin-left:20px">
+							<input type="radio" name="chk_coupon" value="${status.count}"/>　
+							<span style="text-align:left">${coupon.title}</span>
+						</div>
 					</td>
 					<td class="d-flex">1개</td>
 					<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">
@@ -59,6 +68,11 @@
 			</c:forEach>
 		</tbody>
 	</table>
-	<button class="cp_lg_btn_white" onclick="javascript:window.close()">취소</button>
-	<button class="cp_lg_btn_black" onclick="javascript:applyCoupon()">쿠폰선택</button>
+	<div class="cp-btn-outer-wrap">
+		<div class="cp-btn-inner-wrap">
+			<button class="cp_lg_btn_white" onclick="javascript:window.close()">취소</button>
+			<button class="cp_lg_btn_black" onclick="javascript:applyCoupon()">쿠폰선택</button>
+		</div>
+	</div>
+	
 </div>

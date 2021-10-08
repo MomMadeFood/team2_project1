@@ -37,3 +37,9 @@ a:hover, a:active, a:visited, a:focus {
     background-color: #8193a7;
     border-color: #8193a7;
 }
+
+.txt {
+	margin-top: 15px;
+	font-size: 13px;
+	line-height: 22px;
+}

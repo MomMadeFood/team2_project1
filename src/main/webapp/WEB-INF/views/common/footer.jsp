@@ -5,7 +5,7 @@
 </body>
 </html>
 
-<script>
+<style>
 .footer {
 	position: fixed;
 	left: 0;
@@ -13,4 +13,4 @@
 	width: 100%;
 	text-align: center;
 }
-</script>
+</style>
