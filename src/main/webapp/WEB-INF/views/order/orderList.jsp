@@ -274,6 +274,8 @@
 			data: data
 		}).done((data)=>{
 			alert(data.message);
+			location.href = window.location.href;
+			
 		})
 		
 		

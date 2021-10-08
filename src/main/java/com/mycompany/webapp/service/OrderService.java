@@ -210,11 +210,23 @@ public class OrderService {
 					// 주문 상세정보를 삽입하는 코드 
 					// 상세정보를 삽입하는 동시에 카트에서 해당 정보를 삭제한다.
 					// 포인트를 사용했다면 포인트 사용내역을 포인트 테이블에 삽입함
+					
+					int detailCount = (10000000+orderDetailDAO.selectAllOrderDetailCount())%100000000;
+					
+					
 					for(OrderDetailDTO orderDetailDTO:  detailList) {
 						orderDetailDTO.setOrderNo(orderNo);
+						conv = Integer.toString(detailCount);
+						time = new Date();
+						time1 = format1.format(time);
+						String orderDetailNo = time1+"P"+conv;
+						orderDetailDTO.setOrderDetailNo(orderDetailNo);
 						int orderDetailInsertResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
+						detailCount++;
 						
 						if(orderDetailDTO.getDiscount()>0) {
+
+
 							PointDTO pointDTO = new PointDTO();
 							pointDTO.setAmount(orderDetailDTO.getDiscount());
 							pointDTO.setMemberId(mOrderDTO.getMemberId());
@@ -313,15 +325,31 @@ public class OrderService {
 	}
 	
 	@Transactional
-	public Map<String,String> deleteOrderDetail(OrderDetailDTO orderDetailDTO) {
+	public Map<String,String> deleteOrderDetail(Map<String,Object> map) {
 		Map<String,String> resultMap = new HashMap<String, String>();
 		try {
+			OrderDetailDTO orderDetailDTO = (OrderDetailDTO) map.get("orderDetailDTO");
+			String memberId = (String) map.get("memberId");
+			
 			orderDetailDTO.setState(6);
 			StockDTO stockDTO = new StockDTO();
 			
 			stockDTO.setAmount(orderDetailDTO.getAmount());
 			stockDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
 			stockDTO.setPsize(orderDetailDTO.getPsize());
+			
+			PointDTO pointDTO = new PointDTO();
+			pointDTO.setMemberId(memberId);
+			pointDTO.setName("환불");
+			
+			SimpleDateFormat format1 = new SimpleDateFormat( "yyyyMMdd");
+			int pointCnt = (10000000+pointDAO.selectCounts())%100000000;
+			String conv = Integer.toString(pointCnt);
+			Date time = new Date();
+			String time1 = format1.format(time);
+			String pointNo = time1+"T"+conv;
+			pointDTO.setPointNo(pointNo);
+			pointDTO.setOrderDetailNo(orderDetailDTO.getOrderDetailNo());
 			
 			int updateResult = orderDetailDAO.updateStateByOrderDetail(orderDetailDTO);
 			if(updateResult==0) {
@@ -330,6 +358,14 @@ public class OrderService {
 			updateResult = stockDAO.updateAmountByStock(stockDTO);
 			if(updateResult==0) {
 				throw new DeleteOrderException("재고상태 변경중 오류 발생");
+			}
+			
+			
+			
+			updateResult = pointDAO.insertRefundPoint(pointDTO);
+			
+			if(updateResult==0) {
+				throw new DeleteOrderException("쿠폰환불 중 오류 발생");
 			}
 		}catch(DeleteOrderException e) {
 			resultMap.put("result","fail");

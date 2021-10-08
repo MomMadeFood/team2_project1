@@ -305,6 +305,26 @@ public class OrderController {
 		
 	}
 
+	
+	
+	@PostMapping(value="/cancelOrderAjax",produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String cancelOrderAjax(Principal principal,OrderDetailDTO orderDetailDTO) {
+		
+		logger.info(orderDetailDTO.toString());
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memberId",principal.getName());
+		map.put("orderDetailDTO",orderDetailDTO);
+		Map<String,String> resultMap = orderService.deleteOrderDetail(map);
+    
+  	JSONObject jsonObject = new JSONObject();
+		jsonObject.put("result",resultMap.get("result"));
+		jsonObject.put("message",resultMap.get("message"));
+		
+		String json = jsonObject.toString();
+		return json;
+	}
+
 	@GetMapping("/couponPopup")
 	public String couponPopup(int price, String brand, Principal principal, Model model) {
 		Map<String, Object> param = new HashMap<>();
@@ -312,6 +332,7 @@ public class OrderController {
 		param.put("price", price);
 		
 		List<CouponDTO> tempCouponList = couponService.getAvaliableCouponList(param);
+
 		
 		List<CouponDTO> couponList = new ArrayList<>();
 		
