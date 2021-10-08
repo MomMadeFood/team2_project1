@@ -12,6 +12,7 @@ public class MOrderDTO {
 	private Date orderDate;
 	private int priceTotal;
 	private int priceDiscount;
+	private int totalOrderPrice;
 	private int state;
 	private String request;
 	private String addr;
