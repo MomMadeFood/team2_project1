@@ -68,9 +68,9 @@
     left: 0;
     top: 0;
     width: 98px;
-    height: 130px;
+    height: auto;
     display : inline;
-    margin : 10px;
+    margin-right : 10px;
 }
 
 .qty_input {

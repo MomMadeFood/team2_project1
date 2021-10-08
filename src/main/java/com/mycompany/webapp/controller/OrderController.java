@@ -19,7 +19,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,7 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
 import com.mycompany.webapp.dto.CardDTO;
 import com.mycompany.webapp.dto.CouponDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
@@ -43,8 +41,6 @@ import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.CouponService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
-import com.mycompany.webapp.service.OrderService.OrderResult;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 
 @Controller
