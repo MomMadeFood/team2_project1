@@ -14,35 +14,33 @@
 	line-height: 1.6;
 }
 
-ul, li{
-	list-style:none;
+ul, li {
+	list-style: none;
 }
 
-.li-sect{
-	list-style:none;
-	padding-left:0px;
+.li-sect {
+	list-style: none;
+	padding-left: 0px;
 }
 
-li.pd-colors>[type=radio] { 
-  position: absolute;
-  opacity: 0;
-  width: 0;
-  height: 0;
-
+li.pd-colors>[type=radio] {
+	position: absolute;
+	opacity: 0;
+	width: 0;
+	height: 0;
 }
 
-
-li.pd-colors>[type=radio] + div {
-  cursor: pointer;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
+li.pd-colors>[type=radio]+div {
+	cursor: pointer;
+	margin-bottom: 15px;
+	padding-bottom: 15px;
 }
 
-li.pd-colors>[type=radio]:checked + div {
-  outline: 5px solid black;
+li.pd-colors>[type=radio]:checked+div {
+	outline: 5px solid black;
 }
 
-.pd-round-style{	
+.pd-round-style {
 	padding: 20px 35px;
 	-webkit-text-size-adjust: none;
 	-webkit-user-select: none;
@@ -59,22 +57,24 @@ li.pd-colors>[type=radio]:checked + div {
 
 .pd-name {
 	-webkit-text-size-adjust: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    color: #555;
-    margin: 0;
-    padding: 0;
-    vertical-align: top;
-    line-height: 40px;
-    font-weight: normal;
-    word-break: break-word;
-    font-size: 28px;
-    letter-spacing: 1px;
-    font-family: "Malgun Gothic","맑은 고딕","Dotum","돋움",AppleGothic,sans-serif;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	color: #555;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	line-height: 40px;
+	font-weight: 800;
+	word-break: break-word;
+	font-size: 18px;
+	letter-spacing: 1px;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
 }
 
 * {
-	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic, sans-serif;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
 }
 
 .pd_a {
@@ -82,67 +82,69 @@ li.pd-colors>[type=radio]:checked + div {
 	color: black;
 }
 
-.pd_price{
+.pd_price {
 	-webkit-text-size-adjust: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    font-family: "Malgun Gothic","맑은 고딕","Dotum","돋움", AppleGothic,sans-serif;
-    margin: 0;
-    padding: 0;
-    vertical-align: top;
-    line-height: 20px;
-    word-break: break-all;
-    font-size: 22px;
-    color: #363636;
-    margin-top: 10px;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	line-height: 20px;
+	word-break: break-all;
+	font-size: 22px;
+	color: #363636;
+	margin-top: 10px;
 }
 
-.brand-name{
+.brand-name {
 	-webkit-text-size-adjust: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    font-family: "Malgun Gothic","맑은 고딕","Dotum","돋움", AppleGothic,sans-serif;
-    line-height: 20px;
-    word-break: break-all;
-    font-size: 16px;
-    color: #444;
-    outline: none;
-    text-decoration: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
+	line-height: 20px;
+	word-break: break-all;
+	font-size: 16px;
+	color: #444;
+	outline: none;
+	text-decoration: none;
 }
 
 label {
-display: inline-block;
-padding: 5px;
-position: relative;
+	display: inline-block;
+	margin-right: 5px;
+	position: relative;
 }
 
 label input {
-display: none;
+	display: none;
 }
 
 label span {
-    -webkit-text-size-adjust: none;
-    -webkit-user-select: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    font-size: inherit;
-    word-break: break-all;
-    list-style: none;
-    outline: none;
-    text-decoration: none;
-    display: block;
-	margin:0px;
-    border: 1px solid #ccc;
-    text-align: center;
-    color: #363636!important;
-    font-family: "Malgun Gothic","맑은 고딕";
-    font-size: 15px;
-    padding: 0px 10px;
-    box-sizing: border-box;
+	-webkit-text-size-adjust: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	font-size: inherit;
+	word-break: break-all;
+	list-style: none;
+	outline: none;
+	text-decoration: none;
+	display: block;
+	margin: 0px;
+	border: 1px solid #ccc;
+	text-align: center;
+	color: #363636 !important;
+	font-family: "Malgun Gothic", "맑은 고딕";
+	font-size: 15px;
+	padding: 0px 10px;
+	box-sizing: border-box;
 }
 
 input:checked+span {
-background: #ccf;
-border-color: #ccf;
+	background: #ccf;
+	border-color: #ccf;
 }
 
 .pd_a:visited {
@@ -161,7 +163,7 @@ border-color: #ccf;
 	text-decoration: none;
 }
 
-.pd-info{
+.pd-info {
 	overflow-y: visible !important;
 	color: #555;
 	font-size: 12px;
@@ -190,7 +192,8 @@ div.brand-name {
 }
 
 .pd_li {
-	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic, sans-serif;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
 	padding-top: 5px;
 	margin: 0px;
 	padding: 0px;
@@ -200,7 +203,8 @@ p.price {
 	-webkit-text-size-adjust: none;
 	-webkit-user-select: none;
 	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic, sans-serif;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
 	margin: 0;
 	padding: 0;
 	vertical-align: top;
@@ -209,11 +213,11 @@ p.price {
 	font-size: 22px;
 }
 
-
 span.pd-title, span.pd-text {
 	padding-top: 15px;
 	/* Font & Text */
-	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic, sans-serif;
+	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic,
+		sans-serif;
 	font-size: 12px;
 	font-style: normal;
 	font-variant: normal;
@@ -224,12 +228,12 @@ span.pd-title, span.pd-text {
 	vertical-align: top;
 	white-space: normal;
 	word-spacing: 0px;
-
 }
 
-strong.number-code{
+strong.number-code {
 	/* Font & Text */
-	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic, sans-serif;
+	font-family: "Malgun Gothic", "맑은 고딕", Dotum, 돋움, AppleGothic,
+		sans-serif;
 	font-size: 12px;
 	font-style: normal;
 	font-variant: normal;
@@ -243,27 +247,51 @@ strong.number-code{
 	vertical-align: baseline;
 	white-space: normal;
 	word-spacing: 0px;
-	margin-top:15px;
+	margin-top: 15px;
 }
 
 p.description {
-	margin-top:15px;
+	margin-top: 15px;
 	padding: 20px 35px;
+	margin-top: 15px;
+	font-size: 13px;
+	line-height: 22px;
 }
 
 div.info_sect {
 	margin-top: 10px;
 }
 
-.go-cart{
-    padding: 8px 20px 10px;
-    min-width: 140px;
-    background: #fff;
-    border: 1px solid #a3a3a3;
-    font-size: 14px;
-    text-decoration:none;
+.go-cart {
+	padding: 8px 20px 10px;
+	min-width: 140px;
+	background: #fff;
+	border: 1px solid #a3a3a3;
+	font-size: 14px;
+	text-decoration: none;
 }
 
-.color-selected{
+.color-selected {
 	border-bottom: 3px solid black;
+}
+
+.txt {
+	margin-top: 15px;
+	font-size: 13px;
+	line-height: 22px;
+}
+.pd-with-name {
+	-webkit-text-size-adjust: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	color: #555;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	font-weight: 800;
+	word-break: break-word;
+	font-size: 13px;
+	letter-spacing: 1px;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
 }
