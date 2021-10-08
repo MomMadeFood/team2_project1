@@ -92,15 +92,17 @@
 										 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
 										</div>
 									</div>
-		           					 </td>
+		           	</td>
 		
 						<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
 						<td class="priceList" style="vertical-align: middle; border-right: 1px solid #E5E5E5;">
 							<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
 							<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
-							<div style="display:none" class="appliedPoint">0</div>
+							<div style="display:none" class="appliedPoint">-<span class="pointAmount">0</span>P</div>
+							<div style="display:none" class="appliedCoupon">0</div>
 						</td>
                   		<td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
+
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -387,8 +389,8 @@
 				</div>
 				<div style="width:32%; margin-left:40px">
 					<div style="position:sticky;top:110px;">
-						<div style="width: 310px; height: 220px; border: 1px solid black">
-							<div style="height: 70%;">
+						<div style="width: 310px; height: 250px; border: 1px solid black">
+							<div style="height: 80%;">
 								<div
 									style="width: 100%; height: 100%; padding-left: 20px; padding-right: 20px; padding-top: 5px">
 									<div
@@ -405,14 +407,19 @@
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
-										<div>할인 금액</div>
+										<div>쿠폰</div>
+										<div>-₩<span id="coupon">0</span></div>
+									</div>
+									<div
+										style="margin-top: 10px; display: flex; justify-content: space-between;">
+										<div>H.Point</div>
 										<div>-₩<span id="discount-point">0</span></div>
 									</div>
 								</div>
 							</div>
-							<div style="height: 30%; background-color: #f5f5f5;">
+							<div style="height: 20%; background-color: #f5f5f5;">
 								<div
-									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
+									style="padding-top: 12px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
 										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">₩<span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>

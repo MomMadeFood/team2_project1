@@ -317,7 +317,7 @@ public class OrderController {
 		map.put("orderDetailDTO",orderDetailDTO);
 		Map<String,String> resultMap = orderService.deleteOrderDetail(map);
     
-  	JSONObject jsonObject = new JSONObject();
+		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result",resultMap.get("result"));
 		jsonObject.put("message",resultMap.get("message"));
 		
@@ -361,17 +361,4 @@ public class OrderController {
 		return "order/couponPopup";
   }
   
-	@PostMapping(value="/cancelOrderAjax",produces="application/json; charset=UTF-8")
-	@ResponseBody
-	public String cancelOrderAjax(OrderDetailDTO orderDetailDTO) {
-
-		Map<String,String> resultMap = orderService.deleteOrderDetail(orderDetailDTO);
-
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("result",resultMap.get("result"));
-		jsonObject.put("message",resultMap.get("message"));
-		
-		String json = jsonObject.toString();
-		return json;
-	}
 }
