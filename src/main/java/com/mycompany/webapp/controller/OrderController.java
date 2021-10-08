@@ -186,12 +186,7 @@ public class OrderController {
 	}
 	
 	@GetMapping("/orderListAjax")
-	public String orderListAjax(@RequestParam(defaultValue="1") int pageno, String startDate, String endDate, int searchType, String searchTerm, Principal principal, Model model) {
-		System.out.println(startDate);
-		System.out.println(endDate);
-		System.out.println(searchType);
-		System.out.println(searchTerm);
-		
+	public String orderListAjax(@RequestParam(defaultValue="1") int pageno, String startDate, String endDate, int searchType, String searchTerm, Principal principal, Model model) {		
 		Map<String, Object> param = new HashMap<>();
 		param.put("ID", principal.getName());
 		if(startDate == null && endDate==null || startDate.equals("")  && endDate.equals("")) {
@@ -222,7 +217,6 @@ public class OrderController {
 			}else if(searchType==1) {
 				param.put("orderNo", searchTerm);
 				int totalRows = orderService.getCntOrderListByOrderNo(param);
-				System.out.println(">>>>>>>>>>>>>>>>" + totalRows);
 				pager = new Pager(5, 5, totalRows, pageno);
 				param.put("startRowNo", pager.getStartRowNo());
 				param.put("endRowNo", pager.getEndRowNo());
@@ -257,6 +251,7 @@ public class OrderController {
 			orderDetail.setAmount(order.getAmount());
 			orderDetail.setPrice(order.getPrice());
 			orderDetail.setState(order.getState());
+			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
 			orderDetailList.add(orderDetail);
 		}
 		if(cnt!=-1) {
