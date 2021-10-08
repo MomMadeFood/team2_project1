@@ -18,27 +18,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css" />
-
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" />
-
-
-
 
 <!-- 사진 swiper -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>
 <script src="https://kit.fontawesome.com/90405714d1.js" crossorigin="anonymous"></script>
-
 
 <!-- header -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.sticky.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-
 
 </head>
 <body>

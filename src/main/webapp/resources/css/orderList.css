@@ -1,45 +1,73 @@
 @charset "UTF-8";
 
-.date-search-order{
+.date-search-order {
 	padding-left: 70px;
 	padding-top: 30px;
 }
-.content-search-order{
+
+.content-search-order {
 	padding-left: 70px;
 	padding-top: 10px;
 	padding-bottom: 30px;
 }
-.search-order-input{
-	width:70%;
+
+.search-order-input {
+	width: 70%;
 }
 
-.search-order-input2{
-	width:30%;
-} 
+.search-order-input2 {
+	width: 30%;
+}
 
 a:hover, a:active, a:visited, a:focus {
 	text-decoration: none;
 }
 
 .btn-outline-dark:hover, .btn-outline-dark:active {
-    color: #343a40;
-    background-color: #f5f5f5;
-    border-color: #343a40;
-    text-decoration: none;
+	color: #343a40;
+	background-color: #f5f5f5;
+	border-color: #343a40;
+	text-decoration: none;
 }
 
-.orderList-detail-view{
+.orderList-detail-view {
 	color: #ecd795
 }
 
 .page-item.active .page-link {
-    color: #fff;
-    background-color: #8193a7;
-    border-color: #8193a7;
+	color: #fff;
+	background-color: #8193a7;
+	border-color: #8193a7;
 }
 
 .txt {
 	margin-top: 15px;
 	font-size: 13px;
 	line-height: 22px;
+}
+
+tbody>tr>td {
+	border-right: 1px solid #E5E5E5;
+	border-bottom: 1px solid #E5E5E5;
+	text-align: center
+}
+
+.order-info {
+	-webkit-text-size-adjust: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	color: #555;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	font-weight: 800;
+	word-break: break-word;
+	font-size: 15px;
+	letter-spacing: 1px;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
+}
+
+.table td{
+	border-top: none;
 }
