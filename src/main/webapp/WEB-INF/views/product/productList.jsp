@@ -52,6 +52,7 @@
    <div class="mt-5">
    <div style="width: 990px; margin: 0px auto;">
      <div style="display:flex; justify-content:center; width:100%">
+     <c:if test="${pager.totalRows != 0}">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
         
@@ -96,6 +97,7 @@
           </li>
             </ul>
        </nav>
+       </c:if>
      </div>
   </div>
 </div>

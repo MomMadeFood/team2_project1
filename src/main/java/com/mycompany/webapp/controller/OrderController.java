@@ -134,6 +134,8 @@ public class OrderController {
 		param.put("startRowNo", pager.getStartRowNo());
 		param.put("endRowNo", pager.getEndRowNo());
 		
+		System.out.println(">>>>>>>>>>>>>>>>>> " + totalRows);
+		
 		List<OrderListDTO> tempOrderList = orderService.getOrderList(param);
 		
 		String temp = "";
