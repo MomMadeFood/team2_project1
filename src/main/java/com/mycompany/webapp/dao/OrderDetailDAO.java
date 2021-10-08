@@ -93,4 +93,6 @@ public interface OrderDetailDAO {
 	 */
 	
 	public int updateStateByOrderDetail(OrderDetailDTO orderDetailDTO);
+	
+	public int selectAllOrderDetailCount();
 }

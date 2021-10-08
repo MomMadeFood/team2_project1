@@ -123,12 +123,16 @@
 	
 	<insert id="insertOrderDetail" parameterType="orderDetail">
 		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state,discount)
-		values((select TO_CHAR(SYSDATE, 'YYYYMMDD') from dual) || 'D'||(select 10000000+(SELECT count(*) FROM order_detail)from 
-		dual),#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state},#{discount})
+		values(#{orderDetailNo,jdbcType=VARCHAR},#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state},#{discount})
 	</insert>
 	
 	<select id="selectOrderDetailsById" parameterType="string" resultType="orderDetail">
 		SELECT * FROM order_detail WHERE order_no = #{orderNo}
+	</select>
+
+
+	<select id="selectAllOrderDetailCount" resultType="int">
+		SELECT count(*) FROM order_detail
 	</select>
 	
 	<update id="updateStateByOrderDetail" parameterType="orderDetail">

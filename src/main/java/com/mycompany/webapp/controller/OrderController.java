@@ -301,11 +301,13 @@ public class OrderController {
 	
 	@PostMapping(value="/cancelOrderAjax",produces="application/json; charset=UTF-8")
 	@ResponseBody
-	public String cancelOrderAjax(OrderDetailDTO orderDetailDTO) {
+	public String cancelOrderAjax(Principal principal,OrderDetailDTO orderDetailDTO) {
 		
 		logger.info(orderDetailDTO.toString());
-		
-		Map<String,String> resultMap = orderService.deleteOrderDetail(orderDetailDTO);
+		Map<String,Object> map = new HashMap<String, Object>();
+		map.put("memberId",principal.getName());
+		map.put("orderDetailDTO",orderDetailDTO);
+		Map<String,String> resultMap = orderService.deleteOrderDetail(map);
 		
 		
 		
