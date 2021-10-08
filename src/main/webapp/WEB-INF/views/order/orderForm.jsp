@@ -32,6 +32,11 @@
 	.round {
 	  border-radius: 50%;
 	}
+	.txt {
+		margin-top: 15px;
+		font-size: 13px;
+		line-height: 22px;
+	}	
     </style>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
@@ -47,7 +52,7 @@
 	}
 
 </script>
-<div>
+<div class="txt">
 	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
@@ -75,27 +80,27 @@
 							</tr>
 						</thead>
 						<tbody>
-            	  <c:forEach var="product" items="${productList}" varStatus="status">
-	             				<tr style="text-align: center; height: 132px;">
-									<td class="detail-id" style="display:none">${product.productDetailNo}</td>
-									<td class="d-flex"><img src="${product.img1}" alt=""
-										style="width: 98px; height: 98px;">
-										<div style="text-align: left; margin-left: 20px;">
-											<a style="color: black;" href="#">${product.brand}<br/> ${product.name}
-											</a>
-											<div style="display:flex">
-											 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
-											</div>
+		            	  <c:forEach var="product" items="${productList}" varStatus="status">
+		       				<tr style="text-align: center; height: 132px;">
+								<td class="detail-id" style="display:none">${product.productDetailNo}</td>
+								<td class="d-flex"><img src="${product.img1}" alt=""
+									style="width: 98px; height: 98px;">
+									<div style="text-align: left; margin-left: 20px;">
+										<a style="color: black;" href="#">${product.brand}<br/> ${product.name}
+										</a>
+										<div style="display:flex">
+										 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
 										</div>
-                 </td>
-
-									<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
-									<td class="priceList" style="vertical-align: middle;">
-										<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
-										<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
-										<div style="display:none" class="appliedPoint">0</div>
-									</td>
-                  <td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
+									</div>
+		           					 </td>
+		
+						<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
+						<td class="priceList" style="vertical-align: middle; border-right: 1px solid #E5E5E5;">
+							<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+							<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+							<div style="display:none" class="appliedPoint">0</div>
+						</td>
+                  		<td style="vertical-align: middle;"><button class="btn btn-sm btn-outline-secondary btn-search" onclick="couponSelect(${product.price/product.amount},'${product.brand}')">적용</button>	</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -414,25 +419,24 @@
 								</div>
 							</div>
 						</div>
-						<div
-						style="width: 310px;border: 1px solid black; margin-top: 15px;">
-						<div style="height: 65%; padding: 10px;">
-							<input type="checkbox" id="agree"> <label for="agree">구매자
-								동의</label>
-							<div>
-								<p
-									style="font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
-									주문할 상품의 상품명, 가격, 배송정보 등 판매조건을 확인<br>하였으며, 구매진행에 동의합니다.<br>(전자상거래법
-									제8조 2항)
-								</p>
-								<p
-									style="margin-top: 20px; font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
-									기존 마이너스 한섬 마일리지를 보유하고 있는 고객은 한섬<br>마일리지가 차감돠어 적립되는 것에
-									동의합니다. 적립 예정<br>한섬마일리지가 상이할 수 있습니다.
-								</p>
+						<div style="width: 310px;border: 1px solid black; margin-top: 15px;">
+							<div style="height: 65%; padding: 10px;">
+								<div>
+									<p style="font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
+										주문할 상품의 상품명, 가격, 배송정보 등 판매조건을 확인하였으며, 구매진행에 동의합니다.<br>(전자상거래법
+										제8조 2항)
+									</p>
+									<p style="margin-top: 20px; font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
+										기존 마이너스 한섬 마일리지를 보유하고 있는 고객은 한섬마일리지가 차감돠어 적립되는 것에 동의합니다. <br/> 
+										적립 예정한섬마일리지가 상이할 수 있습니다.
+									</p>
+								</div>
+							</div>
+							<div style="padding: 10px; font-weight:800">
+								<input type="checkbox" id="agree"> 
+								<label for="agree">구매자 동의</label>
 							</div>
 						</div>
-					</div>
 						<div style="margin-top:15px; width:100%">
 							<div style="margin:0px auto; width:100%">
 								<button id="card-btn" type="button" class="btn btn-lg btn-dark" data-toggle="modal" data-target="#exampleModal" style="width:100%">
@@ -768,8 +772,6 @@
 		}
 		console.log(data);
 		
-		
-		
 		$.ajax({
 			type:"POST",
 			url:"orderFormAjax",
@@ -790,9 +792,9 @@
 	
 	function couponSelect(price, brand){
 		console.log(price +"  " + brand);
-		var x = (window.screen.width / 2) - (700 / 2);
+		var x = (window.screen.width / 2) - (600 / 2);
 		var y= (window.screen.height /2) - (400 / 2);
-		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand, "쿠폰 적용", "width=700, height=400, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y);
+		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand, "쿠폰 적용", "width=490, height=300, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y + ",scrollbars = yes, resizable= no");
 		popUp.focus();
 	}
 	
