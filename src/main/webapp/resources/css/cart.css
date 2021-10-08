@@ -159,6 +159,11 @@
     text-decoration:none;
 }
 
+.cart_lg_btn_wt:hover {
+    background: #f5f5f5;
+    color: black;
+}
+
 .cart_lg_btn_gr {
     padding: 8px 20px 10px;
     min-width: 140px;
@@ -167,6 +172,11 @@
     color: #fff;
     font-size: 14px;
     text-decoration:none;
+}
+
+.cart_lg_btn_gr:hover {
+	background: #363636;
+    color: #fff;
 }
 
 .cart_select_btn {
@@ -273,8 +283,20 @@ a:link { text-decoration: none;}
 }
 
 .cart-info {
-	font-size : 14pt;
 	display: inline;
+		-webkit-text-size-adjust: none;
+	-webkit-user-select: none;
+	-webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+	color: #555;
+	margin: 0;
+	padding: 0;
+	vertical-align: top;
+	font-weight: 800;
+	word-break: break-word;
+	font-size: 15px;
+	letter-spacing: 1px;
+	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
+		sans-serif;
 }
 
 .txt {

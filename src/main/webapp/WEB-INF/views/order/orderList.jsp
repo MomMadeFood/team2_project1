@@ -66,7 +66,7 @@
 	    		  <th scope="col">주문번호</th>
 			      <th scope="col">상품정보</th>
 			      <th scope="col">수량</th>
-			      <th scope="col">판매가</th>
+			      <th scope="col">금액</th>
 			      <th scope="col">주문상태</th>
 			      <th scope="col">구분</th>
 			    </tr>
@@ -76,17 +76,17 @@
 			   		 <c:forEach items="${order.detailList}" var="orderDetail" varStatus="status">
 				  	  <tr style="height:150px;">
 				  	  	  <c:if test="${status.index==0}">
-						      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center" rowspan="${fn:length(order.detailList)}">
+						      <td style="vertical-align:middle" rowspan="${fn:length(order.detailList)+1}">
 						      	<p>${order.orderNo}</p>
 						      	<fmt:formatDate var="orderDate" value="${order.orderDate}" pattern="yyyy-MM-dd kk:mm:ss"/>
 						      	<p style="color:#dee2e6">${orderDate}</p>
 						      	<a href="${pageContext.request.contextPath}/order/orderDetail?orderNo=${order.orderNo}" style="color: #ecd795">상세보기</a>
 						      </td>
 					      </c:if>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right">
+					      <td style="vertical-align:middle; border-top:none;">
 					        <div style="display: flex; justify-content:between">
 					          <div>
-					            <img src="${orderDetail.img1}" alt="" style="width: 98px; height: 98px;">
+					            <img src="${orderDetail.img1}" style="width:98px; height:98px;">
 					          </div>
 					          <div style="text-align:left; margin-left:20px;">
 					            <a style="color:black;" href="${pageContext.request.contextPath}/product/productDetail?no=${orderDetail.productDetailNo}" >
@@ -97,9 +97,16 @@
 					          </div>
 					        </div>
 					      </td>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>${orderDetail.amount}</p></td>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center"><p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price+orderDetail.discount}"/></p></td>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
+					      <td style="vertical-align:middle"><p>${orderDetail.amount}</p></td>
+					      <td style="vertical-align:middle">
+					      	<c:if test="${orderDetail.state!=6}">
+				      			<p>₩<fmt:formatNumber pattern="#,###" value="${orderDetail.price+orderDetail.discount}"/></p>
+					      	</c:if>
+					      	<c:if test="${orderDetail.state==6}">
+					      		<p>₩0</p>
+					      	</c:if>
+					      </td>
+					      <td style="vertical-align:middle">
 					      	<p>
 					      		<c:if test="${orderDetail.state == 1}">입금대기중</c:if>
 					      		<c:if test="${orderDetail.state == 2}">주문완료</c:if>
@@ -109,7 +116,7 @@
 					      		<c:if test="${orderDetail.state == 6}">주문취소</c:if>
 					      	</p>
 			      		</td>
-					      <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:center">
+					      <td style="vertical-align:middle">
 					      	<p>
 					      		<c:if test="${orderDetail.state == 1}">
 									<a href="javascript:cancelOrderAjax(
@@ -124,6 +131,11 @@
 			      		</td>
 				      </tr>
 				  </c:forEach>
+				  <tr style="height:50px;">
+				  	<td colspan="5" class="order-info" style="border:none; text-align: right; border-right: 1px solid #E5E5E5;">
+				  		총 결제 금액 : ₩<fmt:formatNumber pattern="#,###" value="${order.totalOrderPrice}"/>
+				  	</td>
+			  	  </tr>
 			    </tbody>
 			  </c:forEach>
 			</table>

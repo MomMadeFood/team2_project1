@@ -169,9 +169,19 @@ public class OrderController {
 		if(cnt!=-1) {
 			orderList.get(cnt).setDetailList(orderDetailList);
 		}
+		
+		for(MOrderDTO order : orderList) {
+			int sum= 0;
+			for(OrderDetailDTO orderDetail : order.getDetailList()) {
+				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
+					sum += orderDetail.getPrice();
+					sum -= orderDetail.getDiscount();
+				}
+			}
+			order.setTotalOrderPrice(sum);
+		}
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pager", pager);
-		
 		return "order/orderList";
 	}
 	
@@ -253,12 +263,18 @@ public class OrderController {
 			orderList.get(cnt).setDetailList(orderDetailList);
 		}
 
+		for(MOrderDTO order : orderList) {
+			int sum= 0;
+			for(OrderDetailDTO orderDetail : order.getDetailList()) {
+				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
+					sum += orderDetail.getPrice();
+					sum -= orderDetail.getDiscount();
+				}
+			}
+			order.setTotalOrderPrice(sum);
+		}
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pager", pager);
-		model.addAttribute("startDate", startDate);
-		model.addAttribute("endDate", endDate);
-		model.addAttribute("searchType", searchType);
-		model.addAttribute("searchTerm", searchTerm);
 		return "order/orderListAjax";
 	}
 

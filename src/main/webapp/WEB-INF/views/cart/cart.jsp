@@ -2,6 +2,12 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 	<script type="text/javascript"> 
+		$("#cart-form").keydown(function(event) { 
+			if (event.keyCode == '13') { 
+				event.preventDefault(); 
+			}
+		});
+	
 		$(document).ready(function(){
 		    $("#checkall").click(function(){
 		        if($("#checkall").prop("checked")){
@@ -11,6 +17,8 @@
 		        }
 		    })
 		})
+		
+		
 		
 		function hideOption()  {
 			$("#option").css("display","none");
@@ -197,10 +205,7 @@
 			}
          }
 		
-		 function checkData(form) {
-        	   //form의 제출 기능 off
-        	   event.preventDefault();
-        	   
+		 function checkData() {
         	   //유효성 검사 결과 변수
         	   let checkResult = true;
         	   
@@ -212,7 +217,7 @@
         	   
         	   //서버로 제출할지 말지 결정
         	   if(checkResult) {
-        		   form.submit();
+        		   $('#cart-form').submit();
         	   }
            }
 		 
@@ -407,7 +412,7 @@
 			<div class="m-5">
 				<h3 class="center">쇼핑백</h3>
 			</div>
-			<form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart/orderForm">
+			<form:form commandName="cartDTO" id="cart-form" action="cart/orderForm">
 			<div>
 				<table class="table table-bordered cart-table">
 					<colgroup>
@@ -431,7 +436,6 @@
 					</thead>
 					<tbody>
 						<!-- cartList -->
-						
 						<c:forEach var="cart" items="${cartList}" varStatus="status">
 							<!-- Form 전송 hidden 데이터 -->
 							<!-- !!!!!!!!!지우면 Form 전송시 오류 발생!!!!!!!! -->
@@ -557,11 +561,11 @@
 						<tr class="cart-table-total">
 							<td colspan="2"></td>
 							<td >
-								<span class=" cart-info"> 총 <span id="cart-total-amount">${cartList.size() }</span>개 상품 </span>
+								<span class="cart-info"> 총 <span id="cart-total-amount">${cartList.size() }</span>개 상품 </span>
 							</td>
-							<td colspan="2"  align="right">
-								<span class=" cart-info" > 상품 합계 : </span>
-								₩<span class=" cart-info" id="cart-total-productprice" > <fmt:formatNumber value="${totalPrice }" pattern="#,###"/></span>
+							<td colspan="2" align="right">
+								<span class="cart-info" > 상품 합계 : </span>
+								₩<span class="cart-info" id="cart-total-productprice" > <fmt:formatNumber value="${totalPrice }" pattern="#,###"/></span>
 								
 							</td>
 						</tr>
@@ -572,7 +576,7 @@
 	
 			<div class="center mb-5 mt-5" style="width:290px">
 				<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
-				<input class="cart_lg_btn_gr ml-2" style="width:40%" type="submit" value="선택상품주문">
+				<a class="cart_lg_btn_gr ml-2" style="width:40%" onclick="checkData()">선택상품주문</a>
 			</div>
 			
 			<div class="center mb-5 mt-5" style="width:290px">

@@ -6,6 +6,7 @@ import lombok.Data;
 public class CategoryDTO {
 	private String categoryId;
 	private String parentCategoryId;
+	private String categoryPath;
 	private String categoryName;
 	private String productNo;
 }

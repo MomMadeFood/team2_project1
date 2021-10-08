@@ -143,12 +143,11 @@
 	</div>
 
 <div class="container-fluid c-div-content">
-	
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
 			<div class="row">
-				<div style="width: 55%;"> 
+				<div style="width: 55%;" class="mt-4"> 
 					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 						  <ol class="carousel-indicators">
 						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -174,11 +173,15 @@
 						    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 						    <span class="sr-only">Next</span>
 						  </a>
-						</div>		
+						</div>
+						<div class="pd-round-style"
+										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
+										<p class="pd_p description mb-4">${productDetail.content}</p>
+									</div>    		
 				</div>
-				<div style="width: 5%;">
+				<div style="width:5%;">
 				</div>
-				<div style="width: 40%;">
+				<div style="width:40%;">
 					<div class="pd_item_detail_info float_right" id="contentDiv">
 						<div class="info">
 							<div class="info_sect">
@@ -189,18 +192,16 @@
 									<span class="pd-name">${productDetail.name}</span> 
 								</h4>
 								<p class="pd-price">
-									<span>₩${productDetail.price}</span>
+									<span class="txt">₩<fmt:formatNumber pattern="#,###" value="${productDetail.price}"/></span>
 								</p>
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
-									<div class="pd-round-style"
-										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-										<p class="pd_p description mb-4">${productDetail.content}</p>
-									</div>      
+									  
                                 </div>
                                </div>
                                 <%-- <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart"> --%>
                                 	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
+                                	<hr/>
                                 <div class="pd-info">
                                 	<ul>
                                  		<li style="display:flex" class="pd-colors">
@@ -215,68 +216,57 @@
                                  		 <li class="pd-size">
                                     	 		<span class="product-subtitle">사이즈</span>
                                     	 		<c:forEach items="${sizeList}" var="size">
-                                    	 			<label><input type="radio" name="psize" value="${size}"/><span>${size}</span></label>
+                                    	 			<label><input type="radio" name="psize" value="${size}" style="width:30px"/><span style="padding: 0px 5px;">${size}</span></label>
                                    	 			</c:forEach>	                                      
                                    		</li>
-                                   
-                                 		<li>
-                                 			<span class="product-subtitle">남은 수량</span>
-                                 			<span style="mr-2">${productSizePrice.amount}</span> <!-- 나중에 ajax이용  -->
-                                 		</li>
                                      	<li>
                                      		<span class="product-subtitle">수량</span>
-                                             <button class="qty_left" type="button" onclick="reduceSum()">-</button>
-                                             <input type="text" name="amount" value="1" class="qty_input" />
-                                             <button class="qty_right" type="button" onclick="increaseSum()">+</button>
+                                             <button class="qty_left" type="button" onclick="reduceSum()" style="width:20px">-</button>
+                                             <input type="text" name="amount" value="1" class="qty_input"  style="width:40px;"/>
+                                             <button class="qty_right" type="button" onclick="increaseSum()" style="width:20px">+</button>
                                          </li>
                                      </ul>
                                      <ul>
                                      	<li>
                                      		<span class="pd-title">총 합계</span>
-                                     		<span class="pd-text" id="totalPrice">₩${productDetail.price}</span> 
+                                     		<span class="pd-text" id="totalPrice">₩<fmt:formatNumber pattern="#,###" value="${productDetail.price}"/></span>
                                      	</li>
                                      </ul>	
                                 </div>
+                                
                                <ul>
                                  <li>
-                                 <button class="cart_lg_btn_wt mb-3" style="width:300px;" onclick="putCart()">쇼핑백 담기</button>
-                                 
-                                 <c:forEach items="${withProductList}" var="withProduct">
-                                 
-               						<div class="card container" style="width: 300px; margin: 0px; padding:2px">
-        	 								<div class="container">
-        	 								<span style="font-weight:bold;">함께 착용한 상품</span>
-			 									<div>
-			 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}">
-												  		<img class="card" src="${withProduct.img1}"  style="width:100%">
-												  	</a>
-												  </div>
-												  <div  class="container mb-3" style="width:100%; margin-bottom:5px;" >
-												    <h4 class="card-title" style="11px">${withProduct.brand}</h4>
-												    <p class="card-text" style="11px">${withProduct.name}</p>
-												    <p class="card-text" style="11px">₩${withProduct.price}</p>
-												</div>
-											</div>
-									</div>
-									</c:forEach>
-                                 	</li>
-	 							</ul>    
-                                 
-                                 
-                                 
-	                        </div>
+	                                 <button class="cart_lg_btn_wt mb-3" style="width:100%;" onclick="putCart()">쇼핑백 담기</button>
+	                                 
+                               	</li>
+ 							</ul>
+ 							<hr/>
+ 							<c:forEach items="${withProductList}" var="withProduct">
+           						<div style="width:100%; margin: 0px;">
+									<div class="pd-with-name">함께 착용한 상품</div>
+									<div class="row mt-2">
+										<div style="width:45%; padding:10px">
+	 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
+										  		<img class="card" src="${withProduct.img1}" style="width:100%;">
+										  	</a>
+									  	</div>
+									  	<div style="width:55%; padding:10px">
+									  		<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
+											  	<span class="pd-with-name" >${withProduct.brand}</span><br/>
+											    <span class="pd-with-name">${withProduct.name}</span><br/>
+											    <span class="txt">₩<fmt:formatNumber value="${withProduct.price}" pattern="#,###"/></span><br/>
+								  			</a>
+								  		</div>
+						  			</div> 			
+								</div>
+								<hr/>
+							</c:forEach>    
+							
+                        	</div>
 	                    </div>
-	                    
-	                    <div id="pd-div-putCartResult">
-                                	
-                        </div>
 	                </div>
             	</div>
         	</div>  
      	</div>
-       	<div style="width: 10%;"></div>
 	</div>   
-
-	
-
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>
