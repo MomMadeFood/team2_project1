@@ -5,7 +5,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-public class CouponDTO {
+public class CouponDTO implements Comparable<CouponDTO>{
 	//Coupon
 	private String couponNo;
 	private int couponType;
@@ -19,8 +19,15 @@ public class CouponDTO {
 	private Date issueDate;
 	private Date expireDate;
 	private int validity;
+	private int totalDiscountPrice;
 	//Coupon_Detail
 	private String memberId;
 	private Date useDate;
 	private int state;
+	
+	
+	@Override
+	public int compareTo(CouponDTO o) {
+		return o.totalDiscountPrice - o.totalDiscountPrice;
+	}
 }

@@ -1,0 +1,20 @@
+@charset "UTF-8";
+
+.cp_lg_btn_white {
+    padding: 8px 20px 10px;
+    min-width: 140px;
+    background: #fff;
+    border: 1px solid #a3a3a3;
+    font-size: 14px;
+    text-decoration:none;
+}
+
+.cp_lg_btn_black {
+    padding: 8px 20px 10px;
+    min-width: 140px;
+    background: #23272b;
+    border: 1px solid #23272b;
+    color: #fff;
+    font-size: 14px;
+    text-decoration:none;
+}
