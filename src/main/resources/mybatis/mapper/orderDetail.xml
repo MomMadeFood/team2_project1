@@ -122,8 +122,8 @@
 	</select>
 	
 	<insert id="insertOrderDetail" parameterType="orderDetail">
-		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state,discount)
-		values(#{orderDetailNo,jdbcType=VARCHAR},#{productDetailNo},#{psize},#{orderNo},#{amount},#{price},#{state},#{discount})
+		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state,discount,coupon_no)
+		values(#{orderDetailNo,jdbcType=VARCHAR},#{productDetailNo,jdbcType=VARCHAR},#{psize,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{amount},#{price},#{state},#{discount},#{couponNo,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="selectOrderDetailsById" parameterType="string" resultType="orderDetail">
@@ -138,4 +138,8 @@
 	<update id="updateStateByOrderDetail" parameterType="orderDetail">
 		UPDATE order_detail SET state = #{state} where order_detail_no = #{orderDetailNo}
 	</update>
+	
+	<select id="selectCouponNoById" parameterType="string" resultType="string">
+		SELECT NVL(coupon_no,'none') from order_detail where order_detail_no = #{orderDetailNo}
+	</select>
 </mapper>

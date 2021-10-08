@@ -21,6 +21,8 @@ import org.springframework.transaction.support.TransactionTemplate;
 import com.mycompany.webapp.controller.OrderController;
 import com.mycompany.webapp.dao.CardDAO;
 import com.mycompany.webapp.dao.CartDAO;
+import com.mycompany.webapp.dao.CouponDAO;
+import com.mycompany.webapp.dao.CouponDetailDAO;
 import com.mycompany.webapp.dao.MOrderDAO;
 import com.mycompany.webapp.dao.MemberDAO;
 import com.mycompany.webapp.dao.OrderDetailDAO;
@@ -30,7 +32,7 @@ import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.CartDTO;
-
+import com.mycompany.webapp.dto.CouponDetailDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
@@ -73,6 +75,9 @@ public class OrderService {
 	
 	@Resource
 	private PointDAO pointDAO;
+	
+	@Resource
+	private CouponDetailDAO couponDetailDAO;
 	
 	public enum OrderResult{
 		SUCCESS,
@@ -179,6 +184,8 @@ public class OrderService {
 						productDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
 						productDTO.setProductNo(productDTO.getProductDetailNo().substring(0, productDTO.getProductDetailNo().length()-3));
 						ProductDTO product = productDAO.selectProductByProduct(productDTO);
+						logger.info(product.toString());
+						logger.info(productDTO.getProductDetailNo());
 						int updateResult = stockDAO.updateStockByODIdSize(orderDetailDTO);
 						
 						if(updateResult==0) {
@@ -210,6 +217,7 @@ public class OrderService {
 					// 주문 상세정보를 삽입하는 코드 
 					// 상세정보를 삽입하는 동시에 카트에서 해당 정보를 삭제한다.
 					// 포인트를 사용했다면 포인트 사용내역을 포인트 테이블에 삽입함
+					// 쿠폰을 사용했다면 테이블에서 쿠폰 사용내역을 변경함
 					
 					int detailCount = (10000000+orderDetailDAO.selectAllOrderDetailCount())%100000000;
 					
@@ -224,11 +232,11 @@ public class OrderService {
 						int orderDetailInsertResult = orderDetailDAO.insertOrderDetail(orderDetailDTO);
 						detailCount++;
 						
-						if(orderDetailDTO.getDiscount()>0) {
+						if(orderDetailDTO.getPoint()>0) {
 
 
 							PointDTO pointDTO = new PointDTO();
-							pointDTO.setAmount(orderDetailDTO.getDiscount());
+							pointDTO.setAmount(orderDetailDTO.getPoint());
 							pointDTO.setMemberId(mOrderDTO.getMemberId());
 							pointDTO.setName("사용");
 							pointDTO.setOrderDetailNo(orderDetailDTO.getOrderDetailNo());
@@ -239,6 +247,16 @@ public class OrderService {
 							if(pointResult==0)
 								throw new Exception();
 							pointCnt++;
+						}
+						
+						if(orderDetailDTO.getCouponNo()!=null) {
+							CouponDetailDTO couponDetailDTO = new CouponDetailDTO();
+							couponDetailDTO.setCouponNo(orderDetailDTO.getCouponNo());
+							couponDetailDTO.setMemberID(mOrderDTO.getMemberId());
+							couponDetailDTO.setState(0);
+							int couponResult = couponDetailDAO.updateStateByCouponDetail(couponDetailDTO);
+							if(couponResult==0)
+								throw new Exception();
 						}
 						
 						CartDTO cartDTO = new CartDTO();
@@ -308,9 +326,14 @@ public class OrderService {
 		Map<String,Object> mp = new HashMap<String, Object>();
 		List<ProductDTO> productList = new ArrayList<ProductDTO>();
 		
+		
 		MOrderDTO mOrderDTO =  mOrderDAO.selectMOrderById(orderNo);
 		mOrderDTO.setDetailList(orderDetailDAO.selectOrderDetailsById(orderNo));
 		mOrderDTO.setPaymentList(paymentDAO.selectPaymentsById(orderNo));
+		
+		int pointSum = 0;
+		int couponSum = 0;
+		int priceTotal = 0;
 		
 		for(OrderDetailDTO orderDetail : mOrderDTO.getDetailList()) {
 			ProductDTO productDTO = new ProductDTO();
@@ -318,9 +341,28 @@ public class OrderService {
 			System.out.println(orderDetail.getProductDetailNo().substring(0,orderDetail.getProductDetailNo().length()-3));
 			productDTO.setProductDetailNo(orderDetail.getProductDetailNo());
 			productList.add(productDAO.selectProductByProduct(productDTO));
+			
 		}
+		
+		List<PaymentDTO> PaymentList = paymentDAO.selectPaymentsById(orderNo);
+		logger.info("size: "+PaymentList.size());
+		for(PaymentDTO paymentDTO: PaymentList) {
+			if(paymentDTO.getPaymentType().equals("신용카드")||paymentDTO.getPaymentType().equals("계좌이체")) {
+				priceTotal += paymentDTO.getPrice();
+			}
+			else if(paymentDTO.getPaymentType().equals("포인트")) {
+				pointSum += paymentDTO.getPrice();
+			}else {
+				couponSum += paymentDTO.getPrice();
+			}
+		}
+		logger.info(pointSum+" "+couponSum+" "+priceTotal);
 		mp.put("mOrderDTO", mOrderDTO);
 		mp.put("productList",productList);
+		mp.put("pointSum",pointSum);
+		mp.put("couponSum",couponSum);
+		mp.put("priceTotal",priceTotal);
+		mp.put("paymentList",PaymentList);
 		return mp;
 	}
 	
@@ -337,6 +379,9 @@ public class OrderService {
 			stockDTO.setAmount(orderDetailDTO.getAmount());
 			stockDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
 			stockDTO.setPsize(orderDetailDTO.getPsize());
+			
+			
+			
 			
 			PointDTO pointDTO = new PointDTO();
 			pointDTO.setMemberId(memberId);
@@ -360,13 +405,19 @@ public class OrderService {
 				throw new DeleteOrderException("재고상태 변경중 오류 발생");
 			}
 			
+			int pointFlag = pointDAO.selectCountsByOrderDetailNo(orderDetailDTO.getOrderDetailNo());
 			
-			
-			updateResult = pointDAO.insertRefundPoint(pointDTO);
-			
-			if(updateResult==0) {
-				throw new DeleteOrderException("쿠폰환불 중 오류 발생");
+			String couponNo = orderDetailDAO.selectCouponNoById(orderDetailDTO.getOrderDetailNo());
+			if(pointFlag>0) {
+				updateResult = pointDAO.insertRefundPoint(pointDTO);
 			}
+
+
+			if(!couponNo.equals("none")) {
+				updateResult = couponDetailDAO.updateStateByOrderDetailNo(couponNo);
+			}
+			
+			
 		}catch(DeleteOrderException e) {
 			resultMap.put("result","fail");
 			resultMap.put("message",e.getMessage());

@@ -17,4 +17,10 @@
 	<insert id="insertRefundPoint" parameterType="point">
 		INSERT INTO point(point_no, member_id, name, amount,order_detail_no) values(#{pointNo,jdbcType=VARCHAR},#{memberId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},(select amount from point where order_detail_no = #{orderDetailNo}),#{orderDetailNo,jdbcType=VARCHAR})
 	</insert>
+	
+
+	
+	<select id="selectCountsByOrderDetailNo" parameterType="string" resultType="int">
+		SELECT count(*) FROM POINT where order_detail_no = #{orderDetailNo} and name='사용'
+	</select>
 </mapper>

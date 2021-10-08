@@ -578,6 +578,11 @@
 				<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
 				<a class="cart_lg_btn_gr ml-2" style="width:40%" onclick="checkData()">선택상품주문</a>
 			</div>
+			
+			<div class="center mb-5 mt-5" style="width:290px">
+				<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
+				<input style="display:block"class="cart_lg_btn_gr ml-2" style="width:40%" type="submit" value="선택상품주문">
+			</div>
 			</form:form>
 	          
 		</div>

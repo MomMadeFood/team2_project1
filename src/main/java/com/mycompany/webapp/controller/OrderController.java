@@ -36,6 +36,7 @@ import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.Pager;
+import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CardService;
@@ -105,9 +106,17 @@ public class OrderController {
 		
 		Map<String,Object> map = orderService.getMOrder(orderNo);
 		System.out.println(((MOrderDTO)map.get("mOrderDTO")).toString());
+		int pointSum = (int) map.get("pointSum");
+		int couponSum = (int) map.get("couponSum");
+		int priceTotal = (int) map.get("priceTotal");
+		
 		
 		model.addAttribute("mOrderDTO",(MOrderDTO)map.get("mOrderDTO"));
 		model.addAttribute("productList",map.get("productList"));
+		model.addAttribute("pointSum",pointSum);
+		model.addAttribute("couponSum",couponSum);
+		model.addAttribute("priceTotal",priceTotal);
+		model.addAttribute("paymentList",(List<PaymentDTO>)map.get("paymentList"));
 		
 		return "order/orderDetail";
 	}
@@ -342,7 +351,7 @@ public class OrderController {
 	}
 
 	@GetMapping("/couponPopup")
-	public String couponPopup(int price, String brand, Principal principal, Model model) {
+	public String couponPopup(int price, String brand, Principal principal, Model model,int index) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", principal.getName());
 		param.put("price", price);
@@ -374,6 +383,8 @@ public class OrderController {
 		java.util.Collections.sort(couponList);
 		
 		model.addAttribute("couponList", couponList);
+		model.addAttribute("index", index);
+		
 		return "order/couponPopup";
   }
   
