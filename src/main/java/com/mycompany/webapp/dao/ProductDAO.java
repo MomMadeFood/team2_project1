@@ -51,10 +51,10 @@ public interface ProductDAO {
 	//-- productList 남자 혹은 여자 일 때
 	
 	// 전체 상품 목록 수 count
-	public int countProductListBySex(String categoryId2);
+	public int countProductListBySex(String categoryId);
 	
 	//부모 카테고리가 남자 혹은 여자일 때 페이지 조회
-	public List<ProductCategoryDTO> selectProductListBySex(Map<String, Object> param2);
+	public List<ProductCategoryDTO> selectProductListBySex(Map<String, Object> param);
 
 	// withproduct 조회
 	public List<ProductDTO> selectWithProductByPdId (String productDetailNo);

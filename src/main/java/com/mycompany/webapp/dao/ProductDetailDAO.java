@@ -1,11 +1,11 @@
 package com.mycompany.webapp.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.dto.product.ProductDetailDTO;
 
 @Mapper
 public interface ProductDetailDAO {
@@ -16,5 +16,5 @@ public interface ProductDetailDAO {
 	
 	public String selectOneImgByPdId (String productDetailNo);
 	
-	
+	public List<ProductDTO> selectProductDetailByPdId (Map<String, Object> recentMap);
 }

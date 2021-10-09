@@ -35,12 +35,12 @@ public class ProductService {
 		return productDao.selectProductListByPCId(param);
 	}
 	
-	public int getTotalProductListBySex(String categoryId2) {
-		return productDao.countProductListBySex(categoryId2);
+	public int getTotalProductListBySex(String categoryId) {
+		return productDao.countProductListBySex(categoryId);
 	}
 	
-	public List<ProductCategoryDTO> getProductListBySex(Map<String, Object> param2) {
-		return productDao.selectProductListBySex(param2);
+	public List<ProductCategoryDTO> getProductListBySex(Map<String, Object> param) {
+		return productDao.selectProductListBySex(param);
 	}
 	
 	public Map<String, List<String>> getColorChip(List<ProductCategoryDTO> productList){
