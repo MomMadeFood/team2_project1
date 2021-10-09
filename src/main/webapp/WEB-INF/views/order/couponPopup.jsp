@@ -56,7 +56,7 @@
 							${coupon.discount}%
 						</c:if>
 						<c:if test="${coupon.discountType eq '2'}" >
-							₩${coupon.discount}0000
+							₩<fmt:formatNumber value="${coupon.discount*10000}" pattern="#,###"/>
 						</c:if>
 					</td>
 					<td style="vertical-align: middle; border-right: 1px solid #E5E5E5">
