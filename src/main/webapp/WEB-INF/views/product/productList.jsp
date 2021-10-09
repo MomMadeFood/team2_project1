@@ -1,25 +1,20 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
-
-		<div  class=" navbar-expand-lg navbar-light bg-light" style="text-align: center;">
-			<div style="width: 990px; display:inline-block;">
-			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-			    <div class="navbar-nav d-flex flex-wrap">
-			    	<c:forEach items="${subCategoryList}" var="category" >
-			    	 <a class="nav-link inline-block" style="width:220px; text-align:left;" href="productList?categoryId=${category.categoryId}">${category.categoryName}</a>
-			    	</c:forEach>
-			    </div>
-			  </div>
-			</div>
-		</div>
-
+<div  class=" navbar-expand-lg navbar-light bg-light" style="text-align: center;">
+	<div style="width: 990px; display:inline-block;">
+	  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+	    <div class="navbar-nav d-flex flex-wrap">
+	    	<c:forEach items="${subCategoryList}" var="category" >
+	    	 <a class="nav-link inline-block" style="width:220px; text-align:left;" href="productList?categoryId=${category.categoryId}">${category.categoryName}</a>
+	    	</c:forEach>
+	    </div>
+	  </div>
+	</div>
+</div>
 
 <div class="card-deck mb-3 txt">
 	<div class="row d-flex" style="width: 990px; margin:0px auto;">
-		
-	
-	
 		<div style="width:100%">
 			<c:forEach varStatus="status"  items="${productList}" var="product">
 			 <div class="card" style="width:25%; float:left; margin:0px; padding: 10px 10px; border:none;">
@@ -49,7 +44,7 @@
 </div>
 
 <!-- paging -->
-   <div class="mt-5">
+ <div class="mt-5">
    <div style="width: 990px; margin: 0px auto;">
      <div style="display:flex; justify-content:center; width:100%">
      <c:if test="${pager.totalRows != 0}">

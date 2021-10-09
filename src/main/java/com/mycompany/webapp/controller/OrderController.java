@@ -1,9 +1,7 @@
 package com.mycompany.webapp.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -32,7 +30,6 @@ import com.mycompany.webapp.dto.CouponDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
-import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
@@ -130,54 +127,8 @@ public class OrderController {
 		param.put("startRowNo", pager.getStartRowNo());
 		param.put("endRowNo", pager.getEndRowNo());
 		
-		System.out.println(">>>>>>>>>>>>>>>>>> " + totalRows);
+		List<MOrderDTO> orderList = orderService.getOrderList(param);
 		
-		List<OrderListDTO> tempOrderList = orderService.getOrderList(param);
-		
-		String temp = "";
-		int cnt = -1;
-		List<MOrderDTO> orderList =  new ArrayList<>();
-		List<OrderDetailDTO> orderDetailList  = new ArrayList<>(); 
-		
-		for(OrderListDTO order : tempOrderList) {
-			if(!temp.equals(order.getOrderNo())) {
-				if(cnt!=-1) {
-					orderList.get(cnt).setDetailList(orderDetailList);
-					orderDetailList  = new ArrayList<>(); 
-				}
-				cnt++;
-				temp = order.getOrderNo();
-				orderList.add(new MOrderDTO());
-				orderList.get(cnt).setOrderNo(order.getOrderNo());
-				orderList.get(cnt).setOrderDate(order.getOrderDate());
-			}
-			OrderDetailDTO orderDetail = new OrderDetailDTO();
-			orderDetail.setProductDetailNo(order.getProductDetailNo());
-			orderDetail.setImg1(order.getImg1());
-			orderDetail.setBrand(order.getBrand());
-			orderDetail.setName(order.getName());
-			orderDetail.setColorChip(order.getColorChip());
-			orderDetail.setPsize(order.getPsize());
-			orderDetail.setAmount(order.getAmount());
-			orderDetail.setPrice(order.getPrice());
-			orderDetail.setState(order.getState());
-			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
-			orderDetailList.add(orderDetail);
-		}
-		if(cnt!=-1) {
-			orderList.get(cnt).setDetailList(orderDetailList);
-		}
-		
-		for(MOrderDTO order : orderList) {
-			int sum= 0;
-			for(OrderDetailDTO orderDetail : order.getDetailList()) {
-				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
-					sum += orderDetail.getPrice();
-					sum -= orderDetail.getDiscount();
-				}
-			}
-			order.setTotalOrderPrice(sum);
-		}
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pager", pager);
 		return "order/orderList";
@@ -196,13 +147,13 @@ public class OrderController {
 		}
 		
 		Pager pager = null;
-		List<OrderListDTO> tempOrderList = null;
+		List<MOrderDTO> orderList = null;
 		if (searchTerm.trim().isEmpty() || searchTerm == null ) { // 날짜로만 필터한 경우
 			int totalRows = orderService.getCntOrderList(param);
 			pager = new Pager(5, 5, totalRows, pageno);
 			param.put("startRowNo", pager.getStartRowNo());
 			param.put("endRowNo", pager.getEndRowNo());
-			tempOrderList = orderService.getOrderList(param);
+			orderList = orderService.getOrderList(param);
 		}
 		else{
 			if(searchType==0) {
@@ -211,60 +162,15 @@ public class OrderController {
 				pager = new Pager(5, 5, totalRows, pageno);
 				param.put("startRowNo", pager.getStartRowNo());
 				param.put("endRowNo", pager.getEndRowNo());
-				tempOrderList = orderService.getOrderListByName(param);
+				orderList = orderService.getOrderListByName(param);
 			}else if(searchType==1) {
 				param.put("orderNo", searchTerm);
 				int totalRows = orderService.getCntOrderListByOrderNo(param);
 				pager = new Pager(5, 5, totalRows, pageno);
 				param.put("startRowNo", pager.getStartRowNo());
 				param.put("endRowNo", pager.getEndRowNo());
-				tempOrderList = orderService.getOrderListByOrderNo(param);
+				orderList = orderService.getOrderListByOrderNo(param);
 			}
-		}
-		
-		String temp = "";
-		int cnt = -1;
-		List<MOrderDTO> orderList =  new ArrayList<>();
-		List<OrderDetailDTO> orderDetailList  = new ArrayList<>(); 
-		
-		for(OrderListDTO order : tempOrderList) {
-			if(!temp.equals(order.getOrderNo())) {
-				if(cnt!=-1) {
-					orderList.get(cnt).setDetailList(orderDetailList);
-					orderDetailList  = new ArrayList<>(); 
-				}
-				cnt++;
-				temp = order.getOrderNo();
-				orderList.add(new MOrderDTO());
-				orderList.get(cnt).setOrderNo(order.getOrderNo());
-				orderList.get(cnt).setOrderDate(order.getOrderDate());
-			}
-			OrderDetailDTO orderDetail = new OrderDetailDTO();
-			orderDetail.setProductDetailNo(order.getProductDetailNo());
-			orderDetail.setImg1(order.getImg1());
-			orderDetail.setBrand(order.getBrand());
-			orderDetail.setName(order.getName());
-			orderDetail.setColorChip(order.getColorChip());
-			orderDetail.setPsize(order.getPsize());
-			orderDetail.setAmount(order.getAmount());
-			orderDetail.setPrice(order.getPrice());
-			orderDetail.setState(order.getState());
-			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
-			orderDetailList.add(orderDetail);
-		}
-		if(cnt!=-1) {
-			orderList.get(cnt).setDetailList(orderDetailList);
-		}
-
-		for(MOrderDTO order : orderList) {
-			int sum= 0;
-			for(OrderDetailDTO orderDetail : order.getDetailList()) {
-				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
-					sum += orderDetail.getPrice();
-					sum -= orderDetail.getDiscount();
-				}
-			}
-			order.setTotalOrderPrice(sum);
 		}
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pager", pager);

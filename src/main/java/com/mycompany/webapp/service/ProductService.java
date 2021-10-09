@@ -1,5 +1,7 @@
 package com.mycompany.webapp.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -41,8 +43,26 @@ public class ProductService {
 		return productDao.selectProductListBySex(param2);
 	}
 	
-	public List<ProductCategoryDTO> getColorChip(Map<String, Object> param){
-		return productDao.selectColorListByPCId(param);
+	public Map<String, List<String>> getColorChip(List<ProductCategoryDTO> productList){
+		
+		Map<String, List<String>> productColorMap = new HashMap<>();
+		
+		for(ProductCategoryDTO product : productList) {
+			List<ProductCategoryDTO> productColorList = productDao.selectColorListByPNo(product.getProductNo());
+			for(ProductCategoryDTO productColor : productColorList) {
+				if(!productColorMap.containsKey(productColor.getProductNo())) {
+					List<String> colorList = new ArrayList<>();
+					colorList.add(productColor.getColorChip());
+					productColorMap.put(productColor.getProductNo(), colorList);
+					
+					System.out.println(">>>>>>>> 1 => " + productColor.getColorChip());
+				}else {
+					System.out.println(">>>>>>>> 2 => " + productColor.getColorChip());
+					productColorMap.get(productColor.getProductNo()).add(productColor.getColorChip());
+				}
+			}
+		}
+		return productColorMap;
 	}
 	
 }

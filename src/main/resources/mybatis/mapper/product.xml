@@ -46,20 +46,9 @@
 		]]>
 	</select>
 
-	<select id="selectColorListByPCId"  parameterType="map" resultType="productCategory">
+	<select id="selectColorListByPNo"  parameterType="string" resultType="productCategory">
 			SELECT A.PRODUCT_NO , pd.COLOR_CHIP 
-			FROM PRODUCT_CATEGORY pc JOIN 
-			(
-				SELECT CATEGORY_ID , PARENT_CATEGORY_ID 
-				FROM CATEGORY
-				WHERE PARENT_CATEGORY_ID  =  #{categoryId}
-			) C ON C.CATEGORY_ID = pc.CATEGORY_ID JOIN 
-			(
-				SELECT PRODUCT_NO 
-				FROM PRODUCT 
-				WHERE PRODUCT_NO = #{productNo}
-			) A on pc.PRODUCT_NO = A.product_no 
-			JOIN PRODUCT_DETAIL pd ON A.product_no = pd.PRODUCT_NO 
+			from ( SELECT PRODUCT_NO FROM PRODUCT WHERE PRODUCT_NO = #{value} ) A JOIN PRODUCT_DETAIL pd ON A.product_no = pd.PRODUCT_NO 
 	</select>
 
 	

@@ -45,8 +45,8 @@ public interface ProductDAO {
 	//	부모 카테고리 id로 상품 번호 조회 한 것을 페이지 별로
 	public List<ProductCategoryDTO> selectProductListByPCId(Map<String, Object> param);
 	
-	//	부모 카테고리 id에 따른 제품 번호로 컬러 종류  조회
-	public List<ProductCategoryDTO> selectColorListByPCId(Map<String, Object> param);
+	//	제품 번호로 컬러 종류 조회
+	public List<ProductCategoryDTO> selectColorListByPNo(String productNo);
 	
 	//-- productList 남자 혹은 여자 일 때
 	
