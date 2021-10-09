@@ -821,8 +821,6 @@
 		
 	}
 	
-	
-	
 	function couponSelect(price, brand, index){
 		
 		var productListSize = '<c:out value="${fn:length(productList)}"/>';
@@ -845,7 +843,6 @@
 	}
 	
 	function responseDiscountInfo(totalDiscountPrice,couponNo,index){
-		
 		
 		localStorage.setItem("c"+index, couponNo);
 		
@@ -883,7 +880,6 @@
 	function resetCoupon(index){
 		
 		localStorage.removeItem("c"+index);
-		
 		
 		let parent = event.currentTarget.parentNode.parentNode;
 		console.log(event.currentTarget.parentNode.parentNode);
