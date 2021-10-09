@@ -14,7 +14,7 @@
 
 <div class="mt-5">
 	<div style="width: 990px; margin: 0px auto; background-color: #f5f5f5;">
-		<form>
+		<div>
 			<div style="display:flex; justify-content:between; width:100%">
 				<div class="search-order-input">
 					<div class="date-search-order ">
@@ -39,7 +39,7 @@
 					<button type="reset" class="btn btn-md btn-outline-dark mt-3" style="width:100px; height:70px;">초기화</button>
 				</div>
 			</div>
-		</form>
+		</div>
 	</div>
 </div>
 

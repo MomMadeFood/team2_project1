@@ -12,16 +12,12 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import com.mycompany.webapp.controller.OrderController;
-import com.mycompany.webapp.dao.CardDAO;
 import com.mycompany.webapp.dao.CartDAO;
-import com.mycompany.webapp.dao.CouponDAO;
 import com.mycompany.webapp.dao.CouponDetailDAO;
 import com.mycompany.webapp.dao.MOrderDAO;
 import com.mycompany.webapp.dao.MemberDAO;
@@ -29,12 +25,10 @@ import com.mycompany.webapp.dao.OrderDetailDAO;
 import com.mycompany.webapp.dao.PaymentDAO;
 import com.mycompany.webapp.dao.PointDAO;
 import com.mycompany.webapp.dao.ProductDAO;
-import com.mycompany.webapp.dao.ProductDetailDAO;
 import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.CouponDetailDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
-import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.PaymentDTO;
@@ -135,31 +129,89 @@ public class OrderService {
 		return orderDetailMap;
 	} 
 	
-	public int getCntOrderList(Map<String, Object> param) {
-		return orderDetailDAO.selectCountOrderList(param);
+	
+	/*
+	 * DB에서 불러온 주문 리스트들을 MOrderDTO 형태로 변환한다.
+	*/
+	private static List<MOrderDTO> orderListConverter(List<OrderListDTO> tempOrderList){
+		String temp = "";
+		int cnt = -1;
+		List<MOrderDTO> orderList =  new ArrayList<>();
+		List<OrderDetailDTO> orderDetailList  = new ArrayList<>(); 
+		
+		for(OrderListDTO order : tempOrderList) {
+			if(!temp.equals(order.getOrderNo())) {
+				if(cnt!=-1) {
+					orderList.get(cnt).setDetailList(orderDetailList);
+					orderDetailList  = new ArrayList<>(); 
+				}
+				cnt++;
+				temp = order.getOrderNo();
+				orderList.add(new MOrderDTO());
+				orderList.get(cnt).setOrderNo(order.getOrderNo());
+				orderList.get(cnt).setOrderDate(order.getOrderDate());
+			}
+			OrderDetailDTO orderDetail = new OrderDetailDTO();
+			orderDetail.setProductDetailNo(order.getProductDetailNo());
+			orderDetail.setImg1(order.getImg1());
+			orderDetail.setBrand(order.getBrand());
+			orderDetail.setName(order.getName());
+			orderDetail.setColorChip(order.getColorChip());
+			orderDetail.setPsize(order.getPsize());
+			orderDetail.setAmount(order.getAmount());
+			orderDetail.setPrice(order.getPrice());
+			orderDetail.setState(order.getState());
+			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
+			orderDetailList.add(orderDetail);
+		}
+		if(cnt!=-1) {
+			orderList.get(cnt).setDetailList(orderDetailList);
+		}
+		
+		for(MOrderDTO order : orderList) {
+			int sum= 0;
+			for(OrderDetailDTO orderDetail : order.getDetailList()) {
+				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
+					sum += orderDetail.getPrice();
+					sum -= orderDetail.getDiscount();
+				}
+			}
+			order.setTotalOrderPrice(sum);
+		}
+		return orderList;
 	}
 	
-	public List<OrderListDTO> getOrderList(Map<String, Object> param){
-		return orderDetailDAO.selectOrderListByMemberNo(param);
+	public int getCntOrderList(Map<String, Object> param) {
+		return mOrderDAO.selectCountOrderList(param);
+	}
+	
+	public List<MOrderDTO> getOrderList(Map<String, Object> param){
+		
+		List<OrderListDTO> tempOrderList = mOrderDAO.selectOrderListByMemberId(param);
+		List<MOrderDTO> orderList =  orderListConverter(tempOrderList);
+		return orderList;
 	}
 	
 	public int getCntOrderListByName(Map<String, Object> param) {
-		return orderDetailDAO.selectCountOrderListByName(param);
+		return mOrderDAO.selectCountOrderListByName(param);
 	}
 
-	public List<OrderListDTO> getOrderListByName(Map<String, Object> param){
-		return orderDetailDAO.selectOrderListByName(param);
+	public List<MOrderDTO> getOrderListByName(Map<String, Object> param){
+		
+		List<OrderListDTO> tempOrderList = mOrderDAO.selectOrderListByName(param);
+		List<MOrderDTO> orderList =  orderListConverter(tempOrderList);
+		return orderList;
 	}
 	
 	public int getCntOrderListByOrderNo(Map<String, Object> param) {
-		return orderDetailDAO.selectCountOrderListByOrderNo(param);
+		return mOrderDAO.selectCountOrderListByOrderNo(param);
 	}
 	
-	public List<OrderListDTO> getOrderListByOrderNo(Map<String, Object> param){
-		return orderDetailDAO.selectOrderListByOrderNo(param);
+	public List<MOrderDTO> getOrderListByOrderNo(Map<String, Object> param){
+		List<OrderListDTO> tempOrderList = mOrderDAO.selectOrderListByOrderNo(param);
+		List<MOrderDTO> orderList =  orderListConverter(tempOrderList);
+		return orderList;
 	}
-
-	
 
 	public Map<String,String> insertMOrder(MOrderDTO mOrderDTO) {
 		Map<String,String> resultMap = new HashMap();
@@ -172,10 +224,7 @@ public class OrderService {
 					List<OrderDetailDTO> detailList = mOrderDTO.getDetailList();
 					List<PaymentDTO> paymentList = mOrderDTO.getPaymentList();
 					
-					
 					SimpleDateFormat format1 = new SimpleDateFormat( "yyyyMMdd");
-							
-
 					
 					// 상품의 재고를 확인하는 동시에 감소시키는 로직
 					logger.info("삽입 시작1");
@@ -195,7 +244,6 @@ public class OrderService {
 						
 						logger.info("개수: "+updateResult);
 					}
-					
 					
 					// 주문 정보를 삽입하는 코드
 					int cnt = (10000000+mOrderDAO.selectMOrderCount())%100000000;
@@ -220,7 +268,6 @@ public class OrderService {
 					// 쿠폰을 사용했다면 테이블에서 쿠폰 사용내역을 변경함
 					
 					int detailCount = (10000000+orderDetailDAO.selectAllOrderDetailCount())%100000000;
-					
 					
 					for(OrderDetailDTO orderDetailDTO:  detailList) {
 						orderDetailDTO.setOrderNo(orderNo);
