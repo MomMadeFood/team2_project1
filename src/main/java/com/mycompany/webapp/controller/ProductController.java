@@ -7,9 +7,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -48,10 +49,11 @@ public class ProductController {
 	@Resource
 	private ProductService productService;
 	
-	@Resource private CategoryService categoryService;
+	@Resource 
+	private CategoryService categoryService;
 	
 	@RequestMapping("/productDetail")
-	public String productDetail(String no, Model model) {
+	public String productDetail(HttpServletRequest request, HttpServletResponse response, String no, Model model) {
 		String no1 = no;
 		no1 = no1.substring(0,no1.length()-3);
 		
@@ -83,6 +85,36 @@ public class ProductController {
 		List<ProductDTO> withProductList = productDetailService.getWithproductByPdId(no);
 		
 		model.addAttribute("withProductList", withProductList);
+		
+		Cookie cookies = new Cookie("pId"+no, no);
+		
+		cookies.setPath("/");
+		cookies.setMaxAge(24*60*60); // 24*60*60 은 하루
+		response.addCookie(cookies);
+		
+		Map<String, Object> recentMap = new HashMap<String, Object>();
+		
+		Cookie[] cookie = request.getCookies();
+		
+		if(cookie.length == 4) {
+			   if(cookie != null){
+				    cookie[0].setMaxAge(0) ;
+				    response.addCookie(cookie[0]) ;
+		    }
+		}
+		
+		if (cookie.length != 0){
+		for(Cookie c: cookie) {
+			String name = c.getName();
+			String cvalue = c.getValue();
+			if(!recentMap.containsValue(cvalue) && name!="JSESSION")
+			recentMap.put("productDetailNo", cvalue);
+			}
+		}
+		
+		List<ProductDTO> recentPd = productDetailService.getProductDetailByPdId(recentMap);
+		
+		model.addAttribute("recentPd", recentPd);
 		
 		return "product/productDetail";
 	}
@@ -171,5 +203,4 @@ public class ProductController {
 		String json = jsonObject.toString();
 		return json;
 	}
-	
 }

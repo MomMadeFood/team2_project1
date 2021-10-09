@@ -1,6 +1,7 @@
 package com.mycompany.webapp.service;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -46,4 +47,10 @@ public class ProductDetailService {
 	public List<ProductDTO> getWithproductByPdId(String productDetailNo) {
 		return productDAO.selectWithProductByPdId(productDetailNo);
 	}
+	
+	//상세 상품 번호로 제품 브랜드, 이름, 가격, 이미지 등 가져오기
+	public List<ProductDTO> getProductDetailByPdId(Map<String, Object> recentMap){
+		return productDetailDAO.selectProductDetailByPdId(recentMap);
+	}
+	
 }
