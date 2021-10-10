@@ -83,6 +83,8 @@ public class EventController {
         	jsonObject.put("result", "success");
         } else if(result == CouponResult.SUCCESS_EXPIRE) {
         	jsonObject.put("result", "success-expire");
+        } else if(result == CouponResult.FAIL_QUALIFICATION) {
+        	jsonObject.put("result", "error-qualification");
         }
         return jsonObject.toString();
     }   
