@@ -126,4 +126,8 @@
 		    WHERE rnum between #{startRowNo} and #{endRowNo}
 	</select>
 	
+	<select id="selectOrderCountByMid" resultType="int">
+		select count(*) from m_order where member_id = #{value}
+	</select>
+	
 </mapper>
