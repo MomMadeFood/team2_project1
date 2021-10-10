@@ -139,7 +139,7 @@ public class CartService {
 		stockDTO.setProductDetailNo(cartDTO.getNewProductDetailNo());
 		stockDTO.setPsize(cartDTO.getNewPsize());
 		int stock = stockDAO.selectAmountByStock(stockDTO);
-		if(stock == 0) {
+		if(stock <= 0) {
 			return CartResult.FAIL_NOT_ENOUGH_STOCK;
 		}
 		int amount = cartDTO.getAmount();
@@ -161,7 +161,7 @@ public class CartService {
 		stockDTO.setProductDetailNo(cartDTO.getProductDetailNo());
 		stockDTO.setPsize(cartDTO.getPsize());
 		int stock = stockDAO.selectAmountByStock(stockDTO);
-		if(stock == 0) {
+		if(stock <= 0) {
 			return CartResult.FAIL_NOT_ENOUGH_STOCK;
 		}
 		logger.info("재고 수량" + stock);
