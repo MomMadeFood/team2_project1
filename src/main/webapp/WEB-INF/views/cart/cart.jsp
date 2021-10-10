@@ -228,6 +228,7 @@
 			//새로운 pdid와 color코드를 생성
 			let cartData = new Object();
 			let orgIndex = $("#option-open-index").text();
+			$("#div-erroricon"+orgIndex).hide();
 			
 			let orgProductId = $("#c-input-pid"+orgIndex).val();
 			cartData.productDetailNo = $("#c-input-pdid"+orgIndex).val();
@@ -253,9 +254,11 @@
 					if(data.result === "error-duplicate") {
 						$("#cart-error-message").text("카트에 중복된 상품이 존재합니다.");
 						$("#cart-error-alert").show();
+						$("#div-erroricon"+orgIndex).show();
 					} else if(data.result === "error-stock") {
 						$("#cart-error-message").text("매진된 상품입니다.");
 						$("#cart-error-alert").show();
+						$("#div-erroricon"+orgIndex).show();
 					} else if(data.result === "warn-stock") {
 						$("#cart-warn-message").text("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 						//재고 수량 view 변경
@@ -270,6 +273,8 @@
 						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
 						 //checkbox 값 수정
 						 $("#c-checkbox-pdsid"+orgIndex).val(data.productDetailNo + "_" + data.psize);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('disabled', false);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('checked', true);
 						console.log($("#c-checkbox-pdsid"+orgIndex).val());
 						updateTotal();
 						$("#cart-warn-alert").show();
@@ -278,6 +283,7 @@
 					} else if(data.result === "error-same") {
 						$("#cart-error-message").text("옵션을 변경해주세요.");
 						$("#cart-error-alert").show();
+						$("#div-erroricon"+orgIndex).show();
 					} else { //성공
 						//성공시 태그들의 정보를 바꿔준다
 						//view 수정
@@ -289,6 +295,8 @@
 						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
 						//checkbox 값 수정
 						 $("#c-checkbox-pdsid"+orgIndex).val(data.productDetailNo + "_" + data.psize);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('disabled', false);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('checked', true);
 						console.log($("#c-checkbox-pdsid"+orgIndex).val());
 						 hideOption();
 						 updateTotal();
@@ -307,6 +315,7 @@
 			cartData.psize = $("#c-span-psize" + index).text();
 			cartData.amount = $("#c-input-pamount"+index).val();
 			let price = parseInt($("#c-input-price"+index).val());
+			$("#div-erroricon"+index).hide();
 			
 			let jsonData = JSON.stringify(cartData);
 			console.log(jsonData);
@@ -323,15 +332,20 @@
 							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
 							hideOption();
 							updateTotal();
+							$("#c-checkbox-pdsid"+index).prop('disabled', false);
+							 $("#c-checkbox-pdsid"+index).prop('checked', true);
 						} else if(data.result === "warn-stock") {
 							$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
 							$("#c-input-pamount"+index).val(data.amount);
 							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
+							$("#c-checkbox-pdsid"+index).prop('disabled', false);
+							 $("#c-checkbox-pdsid"+index).prop('checked', true);
 							updateTotal();
 							$("#cart-warn-alert").show();
 						} else if(data.result === "error-stock") {
 								$("#cart-error-message").text("매진된 상품입니다.");
 								$("#cart-error-alert").show();
+								$("#div-erroricon"+index).show();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						}
@@ -443,11 +457,27 @@
 							<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
 							<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
 						<!-- //Form 전송 데이터 -->
+						
 						<tr class="cart-tr-product" id="cart-tr-${status.index}">
+						
 							<td>
 									<!-- 선택 상품 -->
 								
-								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}" checked>
+								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}" 
+								<c:if test="${cart.stock >= cart.amount}">
+									checked
+								</c:if>
+								<c:if test="${cart.stock < cart.amount}">
+									disabled
+								</c:if>
+								>
+								<div id="div-erroricon${status.index}"
+								<c:if test="${cart.stock >= cart.amount}">
+									style="display:none;"
+								</c:if>
+								><i class="fas fa-exclamation-circle"></i></div> 
+								
+							
 							</td>
 							<td class="c-td-product">
 								<!-- pt_list_all -->

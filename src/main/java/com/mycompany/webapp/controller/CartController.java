@@ -66,9 +66,11 @@ public class CartController {
 		
 		selectedCartList= cartService.getCartsByPdsid(principal.getName(), cartSelectedList);
 		//매진 상품 확인
-		if(stockService.checkSoldOutByCart(selectedCartList) == StockResult.FAIL_NOT_ENOUGH_STOCK) {
-			//매진 상품이 존재
+		StockResult st = stockService.checkStockByCart(selectedCartList);
+		if(st == StockResult.FAIL_SOLDOUT) {
 			return "cart/soldout";
+		} else if(st == StockResult.FAIL_NOT_ENOUGH_STOCK) {
+			return "cart/stock";
 		} else {
 			//ProductList로 변경
 			List<ProductDTO> orderList = new ArrayList<ProductDTO>();
@@ -76,7 +78,6 @@ public class CartController {
 				ProductDTO productDTO = cartService.convertToProductDTO(cartDTO);
 				
 				orderList.add(productDTO);
-				
 			}
 			HttpSession session = request.getSession();
 			session.setAttribute("orderList", orderList);

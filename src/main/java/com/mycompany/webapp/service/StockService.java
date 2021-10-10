@@ -19,7 +19,8 @@ public class StockService {
 	
 	public enum StockResult {
 		SUCCESS,
-		FAIL_NOT_ENOUGH_STOCK
+		FAIL_NOT_ENOUGH_STOCK,
+		FAIL_SOLDOUT
 	}
 	
 	public List<StockDTO> getStocksByPid(String productId) {
@@ -41,9 +42,12 @@ public class StockService {
 		}
 	}
 	
-	public StockResult checkSoldOutByCart(List<CartDTO> cartDTOList) {
+	public StockResult checkStockByCart(List<CartDTO> cartDTOList) {
 		for(CartDTO cartDTO : cartDTOList) {
-			if(stockDAO.selectAmountByCart(cartDTO) <= 0) {
+			int stock =  stockDAO.selectAmountByCart(cartDTO);
+			if(stock <= 0) {
+				return StockResult.FAIL_SOLDOUT;
+			} else if(cartDTO.getAmount() > stock) {
 				return StockResult.FAIL_NOT_ENOUGH_STOCK;
 			}
 		}

@@ -64,8 +64,8 @@
 		function putCart() {
 			closeAllAlert();
 			if($("input[name=psize]:checked").length === 0) {
-				$("#cart-warn-message").html("사이즈를 선택해주세요<button type='button' class='close' onclick='closeWarnAlert();''><span aria-hidden='true'>&times;</span>");
-				$("#cart-warn-alert").show();
+				$("#cart-error-message").html("사이즈를 선택해주세요");
+				$("#cart-error-alert").show();
 			} else {
 				let cartData = new Object();
 				cartData.productDetailNo = $("input[name=productDetailNo]").val();
@@ -87,14 +87,14 @@
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						} else if(data.result === "error-stock") {
-							$("#cart-error-message").text("매진된 상품입니다. <button type='button' class='close' onclick='closeErrorAlert();''><span aria-hidden='true'>&times;</span>");
+							$("#cart-error-message").html("매진된 상품입니다.");
 							$("#cart-error-alert").show();
 						} else if(data.result === "warn-stock") {
-							$("#cart-warn-message").html("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다. <a href='/cart' class='alert-link'>장바구니 바로가기</a><button type='button' class='close' onclick='closeWarnAlert();''><span aria-hidden='true'>&times;</span>");
+							$("#cart-warn-message").html("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 							$("#cart-warn-alert").show();
 							
 						} else if(data.result === "warn-add") {
-							$("#cart-warn-message").html("이미 담겨있는 상품입니다. 총 " + data.amount + "개의 상품이 장바구니에 담겼습니다. <a href='/cart' class='alert-link'>장바구니 바로가기</a><button type='button' class='close' onclick='closeWarnAlert();''><span aria-hidden='true'>&times;</span> ");
+							$("#cart-warn-message").html("이미 담겨있는 상품입니다. 총 " + data.amount + "개의 상품이 장바구니에 담겼습니다.");
 							$("#cart-warn-alert").show();
 							
 						}
@@ -129,16 +129,10 @@
 				  장바구니에 상품이 담겼습니다. <a href="/cart" class="alert-link">장바구니 바로가기</a><button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
 			</div>
 			<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="cart-error-alert" role="alert">
-				 <span id="cart-error-message"></span>
-				  <button type="button" class="close" onclick="closeErrorAlert()">
-				  <span aria-hidden="true">&times;</span>
-	  			</button>
+				 <span id="cart-error-message"></span><button type='button' class='close' onclick='closeErrorAlert();'><span aria-hidden='true'>&times;</span></button>
 			</div>
 			<div class="alert alert-warning alert-dismissible fade show" style="display:none;" id="cart-warn-alert" role="alert">
-				 <span id="cart-warn-message"></span>
-				  <button type="button" class="close" onclick="closeWarnAlert()">
-				  <span aria-hidden="true">&times;</span>
-	  			</button>
+				 <span id="cart-warn-message"></span><a href='/cart' class='alert-link'>장바구니 바로가기</a><button type='button' class='close' onclick='closeWarnAlert();'><span aria-hidden='true'>&times;</span></button>
 			</div>
 	</div>
 
