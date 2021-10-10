@@ -2,27 +2,25 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 
 
-		<div  class=" navbar-expand-lg navbar-light bg-light" style="text-align: center;">
-			<div style="width: 990px; display:inline-block;">
-			  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-			    <div class="navbar-nav d-flex flex-wrap">
-			    	<c:forEach items="${subCategoryList}" var="category" >
-			    	 <a class="nav-link inline-block" style="width:220px; text-align:left;" href="productList?categoryId=${category.categoryId}">${category.categoryName}</a>
-			    	</c:forEach>
-			    </div>
-			  </div>
-			</div>
-		</div>
+<div  class=" navbar-expand-lg navbar-light bg-light" style="text-align: center;">
+	<div style="width: 990px; display:inline-block;">
+	  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+	    <div class="navbar-nav d-flex flex-wrap">
+	    	<c:forEach items="${subCategoryList}" var="category" >
+	    	 <a class="nav-link inline-block" style="width:220px; text-align:left;" href="productList?categoryId=${category.categoryId}">${category.categoryName}</a>
+	    	</c:forEach>
+	    </div>
+	  </div>
+	</div>
+</div>
+
 
 
 <div class="card-deck mb-3 txt">
 	<div class="row d-flex" style="width: 990px; margin:0px auto;">
-		
-	
-	
 		<div style="width:100%">
-			<c:forEach varStatus="status"  items="${productList}" var="product">
-			 <div class="card" style="width:25%; float:left; margin:0px; padding: 10px 10px; border:none;">
+			<c:forEach varStatus="status" items="${productList}" var="product">
+			 <div class="card" style="width:25%; float:left; margin:0px; padding: 5px 5px; border:none;">
 			 <a href="${pageContext.request.contextPath}/product/productDetail?no=${product.productDetailNo}">
 			     <img src="${product.img1}" class="d-block w-100 img-fluid card-img-top">
 		     </a>
@@ -31,11 +29,11 @@
 			       <p class="card-text" >${product.name}</p>
 			       <p class="card-text float-left" ><small class="text-muted">₩<fmt:formatNumber pattern="#,###" value="${product.price}"/></small></p>
 			       <ul class="float-right">
-			       		<c:forEach items="${productColorMap}"  var="map">
+			       		<c:forEach items="${productColorMap}" var="map">
 			       			<c:forEach items="${map.value}" var="colorChip">
 			       				<c:if test="${product.productNo== map.key}">
 							       <li style ="list-style:none" class="float-left">
-			                      		<img src= "${colorChip}"  width="25px">
+			                      		<img src= "${colorChip}" width="25px">
 							       </li>
 						       </c:if>
 						       </c:forEach>
@@ -49,9 +47,10 @@
 </div>
 
 <!-- paging -->
-   <div class="mt-5">
+ <div class="mt-2">
    <div style="width: 990px; margin: 0px auto;">
      <div style="display:flex; justify-content:center; width:100%">
+     <c:if test="${pager.totalRows != 0}">
       <nav aria-label="Page navigation example">
         <ul class="pagination">
         
@@ -96,6 +95,7 @@
           </li>
             </ul>
        </nav>
+       </c:if>
      </div>
   </div>
 </div>

@@ -147,7 +147,7 @@
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
 			<div class="row">
-				<div style="width: 55%;" class="mt-4"> 
+				<div style="width: 55%; height:685px;" class="mt-4"> 
 					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 						  <ol class="carousel-indicators">
 						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -174,10 +174,13 @@
 						    <span class="sr-only">Next</span>
 						  </a>
 						</div>
-						<div class="pd-round-style"
-										style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-										<p class="pd_p description mb-4">${productDetail.content}</p>
-									</div>    		
+						
+          				<div class="pd-round-style"
+							style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
+							<p class="pd_p description mb-4">${productDetail.content}</p>
+						</div>    		 
+
+						
 				</div>
 				<div style="width:5%;">
 				</div>
@@ -201,7 +204,8 @@
                                </div>
                                 <%-- <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart"> --%>
                                 	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
-                                	<hr/>
+                                	
+									<hr/>	
                                 <div class="pd-info">
                                 	<ul>
                                  		<li style="display:flex" class="pd-colors">
@@ -250,23 +254,48 @@
 										  		<img class="card" src="${withProduct.img1}" style="width:100%;">
 										  	</a>
 									  	</div>
-									  	<div style="width:55%; padding:10px">
+									  	<div style="width:55%; padding:10px;">
 									  		<a href="${pageContext.request.contextPath}/product/productDetail?no=${withProduct.productDetailNo}" >
 											  	<span class="pd-with-name" >${withProduct.brand}</span><br/>
 											    <span class="pd-with-name">${withProduct.name}</span><br/>
 											    <span class="txt">₩<fmt:formatNumber value="${withProduct.price}" pattern="#,###"/></span><br/>
 								  			</a>
 								  		</div>
-						  			</div> 			
+						  			</div> 
+											
 								</div>
-								<hr/>
 							</c:forEach>    
-							
                         	</div>
+                        	
+						 <c:set var="size" value="${fn:length(recentPd)}" />
+							<c:forEach var="i" begin="1" end="1">
+							<c:if test="${(recentPd[size-i].productDetailNo != productDetail.productDetailNo) && (recentPd[size-i] !=null)}">
+           						<div style="width:100%; margin: 0px;">
+									<div class="pd-with-name">방금 본 상품</div>
+									<div class="row mt-2">
+										<div style="width:45%; padding:10px">
+	 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${recentPd[size-i].productDetailNo}" >
+	 											<c:if test="${recentPd[size-i] != productDetail.productDetailNo}"/>
+										  		<img class="card" src="${recentPd[size-i].img1}" style="width:100%;">
+										  	</a>
+									  	</div>
+									  	<div style="width:55%; padding:10px;">
+									  		<a href="${pageContext.request.contextPath}/product/productDetail?no=${recentPd[size-i].productDetailNo}" >
+											  	<span class="pd-with-name" >${recentPd[size-i].brand}</span><br/>
+											    <span class="pd-with-name">${recentPd[size-i].name}</span><br/>
+											    <span class="txt">₩<fmt:formatNumber value="${recentPd[size-i].price}" pattern="#,###"/></span><br/>
+								  			</a>
+								  		</div>
+						  			</div> 
+											
+								</div>
+								</c:if>
+							</c:forEach>    
+                        	</div>
+                        	
 	                    </div>
 	                </div>
             	</div>
         	</div>  
      	</div>
-	</div>   
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

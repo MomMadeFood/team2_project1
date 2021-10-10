@@ -9,8 +9,18 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/couponPopup.css" />
 
 <script>
-	function applyCoupon(){
+
+	$(function (){
+		var couponListSize = '<c:out value="${fn:length(couponList)}"/>';
 		
+		if(couponListSize==0){
+			alert("사용 가능한 쿠폰이 없습니다.");
+			window.close();
+		}
+		$(".tr-1").css("background-color", "#fff2bb");
+	});
+
+	function applyCoupon(){
 		var chkIdx = $('input:radio[name=chk_coupon]:checked').val();
 		
 		if(chkIdx==null){
@@ -43,7 +53,7 @@
 		</thead>
 		<tbody>
 			<c:forEach var="coupon" items="${couponList}" varStatus="status">
-      			<tr class="cp-tr txt">
+      			<tr class="cp-tr txt tr-${status.count}">
 					<td class="detail-id" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5;">
 						<div style="text-align:left; margin-left:20px">
 							<input type="radio" name="chk_coupon" value="${status.count}"/>　
@@ -56,7 +66,7 @@
 							${coupon.discount}%
 						</c:if>
 						<c:if test="${coupon.discountType eq '2'}" >
-							₩${coupon.discount}0000
+							₩<fmt:formatNumber value="${coupon.discount*10000}" pattern="#,###"/>
 						</c:if>
 					</td>
 					<td style="vertical-align: middle; border-right: 1px solid #E5E5E5">

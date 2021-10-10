@@ -7,7 +7,7 @@
         margin: 0px;
       }
     </style>
-    <div>
+    <div class="txt">
 
       <div style= "border-bottom: 1px solid #E5E5E5;margin-bottom:60px; height:100px; vertical-align:center;">
         <div style="margin:auto;padding-top:30px;width:300px; text-align:center; vertical-align:middle">
@@ -59,7 +59,7 @@
 	                  </div>
 	                  <div style="text-align:left; margin-left:20px;">
 	                    <a style="color:black;" href="/product/productDetail?no=${productList[status.index].productDetailNo}" >
-	                      ${productList[status.index].brand}</br>
+	                      ${productList[status.index].brand}<br/>
 	                      ${productList[status.index].name}
 	                    </a>
 	                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productList[status.index].colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${mOrderDTO.detailList[status.index].psize}</p>

@@ -426,7 +426,7 @@
 						<tr class="center cart-table-head">
 							<th scope="col">
 								<!--전체 상품 선택-->
-								<input type="checkbox" id="checkall">
+								<input type="checkbox" id="checkall" checked>
 							</th>
 							<th scope="col">상품정보</th>
 							<th scope="col">수량</th>

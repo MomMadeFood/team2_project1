@@ -40,7 +40,10 @@
     </style>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-
+	
+	$(window).bind('beforeunload', function(e){
+		localStorage.clear();
+	});
 
 	function callAddrAPi(){
 	    new daum.Postcode({
@@ -104,7 +107,7 @@
 						</td>
                   		<td style="vertical-align: middle;">
                   			<button class="btn btn-sm btn-outline-secondary btn-search cpBtn" onclick="couponSelect(${product.price/product.amount},'${product.brand}',${status.index})">적용</button>
-                  			<button style="display:none; margin:0px" class="btn btn-sm btn-outline-secondary btn-search resetCpBtn" onclick="resetCoupon()">취소</button>	
+                  			<button style="display:none; margin:0px" class="btn btn-sm btn-outline-secondary btn-search resetCpBtn" onclick="resetCoupon(${status.index})">취소</button>	
                   		</td>
                   		
                   		<td style="display:none" class="couponId">none</td>
@@ -900,19 +903,31 @@
 		
 	}
 	
-	
-	function couponSelect(price, brand,index){
-		console.log(price +"  " + brand);
+	function couponSelect(price, brand, index){
+		
+		var productListSize = '<c:out value="${fn:length(productList)}"/>';
+		
+		var usedCoupon = "";
+		for(var i = 0 ; i < productListSize ; i++){
+			if(localStorage.getItem("c"+i))
+				usedCoupon += localStorage.getItem("c"+i);
+		}
+		console.log(usedCoupon);
+		
 		var x = (window.screen.width / 2) - (600 / 2);
 		var y= (window.screen.height /2) - (400 / 2);
-		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand+"&index="+index, "쿠폰 적용", "width=490, height=300, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y + ",scrollbars = yes, resizable= no");
+		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand+"&index="+index+"&usedCoupon="+usedCoupon, 
+							"쿠폰 적용", 
+							"width=490, height=300, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y + ",scrollbars = yes, resizable= no");
 		popUp.focus();
 		let parent = event.currentTarget.parentNode.parentNode;
 		$(".appliedCoupon")
 	}
 	
 	function responseDiscountInfo(totalDiscountPrice,couponNo,index){
-		console.log(index);
+		
+		localStorage.setItem("c"+index, couponNo);
+		
 		let parent = document.querySelectorAll("#orderTable tbody > tr")[index];
 		let appliedCoupon = parent.querySelector(".appliedCoupon");
 		let couponIdBox = parent.querySelector(".couponId");
@@ -922,7 +937,7 @@
 		let detailPrice = parent.querySelector(".detail-price");
 		let price  = convertNum(detailPrice.innerHTML);
 		
-		console.log(couponSum);
+		//console.log(couponSum);
 		couponSum  = couponSum + parseInt(totalDiscountPrice);
 		$("#coupon").text(convertPrice(couponSum));
 		
@@ -931,20 +946,25 @@
 		document.querySelector("#total-price").innerHTML = convertPrice(totalPrice - parseInt(totalDiscountPrice));
 		detailPrice.innerHTML = convertPrice(price - parseInt(totalDiscountPrice));
 		
-		console.log(couponIdBox.innerHTML);
+
+		appliedCoupon.style.display="block";
+		//console.log(couponIdBox.innerHTML);
+
 		
 		let cpBtn = parent.querySelector(".cpBtn");
 		let resetCpBtn = parent.querySelector(".resetCpBtn");
 		
-		console.log(cpBtn);
-		console.log(resetCpBtn);
+		//console.log(cpBtn);
+		//console.log(resetCpBtn);
 		
 		cpBtn.style.display = "none";
-		resetCpBtn.style.display="block";
-		parent.querySelector(".originBox").style.display="block";
+
+		resetCpBtn.style.display="inline-block";
 	}
 	
-	function resetCoupon(){
+	function resetCoupon(index){
+		
+		localStorage.removeItem("c"+index);
 		
 		let parent = event.currentTarget.parentNode.parentNode;
 		console.log(event.currentTarget.parentNode.parentNode);
@@ -963,7 +983,7 @@
 		
 		let couponSum = convertNum($("#coupon").text());
 		
-		console.log(couponSum);
+		//console.log(couponSum);
 		
 		couponSum  = couponSum - totalDiscountPrice;
 		
@@ -977,10 +997,10 @@
 		let cpBtn = parent.querySelector(".cpBtn");
 		let resetCpBtn = parent.querySelector(".resetCpBtn");
 		
-		console.log(cpBtn);
-		console.log(resetCpBtn);
+		//console.log(cpBtn);
+		//console.log(resetCpBtn);
 		
-		cpBtn.style.display = "block";
+		cpBtn.style.display = "inline-block";
 		resetCpBtn.style.display="none";
 		parent.querySelector(".originBox").style.display="none";
 		

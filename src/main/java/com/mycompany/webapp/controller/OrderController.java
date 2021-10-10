@@ -1,9 +1,7 @@
 package com.mycompany.webapp.controller;
 
 import java.security.Principal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -19,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,13 +25,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
 import com.mycompany.webapp.dto.CardDTO;
 import com.mycompany.webapp.dto.CouponDTO;
 import com.mycompany.webapp.dto.MOrderDTO;
 import com.mycompany.webapp.dto.MemberDTO;
 import com.mycompany.webapp.dto.OrderDetailDTO;
-import com.mycompany.webapp.dto.OrderListDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
@@ -43,8 +38,6 @@ import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.CouponService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
-import com.mycompany.webapp.service.OrderService.OrderResult;
-import com.sun.xml.internal.ws.policy.privateutil.PolicyUtils.Collections;
 
 
 @Controller
@@ -134,52 +127,8 @@ public class OrderController {
 		param.put("startRowNo", pager.getStartRowNo());
 		param.put("endRowNo", pager.getEndRowNo());
 		
-		List<OrderListDTO> tempOrderList = orderService.getOrderList(param);
+		List<MOrderDTO> orderList = orderService.getOrderList(param);
 		
-		String temp = "";
-		int cnt = -1;
-		List<MOrderDTO> orderList =  new ArrayList<>();
-		List<OrderDetailDTO> orderDetailList  = new ArrayList<>(); 
-		
-		for(OrderListDTO order : tempOrderList) {
-			if(!temp.equals(order.getOrderNo())) {
-				if(cnt!=-1) {
-					orderList.get(cnt).setDetailList(orderDetailList);
-					orderDetailList  = new ArrayList<>(); 
-				}
-				cnt++;
-				temp = order.getOrderNo();
-				orderList.add(new MOrderDTO());
-				orderList.get(cnt).setOrderNo(order.getOrderNo());
-				orderList.get(cnt).setOrderDate(order.getOrderDate());
-			}
-			OrderDetailDTO orderDetail = new OrderDetailDTO();
-			orderDetail.setProductDetailNo(order.getProductDetailNo());
-			orderDetail.setImg1(order.getImg1());
-			orderDetail.setBrand(order.getBrand());
-			orderDetail.setName(order.getName());
-			orderDetail.setColorChip(order.getColorChip());
-			orderDetail.setPsize(order.getPsize());
-			orderDetail.setAmount(order.getAmount());
-			orderDetail.setPrice(order.getPrice());
-			orderDetail.setState(order.getState());
-			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
-			orderDetailList.add(orderDetail);
-		}
-		if(cnt!=-1) {
-			orderList.get(cnt).setDetailList(orderDetailList);
-		}
-		
-		for(MOrderDTO order : orderList) {
-			int sum= 0;
-			for(OrderDetailDTO orderDetail : order.getDetailList()) {
-				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
-					sum += orderDetail.getPrice();
-					sum -= orderDetail.getDiscount();
-				}
-			}
-			order.setTotalOrderPrice(sum);
-		}
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pager", pager);
 		return "order/orderList";
@@ -198,13 +147,13 @@ public class OrderController {
 		}
 		
 		Pager pager = null;
-		List<OrderListDTO> tempOrderList = null;
+		List<MOrderDTO> orderList = null;
 		if (searchTerm.trim().isEmpty() || searchTerm == null ) { // 날짜로만 필터한 경우
 			int totalRows = orderService.getCntOrderList(param);
 			pager = new Pager(5, 5, totalRows, pageno);
 			param.put("startRowNo", pager.getStartRowNo());
 			param.put("endRowNo", pager.getEndRowNo());
-			tempOrderList = orderService.getOrderList(param);
+			orderList = orderService.getOrderList(param);
 		}
 		else{
 			if(searchType==0) {
@@ -213,60 +162,15 @@ public class OrderController {
 				pager = new Pager(5, 5, totalRows, pageno);
 				param.put("startRowNo", pager.getStartRowNo());
 				param.put("endRowNo", pager.getEndRowNo());
-				tempOrderList = orderService.getOrderListByName(param);
+				orderList = orderService.getOrderListByName(param);
 			}else if(searchType==1) {
 				param.put("orderNo", searchTerm);
 				int totalRows = orderService.getCntOrderListByOrderNo(param);
 				pager = new Pager(5, 5, totalRows, pageno);
 				param.put("startRowNo", pager.getStartRowNo());
 				param.put("endRowNo", pager.getEndRowNo());
-				tempOrderList = orderService.getOrderListByOrderNo(param);
+				orderList = orderService.getOrderListByOrderNo(param);
 			}
-		}
-		
-		String temp = "";
-		int cnt = -1;
-		List<MOrderDTO> orderList =  new ArrayList<>();
-		List<OrderDetailDTO> orderDetailList  = new ArrayList<>(); 
-		
-		for(OrderListDTO order : tempOrderList) {
-			if(!temp.equals(order.getOrderNo())) {
-				if(cnt!=-1) {
-					orderList.get(cnt).setDetailList(orderDetailList);
-					orderDetailList  = new ArrayList<>(); 
-				}
-				cnt++;
-				temp = order.getOrderNo();
-				orderList.add(new MOrderDTO());
-				orderList.get(cnt).setOrderNo(order.getOrderNo());
-				orderList.get(cnt).setOrderDate(order.getOrderDate());
-			}
-			OrderDetailDTO orderDetail = new OrderDetailDTO();
-			orderDetail.setProductDetailNo(order.getProductDetailNo());
-			orderDetail.setImg1(order.getImg1());
-			orderDetail.setBrand(order.getBrand());
-			orderDetail.setName(order.getName());
-			orderDetail.setColorChip(order.getColorChip());
-			orderDetail.setPsize(order.getPsize());
-			orderDetail.setAmount(order.getAmount());
-			orderDetail.setPrice(order.getPrice());
-			orderDetail.setState(order.getState());
-			orderDetail.setOrderDetailNo(order.getOrderDetailNo());
-			orderDetailList.add(orderDetail);
-		}
-		if(cnt!=-1) {
-			orderList.get(cnt).setDetailList(orderDetailList);
-		}
-
-		for(MOrderDTO order : orderList) {
-			int sum= 0;
-			for(OrderDetailDTO orderDetail : order.getDetailList()) {
-				if(orderDetail.getState()!=6) { // 주문 취소가 아닌 경우
-					sum += orderDetail.getPrice();
-					sum -= orderDetail.getDiscount();
-				}
-			}
-			order.setTotalOrderPrice(sum);
 		}
 		model.addAttribute("orderList", orderList);
 		model.addAttribute("pager", pager);
@@ -346,41 +250,22 @@ public class OrderController {
 	}
 
 	@GetMapping("/couponPopup")
-	public String couponPopup(int price, String brand, Principal principal, Model model,int index) {
+	public String couponPopup(int price, String brand, String usedCoupon, Principal principal, Model model,int index) {
 		Map<String, Object> param = new HashMap<>();
 		param.put("memberId", principal.getName());
-		param.put("price", price);
 		
-		List<CouponDTO> tempCouponList = couponService.getAvaliableCouponList(param);
+		// 사용한 쿠폰 저장
+		Map<String,Boolean> usedCouponMap = new HashMap<>();
+		String[] tempUsedCouponList = usedCoupon.split("C");
+		for(String coupon : tempUsedCouponList) {
+			usedCouponMap.put("C"+coupon, true);
+		}
+		
+		List<CouponDTO> couponList = couponService.getAvaliableCouponList(param, price, brand, usedCouponMap);
 
-		
-		List<CouponDTO> couponList = new ArrayList<>();
-		
-		for(CouponDTO coupon : tempCouponList) {
-			if(coupon.getCouponType() == 1) { // 브랜드 쿠폰인 경우
-				if(coupon.getTitle().equals(brand)) {
-					couponList.add(coupon);
-					continue;
-				}
-			}else {
-				couponList.add(coupon);
-			}
-		}
-		Iterator<CouponDTO> iterator = couponList.iterator(); 
-		while(iterator.hasNext()) {
-			CouponDTO coupon = iterator.next();
-			if(coupon.getDiscountType().equals("1")) { // 할인타입이 %인 경우
-				coupon.setTotalDiscountPrice((int) (price*((double)coupon.getDiscount()/100)));
-			}else { // 할인 타입이 원인 경우
-				coupon.setTotalDiscountPrice(coupon.getDiscount()*10000);
-			}
-		}
-		java.util.Collections.sort(couponList);
-		
 		model.addAttribute("couponList", couponList);
 		model.addAttribute("index", index);
 		
 		return "order/couponPopup";
   }
-  
 }
