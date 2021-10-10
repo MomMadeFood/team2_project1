@@ -1,9 +1,7 @@
 package com.mycompany.webapp.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import javax.annotation.Resource;
@@ -57,52 +55,36 @@ public class CartService {
 		return stockDAO.selectStocksByPdid(pdId);
 	}
 	
-	public List<ProductDTO> getSelectedProducts(
-		List<CartDTO> cartDTOs,
-		List<String> selectedCodes) {
-		Map<String, Integer> cartMap = new HashMap<String, Integer>();
-		
-		for(CartDTO c : cartDTOs) {
-			//카트에 담긴 코드를 cart_ck 코드 형식으로 변환
-			String psid = c.getProductDetailNo() + "_" + c.getPsize();
-			cartMap.put(psid, c.getAmount());
-		}
-		
-		//cartDTO를 orderForm으로 전송하기위해 ProductDTO로 파싱
+	//PdsIdList로 Cart객체 얻기
+	public List<CartDTO> getCartsByPdsid(
+		String mid,
+		List<String> pdsidList) {
+		List<CartDTO> cartList = new ArrayList<CartDTO>();
 		StringTokenizer st;
-		List<ProductDTO> orderList = new ArrayList<ProductDTO>();
 		
-		//선택한 제품을 
-		for(String s : selectedCodes) {
+		for(String pdsid : pdsidList) {
+			st = new StringTokenizer(pdsid, "_");
+			CartDTO cartDTO = new CartDTO();
+			cartDTO.setMemberId(mid);
+			String pdid = st.nextToken() + "_" + st.nextToken();
+			cartDTO.setProductDetailNo(pdid);
+			cartDTO.setPsize(st.nextToken());
+			cartDTO.setAmount(cartDAO.selectAmountByCart(cartDTO));
 			
-			int amount = cartMap.get(s);
-			if(amount>0) {
-				st = new StringTokenizer(s, "_");
-				String pno = st.nextToken();
-				String pcolor = st.nextToken();
-				String psize = st.nextToken();
-				
-				//상품 상세 정보 불러오는 DAO 사용 예정
-				ProductDTO productDTO = new ProductDTO();
-				productDTO.setProductNo(pno);
-				productDTO.setColorCode(pcolor);
-				productDTO.setPsize(psize);				
-				productDTO.setProductDetailNo(pno+"_"+pcolor);
-				productDTO.setAmount(amount);
-				
-				orderList.add(productDTO);
-			}//if
-		}//for
-		
-		return orderList;
+			//cartDTO로 변환
+			cartList.add(cartDTO);
+		}
+		return cartList;
 	}
+	
+	
 	
 	public CartResult setCart(CartDTO cartDTO) {
 		StockDTO stockDTO = new StockDTO();
 		stockDTO.setProductDetailNo(cartDTO.getProductDetailNo());
 		stockDTO.setPsize(cartDTO.getPsize());
 		int stock = stockDAO.selectAmountByStock(stockDTO);
-		if(stock == 0) {
+		if(stock <= 0) {
 			return CartResult.FAIL_NOT_ENOUGH_STOCK;
 		} else {
 			int amount = cartDAO.selectAmountByCart(cartDTO);
@@ -195,5 +177,21 @@ public class CartService {
 
 	public int getAmountByCart(CartDTO cartDTO) {
 		return cartDAO.selectAmountByCart(cartDTO);
+	}
+	
+	public ProductDTO convertToProductDTO (CartDTO cartDTO) {
+		StringTokenizer st = new StringTokenizer(cartDTO.getProductDetailNo(), "_");
+		String pno = st.nextToken();
+		String pcolor = st.nextToken();
+		
+		ProductDTO productDTO = new ProductDTO();
+		
+		productDTO.setAmount(cartDTO.getAmount());
+		productDTO.setProductDetailNo(cartDTO.getProductDetailNo());
+		productDTO.setPsize(cartDTO.getPsize());
+		productDTO.setColorCode(pcolor);
+		productDTO.setProductNo(pno);
+		
+		return productDTO;
 	}
 }
