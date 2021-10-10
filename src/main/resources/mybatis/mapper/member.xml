@@ -6,7 +6,15 @@
 		SELECT * FROM member WHERE id = #{memberId}
 	</select>
 	
+	<select id="selectPayPassworById" parameterType="string" resultType="string">
+		SELECT pay_password FROM member WHERE id = #{memberId,jdbcType=VARCHAR}
+	</select>
+	
 	<update id="updatePointById" parameterType="member">
 		UPDATE member SET point = point - #{point} WHERE id = #{id}
+	</update>
+	
+		<update id="updateCardPassword" parameterType="member">
+		UPDATE member SET pay_password = #{payPassword} WHERE id = #{id}
 	</update>
 </mapper>

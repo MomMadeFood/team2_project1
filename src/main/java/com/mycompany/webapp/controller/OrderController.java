@@ -17,6 +17,7 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -34,7 +35,6 @@ import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.service.CardService;
 import com.mycompany.webapp.service.CouponService;
 import com.mycompany.webapp.service.MemberService;
 import com.mycompany.webapp.service.OrderService;
@@ -54,8 +54,6 @@ public class OrderController {
 	@Resource
 	private MemberService memberService;
 	
-	@Resource
-	private CardService cardService;
 	
 	@Resource
 	private CouponService couponService;
@@ -214,8 +212,8 @@ public class OrderController {
 	
 	@PostMapping(value="/oneClickAjax", produces= "application/json; charset=UTF-8")
 	@ResponseBody
-	public String oneClickAjax(CardDTO cardDTO) {
-		int result = cardService.checkOneClickPassword(cardDTO);
+	public String oneClickAjax(MemberDTO memberDTO) {
+		int result = memberService.checkOneClickPassword(memberDTO);
 		logger.info("result: "+result);
 		JSONObject jsonObject = new JSONObject();
 		if(result==1) {
@@ -267,5 +265,13 @@ public class OrderController {
 		model.addAttribute("index", index);
 		
 		return "order/couponPopup";
-  }
+	}
+	
+	@GetMapping("/genPassword")
+	public String genPassword(String memberId,String password) {
+		System.out.println(memberId+" "+password);
+		String result = memberService.genCardPassword(memberId, password);
+		return result;
+	}
+	
 }

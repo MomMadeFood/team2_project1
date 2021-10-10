@@ -10,4 +10,8 @@ public interface MemberDAO {
 	public MemberDTO selectMemberById(String memberId);
 	
 	public int updatePointById(MemberDTO memberDTO);
+
+	public void updateCardPassword(MemberDTO memberDTO);
+
+	public String selectPayPassworById(String id);
 }
