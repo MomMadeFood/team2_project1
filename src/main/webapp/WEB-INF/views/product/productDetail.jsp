@@ -121,7 +121,6 @@
 			closeErrorAlert();
 		}
 		
-	
 	</script>	
 	
 		<div class="position-fixed c-div-alert">
@@ -147,7 +146,7 @@
 		<div style="width: 10%;"></div>
 		<div style="width: 80%;">
 			<div class="row">
-				<div style="width: 55%; height:685px;" class="mt-4"> 
+				<div style="width: 55%;" class="mt-4"> 
 					<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
 						  <ol class="carousel-indicators">
 						    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
@@ -175,11 +174,26 @@
 						  </a>
 						</div>
 						
-          				<div class="pd-round-style"
-							style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-							<p class="pd_p description mb-4">${productDetail.content}</p>
-						</div>    		 
-
+						<div class= "container" style="float:left; width:450px; margin-top: 20px; padding:5px;">
+						<div class="pd-with-name">최근 본 상품</div>
+							<c:forEach items="${recentPd}" var="recentProduct" >
+								<c:if test="${(recentProduct.productDetailNo != productDetail.productDetailNo) && (recentProduct !=null) }">
+				                	<div class="swiper-slide container"  style="width:33%; float:left; padding-left:0px;">
+						                    <div class="item_box">
+							                      <a href="${pageContext.request.contextPath}/product/productDetail?no=${recentProduct.productDetailNo}">
+							                        <img src="${recentProduct.img1}" />
+							                      </a>
+							                      <a href="${pageContext.request.contextPath}/product/productDetail?no=${recentProduct.productDetailNo}">
+							                        <span class="brand">${recentProduct.brand}</span>
+							                        <span class="price">
+							                        	₩<fmt:formatNumber pattern="#,###" value="${recentProduct.price}"/>
+							                        </span>
+							                      </a>
+						                    </div>
+					                    </div>
+				                    </c:if>
+			                    </c:forEach>
+		                   </div>
 						
 				</div>
 				<div style="width:5%;">
@@ -199,13 +213,16 @@
 								</p>
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
-									  
                                 </div>
+                                
+                       <div class="pd-round-style"	style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
+							<p class="pd_p description mb-4">${productDetail.content}</p>
+						</div>    	
+                                
                                </div>
                                 <%-- <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart"> --%>
                                 	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
                                 	
-									<hr/>	
                                 <div class="pd-info">
                                 	<ul>
                                  		<li style="display:flex" class="pd-colors">
@@ -267,32 +284,7 @@
 							</c:forEach>    
                         	</div>
                         	
-						 <c:set var="size" value="${fn:length(recentPd)}" />
-							<c:forEach var="i" begin="1" end="1">
-							<c:if test="${(recentPd[size-i].productDetailNo != productDetail.productDetailNo) && (recentPd[size-i] !=null)}">
-           						<div style="width:100%; margin: 0px;">
-									<div class="pd-with-name">방금 본 상품</div>
-									<div class="row mt-2">
-										<div style="width:45%; padding:10px">
-	 										<a href="${pageContext.request.contextPath}/product/productDetail?no=${recentPd[size-i].productDetailNo}" >
-	 											<c:if test="${recentPd[size-i] != productDetail.productDetailNo}"/>
-										  		<img class="card" src="${recentPd[size-i].img1}" style="width:100%;">
-										  	</a>
-									  	</div>
-									  	<div style="width:55%; padding:10px;">
-									  		<a href="${pageContext.request.contextPath}/product/productDetail?no=${recentPd[size-i].productDetailNo}" >
-											  	<span class="pd-with-name" >${recentPd[size-i].brand}</span><br/>
-											    <span class="pd-with-name">${recentPd[size-i].name}</span><br/>
-											    <span class="txt">₩<fmt:formatNumber value="${recentPd[size-i].price}" pattern="#,###"/></span><br/>
-								  			</a>
-								  		</div>
-						  			</div> 
-											
-								</div>
-								</c:if>
-							</c:forEach>    
                         	</div>
-                        	
 	                    </div>
 	                </div>
             	</div>
