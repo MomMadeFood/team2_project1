@@ -2,6 +2,8 @@ package com.mycompany.webapp.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -86,35 +88,51 @@ public class ProductController {
 		
 		model.addAttribute("withProductList", withProductList);
 		
-		Cookie cookies = new Cookie("pId"+no, no);
 		
-		cookies.setPath("/");
-		cookies.setMaxAge(24*60*60); // 24*60*60 은 하루
-		response.addCookie(cookies);
+		/////////
 		
-		Map<String, Object> recentMap = new HashMap<String, Object>();
+		Cookie[] cookies = request.getCookies();
 		
-		Cookie[] cookie = request.getCookies();
+		List<String> cookieList = new ArrayList<>();
 		
-		if(cookie.length == 4) {
-			   if(cookie != null){
-				    cookie[0].setMaxAge(0) ;
-				    response.addCookie(cookie[0]) ;
-		    }
-		}
-		
-		if (cookie.length != 0){
-		for(Cookie c: cookie) {
-			String name = c.getName();
-			String cvalue = c.getValue();
-			if(!recentMap.containsValue(cvalue) && name!="JSESSION")
-			recentMap.put("productDetailNo", cvalue);
+		if(cookies.length==1) {
+			Cookie cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
+			cookie.setPath("/");
+			cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+			response.addCookie(cookie);
+		}else {
+			
+			for(Cookie c : cookies) {
+				String name = c.getName();
+				if (name != "JSSESSIONID")
+				cookieList.add(c.getValue());
 			}
+			
+			boolean chkCookie = false;
+			for(String c: cookieList) {
+				if(c.equals(no)) {
+					chkCookie = true;
+				}
+			}
+			
+			Cookie cookie = null;
+			if(!chkCookie) {
+				cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
+				cookie.setPath("/");
+				cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+				response.addCookie(cookie);
+			}
+			
+			while(cookieList.size() > 3)
+				cookieList.remove(0);
+			
+			List<ProductDTO> recentPd = new ArrayList<>();
+			for(String c: cookieList) {
+				recentPd.add(productDetailService.getProductDetailByPdNo(c));
+			}
+			Collections.reverse(recentPd);
+			model.addAttribute("recentPd", recentPd);
 		}
-		
-		List<ProductDTO> recentPd = productDetailService.getProductDetailByPdId(recentMap);
-		
-		model.addAttribute("recentPd", recentPd);
 		
 		return "product/productDetail";
 	}

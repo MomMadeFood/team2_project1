@@ -16,5 +16,5 @@ public interface ProductDetailDAO {
 	
 	public String selectOneImgByPdId (String productDetailNo);
 	
-	public List<ProductDTO> selectProductDetailByPdId (Map<String, Object> recentMap);
+	public ProductDTO selectProductDetailByPdNo (String productDetailNo);
 }

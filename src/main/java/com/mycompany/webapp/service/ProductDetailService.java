@@ -49,8 +49,8 @@ public class ProductDetailService {
 	}
 	
 	//상세 상품 번호로 제품 브랜드, 이름, 가격, 이미지 등 가져오기
-	public List<ProductDTO> getProductDetailByPdId(Map<String, Object> recentMap){
-		return productDetailDAO.selectProductDetailByPdId(recentMap);
+	public ProductDTO getProductDetailByPdNo(String productDetailNo){
+		return productDetailDAO.selectProductDetailByPdNo(productDetailNo);
 	}
 	
 }
