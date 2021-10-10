@@ -19,5 +19,5 @@ public class MemberDTO {
 	private int enabled;
 	private String role;
 	private int point;
-	private int payPassword;
+	private String payPassword;
 }

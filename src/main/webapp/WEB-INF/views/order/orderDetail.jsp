@@ -7,7 +7,7 @@
         margin: 0px;
       }
     </style>
-    <div class="txt">
+    <div>
 
       <div style= "border-bottom: 1px solid #E5E5E5;margin-bottom:60px; height:100px; vertical-align:center;">
         <div style="margin:auto;padding-top:30px;width:300px; text-align:center; vertical-align:middle">
@@ -59,7 +59,7 @@
 	                  </div>
 	                  <div style="text-align:left; margin-left:20px;">
 	                    <a style="color:black;" href="/product/productDetail?no=${productList[status.index].productDetailNo}" >
-	                      ${productList[status.index].brand}<br/>
+	                      ${productList[status.index].brand}</br>
 	                      ${productList[status.index].name}
 	                    </a>
 	                    <p style="margin-top: 20px;font-size:12px;color:#CCC7CD">color : <img src="${productList[status.index].colorChip}" style="width:24px; height:24px; margin-right:8px" >  / size : ${mOrderDTO.detailList[status.index].psize}</p>
@@ -156,41 +156,14 @@
             </div>
           </div>
           <div style="display:flex; height:33%; width:100%;">
-            <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px">
-	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
-	              <p style="font-weight:bold">할부 개월 수</p>
-	           </c:if>            
- 	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
-	              <p style="font-weight:bold">결제정보</p>
-	           </c:if>               	
-            </div>
-            <div style=" width:80%; display:flex; padding:10px">
-	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
-	              <p>${mOrderDTO.paymentList[0].installment}</p>
-	           </c:if>  
- 	           <c:if test="${mOrderDTO.paymentList[0].paymentType == '계좌이체'}">
-	              <p>
-	              		<c:if test="${orderDetail.state==1}">
-	              			입금대기중
-	              		</c:if>
-	              		<c:if test="${orderDetail.state==2}">
-	              			주문완료
-	              		</c:if>
-	              		<c:if test="${orderDetail.state==3}">
-	              			 배송준비중
-	              		</c:if>
-	              		<c:if test="${orderDetail.state==4}">
-	              			 배송중
-	              		</c:if>
-	              		<c:if test="${orderDetail.state==5}">
-	              			 배송완료
-	              		</c:if>
-	              		<c:if test="${orderDetail.state==6}">
-	              			 주문취소
-	              		</c:if>  
-	              </p>
-	           </c:if>  	           
-            </div>
+          	<c:if test="${mOrderDTO.paymentList[0].paymentType == '신용카드'}">
+	            <div style=" width:20%; background-color: #F5F5F5 ;padding-left:20px;padding-top:10px">
+		              <p style="font-weight:bold">할부 개월 수</p>                     	
+	            </div>
+	            <div style=" width:80%; display:flex; padding:10px">
+		              <p>${mOrderDTO.paymentList[0].installment}</p>	           
+	            </div>
+            </c:if> 
           </div>
         </div>
         <div style="display:flex; justify-content: space-between ;margin-top:40px">

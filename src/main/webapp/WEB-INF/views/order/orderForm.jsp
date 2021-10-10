@@ -538,7 +538,7 @@
 		
 		if($("#detailAddr").val()===""){
 			$("#detailAddr").css("border","red 1px solid");
-			$("validationAlert").css("display","block");
+			$("#validationAlert").css("display","block");
 			$("#validText").text("*상세주소를 입력하세요");
 			
 			console.log("상세주소 입력");
@@ -550,7 +550,7 @@
 		if($("#recName").val()===""){
 			console.log("수령인 입력");
 			$("#recName").css("border","red 1px solid");
-			$("validationAlert").css("display","block");
+			$("#validationAlert").css("display","block");
 			$("#validText").text("*수령인을 입력하세요");
 			return 0;
 		}else{
@@ -561,7 +561,7 @@
 		if(($("#request").val()).length>20){
 			console.log("요청사항 글자 줄이기");
 			$("#request").css("border","red 1px solid");
-			$("validationAlert").css("display","block");
+			$("#validationAlert").css("display","block");
 			$("#validText").text("*요청사항은 20자를 넘어선 안됩니다.");
 			return 0;
 		}else{
@@ -573,7 +573,6 @@
 			console.log("가상계좌 선택하기");
 			$("#account-input").css("border","red 1px solid");
 			$("#validationAlert").css("display","block");
-			//document.querySelector("#validationAlert").innerHTML = "*가상계좌를 선택하세요";
 			$("#validText").text("*가상계좌를 선택하세요");
 			return 0;
 		}else{
@@ -596,10 +595,8 @@
 	function oneClikAjax(){
 		let modal = document.querySelector(".modal");
 		let password = $("#oneClickPassword").val();
-		let memberId = document.querySelector("#memberIdDiv").innerHTML;
-		let cardNo = document.querySelector(".show #card-no").innerHTML;
-		let company = document.querySelector(".show #card-company").innerHTML;
-		let data = {"payPassword":password,"memberId":memberId,"cardNo":cardNo,"company":company}
+		let id = document.querySelector("#memberIdDiv").innerHTML;
+		let data = {"payPassword":password,"id":id}
 		let alretBox = document.querySelector("#passwordAlert");
 		let flag = 0;
 		
@@ -776,7 +773,7 @@
 		
 		let orderList = document.querySelectorAll("#orderTable tbody tr");
 		let memberId = document.querySelector(".member-id").innerHTML;
-		let recName = $("#rec-name").val();
+		let recName = $("#recName").val();
 		let hp = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
 		let tel = $("#ph1").val()+"-"+$("#ph2").val()+"-"+$("#ph3").val();
 		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
@@ -784,7 +781,7 @@
 		let recEmail = $("#rec-email1").val()+"@"+$("#rec-email2").val();
 		let zipcode = $("#zipcode").val();
 		let addr = $("#addr").val();
-		let detailAddr = $("#detail-addr").val();
+		let detailAddr = $("#detailAddr").val();
 		let paymentType = "";
 		let payAccount = "";
 		let company = "";
@@ -882,7 +879,7 @@
 			data['paymentList[' + payIdx +'].price'] = couponTotal;
 		}
 		console.log(data);
-		/*
+		
 		
 		$.ajax({
 			type:"POST",
@@ -899,7 +896,7 @@
 				alert(data.productName+"의 재고가 부족합니다.");
 			}
 		});	
-		*/
+		
 		
 	}
 	
@@ -947,7 +944,7 @@
 		detailPrice.innerHTML = convertPrice(price - parseInt(totalDiscountPrice));
 		
 
-		appliedCoupon.style.display="block";
+		//appliedCoupon.style.display="block";
 		//console.log(couponIdBox.innerHTML);
 
 		
@@ -958,6 +955,7 @@
 		//console.log(resetCpBtn);
 		
 		cpBtn.style.display = "none";
+		parent.querySelector(".originBox").style.display="block";
 
 		resetCpBtn.style.display="inline-block";
 	}
