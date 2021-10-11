@@ -9,9 +9,20 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.ResponseHandler;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.BasicResponseHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.webapp.dao.CouponDAO;
 import com.mycompany.webapp.dao.CouponDetailDAO;
 import com.mycompany.webapp.dao.MOrderDAO;
@@ -111,6 +122,36 @@ public class CouponService {
 		java.util.Collections.sort(availableCouponList);
 		
 		return availableCouponList;
+	}
+	
+	public JsonNode issueEventCoupon(String couponNo, String memberId) {
+		HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
+		HttpPost httpPost = new HttpPost("http://192.168.1.252:8080//issueEventCoupon"); // POST 메소드 URL 새성
+		try {
+			httpPost.setHeader("Accept", "application/json");
+			httpPost.setHeader("Connection", "keep-alive");
+			httpPost.setHeader("Content-Type", "application/json");
+
+			// json 메시지 입력
+			httpPost.setEntity(new StringEntity("{\"couponNo\":\"" + couponNo + "\",\"memberId\":\"" + memberId + "\"}"));
+
+			HttpResponse response = client.execute(httpPost);
+			// Response 출력
+			if (response.getStatusLine().getStatusCode() == 200) {
+				ResponseHandler<String> handler = new BasicResponseHandler();
+				String body = handler.handleResponse(response);
+				
+				ObjectMapper objectMapper = new ObjectMapper();
+				JsonNode node = objectMapper.readTree(body);
+				return node;
+			} else {
+				System.out.println("response is error : " + response.getStatusLine().getStatusCode());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return null;
 	}
 }
 

@@ -24,11 +24,11 @@
 					$("#coupon-error-message").text("이미 발급된 쿠폰입니다.");
 					$("#coupon-error-alert").show();
 				} else if(data.result === "error-end") {
-					$("#cart-warn-message").text("종료된 이벤트입니다.");
-					$("#cart-warn-alert").show();
+					$("#coupon-warn-message").text("종료된 이벤트입니다.");
+					$("#coupon-warn-alert").show();
 				} else if(data.result === "error-stock") {
-					$("#cart-warn-message").text("쿠폰 발급 가능 개수가 없습니다.");
-					$("#cart-warn-alert").show();
+					$("#coupon-warn-message").text("쿠폰 발급 가능 개수가 없습니다.");
+					$("#coupon-warn-alert").show();
 				} else if(data.result === "error-qualification") {
 					$("#coupon-error-message").text("죄송합니다. 회원님은 이벤트 참여 조건에 해당되지 않습니다.");
 					$("#coupon-error-alert").show();
@@ -135,7 +135,7 @@
 				    	  <b>${eventCoupon.discount}<c:if test="${eventCoupon.discountType==1}">% </c:if><c:if test="${eventCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
 				      	  ${eventCoupon.content}
 				      </p>
-				      <a onclick="issueCoupon('${eventCoupon.couponNo}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				      <a onclick="issueEventCoupon('${eventCoupon.couponNo}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
 				    </div>
 				  </div>
 				</c:forEach>
@@ -144,6 +144,27 @@
   	    </div>
     </div>
   </div>
+  
+  <script>
+  
+  	function issueEventCoupon(couponNo){
+  		$.ajax({
+  			method:"post",
+  			url:"/event/issueEventCoupon",
+  			data:{couponNo}
+  		}).done(data=>{
+  			if(data.result =="success"){
+  				$("#coupon-message").text("쿠폰이 발급되었습니다. 쿠폰 유효기간 내에 사용하시기 바랍니다.");
+				$("#coupon-alert").show();
+  			}else{
+				$("#coupon-warn-message").text(data.message);
+				$("#coupon-warn-alert").show();
+  			}
+  		})
+  		
+  	}
+  	
+  </script>
   
   <script>
 
