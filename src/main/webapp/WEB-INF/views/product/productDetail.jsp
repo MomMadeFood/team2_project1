@@ -169,11 +169,11 @@
 						</div>
 						
 						<div class= "container" style="float:left; width:450px; margin-top: 20px; padding:5px;">
-						<div class="pd-with-name">최근 본 상품</div>
+						<div class="pd-with-name mb-3">최근 본 상품</div>
 							<c:forEach items="${recentPd}" var="recentProduct" >
 								<c:if test="${(recentProduct.productDetailNo != productDetail.productDetailNo) && (recentProduct !=null) }">
 				                	<div class="swiper-slide container"  style="width:33%; float:left; padding-left:0px;">
-						                    <div class="item_box">
+						                    <div class="item_box pd-recent-title">
 							                      <a href="${pageContext.request.contextPath}/product/productDetail?no=${recentProduct.productDetailNo}">
 							                        <img src="${recentProduct.img1}" />
 							                      </a>
