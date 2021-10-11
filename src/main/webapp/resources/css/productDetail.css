@@ -295,3 +295,8 @@ div.info_sect {
 	font-family: "Malgun Gothic", "맑은 고딕", "Dotum", "돋움", AppleGothic,
 		sans-serif;
 }
+
+.pd-recent-title{
+	border: 1px solid rgba(0,0,0,.125);
+    border-radius: .25rem;
+}
