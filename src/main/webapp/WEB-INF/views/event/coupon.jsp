@@ -29,6 +29,9 @@
 				} else if(data.result === "error-stock") {
 					$("#coupon-warn-message").text("쿠폰 발급 가능 개수가 없습니다.");
 					$("#coupon-warn-alert").show();
+				} else if(data.result === "error-qualification") {
+					$("#coupon-error-message").text("죄송합니다. 회원님은 이벤트 참여 조건에 해당되지 않습니다.");
+					$("#coupon-error-alert").show();
 				}
 			},
 			error: function(request,status,error) {

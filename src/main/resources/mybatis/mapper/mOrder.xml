@@ -6,7 +6,7 @@
 
 	<insert id="insertMOrder" parameterType="mOrder">
 		INSERT INTO m_order(order_no,member_id,order_date,state,request,addr,detail_addr,zip_code,tel,phone,rec_name)
-		values(#{orderNo},#{memberId},sysdate,#{state},#{request},#{addr},#{detailAddr},#{zipCode},#{tel},#{phone},#{recName})
+		values(#{orderNo,jdbcType=VARCHAR},#{memberId,jdbcType=VARCHAR},sysdate,#{state,jdbcType=INTEGER},#{request,jdbcType=VARCHAR},#{addr,jdbcType=VARCHAR},#{detailAddr,jdbcType=VARCHAR},#{zipCode,jdbcType=INTEGER},#{tel,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{recName,jdbcType=VARCHAR})
 	</insert>
 	
 	<select id="selectMOrderCount" resultType="int">
@@ -124,6 +124,10 @@
 		        order by rnum, product_detail_no
 		    )
 		    WHERE rnum between #{startRowNo} and #{endRowNo}
+	</select>
+	
+	<select id="selectOrderCountByMid" resultType="int">
+		select count(*) from m_order where member_id = #{value}
 	</select>
 	
 </mapper>

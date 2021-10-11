@@ -75,4 +75,9 @@ public interface MOrderDAO {
 	 * @return 주문 정보
 	 */
 	public List<OrderListDTO> selectOrderListByOrderNo(Map<String, Object> param);
+	
+	/**
+	 * 멤버 아이디로 해당 회원의 주문량을 조회함
+	 */
+	public int selectOrderCountByMid(String memberId);
 }

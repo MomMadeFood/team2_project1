@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CardDAO;
@@ -67,5 +68,30 @@ public class MemberService {
 
 
 		return map;
+	}
+	
+	public String genCardPassword(String memberId, String password) {
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		String scurePw = encoder.encode(password);
+		
+		MemberDTO memberDTO = new MemberDTO();
+		memberDTO.setId(memberId);
+		memberDTO.setPayPassword(scurePw);
+		memberDAO.updateCardPassword(memberDTO);
+		
+		return "success";
+	}
+
+	public int checkOneClickPassword(MemberDTO memberDTO) {
+		
+		String secuPw = memberDAO.selectPayPassworById(memberDTO.getId());
+		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+		
+		if(encoder.matches(memberDTO.getPayPassword(), secuPw)) {
+			return 1;
+		}
+		else {
+			return 0;
+		}
 	}
 }

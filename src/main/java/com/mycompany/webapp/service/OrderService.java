@@ -413,70 +413,77 @@ public class OrderService {
 		return mp;
 	}
 	
-	@Transactional
 	public Map<String,String> deleteOrderDetail(Map<String,Object> map) {
 		Map<String,String> resultMap = new HashMap<String, String>();
-		try {
-			OrderDetailDTO orderDetailDTO = (OrderDetailDTO) map.get("orderDetailDTO");
-			String memberId = (String) map.get("memberId");
-			
-			orderDetailDTO.setState(6);
-			StockDTO stockDTO = new StockDTO();
-			
-			stockDTO.setAmount(orderDetailDTO.getAmount());
-			stockDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
-			stockDTO.setPsize(orderDetailDTO.getPsize());
-			
-			
-			
-			
-			PointDTO pointDTO = new PointDTO();
-			pointDTO.setMemberId(memberId);
-			pointDTO.setName("환불");
-			
-			SimpleDateFormat format1 = new SimpleDateFormat( "yyyyMMdd");
-			int pointCnt = (10000000+pointDAO.selectCounts())%100000000;
-			String conv = Integer.toString(pointCnt);
-			Date time = new Date();
-			String time1 = format1.format(time);
-			String pointNo = time1+"T"+conv;
-			pointDTO.setPointNo(pointNo);
-			pointDTO.setOrderDetailNo(orderDetailDTO.getOrderDetailNo());
-			
-			int updateResult = orderDetailDAO.updateStateByOrderDetail(orderDetailDTO);
-			if(updateResult==0) {
-				throw new DeleteOrderException("결재상태 변경중 오류 발생");
-			}
-			updateResult = stockDAO.updateAmountByStock(stockDTO);
-			if(updateResult==0) {
-				throw new DeleteOrderException("재고상태 변경중 오류 발생");
-			}
-			
-			int pointFlag = pointDAO.selectCountsByOrderDetailNo(orderDetailDTO.getOrderDetailNo());
-			
-			String couponNo = orderDetailDAO.selectCouponNoById(orderDetailDTO.getOrderDetailNo());
-			if(pointFlag>0) {
-				updateResult = pointDAO.insertRefundPoint(pointDTO);
-			}
+		
+		Map<String,String> result = transactionTemplate.execute(new TransactionCallback<Map<String,String> >() {
+			@Override
+			public Map<String,String> doInTransaction(TransactionStatus status) {
+				try {
+					OrderDetailDTO orderDetailDTO = (OrderDetailDTO) map.get("orderDetailDTO");
+					String memberId = (String) map.get("memberId");
+					
+					orderDetailDTO.setState(6);
+					StockDTO stockDTO = new StockDTO();
+					
+					stockDTO.setAmount(orderDetailDTO.getAmount());
+					stockDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
+					stockDTO.setPsize(orderDetailDTO.getPsize());
+					
+					
+					
+					
+					PointDTO pointDTO = new PointDTO();
+					pointDTO.setMemberId(memberId);
+					pointDTO.setName("환불");
+					
+					SimpleDateFormat format1 = new SimpleDateFormat( "yyyyMMdd");
+					int pointCnt = (10000000+pointDAO.selectCounts())%100000000;
+					String conv = Integer.toString(pointCnt);
+					Date time = new Date();
+					String time1 = format1.format(time);
+					String pointNo = time1+"T"+conv;
+					pointDTO.setPointNo(pointNo);
+					pointDTO.setOrderDetailNo(orderDetailDTO.getOrderDetailNo());
+					
+					int updateResult = orderDetailDAO.updateStateByOrderDetail(orderDetailDTO);
+					if(updateResult==0) {
+						throw new DeleteOrderException("결재상태 변경중 오류 발생");
+					}
+					updateResult = stockDAO.updateAmountByStock(stockDTO);
+					if(updateResult==0) {
+						throw new DeleteOrderException("재고상태 변경중 오류 발생");
+					}
+					
+					int pointFlag = pointDAO.selectCountsByOrderDetailNo(orderDetailDTO.getOrderDetailNo());
+					
+					String couponNo = orderDetailDAO.selectCouponNoById(orderDetailDTO.getOrderDetailNo());
+					if(pointFlag>0) {
+						updateResult = pointDAO.insertRefundPoint(pointDTO);
+					}
 
 
-			if(!couponNo.equals("none")) {
-				updateResult = couponDetailDAO.updateStateByOrderDetailNo(couponNo);
+					if(!couponNo.equals("none")) {
+						updateResult = couponDetailDAO.updateStateByOrderDetailNo(couponNo);
+					}
+					
+					resultMap.put("result","success");
+					resultMap.put("message","주문이 취소되었습니다.");
+					return resultMap;
+				}catch(DeleteOrderException e) {
+					resultMap.put("result","fail");
+					resultMap.put("message",e.getMessage());
+					return resultMap;
+				}catch(Exception e){
+					resultMap.put("result","fail");
+					resultMap.put("message","예상치 못한 오류 발생");
+					return resultMap;
+				}
+				
 			}
-			
-			
-		}catch(DeleteOrderException e) {
-			resultMap.put("result","fail");
-			resultMap.put("message",e.getMessage());
-			return resultMap;
-		}catch(Exception e){
-			resultMap.put("result","fail");
-			resultMap.put("message","예상치 못한 오류 발생");
-			return resultMap;
-		}
-		resultMap.put("result","success");
-		resultMap.put("message","주문이 취소되었습니다.");
-		return resultMap;
+		});
+		
+		return result;
 	}
 	
 }

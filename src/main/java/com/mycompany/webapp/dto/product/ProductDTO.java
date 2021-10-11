@@ -19,8 +19,10 @@ public class ProductDTO {
 	private String img3;
 	private String colorCode;
 	private String colorChip;
-
+	private int amount;
+	
 	//Product_stock
 	private String psize;
-	private int amount;
+	private int stock;
+	
 }

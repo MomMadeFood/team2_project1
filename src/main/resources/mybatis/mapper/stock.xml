@@ -35,6 +35,18 @@
 		WHERE product_detail_no = #{productDetailNo} and psize = #{psize}
 	</select>
 	
+	<select id="selectAmountByProduct" parameterType="product" resultType="int">
+		SELECT NVL(amount,0)
+		FROM stock
+		WHERE product_detail_no = #{productDetailNo} and psize = #{psize}
+	</select>
+	
+	<select id="selectAmountByCart" parameterType="cart" resultType="int">
+		SELECT NVL(amount,0)
+		FROM stock
+		WHERE product_detail_no = #{productDetailNo} and psize = #{psize}
+	</select>
+	
 	
 	<update id="updateAmountByStock" parameterType="stock">
 		UPDATE stock SET amount = amount + #{amount} where product_detail_no = #{productDetailNo} and psize = #{psize}

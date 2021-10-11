@@ -50,6 +50,7 @@
 	        oncomplete: function(data) {
 	        	$("#addr").val(data.address);
 	        	$("#zipcode").val(data.zonecode);
+	        	$("#detailAddr").val("");
 	        }       
 	    }).open();
 	}
@@ -89,7 +90,7 @@
 								<td class="d-flex"><img src="${product.img1}" alt=""
 									style="width: 98px; height: 98px;">
 									<div style="text-align: left; margin-left: 20px;">
-										<a style="color: black;" href="#">${product.brand}<br/> ${product.name}
+										<a style="color: black;" href="/product/productDetail?no=${product.productDetailNo}">${product.brand}<br/> ${product.name}
 										</a>
 										<div style="display:flex">
 										 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
@@ -101,7 +102,7 @@
 						<td class="priceList" style="vertical-align: middle; border-right: 1px solid #E5E5E5;">
 							<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
 							<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
-							<div style="" class="appliedPoint">-<span class="pointAmount">0</span>P</div>
+							<div style="display:none" class="appliedPoint">-<span class="pointAmount">0</span>P</div>
 							<div style="display:none" class="appliedCoupon">0</div>
 						</td>
                   		<td style="vertical-align: middle;">
@@ -177,7 +178,7 @@
 										</div>
 										<div style="margin-top: 10px;">
 											<input style="width: 100%;" value="${memberDTO.detailAddr}"
-												id="detail-addr" name="adressDetail" type="text" >
+												id="detailAddr" name="adressDetail" type="text" >
 										</div></td>
 								</tr>
 								<tr>
@@ -185,7 +186,7 @@
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>수령인</td>
 									<td><input style="width: 150px;" value="${memberDTO.name}" title="수령인"
-										id="rec-name" name="rec-name" type="text"></td>
+										id="recName" name="recName" type="text"></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -245,9 +246,9 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">배송요청사항</td>
 									<td><input style="width: 80%;" id="request"
-										name="ship_req" type="text" value="">
-									<div style="display: inline-block; margin-left: 10px;">0 /
-											20자</div></td>
+										name="ship_req" type="text" value="" onKeydown="reqlength()">
+									<div style="display: inline-block; margin-left: 10px;"><span id="reqVal"><span id="reqLen">0</span> /
+											20자</div></span></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -386,7 +387,7 @@
 												</c:forEach>
 											</select>
 										</div>
-										<input style="width:200px;" id="account-input" readonly>
+										<input  style="width:200px;" id="account-input" readonly>
 										
 										</input>
 									</div>
@@ -454,14 +455,18 @@
 						</div>
 						<div style="margin-top:15px; width:100%">
 							<div style="margin:0px auto; width:100%">
-								<button id="card-btn" type="button" class="btn btn-lg btn-dark" data-toggle="modal" data-target="#exampleModal" style="width:100%">
+								<button id="card-btn" type="button" class="btn btn-lg btn-dark"  onClick="postForm()"  style="width:100%">
   									결제하기
 								</button>
-								<button id="transfer-btn" style="display:none;width:100%" type="button" class="btn btn-lg btn-dark" onClick="postOrderForm()">
+								<button id="transfer-btn" style="display:none;width:100%" type="button" class="btn btn-lg btn-dark" onClick="postForm()">
   									결제하기
 								</button>
 							</div>
+							 <div style="width:100%; height:30px; margin-top:15px">
+								<div id="validationAlert" style="border:1px solid #ced4da; width:100%; height:100%; border-radius:5px; background-color:#f9d7db; color:#af7175;padding-top:5px; display:none"><p id="validText"style="font-size:15px; text-align:center">안녕하세요!</p></div>
+							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -502,18 +507,96 @@
 </div>
 <script>
 
-	function validation(){
+	function reqlength(){
+		let rlen = ($("#request").val()).length;
+		$("#reqLen").text(rlen);
+		if(rlen>20){
+			$("#reqVal").css("color","red");
+		}else{
+			$("#reqVal").css("color","black");
+		}
+	}
+	
+	
+	function postForm(){
+		if(validation()==0)
+			return 0;
 		
+		if(event.currentTarget.id=='card-btn'){
+			if(validation("card")==0)
+				return 0;
+			$('.modal').modal("show");
+		}else{
+			if(validation("transfer")==0)
+				return 0;
+			postOrderForm();
+		}
+	}
+	
+	function validation(pay){
+		console.log($("#detailAddr").val());
+		
+		if($("#detailAddr").val()===""){
+			$("#detailAddr").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*상세주소를 입력하세요");
+			
+			console.log("상세주소 입력");
+			return 0;
+		}else{
+			$("#detailAddr").css("border","");
+		}
+			
+		if($("#recName").val()===""){
+			console.log("수령인 입력");
+			$("#recName").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*수령인을 입력하세요");
+			return 0;
+		}else{
+			$("#recName").css("border","");
+			
+		}
+			
+		if(($("#request").val()).length>20){
+			console.log("요청사항 글자 줄이기");
+			$("#request").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*요청사항은 20자를 넘어선 안됩니다.");
+			return 0;
+		}else{
+			$("#request").css("border","");
+			
+		}
+			
+		if($("#account-input").val()===""&&pay=="transfer"){
+			console.log("가상계좌 선택하기");
+			$("#account-input").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*가상계좌를 선택하세요");
+			return 0;
+		}else{
+			$("#account-input").css("border","");
+		}
+		
+		if($('#agree').is(':checked')){
+			$("#account-input").css("border","");
+		}else{
+			$("#account-input").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*구매자 동의를 체크하세요");
+			return 0;
+		}
+		 
+		$("#validationAlert").css("display","none");
+		return 1;
 	}
 
 	function oneClikAjax(){
-		
 		let modal = document.querySelector(".modal");
 		let password = $("#oneClickPassword").val();
-		let memberId = document.querySelector("#memberIdDiv").innerHTML;
-		let cardNo = document.querySelector(".show #card-no").innerHTML;
-		let company = document.querySelector(".show #card-company").innerHTML;
-		let data = {"payPassword":password,"memberId":memberId,"cardNo":cardNo,"company":company}
+		let id = document.querySelector("#memberIdDiv").innerHTML;
+		let data = {"payPassword":password,"id":id}
 		let alretBox = document.querySelector("#passwordAlert");
 		let flag = 0;
 		
@@ -540,8 +623,10 @@
 	}
 
 	function accountSelected(){
+		console.log("----");
 		let accountNum = $("#account-select option:selected").val();
 		$("#account-input").val(accountNum);
+		console.log(accountNum+"ssss");
 	}
 
 
@@ -630,17 +715,15 @@
 	
 	function resetPoint(){
 		document.querySelector("#discount-point").innerHTML = 0;
+		let refundPoint = parseInt(document.querySelector("#cur-point").innerHTML) - convertNum(document.querySelector("#remain-point").innerHTML);
 		document.querySelector("#remain-point").innerHTML = convertPrice(document.querySelector("#cur-point").innerHTML);
 		$("#apply-point").val(0);
-		document.querySelector("#total-price").innerHTML = document.querySelector("#prod-price").innerHTML;
+		let price = $("#total-price").text();
+		document.querySelector("#total-price").innerHTML = convertPrice(convertNum(price)+refundPoint);
 		
 		let priceList = document.querySelectorAll(".priceList");
 		
 		for(let element of priceList){
-			let detailPrice = element.querySelector(".detail-price");
-			let originPrice  = element.querySelector(".originPrice").innerHTML;
-			detailPrice.innerHTML = originPrice;
-			element.querySelector(".originBox").style.display="none";
 			element.querySelector(".pointAmount").innerHTML = 0;
 		}
 	}
@@ -651,6 +734,7 @@
 		let remainPoint = convertNum(document.querySelector("#remain-point").innerHTML);
 		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
 		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
+		let totalPrice = convertNum(document.querySelector("#total-price").innerHTML);
 		
 		let priceList = document.querySelectorAll(".priceList");
 		
@@ -658,20 +742,16 @@
 		
 		console.log(applyPoint+" "+remainPoint+" "+discountPoint+" "+prodPrice);
 		if(applyPoint>remainPoint){
-			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
+			alert("잔여 포인트보다 많은 포인트를 사용할 수 없습니다.");	
 		}else{
 			document.querySelector("#remain-point").innerHTML = convertPrice(remainPoint - applyPoint);
 			document.querySelector("#discount-point").innerHTML = convertPrice(discountPoint+applyPoint);
-			document.querySelector("#total-price").innerHTML = convertPrice(prodPrice-(discountPoint+applyPoint));
+			document.querySelector("#total-price").innerHTML = convertPrice(totalPrice-applyPoint);
 			
 			let len = priceList.length;
 			let dPoint = parseInt(applyPoint/len);
 			
 			for(let element of priceList){
-				let detailPrice = element.querySelector(".detail-price");
-				let price  = convertNum(detailPrice.innerHTML);
-				detailPrice.innerHTML = convertPrice(price-dPoint);
-				element.querySelector(".originBox").style.display="block";
 				element.querySelector(".pointAmount").innerHTML = dPoint;
 			}
 		}
@@ -693,7 +773,7 @@
 		
 		let orderList = document.querySelectorAll("#orderTable tbody tr");
 		let memberId = document.querySelector(".member-id").innerHTML;
-		let recName = $("#rec-name").val();
+		let recName = $("#recName").val();
 		let hp = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
 		let tel = $("#ph1").val()+"-"+$("#ph2").val()+"-"+$("#ph3").val();
 		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
@@ -701,7 +781,7 @@
 		let recEmail = $("#rec-email1").val()+"@"+$("#rec-email2").val();
 		let zipcode = $("#zipcode").val();
 		let addr = $("#addr").val();
-		let detailAddr = $("#detail-addr").val();
+		let detailAddr = $("#detailAddr").val();
 		let paymentType = "";
 		let payAccount = "";
 		let company = "";
@@ -710,8 +790,6 @@
 		let state = 2;
 		let pointTotal = convertNum(document.querySelector("#discount-point").innerHTML);
 		let couponTotal = convertNum(document.querySelector("#coupon").innerHTML);
-		
-		
 		
 		
 		
@@ -760,8 +838,8 @@
 			 let productDetailNo = orderList[index].querySelector(".detail-id").innerHTML;
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
-			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
 			 let point = parseInt(orderList[index].querySelector(".pointAmount").innerHTML);
+			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML))-point;
 			 let couponSum = convertNum(orderList[index].querySelector(".appliedCoupon").innerHTML);
 			 let couponNo = orderList[index].querySelector(".couponId").innerHTML;
 			 
@@ -819,6 +897,7 @@
 			}
 		});	
 		
+		
 	}
 	
 	function couponSelect(price, brand, index){
@@ -864,8 +943,10 @@
 		document.querySelector("#total-price").innerHTML = convertPrice(totalPrice - parseInt(totalDiscountPrice));
 		detailPrice.innerHTML = convertPrice(price - parseInt(totalDiscountPrice));
 		
-		appliedCoupon.style.display="block";
+
+		//appliedCoupon.style.display="block";
 		//console.log(couponIdBox.innerHTML);
+
 		
 		let cpBtn = parent.querySelector(".cpBtn");
 		let resetCpBtn = parent.querySelector(".resetCpBtn");
@@ -874,6 +955,8 @@
 		//console.log(resetCpBtn);
 		
 		cpBtn.style.display = "none";
+		parent.querySelector(".originBox").style.display="block";
+
 		resetCpBtn.style.display="inline-block";
 	}
 	
@@ -917,8 +1000,8 @@
 		
 		cpBtn.style.display = "inline-block";
 		resetCpBtn.style.display="none";
+		parent.querySelector(".originBox").style.display="none";
 		
 	}
 </script>
-</body>
-</html>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>
