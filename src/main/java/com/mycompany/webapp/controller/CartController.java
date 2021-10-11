@@ -26,9 +26,9 @@ import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.CartService.CartResult;
-import com.mycompany.webapp.service.ProductDetailService;
 import com.mycompany.webapp.service.StockService;
 import com.mycompany.webapp.service.StockService.StockResult;
+import com.mycompany.webapp.service.product.ProductDetailService;
 
 @Controller
 @RequestMapping("/cart")

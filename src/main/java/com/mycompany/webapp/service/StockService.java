@@ -10,7 +10,6 @@ import com.mycompany.webapp.dao.StockDAO;
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.StockDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.service.CartService.CartResult;
 
 @Service
 public class StockService {
@@ -53,6 +52,5 @@ public class StockService {
 		}
 		return StockResult.SUCCESS;
 	}
-
 
 }
