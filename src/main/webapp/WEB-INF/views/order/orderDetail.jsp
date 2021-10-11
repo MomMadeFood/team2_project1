@@ -118,7 +118,7 @@
           </thead>
           <tbody>
             <tr style="height:20px;">
-              <td style=" vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${totalPrice+pointSum}" pattern="#,###"/></p></td>
+              <td style=" vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${priceTotal+pointSum+couponSum}" pattern="#,###"/></p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩0</p></td>
               <td style="border-left: 1px solid #E5E5E5;vertical-align: middle; text-align:right"><p>₩${couponSum}</p></td>
               <td style="border-left: 1px solid #E5E5E5; vertical-align: middle; text-align:right"><p>₩<fmt:formatNumber value="${priceTotal+pointSum}" pattern="#,###"/></p></td>

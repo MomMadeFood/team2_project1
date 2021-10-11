@@ -469,10 +469,12 @@ public class OrderService {
 					resultMap.put("message","주문이 취소되었습니다.");
 					return resultMap;
 				}catch(DeleteOrderException e) {
+					status.setRollbackOnly();
 					resultMap.put("result","fail");
 					resultMap.put("message",e.getMessage());
 					return resultMap;
 				}catch(Exception e){
+					status.setRollbackOnly();
 					resultMap.put("result","fail");
 					resultMap.put("message","예상치 못한 오류 발생");
 					return resultMap;

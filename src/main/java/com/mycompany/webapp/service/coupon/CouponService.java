@@ -124,7 +124,7 @@ public class CouponService {
 	
 	public JsonNode issueEventCoupon(String couponNo, String memberId) {
 		HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
-		HttpPost httpPost = new HttpPost("http://192.168.1.252:8080//issueEventCoupon"); // POST 메소드 URL 새성
+		HttpPost httpPost = new HttpPost("http://18.224.253.114:8080/event/issueEventCoupon"); // POST 메소드 URL 새성
 		try {
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Connection", "keep-alive");

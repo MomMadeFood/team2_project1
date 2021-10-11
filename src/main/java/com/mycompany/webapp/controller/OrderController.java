@@ -175,9 +175,6 @@ public class OrderController {
 	@PostMapping(value="/orderFormAjax",produces = "application/json; charset=UTF-8")
 	@ResponseBody
 	public String orderFormAjax(MOrderDTO mOrderDTO) throws InterruptedException, ExecutionException {
-		
-		
-		
 		Callable< Map<String,String> > task = new Callable<Map<String,String>>() {
 			@Override
 			public Map<String,String> call() throws Exception {
