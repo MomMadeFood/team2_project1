@@ -88,9 +88,6 @@ public class ProductController {
 		
 		model.addAttribute("withProductList", withProductList);
 		
-		
-		/////////
-		
 		Cookie[] cookies = request.getCookies();
 		
 		List<String> cookieList = new ArrayList<>();
@@ -99,6 +96,7 @@ public class ProductController {
 			Cookie cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
 			cookie.setPath("/");
 			cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+			cookie.setHttpOnly(true); // java script에서 쿠키를 읽지 못하게 함
 			response.addCookie(cookie);
 		}else {
 			
