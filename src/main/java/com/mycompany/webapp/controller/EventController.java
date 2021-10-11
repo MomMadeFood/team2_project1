@@ -12,7 +12,6 @@ import javax.annotation.Resource;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,10 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import com.mycompany.webapp.dto.CouponDTO;
-import com.mycompany.webapp.service.CouponService;
-import com.mycompany.webapp.service.CouponService.CouponResult;
-import com.mycompany.webapp.service.RequestService;
+import com.mycompany.webapp.dto.coupon.CouponDTO;
+import com.mycompany.webapp.service.coupon.CouponService;
+import com.mycompany.webapp.service.coupon.CouponService.CouponResult;
 
 @Controller
 @RequestMapping("/event")

@@ -14,14 +14,14 @@
           <p style="font-size: 28px;">주문 상세 조회</p>
         </div>
       </div>
-      <div style="width: 990px; margin:0px auto; width:990px;">
+      <div class="txt" style="width: 990px; margin:0px auto; width:990px;">
 
         <div style="background-color: #F5F5F5; height: 65px; margin-top:20px; border:1px solid #E5E5E5; display:flex">
           <div style="width: 70%; border-right:1px solid #E5E5E5; display:flex; align-items: center; margin-left: 10px; ">
-            <p  style="font-weight:bold; font-size:15px">주문번호 : </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">${mOrderDTO.orderNo}</p>
+            <p  style="font-weight:bold; font-size:15px">주문번호: </p><p style="color:#c59c6c; font-weight:bold;font-size:15px">&nbsp;${mOrderDTO.orderNo}</p>
           </div>
           <div style="width: 30%;display:flex; padding:18px;align-items: center;">
-  			<p style="font-size:15px">주문일시:<fmt:formatDate var="resultRegDt" value="${mOrderDTO.orderDate}" pattern="yyyy-MM-dd HH:mm"/>
+  			<p style="font-weight:bold;font-size:15px">주문일시: <fmt:formatDate var="resultRegDt" value="${mOrderDTO.orderDate}" pattern="yyyy-MM-dd HH:mm:ss"/>
 				${resultRegDt}
 			</p>
           </div>

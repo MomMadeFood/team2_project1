@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.mycompany.webapp.dao.CartDAO;
-import com.mycompany.webapp.dao.ProductDAO;
 import com.mycompany.webapp.dao.StockDAO;
+import com.mycompany.webapp.dao.product.ProductDAO;
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.StockDTO;
 import com.mycompany.webapp.dto.product.ProductColorDTO;

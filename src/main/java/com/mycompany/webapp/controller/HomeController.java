@@ -9,7 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.mycompany.webapp.dto.product.ProductNewDTO;
-import com.mycompany.webapp.service.ProductService;
+import com.mycompany.webapp.service.product.ProductService;
 
 @Controller
 public class HomeController {

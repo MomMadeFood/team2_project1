@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,17 +26,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycompany.webapp.dto.CardDTO;
-import com.mycompany.webapp.dto.CouponDTO;
-import com.mycompany.webapp.dto.MOrderDTO;
-import com.mycompany.webapp.dto.MemberDTO;
-import com.mycompany.webapp.dto.OrderDetailDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.PaymentDTO;
 import com.mycompany.webapp.dto.VirtureAccountDTO;
+import com.mycompany.webapp.dto.coupon.CouponDTO;
+import com.mycompany.webapp.dto.member.MemberDTO;
+import com.mycompany.webapp.dto.order.MOrderDTO;
+import com.mycompany.webapp.dto.order.OrderDetailDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
-import com.mycompany.webapp.service.CouponService;
-import com.mycompany.webapp.service.MemberService;
-import com.mycompany.webapp.service.OrderService;
+import com.mycompany.webapp.service.coupon.CouponService;
+import com.mycompany.webapp.service.member.MemberService;
+import com.mycompany.webapp.service.order.OrderService;
 
 
 @Controller
@@ -65,8 +64,6 @@ public class OrderController {
 		HttpSession session = request.getSession();
 		List<ProductDTO> orderList = (List<ProductDTO>) session.getAttribute("orderList");
 		int totalPrice = 0;
-		
-		
 		
 		Map<String,Object> map = memberService.getMemberOrderInfo(principal.getName(),orderList);
 		MemberDTO memberDTO = (MemberDTO) map.get("memberDTO");

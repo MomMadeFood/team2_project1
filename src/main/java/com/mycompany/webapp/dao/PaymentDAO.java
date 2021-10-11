@@ -23,6 +23,4 @@ public interface PaymentDAO {
 	 */
 	public List<PaymentDTO> selectPaymentsById(String orderNo);
 
-	
-
 }

@@ -2,13 +2,13 @@ package com.mycompany.webapp.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,8 +34,8 @@ import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.CartService.CartResult;
 import com.mycompany.webapp.service.CategoryService;
-import com.mycompany.webapp.service.ProductDetailService;
-import com.mycompany.webapp.service.ProductService;
+import com.mycompany.webapp.service.product.ProductDetailService;
+import com.mycompany.webapp.service.product.ProductService;
 
 @Controller
 @RequestMapping("/product")
