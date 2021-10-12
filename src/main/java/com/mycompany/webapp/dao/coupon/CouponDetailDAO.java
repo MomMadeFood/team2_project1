@@ -9,4 +9,6 @@ public interface CouponDetailDAO {
 	public void insertCouponDetailNoValidity(CouponDTO couponDTO);
 	public int updateStateByCouponDetail(CouponDetailDTO couponDetailDTO);
 	public int updateStateByOrderDetailNo(String orderDetailNo);
+	int insertCouponDetailByCouponDetail(CouponDetailDTO couponDetailDTO);
+	int selectCountByCouponDetail(CouponDetailDTO coupon);
 }

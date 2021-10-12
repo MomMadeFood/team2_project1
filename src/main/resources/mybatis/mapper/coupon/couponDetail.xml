@@ -20,5 +20,13 @@
 	<update id="updateStateByOrderDetailNo" parameterType="couponDetail">
 		UPDATE coupon_detail set state = 1 where coupon_no = #{couponNo}
 	</update>
-
+	
+	<insert id="insertCouponDetailByCouponDetail" parameterType="couponDetail">
+		INSERT INTO coupon_detail (member_id, coupon_no, issue_date, expire_date, state) 
+		VALUES (#{memberId}, #{couponNo}, sysdate, sysdate+(SELECT validity FROM coupon WHERE coupon_no = #{couponNo}), 1)
+	</insert>
+	
+	<select id="selectCountByCouponDetail" parameterType="couponDetail" resultType="int">
+		SELECT count(*) FROM coupon_detail WHERE member_id = #{memberId} and coupon_no = #{couponNo}
+	</select>
 </mapper>

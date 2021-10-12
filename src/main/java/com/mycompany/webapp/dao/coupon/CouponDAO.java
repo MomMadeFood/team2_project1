@@ -20,4 +20,5 @@ public interface CouponDAO {
 
 	public int updateStateByCoupon(CouponDetailDTO couponDetailDTO);
 
+	int updateCouponById(String couponNo);
 }

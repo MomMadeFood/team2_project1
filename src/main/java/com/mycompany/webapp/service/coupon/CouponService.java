@@ -3,28 +3,25 @@ package com.mycompany.webapp.service.coupon;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.BasicResponseHandler;
-import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mycompany.webapp.dao.coupon.CouponDAO;
 import com.mycompany.webapp.dao.coupon.CouponDetailDAO;
 import com.mycompany.webapp.dao.order.MOrderDAO;
 import com.mycompany.webapp.dto.coupon.CouponDTO;
+import com.mycompany.webapp.dto.coupon.CouponDetailDTO;
+import com.mycompany.webapp.exception.CouponException;
 
 @Service
 public class CouponService {
@@ -42,6 +39,7 @@ public class CouponService {
 	@Resource private CouponDAO couponDAO;
 	@Resource private MOrderDAO morderDAO;
 	@Resource private CouponDetailDAO couponDetailDAO;
+	@Resource private TransactionTemplate transactionTemplate;
 	
 	public List<CouponDTO> getCouponList(int couponType){
 		return couponDAO.selectCouponListByCouponType(couponType);
@@ -86,8 +84,6 @@ public class CouponService {
 			couponDAO.reduceRemainById(couponDTO.getCouponNo());
 			return CouponResult.SUCCESS_EXPIRE;
 		}
-			
-		
 	}
 	
 	public List<CouponDTO> getAvaliableCouponList(Map<String, Object> param, int price, String brand, Map<String, Boolean> usedCouponMap){
@@ -122,35 +118,47 @@ public class CouponService {
 		return availableCouponList;
 	}
 	
-	public JsonNode issueEventCoupon(String couponNo, String memberId) {
-		HttpClient client = HttpClientBuilder.create().build(); // HttpClient 생성
-		HttpPost httpPost = new HttpPost("http://18.224.253.114:8080/event/issueEventCoupon"); // POST 메소드 URL 새성
-		try {
-			httpPost.setHeader("Accept", "application/json");
-			httpPost.setHeader("Connection", "keep-alive");
-			httpPost.setHeader("Content-Type", "application/json");
+	public Map<String,String> issueCoupon(String memberId, String couponNo) {
+		
+		Map<String,String> resultMap = new HashMap<String, String>();
+		Map<String,String> result = transactionTemplate.execute(new TransactionCallback<Map<String,String> >() {
+			@Override
+			public Map<String,String> doInTransaction(TransactionStatus status) {
+				try {
+					CouponDetailDTO coupon = new CouponDetailDTO();
+					coupon.setCouponNo(couponNo);
+					coupon.setMemberId(memberId);
+					
+					int count = couponDetailDAO.selectCountByCouponDetail(coupon);
+					if(count>=1) {
+						throw new CouponException("이미 발급한 쿠폰입니다.");
+					}
 
-			// json 메시지 입력
-			httpPost.setEntity(new StringEntity("{\"couponNo\":\"" + couponNo + "\",\"memberId\":\"" + memberId + "\"}"));
+					int updateResult = couponDAO.updateCouponById(couponNo);
+					if(updateResult==0) {
+						throw new CouponException("쿠폰 정보 업데이트 중 오류가 발생했습니다.");
+					}
 
-			HttpResponse response = client.execute(httpPost);
-			// Response 출력
-			if (response.getStatusLine().getStatusCode() == 200) {
-				ResponseHandler<String> handler = new BasicResponseHandler();
-				String body = handler.handleResponse(response);
+					updateResult = couponDetailDAO.insertCouponDetailByCouponDetail(coupon);
+					if(updateResult==0) {
+						throw new CouponException("쿠폰 발급중 오류가 발생했습니다.");
+					}
+					resultMap.put("result","success");
+					return resultMap;
+				}catch (CouponException e) {
+					status.setRollbackOnly();
+					resultMap.put("result","fail");
+					resultMap.put("message",e.getMessage());
+					return resultMap;
+				}catch(Exception e) {
+					status.setRollbackOnly();
+					resultMap.put("result","fail");
+					resultMap.put("message","예상치못한 오류 발생");
+					return resultMap;
+				}
 				
-				ObjectMapper objectMapper = new ObjectMapper();
-				JsonNode node = objectMapper.readTree(body);
-				return node;
-			} else {
-				System.out.println("response is error : " + response.getStatusLine().getStatusCode());
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return null;
+		});
+		return result;
 	}
 }
-
-	

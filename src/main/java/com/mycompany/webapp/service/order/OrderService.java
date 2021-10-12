@@ -297,7 +297,7 @@ public class OrderService {
 						if(orderDetailDTO.getCouponNo()!=null) {
 							CouponDetailDTO couponDetailDTO = new CouponDetailDTO();
 							couponDetailDTO.setCouponNo(orderDetailDTO.getCouponNo());
-							couponDetailDTO.setMemberID(mOrderDTO.getMemberId());
+							couponDetailDTO.setMemberId(mOrderDTO.getMemberId());
 							couponDetailDTO.setState(0);
 							int couponResult = couponDetailDAO.updateStateByCouponDetail(couponDetailDTO);
 							if(couponResult==0)
