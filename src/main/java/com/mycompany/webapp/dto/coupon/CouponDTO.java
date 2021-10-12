@@ -28,6 +28,6 @@ public class CouponDTO implements Comparable<CouponDTO>{
 	
 	@Override
 	public int compareTo(CouponDTO o) {
-		return o.totalDiscountPrice - o.totalDiscountPrice;
+		return o.totalDiscountPrice - this.totalDiscountPrice;
 	}
 }

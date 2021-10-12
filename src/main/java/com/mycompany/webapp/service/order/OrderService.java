@@ -2,6 +2,7 @@ package com.mycompany.webapp.service.order;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -427,9 +428,6 @@ public class OrderService {
 					stockDTO.setAmount(orderDetailDTO.getAmount());
 					stockDTO.setProductDetailNo(orderDetailDTO.getProductDetailNo());
 					stockDTO.setPsize(orderDetailDTO.getPsize());
-					
-					
-					
 					
 					PointDTO pointDTO = new PointDTO();
 					pointDTO.setMemberId(memberId);
