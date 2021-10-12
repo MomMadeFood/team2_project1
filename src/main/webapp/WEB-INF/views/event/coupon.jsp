@@ -147,11 +147,11 @@
   </div>
   
   <script>
-  	function issueEventCoupon(couponNo, memberId, memberIp){
+  	function issueEventCoupon(couponNo, memberId){
   		$.ajax({
   			method:"post",
   			url:"http://192.168.40.49:8080/issueEventCoupon", // event서버 ip
-  			data:{couponNo, memberId, memberIp}
+  			data:{couponNo, memberId}
   		}).done(data=>{
   			if(data.result =="success"){
   				$("#coupon-message").text("쿠폰이 발급되었습니다. 쿠폰 유효기간 내에 사용하시기 바랍니다.");
