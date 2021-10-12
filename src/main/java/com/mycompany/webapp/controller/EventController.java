@@ -33,6 +33,7 @@ public class EventController {
 	private CouponService couponService;
 	
 	private static int eventCouponIssueCount = 1;
+	private static int eventCount = 1;
 	
 	@RequestMapping("/coupon")
 	public String coupon(Model model) {
@@ -103,7 +104,7 @@ public class EventController {
 				// 시간 측정 코드(o)
 				// Service 객체 호출 코드
 				logger.info(Thread.currentThread().getName() + ": 이벤트 처리");
-				logger.info(eventCouponIssueCount + "번째 접근");
+				logger.info(eventCount++ + "번째 접근");
 				if (eventCouponIssueCount > 2) {
 					return 1;
 				} else {
