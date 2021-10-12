@@ -135,7 +135,8 @@
 				    	  <b>${eventCoupon.discount}<c:if test="${eventCoupon.discountType==1}">% </c:if><c:if test="${eventCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
 				      	  ${eventCoupon.content}
 				      </p>
-				      <a onclick="issueEventCoupon('${eventCoupon.couponNo}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
+				      <sec:authentication property="principal.username" var="memberId"/>
+				      <a onclick="issueEventCoupon('${eventCoupon.couponNo}', '${memberId}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
 				    </div>
 				  </div>
 				</c:forEach>
@@ -146,12 +147,11 @@
   </div>
   
   <script>
-  
-  	function issueEventCoupon(couponNo){
+  	function issueEventCoupon(couponNo, memberId, memberIp){
   		$.ajax({
   			method:"post",
-  			url:"/event/issueEventCoupon",
-  			data:{couponNo}
+  			url:"http://192.168.40.49:8080/issueEventCoupon", // event서버 ip
+  			data:{couponNo, memberId, memberIp}
   		}).done(data=>{
   			if(data.result =="success"){
   				$("#coupon-message").text("쿠폰이 발급되었습니다. 쿠폰 유효기간 내에 사용하시기 바랍니다.");
@@ -161,9 +161,7 @@
 				$("#coupon-warn-alert").show();
   			}
   		})
-  		
   	}
-  	
   </script>
   
   <script>
@@ -175,8 +173,6 @@
         document.querySelector("#c2").style.backgroundColor = "white";
       }
     }
-
-   
     
     function clickBtn(){
     	alert("쿠폰 획득에 성공했습니다!");
@@ -217,7 +213,5 @@
     })
 
      */
-
-
   </script>
 <%@ include file="/WEB-INF/views/common/footer.jsp" %>

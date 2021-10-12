@@ -26,5 +26,11 @@
 		SET remain_amount = remain_amount - 1 
 		WHERE coupon_no = #{value}
 	</update>
+	
+	<update id="updateCouponById" parameterType="string">
+		<![CDATA[ UPDATE coupon
+		SET remain_amount = remain_amount - 1 
+		WHERE coupon_no = #{value} and remain_amount  > 0]]>
+	</update>
 
 </mapper>
