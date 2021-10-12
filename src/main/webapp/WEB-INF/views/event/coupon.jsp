@@ -150,7 +150,7 @@
   	function issueEventCoupon(couponNo, memberId){
   		$.ajax({
   			method:"post",
-  			url:"http://192.168.40.49:8080/issueEventCoupon", // event서버 ip
+  			url:"http://18.224.253.114:8080/event/issueEventCoupon", // event서버 ip
   			data:{couponNo, memberId}
   		}).done(data=>{
   			if(data.result =="success"){
