@@ -71,14 +71,12 @@ public class OrderController {
 		List<VirtureAccountDTO> virtureAccountList = (List<VirtureAccountDTO>)map.get("virtureAccountList");
 		List<ProductDTO> productList = (List<ProductDTO>)map.get("productList");
 		
-		
 		for(int i = 0; i < productList.size(); i++) {
 			productList.get(i).setPsize(orderList.get(i).getPsize());
 			productList.get(i).setAmount(orderList.get(i).getAmount());
 			productList.get(i).setPrice(productList.get(i).getPrice()*orderList.get(i).getAmount());
 			totalPrice += productList.get(i).getPrice();
 		}
-		
 		
 		model.addAttribute("memberDTO",memberDTO);
 		model.addAttribute("cardList",cardList);
