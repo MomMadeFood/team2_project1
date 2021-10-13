@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.product.ProductDetailDAO">
+	
 	<select id="selectProductDetailById" resultType="product" parameterType="string">
 		select 	a.product_detail_no,
 		    b.product_no, a.img1, a.img2, a.img3, b.price,
@@ -37,5 +38,3 @@
 	</select>
   
 </mapper>
-
-

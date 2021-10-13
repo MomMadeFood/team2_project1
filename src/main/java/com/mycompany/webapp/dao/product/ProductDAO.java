@@ -35,9 +35,8 @@ public interface ProductDAO {
 	 * @param productDetailNo, psize
 	 * @return ProductDTO
 	 */
-  public ProductDTO selectProductByProduct(ProductDTO productDTO);
+ 	public ProductDTO selectProductByProduct(ProductDTO productDTO);
 	
-
   	// -- productList
 	// 전체 상품 목록 수 count
 	public int countProductList(String categoryId);
@@ -58,7 +57,4 @@ public interface ProductDAO {
 
 	// withproduct 조회
 	public List<ProductDTO> selectWithProductByPdId (String productDetailNo);
-	
 }
-
-	
