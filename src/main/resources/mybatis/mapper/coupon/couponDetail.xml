@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.coupon.CouponDetailDAO">
+	<insert id="insertCouponDetail" parameterType="coupon">
+		INSERT INTO coupon_detail (member_id, coupon_no, issue_date, expire_date, state) 
+		VALUES (#{memberId}, #{couponNo}, sysdate, sysdate+(SELECT validity FROM coupon WHERE coupon_no = #{couponNo}), 1)
+	</insert>
+	<insert id="insertCouponDetailNoValidity" parameterType="coupon">
+		INSERT INTO coupon_detail (member_id, coupon_no, issue_date, state) 
+		VALUES (#{memberId}, #{couponNo}, sysdate, 1)
+	</insert>
+	<select id="selectCouponDetailByCoupon" parameterType="coupon" resultType="coupon">
+		SELECT * FROM coupon_detail WHERE member_id = #{memberId} AND coupon_no = #{couponNo}
+	</select>
+	
+	<update id="updateStateByCouponDetail" parameterType="couponDetail">
+		UPDATE coupon_detail set state = #{state} where coupon_no = #{couponNo}
+	</update>
+	
+	<update id="updateStateByOrderDetailNo" parameterType="couponDetail">
+		UPDATE coupon_detail set state = 1 where coupon_no = #{couponNo}
+	</update>
+	
+	<insert id="insertCouponDetailByCouponDetail" parameterType="couponDetail">
+		INSERT INTO coupon_detail (member_id, coupon_no, issue_date, expire_date, state) 
+		VALUES (#{memberId}, #{couponNo}, sysdate, sysdate+(SELECT validity FROM coupon WHERE coupon_no = #{couponNo}), 1)
+	</insert>
+	
+	<select id="selectCountByCouponDetail" parameterType="couponDetail" resultType="int">
+		SELECT count(*) FROM coupon_detail WHERE member_id = #{memberId} and coupon_no = #{couponNo}
+	</select>
+</mapper>

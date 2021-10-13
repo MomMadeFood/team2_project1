@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.product.ProductDAO">
+
+	<select id="selectNewProductBySex" resultType="newProduct" parameterType="string">
+		<![CDATA[
+			select * from (   
+			    select * from (
+			        select A.name, A.price, A.brand, pd.product_detail_no, pd.img1
+			        from (
+			            
+			                select p.product_no product_no, p.name name, p.price price, p.brand brand, pc.category_id category_id
+			                from product p join product_category pc on p.product_no = pc.product_no
+			                where substr(pc.category_id,1,2) = #{value}
+			        
+			        ) A join product_detail pd on A.product_no = pd.product_no
+			        order by pd.product_detail_no
+			    ) 
+			    where name not like '%유니섹스%'
+			    order by rownum desc
+			) where rownum <= 10
+		]]>
+	</select>
+	
+	<select id="selectBestProductBySex" resultType="newProduct" parameterType="string">
+		<![CDATA[
+			select * from (   
+			    select distinct B.product_detail_no, B.name, B.price, B.brand, B.img1, C.cnt from (
+			        select A.name name, A.price price, A.brand brand, pd.product_detail_no product_detail_no, pd.img1 img1
+			        from (
+			            
+			                select p.product_no product_no, p.name name, p.price price, p.brand brand, pc.category_id category_id
+			                from product p join product_category pc on p.product_no = pc.product_no
+			                where substr(pc.category_id,1,2) = #{value}
+			        
+			        ) A join product_detail pd on A.product_no = pd.product_no    
+			        where A.name not like '%유니섹스%'
+			        order by pd.product_detail_no
+			    ) B join (  select product_detail_no, count(*) cnt from order_detail
+			                group by product_detail_no
+			                order by count(*) desc) C 
+			    on b.product_detail_no = C.product_detail_no
+			    order by C.cnt desc
+			) where rownum <=10 
+		]]>
+	</select>
+
+	<select id="selectColorListByPNo"  parameterType="string" resultType="productCategory">
+			SELECT A.PRODUCT_NO , pd.COLOR_CHIP 
+			from ( SELECT PRODUCT_NO FROM PRODUCT WHERE PRODUCT_NO = #{value} ) A JOIN PRODUCT_DETAIL pd ON A.product_no = pd.PRODUCT_NO 
+	</select>
+
+	
+    <select id="countProductList"  parameterType="string" resultType="int" >
+			SELECT count(*)
+				FROM(
+					SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+					FROM(
+							SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+							FROM (
+									SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+									FROM (
+										SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+										FROM CATEGORY, PRODUCT_CATEGORY
+										WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{categoryId}
+									) a, PRODUCT b
+									WHERE a.PRODUCT_NO = b.PRODUCT_NO
+							) c, PRODUCT_DETAIL D
+							WHERE c.product_no = d.product_no
+						)
+					)
+				WHERE RNUM = 1
+		</select>
+		
+			<select id="selectProductListByPCId" parameterType="map" resultType="productCategory">
+				<![CDATA[
+					SELECT rnum, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+						FROM (
+							SELECT rownum rnum, product_no , product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+							FROM (
+								SELECT *
+									FROM(
+										SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+										FROM(
+												SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+												FROM (
+														SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+														FROM (
+															SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+															FROM CATEGORY, PRODUCT_CATEGORY
+															WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{categoryId}
+														) a, PRODUCT b
+														WHERE a.PRODUCT_NO = b.PRODUCT_NO
+												) c, PRODUCT_DETAIL D
+												WHERE c.product_no = d.product_no
+											)
+										)
+									WHERE RNUM = 1
+							) WHERE rownum <=#{endRowNo}
+						)
+					WHERE rnum >= #{startRowNo}
+				]]>
+		</select>
+		
+
+	<select id ="selectProductListBySex" parameterType = "map" resultType="productCategory">
+	  <![CDATA[
+	    SELECT rnum, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+	      FROM (
+	        SELECT rownum rnum, product_no , product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+	        FROM (
+	          SELECT *
+	            FROM(
+	              SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+	              FROM(
+	                  SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+	                  FROM (
+	                      SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+	                      FROM (
+	                        SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+	                        FROM CATEGORY, PRODUCT_CATEGORY
+	                        WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_ID LIKE '%' || #{categoryId}  || '%'
+	                      ) a, PRODUCT b
+	                      WHERE a.PRODUCT_NO = b.PRODUCT_NO
+	                  ) c, PRODUCT_DETAIL D
+	                  WHERE c.product_no = d.product_no
+	                )
+	              )
+	            WHERE RNUM = 1
+	        ) WHERE rownum <=#{endRowNo}
+	      )
+	      WHERE rnum >= #{startRowNo}
+	      ]]>
+	</select>
+	
+	<select id="countProductListBySex"  parameterType="string" resultType="int" >
+		SELECT count(*)
+		  FROM(
+		    SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+		    FROM(
+		        SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+		        FROM (
+		            SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+		            FROM (
+		              SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+		              FROM CATEGORY, PRODUCT_CATEGORY
+		              WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_ID LIKE '%' || #{categoryId}  || '%'
+		            ) a, PRODUCT b
+		            WHERE a.PRODUCT_NO = b.PRODUCT_NO
+		        ) c, PRODUCT_DETAIL D
+		        WHERE c.product_no = d.product_no
+		      )
+		    )
+		  WHERE RNUM = 1
+	</select>
+
+	<select id="selectProductByProduct" parameterType="product" resultType="product">
+		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = #{productNo}
+	</select>
+	
+	<select id="selectColorsByPid" resultType="string">
+		SELECT color_code
+		FROM product_detail
+		WHERE product_no = #{value}
+	</select>
+	
+	<select id="selectColorChipByPid" resultType="color">
+		SELECT color_code, color_chip
+		FROM product_detail
+		WHERE product_no = #{value}
+	</select>
+	
+  	<select id="selectWithProductByPdId" resultType="product" parameterType="string">
+  		SELECT pd.img1, pd.img2, pd.img3, pd.color_code, pd.color_chip, pd.PRODUCT_DETAIL_NO, 
+        		p.name, p.price, p.content, p.brand
+		FROM product_detail pd, product p
+		WHERE p.product_no = pd.product_no AND pd.product_detail_no = (
+		    SELECT with_product
+		    FROM product_detail
+		    WHERE product_detail_no = #{value}
+		)
+  	 </select>
+
+</mapper>

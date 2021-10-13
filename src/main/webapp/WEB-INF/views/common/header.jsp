@@ -18,27 +18,18 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/app.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/cart.css" />
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/footer.css" />
-
-
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/header.css" />
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/style.css" />
-
-
-
 
 <!-- 사진 swiper -->
 <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/_ui/common/css/footer.css" media="all"/>
 <script src="https://kit.fontawesome.com/90405714d1.js" crossorigin="anonymous"></script>
-
 
 <!-- header -->
 <script src="${pageContext.request.contextPath}/resources/js/jquery.sticky.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/main.js"></script>
 <script src="${pageContext.request.contextPath}/resources/js/owl.carousel.min.js"></script>
-
 
 </head>
 <body>
@@ -51,13 +42,9 @@
         <div class="site-mobile-menu-body"></div>
       </div>
 
-
       <header class="site-navbar js-sticky-header site-navbar-target mb-5" role="banner" style="background-color:#F5F5F5">
-
         <div class="container">
           <div class="row position-relative">
-
-
             <div class="mt-4">
               <a href="/" class="text-black"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME" class="ml-3" /></a>
             </div>
@@ -100,16 +87,13 @@
                         <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME01">OUTER</a>
                       </li>
                       <li>
-                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=WO04">TOP</a>
+                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME04">TOP</a>
                       </li>
                       <li>
                         <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME05">PANTS</a>
                       </li>
                       <li>
                         <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME10">SPECIAL SHOP</a>
-                      </li>
-                      <li>
-                        <a href="${pageContext.request.contextPath}/product/productList?categoryId=ME11">FASHION ACC</a>
                       </li>
                     </ul>
                   </li>
@@ -172,5 +156,4 @@
             </div>
           </div>
         </div>
-
-      </header>
+	</header>

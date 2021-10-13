@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.order.OrderDetailDAO">
+	<select id="selectOrderDetailByOrderDetailNo" resultType="map" parameterType="string">
+		select  * from product p,product_detail pd, order_detail od, m_order mo where od.order_detail_no= #{orderDetailNo}
+        and pd.product_detail_no = od.product_detail_no
+		and mo.order_no = od.order_no 
+		and p.product_no = SUBSTR(od.PRODUCT_DETAIL_NO, 1,12)
+	</select>
+	
+	<select id="selectPaymentsByOrderNo" resultType="payment" parameterType="string">
+		select * from payment where ORDER_NO=#{orderNo}
+	</select>
+	
+	<insert id="insertOrderDetail" parameterType="orderDetail">
+		INSERT INTO order_detail(order_detail_no,product_detail_no,psize,order_no,amount,price,state,discount,coupon_no)
+		values(#{orderDetailNo,jdbcType=VARCHAR},#{productDetailNo,jdbcType=VARCHAR},#{psize,jdbcType=VARCHAR},#{orderNo,jdbcType=VARCHAR},#{amount},#{price},#{state},#{discount},#{couponNo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectOrderDetailsById" parameterType="string" resultType="orderDetail">
+		SELECT * FROM order_detail WHERE order_no = #{orderNo}
+	</select>
+
+
+	<select id="selectAllOrderDetailCount" resultType="int">
+		SELECT count(*) FROM order_detail
+	</select>
+	
+	<update id="updateStateByOrderDetail" parameterType="orderDetail">
+		UPDATE order_detail SET state = #{state} where order_detail_no = #{orderDetailNo}
+	</update>
+	
+	<select id="selectCouponNoById" parameterType="string" resultType="string">
+		SELECT NVL(coupon_no,'none') from order_detail where order_detail_no = #{orderDetailNo}
+	</select>
+</mapper>

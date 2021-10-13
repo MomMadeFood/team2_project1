@@ -2,6 +2,12 @@
 
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 	<script type="text/javascript"> 
+		$("#cart-form").keydown(function(event) { 
+			if (event.keyCode == '13') { 
+				event.preventDefault(); 
+			}
+		});
+	
 		$(document).ready(function(){
 		    $("#checkall").click(function(){
 		        if($("#checkall").prop("checked")){
@@ -11,7 +17,9 @@
 		        }
 		    })
 		})
-	
+		
+		
+		
 		function hideOption()  {
 			$("#option").css("display","none");
 		}
@@ -48,9 +56,10 @@
 				}
 			})
 			.done((data) => {
+				let colorCode = $("#c-span-pcolor"+index).text();
 				$.ajax({
 					url: "cart/optionSizePno",
-					data: {pno : productNo, color:data.colorList[0].colorCode},
+					data: {pno : productNo, color:colorCode},
 					success: function(data) {
 						var sizeTag = "";
 						for(var i=0; i<data.sizeList.length; i++) {
@@ -133,6 +142,9 @@
 					success: function(data) {
 						if(data.result === "success") {
 							$("#cart-tr-"+index).remove();
+							let totalAmount = parseInt($("#cart-total-amount").text());
+							$("#cart-total-amount").text(totalAmount-1);
+							hideOption();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						}
@@ -175,7 +187,11 @@
 							let list = $("input:checkbox[name=cart_ck]:checked").each(function(){
 								//삭제 성공하면, checked되어있던 tr은 삭제
 								$(this).parent().parent().remove();
+								hideOption();
 							});
+							
+							let total = parseInt($("#cart-total-amount").text());
+							$("#cart-total-amount").text(total-count);
 							updateTotal();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
@@ -189,10 +205,7 @@
 			}
          }
 		
-		 function checkData(form) {
-        	   //form의 제출 기능 off
-        	   event.preventDefault();
-        	   
+		 function checkData() {
         	   //유효성 검사 결과 변수
         	   let checkResult = true;
         	   
@@ -204,7 +217,7 @@
         	   
         	   //서버로 제출할지 말지 결정
         	   if(checkResult) {
-        		   form.submit();
+        		   $('#cart-form').submit();
         	   }
            }
 		 
@@ -215,6 +228,7 @@
 			//새로운 pdid와 color코드를 생성
 			let cartData = new Object();
 			let orgIndex = $("#option-open-index").text();
+			$("#div-erroricon"+orgIndex).hide();
 			
 			let orgProductId = $("#c-input-pid"+orgIndex).val();
 			cartData.productDetailNo = $("#c-input-pdid"+orgIndex).val();
@@ -240,11 +254,16 @@
 					if(data.result === "error-duplicate") {
 						$("#cart-error-message").text("카트에 중복된 상품이 존재합니다.");
 						$("#cart-error-alert").show();
+						$("#div-erroricon"+orgIndex).show();
+					} else if(data.result === "error-stock") {
+						$("#cart-error-message").text("매진된 상품입니다.");
+						$("#cart-error-alert").show();
+						$("#div-erroricon"+orgIndex).show();
 					} else if(data.result === "warn-stock") {
 						$("#cart-warn-message").text("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 						//재고 수량 view 변경
 						$("#c-input-pamount"+orgIndex).val(data.amount);
-						$("#c-span-totalprice"+orgIndex).text(data.amount * price);
+						$("#c-span-totalprice"+orgIndex).text(convertPrice(data.amount * price));
 						//상품 view 변경
 						$("#product-img-"+orgIndex).attr("src", $("#option-img").attr("src"));
 						 $("#c-span-pcolor"+orgIndex).text(data.colorCode);
@@ -254,6 +273,8 @@
 						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
 						 //checkbox 값 수정
 						 $("#c-checkbox-pdsid"+orgIndex).val(data.productDetailNo + "_" + data.psize);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('disabled', false);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('checked', true);
 						console.log($("#c-checkbox-pdsid"+orgIndex).val());
 						updateTotal();
 						$("#cart-warn-alert").show();
@@ -262,6 +283,7 @@
 					} else if(data.result === "error-same") {
 						$("#cart-error-message").text("옵션을 변경해주세요.");
 						$("#cart-error-alert").show();
+						$("#div-erroricon"+orgIndex).show();
 					} else { //성공
 						//성공시 태그들의 정보를 바꿔준다
 						//view 수정
@@ -273,6 +295,8 @@
 						 $("#c-input-pdid"+orgIndex).val(data.productDetailNo);
 						//checkbox 값 수정
 						 $("#c-checkbox-pdsid"+orgIndex).val(data.productDetailNo + "_" + data.psize);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('disabled', false);
+						 $("#c-checkbox-pdsid"+orgIndex).prop('checked', true);
 						console.log($("#c-checkbox-pdsid"+orgIndex).val());
 						 hideOption();
 						 updateTotal();
@@ -291,6 +315,7 @@
 			cartData.psize = $("#c-span-psize" + index).text();
 			cartData.amount = $("#c-input-pamount"+index).val();
 			let price = parseInt($("#c-input-price"+index).val());
+			$("#div-erroricon"+index).hide();
 			
 			let jsonData = JSON.stringify(cartData);
 			console.log(jsonData);
@@ -304,14 +329,23 @@
 					success: function(data) {
 						console.log(data);
 						if(data.result === "success") {
-							$("#c-span-totalprice"+index).text(data.amount * price);
+							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
+							hideOption();
 							updateTotal();
+							$("#c-checkbox-pdsid"+index).prop('disabled', false);
+							 $("#c-checkbox-pdsid"+index).prop('checked', true);
 						} else if(data.result === "warn-stock") {
 							$("#cart-warn-message").text("상품의 재고가 부족합니다. " + data.amount + "개의 상품만 담깁니다.");
 							$("#c-input-pamount"+index).val(data.amount);
-							$("#c-span-totalprice"+index).text(data.amount * price);
+							$("#c-span-totalprice"+index).text(convertPrice(data.amount * price));
+							$("#c-checkbox-pdsid"+index).prop('disabled', false);
+							 $("#c-checkbox-pdsid"+index).prop('checked', true);
 							updateTotal();
 							$("#cart-warn-alert").show();
+						} else if(data.result === "error-stock") {
+								$("#cart-error-message").text("매진된 상품입니다.");
+								$("#cart-error-alert").show();
+								$("#div-erroricon"+index).show();
 						} else if(data.result === "errer-login") {
 							location.href="/member/loginForm";
 						}
@@ -325,12 +359,10 @@
 		 function updateTotal() {
 			 let sum = 0;
 			 $(".c-span-totalprice").each(function(){
-					sum = sum + parseInt($(this).text());
+				sum = sum + convertNum($(this).text());
 			 });
 			 
-			 $("#cart-total-productprice").text(sum);
-			 let total = $(".cart-tr-product").length;
-			 $("#cart-total-amount").text(total); 
+			 $("#cart-total-productprice").text(convertPrice(sum));
 		 }
 		 
 			function closeErrorAlert() {
@@ -388,13 +420,13 @@
 	</div>
 
 	<!--content-->
-	<div class="container-fluid c-div-content">
+	<div class="container-fluid c-div-content txt">
 		
 	    <div style="width: 990px; margin:0px auto;">
 			<div class="m-5">
 				<h3 class="center">쇼핑백</h3>
 			</div>
-			<form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart/orderForm">
+			<form:form commandName="cartDTO" id="cart-form" action="cart/orderForm">
 			<div>
 				<table class="table table-bordered cart-table">
 					<colgroup>
@@ -408,7 +440,7 @@
 						<tr class="center cart-table-head">
 							<th scope="col">
 								<!--전체 상품 선택-->
-								<input type="checkbox" id="checkall">
+								<input type="checkbox" id="checkall" checked>
 							</th>
 							<th scope="col">상품정보</th>
 							<th scope="col">수량</th>
@@ -418,7 +450,6 @@
 					</thead>
 					<tbody>
 						<!-- cartList -->
-						
 						<c:forEach var="cart" items="${cartList}" varStatus="status">
 							<!-- Form 전송 hidden 데이터 -->
 							<!-- !!!!!!!!!지우면 Form 전송시 오류 발생!!!!!!!! -->
@@ -426,11 +457,27 @@
 							<input type="hidden" id="c-input-pdid${status.index}" name="cartDTOList[${status.index}].productDetailNo" value="${cart.productDetailNo}"/>
 							<input type="hidden" id="c-input-psize${status.index}" name="cartDTOList[${status.index}].psize" value="${cart.psize}"/>
 						<!-- //Form 전송 데이터 -->
+						
 						<tr class="cart-tr-product" id="cart-tr-${status.index}">
+						
 							<td>
 									<!-- 선택 상품 -->
 								
-								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}">
+								<input type="checkbox" name="cart_ck" id="c-checkbox-pdsid${status.index}" value="${cart.productDetailNo}_${cart.psize}" 
+								<c:if test="${cart.stock >= cart.amount}">
+									checked
+								</c:if>
+								<c:if test="${cart.stock < cart.amount}">
+									disabled
+								</c:if>
+								>
+								<div id="div-erroricon${status.index}"
+								<c:if test="${cart.stock >= cart.amount}">
+									style="display:none;"
+								</c:if>
+								><i class="fas fa-exclamation-circle"></i></div> 
+								
+							
 							</td>
 							<td class="c-td-product">
 								<!-- pt_list_all -->
@@ -439,7 +486,7 @@
 									<div class="product-info d-flex justify-content-start">
 											<div>
 												<a href="${pageContext.request.contextPath}/product/productDetail?no=${cart.productDetailNo}">
-												<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" />
+													<img id="product-img-${status.index}" src="${cart.img1}" alt="" class="cart_product_img" />
 												</a>
 											</div>
 											<div class="cart_product mt-2" style="width:350px;" >
@@ -482,7 +529,7 @@
 								<!-- 가격 -->
 								<div>
 									<input type="hidden" value="${cart.price}" id="c-input-price${status.index}"/>
-									<span class="pd-text">₩<span class="c-span-totalprice" id="c-span-totalprice${status.index}">${cart.price * cart.amount}</span></span> 
+									<span class="pd-text">₩<span class="c-span-totalprice" id="c-span-totalprice${status.index}"><fmt:formatNumber value="${cart.price * cart.amount}" pattern="#,###"/></span></span> 
 								</div> 
 							</td>
 							<td style="vertical-align:middle;  text-align: center;">
@@ -544,13 +591,12 @@
 						<tr class="cart-table-total">
 							<td colspan="2"></td>
 							<td >
-								<span class="cart_span"> 총 <span id="cart-total-amount"></span>개 상품 </span>
+								<span class="cart-info"> 총 <span id="cart-total-amount">${cartList.size() }</span>개 상품 </span>
 							</td>
-							<td>
-								<span class="cart_span" > 상품 합계 </span>
-							</td>
-							<td colspan="2" class="text-right">
-								<span class="cart_span" id="cart-total-productprice" > </span>
+							<td colspan="2" align="right">
+								<span class="cart-info" > 상품 합계 : </span>
+								₩<span class="cart-info" id="cart-total-productprice" > <fmt:formatNumber value="${totalPrice }" pattern="#,###"/></span>
+								
 							</td>
 						</tr>
 					</tbody>
@@ -560,17 +606,13 @@
 	
 			<div class="center mb-5 mt-5" style="width:290px">
 				<a class="cart_lg_btn_wt" onclick="selectRemove();"> 선택상품제거 </a>
-				<input class="cart_lg_btn_gr ml-2" style="width:40%" type="submit" value="선택상품주문">
+				<a class="cart_lg_btn_gr ml-2" style="width:40%" onclick="checkData()">선택상품주문</a>
 			</div>
+			
 			</form:form>
 	          
 		</div>
 	</div>
-
-	<script>
-       updateTotal();
-    </script>
-
 	
 
 	

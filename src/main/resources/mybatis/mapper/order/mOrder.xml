@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.order.MOrderDAO">
+
+	<insert id="insertMOrder" parameterType="mOrder">
+		INSERT INTO m_order(order_no,member_id,order_date,state,request,addr,detail_addr,zip_code,tel,phone,rec_name)
+		values(#{orderNo,jdbcType=VARCHAR},#{memberId,jdbcType=VARCHAR},sysdate,#{state,jdbcType=INTEGER},#{request,jdbcType=VARCHAR},#{addr,jdbcType=VARCHAR},#{detailAddr,jdbcType=VARCHAR},#{zipCode,jdbcType=INTEGER},#{tel,jdbcType=VARCHAR},#{phone,jdbcType=VARCHAR},#{recName,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectMOrderCount" resultType="int">
+		select count(*) from m_order
+	</select>
+	
+	<select id="selectMOrderById" parameterType="string" resultType="mOrder">
+		select * from m_order where order_no = #{orderNo}
+	</select>
+	
+	<select id="selectCountOrderList" resultType="int" parameterType="map">
+		select count(*)
+		from m_order
+		where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1
+	</select>
+	
+	<select id="selectOrderListByMemberId" resultType="orderList" parameterType="map">
+		<![CDATA[
+			select *
+		    from 
+		    (
+		        select A.rnum, A.order_no order_no, A.order_date order_date, 
+		               od.psize psize, od.amount amount, od.price price, od.state state, od.product_detail_no product_detail_no, 
+		               pd.img1 img1, pd.color_chip, 
+		               p.brand, p.name, od.order_detail_no order_detail_no
+		        from (       
+		                select rownum as rnum, order_no, order_date, state
+		                from (
+		                    select order_no, order_date, state
+		                    from m_order
+		                    where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1
+		                    order by order_date desc
+		                ) order by rnum desc
+		        ) A, order_detail od, product_detail pd, product p WHERE A.order_no = od.order_no AND od.product_detail_no = pd.product_detail_no AND pd.product_no = p.product_no
+		        order by rnum, product_detail_no
+		    )
+		    WHERE rnum between #{startRowNo} and #{endRowNo}
+		]]>
+	</select>
+	
+	<select id="selectCountOrderListByName" resultType="int" parameterType="map">
+		select count(*)
+		from (       
+		        select order_no, order_date, state
+		        from (
+		            select order_no, order_date, state
+		            from m_order
+		            where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1
+		            order by order_date desc
+		        ) 
+		) A, order_detail od, product_detail pd, product p WHERE A.order_no = od.order_no AND od.product_detail_no = pd.product_detail_no AND pd.product_no = p.product_no and p.name like '%' || #{name} || '%'
+	</select>
+	
+	<select id="selectOrderListByName" resultType="orderList" parameterType="map">
+		select *
+		from(
+		    select A.rnum, A.order_no, A.order_date,
+		          od.psize, od.amount, od.price price, od.state, od.product_detail_no, 
+		          pd.img1, pd.color_chip, 
+		          p.brand, p.name , od.order_detail_no order_detail_no
+		    from (   
+		        select rownum as rnum, order_no, order_date ,state
+		        from (
+		            select order_no, order_date, state
+		            from (
+		                select order_no, order_date, state
+		                from m_order
+		                
+		            ) 
+		            where order_no in (
+		                    select distinct B.order_no
+		                    from (
+		                        select A.order_no order_no, A.order_date order_date, od.product_detail_no product_detail_no
+		                        from (       
+		                                select order_no, order_date, state
+		                                from m_order
+		                                where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1
+		                        ) A join order_detail od on A.order_no = od.order_no 
+		                    ) B join product_detail pd on B.product_detail_no = pd.product_detail_no
+		                    join product p on p.product_no = pd.product_no
+		                    where p.name like '%' || #{name} || '%'
+		                    
+		            )
+		            order by order_no desc
+		        ) order by rnum
+		    ) A, order_detail od, product_detail pd, product p where A.order_no = od.order_no and od.product_detail_no = pd.product_detail_no and pd.product_no = p.product_no
+		    order by rnum, product_detail_no
+		) 
+		WHERE rnum between #{startRowNo} and #{endRowNo}
+	</select>
+	
+	<select id="selectCountOrderListByOrderNo" resultType="int" parameterType="map">
+		select count(*)
+		from m_order
+		where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no like '%'|| #{orderNo}||'%'
+	</select>
+	
+	<select id="selectOrderListByOrderNo" resultType="orderList" parameterType="map">
+		select *
+		    from 
+		    (
+		        select A.rnum, A.order_no order_no, A.order_date order_date, 
+		               od.psize psize, od.amount amount, od.price price, od.state state, od.product_detail_no product_detail_no, 
+		               pd.img1 img1, pd.color_chip, 
+		               p.brand, p.name, od.order_detail_no order_detail_no
+		        from (       
+		                select rownum as rnum, order_no, order_date, state
+		                from (
+		                    select order_no, order_date, state
+		                    from m_order
+		                    where member_id = #{ID} and order_date between to_date(#{startDate},'yyyy-mm-dd') and to_date(#{endDate},'yyyy-mm-dd')+1 and order_no like '%'|| #{orderNo}||'%'
+		                    order by order_date desc
+		                ) order by rnum desc
+		        ) A, order_detail od, product_detail pd, product p WHERE A.order_no = od.order_no AND od.product_detail_no = pd.product_detail_no AND pd.product_no = p.product_no
+		        order by rnum, product_detail_no
+		    )
+		    WHERE rnum between #{startRowNo} and #{endRowNo}
+	</select>
+	
+	<select id="selectOrderCountByMid" resultType="int">
+		select count(*) from m_order where member_id = #{value}
+	</select>
+	
+</mapper>

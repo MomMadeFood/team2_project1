@@ -4,7 +4,7 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/home.css" />
 
 <div class="container-fluid mt-5">
-  <div class="row" style="height: 408px">
+  <div class="row" style="height:408px">
     <div class="col-sm-2"></div>
     <div class="col-sm-8">
       <div class="row">
@@ -12,7 +12,7 @@
           <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
             <h4 class="title">신상품</h4>
             <a class="home-content-txt" id="v-pills-new-women-tab" data-toggle="pill" href="#v-pills-new-women" role="tab" aria-controls="v-pills-new-women" aria-selected="true">여성</a>
-            <a class="home-content-txt" id="v-pills-new-men-tab" data-toggle="pill" href="#v-pills-new-men" role="tab" aria-controls="v-pills-new-men" aria-selected="false">남성</a>
+            <a class="home-content-txt" id="v-pills-new-men-tab" data-toggle="pill" href="#v-pills-new-men" role="tab" aria-controls="v-pills-new-men" aria-selected="false" onclick="showNewMen()">남성</a>
           </div>
         </div>
         <div class="col-10">
@@ -79,7 +79,8 @@
         <div class="nav flex-column nav-pills" id="v-pills-tab2" role="tablist" aria-orientation="vertical">
           <h4 class="title">베스트</h4>
           <a class="home-content-txt" id="v-pills-best-men-tab" data-toggle="pill" href="#v-pills-best-men" role="tab" aria-controls="v-pills-best-men"aria-selected="false" >남성</a>
-          <a class="home-content-txt" id="v-pills-best-women-tab" data-toggle="pill" href="#v-pills-best-women" role="tab" aria-controls="v-pills-best-women" aria-selected="true">여성</a>
+          <a class="home-content-txt" id="v-pills-best-women-tab" data-toggle="pill" href="#v-pills-best-women" role="tab" aria-controls="v-pills-best-women" aria-selected="true"
+          	onclick="showBestWomen()">여성</a>
         </div>
       </div>
       <div class="col-10">
@@ -136,6 +137,7 @@
   </div>
   <div class="col-sm-2"></div>
 </div>
+
       <script>
         var newWomenSwiper = new Swiper(".new_women_swiper", {
           slidesPerView: 4,
@@ -181,8 +183,16 @@
             allowTouchMove: false,
           });
         
-		$(document).ready(function () {
-			
+        function showBestWomen(){
+        	$("#v-pills-best-women").show();
+        }
+        function showNewMen(){
+        	$("#v-pills-new-men").show();
+        }
+        
+		$(function () {
+			$("#v-pills-best-women").hide();
+        	$("#v-pills-new-men").hide();
 			if (newWomenSwiper.isBeginning) {
 				$("#new-women-swiper-button-prev").hide();
 			}

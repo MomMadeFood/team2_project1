@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.product.ProductDetailDAO">
+
+	<select id="selectProductDetailById" resultType="product" parameterType="string">
+		select 	a.product_detail_no,
+		    b.product_no, a.img1, a.img2, a.img3, b.price,
+		   	brand, name, content, with_product, amount
+		from (SELECT product_detail.product_detail_no product_detail_no, stock.PSIZE psize, stock.AMOUNT amount, product_detail.PRODUCT_NO product_no, product_detail.WITH_PRODUCT with_product, 
+			product_detail.IMG1 img1,product_detail.IMG2 img2, product_detail.IMG3 img3, product_detail.COLOR_CODE color_code, product_detail.COLOR_CHIP color_chip
+		from stock, product_detail
+		where PRODUCT_DETAIL.PRODUCT_DETAIL_NO = STOCK.PRODUCT_DETAIL_NO) a, (SELECT * FROM product) b
+		WHERE a.product_no = b.PRODUCT_NO AND a.product_no=#{value}
+	</select>
+	
+	<select id="selectProductDetailByPdNo" resultType="product" parameterType="string">
+			select pd.product_detail_no, pd.img1, p.price, p.brand, p.name
+			from product p, product_detail pd
+			WHERE p.product_no = pd.PRODUCT_NO AND pd.product_detail_no=#{value}
+	</select>
+	
+	<select id="selectPdColSizeById" resultType="product" parameterType="string">
+		select b.product_no || '_'|| a.color_code product_detail_no, 
+			b.product_no, 
+			a.color_chip, 
+			a.color_code, 
+			psize, 
+			amount 
+		from (SELECT * from stock, product_detail 
+		where PRODUCT_DETAIL.PRODUCT_DETAIL_NO = STOCK.PRODUCT_DETAIL_NO) a, (SELECT * FROM product) 
+		b WHERE a.product_no = b.PRODUCT_NO AND a.product_no=#{value}
+	</select>
+
+	<select id="selectOneImgByPdId" resultType="string">
+		SELECT img1
+		FROM product_detail
+		WHERE product_detail_no = #{value}
+	</select>
+  
+</mapper>

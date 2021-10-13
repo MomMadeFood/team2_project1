@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.PointDAO">
+	<insert id="insertPoint" parameterType="point">
+		INSERT INTO point(point_no, member_id, name, amount,order_detail_no) values(#{pointNo,jdbcType=VARCHAR},#{memberId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},#{amount,jdbcType=INTEGER},#{orderDetailNo,jdbcType=VARCHAR})
+	</insert>
+	
+	<select id="selectCounts" resultType="int">
+		SELECT count(*) FROM POINT
+	</select>
+	
+	<select id="selectSumById" resultType="int" parameterType="string">
+		select (select nvl(sum(amount),0) from point where member_id = #{memberId} and (name='구매적립' or name='환불')) -  (select nvl(sum(amount),0) from point where member_id = #{memberId} and name = '사용') from dual
+	</select>
+	
+	
+	<insert id="insertRefundPoint" parameterType="point">
+		INSERT INTO point(point_no, member_id, name, amount,order_detail_no) values(#{pointNo,jdbcType=VARCHAR},#{memberId,jdbcType=VARCHAR},#{name,jdbcType=VARCHAR},(select amount from point where order_detail_no = #{orderDetailNo}),#{orderDetailNo,jdbcType=VARCHAR})
+	</insert>
+	
+
+	
+	<select id="selectCountsByOrderDetailNo" parameterType="string" resultType="int">
+		SELECT count(*) FROM POINT where order_detail_no = #{orderDetailNo} and name='사용'
+	</select>
+</mapper>

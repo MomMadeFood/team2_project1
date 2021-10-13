@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mycompany.webapp.dao.member.MemberDAO">
+	<select id="selectMemberById" parameterType="string" resultType="member">
+		SELECT * FROM member WHERE id = #{memberId}
+	</select>
+	
+	<select id="selectPayPassworById" parameterType="string" resultType="string">
+		SELECT pay_password FROM member WHERE id = #{memberId,jdbcType=VARCHAR}
+	</select>
+	
+	<update id="updatePointById" parameterType="member">
+		UPDATE member SET point = point - #{point} WHERE id = #{id}
+	</update>
+	
+		<update id="updateCardPassword" parameterType="member">
+		UPDATE member SET pay_password = #{payPassword} WHERE id = #{id}
+	</update>
+</mapper>
