@@ -4,124 +4,125 @@
 <style type="text/css">
 	@import url("/resources/css/productDetail.css");
 </style>
+
 <script type="text/javascript">
 	
-		function reduceSum() {
-			let sum = parseInt($(".qty_input").val());
-			let total = document.querySelector(".pd-price span").innerHTML
-					.substr(1);
-			if (sum > 1) {
-				sum = sum - 1;
-			}
-			$(".qty_input").val(sum);
-			let temp = "";
-			for (var i = 0; i < total.length; i++) {
-				if (total.charAt(i) != ',') {
-					temp = temp + total.charAt(i);
-				}
-			}
-			temp = parseInt(temp);
-			temp = temp * sum;
-			let price = String(temp);
-			let ans = "";
-			let cnt = 0;
-			for (var i = price.length - 1; i >= 0; i--) {
-				cnt++;
-				ans = price.charAt(i) + ans;
-				if (i > 0 && cnt % 3 == 0) {
-					ans = "," + ans;
-				}
-			}
-			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
+	function reduceSum() {
+		let sum = parseInt($(".qty_input").val());
+		let total = document.querySelector(".pd-price span").innerHTML
+				.substr(1);
+		if (sum > 1) {
+			sum = sum - 1;
 		}
-		function increaseSum() {
-			let sum = parseInt($(".qty_input").val());
-			let total = document.querySelector(".pd-price span").innerHTML
-					.substr(1);
-			sum = sum + 1;
-			$(".qty_input").val(sum);
-			let temp = "";
-			for (var i = 0; i < total.length; i++) {
-				if (total.charAt(i) != ',') {
-					temp = temp + total.charAt(i);
-				}
+		$(".qty_input").val(sum);
+		let temp = "";
+		for (var i = 0; i < total.length; i++) {
+			if (total.charAt(i) != ',') {
+				temp = temp + total.charAt(i);
 			}
-			temp = parseInt(temp);
-			temp = temp * sum;
-			let price = String(temp);
-			let ans = "";
-			let cnt = 0;
-			for (var i = price.length - 1; i >= 0; i--) {
-				cnt++;
-				ans = price.charAt(i) + ans;
-				if (i > 0 && cnt % 3 == 0) {
-					ans = "," + ans;
-				}
-			}
-			document.querySelector("#totalPrice").innerHTML = "₩" + ans;
 		}
-		
-		function putCart() {
-			closeAllAlert();
-			if($("input[name=psize]:checked").length === 0) {
-				$("#cart-error-message").html("사이즈를 선택해주세요");
-				$("#cart-error-alert").show();
-			} else {
-				let cartData = new Object();
-				cartData.productDetailNo = $("input[name=productDetailNo]").val();
-				cartData.amount = $("input[name=amount]").val();
-				cartData.psize = $("input[name=psize]:checked").val();
-				
-				let jsonData = JSON.stringify(cartData);
-				console.log(jsonData);
-				
-				$.ajax({
-					url: "putCart",
-					type: "POST",
-					data: jsonData,
-					dataType : "json",
-					contentType: 'application/json',
-					success: function(data) {
-						if(data.result === "success") {
-							$('#cart-alert').show();
-						} else if(data.result === "errer-login") {
-							location.href="/member/loginForm";
-						} else if(data.result === "error-stock") {
-							$("#cart-error-message").html("매진된 상품입니다.");
-							$("#cart-error-alert").show();
-						} else if(data.result === "warn-stock") {
-							$("#cart-warn-message").html("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
-							$("#cart-warn-alert").show();
-							
-						} else if(data.result === "warn-add") {
-							$("#cart-warn-message").html("이미 담겨있는 상품입니다. 총 " + data.amount + "개의 상품이 장바구니에 담겼습니다.");
-							$("#cart-warn-alert").show();
-							
-						}
-					},
-					error: function(request,status,error) {
-						console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+		temp = parseInt(temp);
+		temp = temp * sum;
+		let price = String(temp);
+		let ans = "";
+		let cnt = 0;
+		for (var i = price.length - 1; i >= 0; i--) {
+			cnt++;
+			ans = price.charAt(i) + ans;
+			if (i > 0 && cnt % 3 == 0) {
+				ans = "," + ans;
+			}
+		}
+		document.querySelector("#totalPrice").innerHTML = "₩" + ans;
+	}
+	function increaseSum() {
+		let sum = parseInt($(".qty_input").val());
+		let total = document.querySelector(".pd-price span").innerHTML
+				.substr(1);
+		sum = sum + 1;
+		$(".qty_input").val(sum);
+		let temp = "";
+		for (var i = 0; i < total.length; i++) {
+			if (total.charAt(i) != ',') {
+				temp = temp + total.charAt(i);
+			}
+		}
+		temp = parseInt(temp);
+		temp = temp * sum;
+		let price = String(temp);
+		let ans = "";
+		let cnt = 0;
+		for (var i = price.length - 1; i >= 0; i--) {
+			cnt++;
+			ans = price.charAt(i) + ans;
+			if (i > 0 && cnt % 3 == 0) {
+				ans = "," + ans;
+			}
+		}
+		document.querySelector("#totalPrice").innerHTML = "₩" + ans;
+	}
+
+	function putCart() {
+		closeAllAlert();
+		if($("input[name=psize]:checked").length === 0) {
+			$("#cart-error-message").html("사이즈를 선택해주세요");
+			$("#cart-error-alert").show();
+		} else {
+			let cartData = new Object();
+			cartData.productDetailNo = $("input[name=productDetailNo]").val();
+			cartData.amount = $("input[name=amount]").val();
+			cartData.psize = $("input[name=psize]:checked").val();
+
+			let jsonData = JSON.stringify(cartData);
+			console.log(jsonData);
+
+			$.ajax({
+				url: "putCart",
+				type: "POST",
+				data: jsonData,
+				dataType : "json",
+				contentType: 'application/json',
+				success: function(data) {
+					if(data.result === "success") {
+						$('#cart-alert').show();
+					} else if(data.result === "errer-login") {
+						location.href="/member/loginForm";
+					} else if(data.result === "error-stock") {
+						$("#cart-error-message").html("매진된 상품입니다.");
+						$("#cart-error-alert").show();
+					} else if(data.result === "warn-stock") {
+						$("#cart-warn-message").html("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
+						$("#cart-warn-alert").show();
+
+					} else if(data.result === "warn-add") {
+						$("#cart-warn-message").html("이미 담겨있는 상품입니다. 총 " + data.amount + "개의 상품이 장바구니에 담겼습니다.");
+						$("#cart-warn-alert").show();
+
 					}
-				});
-			}
-		 }
+				},
+				error: function(request,status,error) {
+					console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
+				}
+			});
+		}
+	 }
+
+	function closeAlert() {
+		$('#cart-alert').hide();
+	}
+	function closeWarnAlert() {
+		$('#cart-warn-alert').hide();
+	}
+	function closeErrorAlert() {
+		$('#cart-error-alert').hide();
+	}
+	function closeAllAlert() {
+		closeAlert();
+		closeWarnAlert();
+		closeErrorAlert();
+	}
 		
-		function closeAlert() {
-			$('#cart-alert').hide();
-		}
-		function closeWarnAlert() {
-			$('#cart-warn-alert').hide();
-		}
-		function closeErrorAlert() {
-			$('#cart-error-alert').hide();
-		}
-		function closeAllAlert() {
-			closeAlert();
-			closeWarnAlert();
-			closeErrorAlert();
-		}
-		
-	</script>	
+</script>	
 	
 		<div class="position-fixed c-div-alert">
 			<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
