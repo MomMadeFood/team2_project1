@@ -27,14 +27,12 @@ public class ProductDetailService {
 	public List<ProductDTO> getProductDetail(String productDetailNo) {
 		List<ProductDTO> productDetail = productDetailDAO.selectProductDetailById(productDetailNo);
 		return productDetail;
-		
 	}
 	
 	// 사이즈, 색상 포함 product detail
 	public List<ProductDTO> getProductDetailCol(String productNo) {
 		List<ProductDTO> productDC = productDetailDAO.selectPdColSizeById(productNo);
 		return productDC;
-	
 	}
 	
 	// 상품의 대표 이미지 가져오기
@@ -51,5 +49,4 @@ public class ProductDetailService {
 	public ProductDTO getProductDetailByPdNo(String productDetailNo){
 		return productDetailDAO.selectProductDetailByPdNo(productDetailNo);
 	}
-	
 }
