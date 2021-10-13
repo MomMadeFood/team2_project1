@@ -8,4 +8,10 @@
 	<select id="selectPaymentsById" parameterType="string" resultType="payment">
 		SELECT * FROM payment WHERE order_no = #{orderNo}
 	</select>
+	
+	<!-- 
+	<select id="selectCountByOrderDetailNo" resultType="string">
+		SELECT count(*) from payment where order_detail_no = #{orderDetailNo} and payment_type = '포인트'
+	</select>
+	 -->
 </mapper>

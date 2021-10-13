@@ -2,6 +2,7 @@ package com.mycompany.webapp.controller;
 
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -9,7 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -24,13 +27,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.CategoryDTO;
 import com.mycompany.webapp.dto.Pager;
 import com.mycompany.webapp.dto.product.ProductCategoryDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.CartService.CartResult;
-import com.mycompany.webapp.service.ProductDetailService;
-import com.mycompany.webapp.service.ProductService;
+import com.mycompany.webapp.service.CategoryService;
+import com.mycompany.webapp.service.product.ProductDetailService;
+import com.mycompany.webapp.service.product.ProductService;
 
 @Controller
 @RequestMapping("/product")
@@ -46,8 +51,11 @@ public class ProductController {
 	@Resource
 	private ProductService productService;
 	
+	@Resource 
+	private CategoryService categoryService;
+	
 	@RequestMapping("/productDetail")
-	public String productDetail(String no, Model model) {
+	public String productDetail(HttpServletRequest request, HttpServletResponse response, String no, Model model) {
 		String no1 = no;
 		no1 = no1.substring(0,no1.length()-3);
 		
@@ -75,104 +83,139 @@ public class ProductController {
 		}
 		Object[] sizeList = sizeSet.toArray();
 		model.addAttribute("sizeList", sizeList);
-			return "product/productDetail";
-		}
-	
-		@RequestMapping("/productList")
-		public String productList(@RequestParam String categoryId, @RequestParam(defaultValue="1") int pageNo, Model model) {
-			Pager pager= null;
-			if(categoryId.length() == 4) {
-				int totalRows = productService.getTotalProductList(categoryId);   
-				pager = new Pager(12, 5, totalRows, pageNo);
-			}else {
-				int totalRows = productService.getTotalProductListBySex(categoryId);  
-				pager = new Pager(12, 5, totalRows, pageNo);
+		
+		List<ProductDTO> withProductList = productDetailService.getWithproductByPdId(no);
+		
+		model.addAttribute("withProductList", withProductList);
+		
+		Cookie[] cookies = request.getCookies();
+		
+		List<String> cookieList = new ArrayList<>();
+		
+		if(cookies.length==1) {
+			Cookie cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
+			cookie.setPath("/");
+			cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+			cookie.setHttpOnly(true); // java script에서 쿠키를 읽지 못하게 함
+			response.addCookie(cookie);
+		}else {
+			
+			for(Cookie c : cookies) {
+				String name = c.getName();
+				if (name != "JSSESSIONID")
+				cookieList.add(c.getValue());
 			}
 			
-			model.addAttribute("pager", pager);
-			
-			Map<String, Object> param = new HashMap<>();
-			param.put("startRowNo",pager.getStartRowNo());
-			param.put("endRowNo", pager.getEndRowNo());
-			param.put("categoryId", categoryId);
-			
-			
-			List<ProductCategoryDTO> productList;
-			if(categoryId.length() == 4) {
-				productList = productService.getProductList(param);
-			}else {
-				productList = productService.getProductListBySex(param);
-			}
-			
-			model.addAttribute("productList", productList);
-			
-			Map<String, List<String>> productColorMap = new HashMap<>();
-			for(ProductCategoryDTO product : productList) {
-				param.put("productNo", product.getProductNo());
-				param.put("categoryId", categoryId);
-				List<ProductCategoryDTO> productColorList = productService.getColorChip(param);
-				for(ProductCategoryDTO productColor : productColorList) {
-					if(!productColorMap.containsKey(productColor.getProductNo())) {
-						List<String> colorList = new ArrayList<>();
-						colorList.add(productColor.getColorChip());
-						productColorMap.put(productColor.getProductNo(), colorList);
-					}else {
-						productColorMap.get(productColor.getProductNo()).add(productColor.getColorChip());
-					}
+			boolean chkCookie = false;
+			for(String c: cookieList) {
+				if(c.equals(no)) {
+					chkCookie = true;
 				}
-				
 			}
-			model.addAttribute("categoryId", categoryId);
-			model.addAttribute("productColorMap", productColorMap);
 			
-			return "product/productList";
-		}
-
-		@Secured("ROLE_USER")
-		@RequestMapping("/cart")
-		public String cart(
-				HttpServletRequest request,
-				Principal principal,
-				CartDTO cartDTO
-				) {
-			cartDTO.setMemberId(principal.getName());
+			Cookie cookie = null;
+			if(!chkCookie) {
+				cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
+				cookie.setPath("/");
+				cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+				response.addCookie(cookie);
+			}
 			
-			cartService.setCart(cartDTO);
+			while(cookieList.size() > 3)
+				cookieList.remove(0);
 			
-			return "redirect:/cart";
+			List<ProductDTO> recentPd = new ArrayList<>();
+			for(String c: cookieList) {
+				recentPd.add(productDetailService.getProductDetailByPdNo(c));
+			}
+			Collections.reverse(recentPd);
+			model.addAttribute("recentPd", recentPd);
 		}
 		
-		@PostMapping(value="/putCart", produces="application/json; charset=UTF-8")
-		@ResponseBody
-		public String updateAmount(
-				@RequestBody CartDTO cartDTO,
-				Principal principal) {
-			logger.info("실행");
-			JSONObject jsonObject = new JSONObject();
-			
-			if(principal == null) {
-				jsonObject.put("result", "errer-login");
-			} else {
-				String loginId = principal.getName();
-				cartDTO.setMemberId(loginId);
-				CartResult cr = cartService.setCart(cartDTO);
-				if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
-					jsonObject.put("result", "error-stock");
-				} else if (cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
-					jsonObject.put("result", "warn-stock");
-					int amount = cartService.getAmountByCart(cartDTO);
-					jsonObject.put("amount", amount);
-				} else if (cr == CartResult.SUCCESS_ADD_AMOUNT){
-					jsonObject.put("result", "warn-add");
-					int amount = cartService.getAmountByCart(cartDTO);
-					jsonObject.put("amount", amount);
-				} else {
-					jsonObject.put("result", "success");
-				}
-				
-			}
-			String json = jsonObject.toString();
-			return json;
-		}
-		
+		return "product/productDetail";
 	}
+	
+	@RequestMapping("/productList")
+	public String productList(@RequestParam String categoryId, @RequestParam(defaultValue="1") int pageNo, Model model) {
+		Pager pager= null;
+		if(categoryId.length() == 4) {
+			int totalRows = productService.getTotalProductList(categoryId);   
+			pager = new Pager(12, 5, totalRows, pageNo);
+		}else {
+			int totalRows = productService.getTotalProductListBySex(categoryId);  
+			pager = new Pager(12, 5, totalRows, pageNo);
+		}
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("startRowNo",pager.getStartRowNo());
+		param.put("endRowNo", pager.getEndRowNo());
+		param.put("categoryId", categoryId);
+		
+		
+		List<ProductCategoryDTO> productList;
+		if(categoryId.length() == 4) { // 중분류
+			productList = productService.getProductList(param);
+		}else { // 대분류
+			productList = productService.getProductListBySex(param);
+		}
+		
+		Map<String, List<String>> productColorMap = productService.getColorChip(productList);
+		
+		//subCategory
+		List<CategoryDTO> subCategoryList = categoryService.getSubCategorys(categoryId);
+		
+		model.addAttribute("pager", pager);
+		model.addAttribute("productList", productList);
+		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("productColorMap", productColorMap);
+		model.addAttribute("subCategoryList", subCategoryList);
+		
+		return "product/productList";
+	}
+
+	@Secured("ROLE_USER")
+	@RequestMapping("/cart")
+	public String cart(
+			HttpServletRequest request,
+			Principal principal,
+			CartDTO cartDTO
+			) {
+		cartDTO.setMemberId(principal.getName());
+		cartService.setCart(cartDTO);
+		
+		return "redirect:/cart";
+	}
+		
+	@PostMapping(value="/putCart", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateAmount(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		logger.info("실행");
+		JSONObject jsonObject = new JSONObject();
+		
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			String loginId = principal.getName();
+			cartDTO.setMemberId(loginId);
+			CartResult cr = cartService.setCart(cartDTO);
+			if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "error-stock");
+			} else if (cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "warn-stock");
+				int amount = cartService.getAmountByCart(cartDTO);
+				jsonObject.put("amount", amount);
+			} else if (cr == CartResult.SUCCESS_ADD_AMOUNT){
+				jsonObject.put("result", "warn-add");
+				int amount = cartService.getAmountByCart(cartDTO);
+				jsonObject.put("amount", amount);
+			} else {
+				jsonObject.put("result", "success");
+			}
+			
+		}
+		String json = jsonObject.toString();
+		return json;
+	}
+}

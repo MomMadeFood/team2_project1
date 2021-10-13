@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.coupon.CouponDAO">
+	<select id="selectCouponListByCouponType" parameterType="int" resultType="coupon">
+		select * from coupon
+		where coupon_type = #{value}
+	</select>
+
+	<select id="selectAvailableCouponListByMemberId" parameterType="map" resultType="coupon">
+		<![CDATA[
+			select c.coupon_no, title, content, discount, discount_type, coupon_type
+			from(
+				select m.id, cd.coupon_no
+				from coupon_detail cd join member m on m.id = cd.member_id
+				where cd.member_id = #{memberId} and cd.state = 1
+			) A join coupon c on A.coupon_no = c.coupon_no
+			where  min_price <= #{price}
+		]]>
+	</select>
+
+	<select id="selectCouponById" parameterType="string" resultType="coupon">
+		SELECT * FROM coupon WHERE coupon_no = #{value}
+	</select>
+	<update id="reduceRemainById">
+		UPDATE coupon
+		SET remain_amount = remain_amount - 1 
+		WHERE coupon_no = #{value}
+	</update>
+	
+	<update id="updateCouponById" parameterType="string">
+		<![CDATA[ UPDATE coupon
+		SET remain_amount = remain_amount - 1 
+		WHERE coupon_no = #{value} and remain_amount  > 0]]>
+	</update>
+
+</mapper>

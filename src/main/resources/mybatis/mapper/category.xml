@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mycompany.webapp.dao.CategoryDAO">
+	<select id="selectChildCategorys" parameterType="map" resultType="category">
+		SELECT
+		    category_id,
+		    category_name as category_path,
+		    SUBSTR(category_name, INSTR(category_name, '>', 1, #{opNum})+1) as category_name
+		FROM category
+		WHERE parent_category_id = #{categoryId}
+	</select>
+
+	
+
+</mapper>

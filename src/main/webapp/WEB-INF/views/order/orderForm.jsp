@@ -32,22 +32,31 @@
 	.round {
 	  border-radius: 50%;
 	}
+	.txt {
+		margin-top: 15px;
+		font-size: 13px;
+		line-height: 22px;
+	}	
     </style>
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
-
+	
+	$(window).bind('beforeunload', function(e){
+		localStorage.clear();
+	});
 
 	function callAddrAPi(){
 	    new daum.Postcode({
 	        oncomplete: function(data) {
 	        	$("#addr").val(data.address);
 	        	$("#zipcode").val(data.zonecode);
+	        	$("#detailAddr").val("");
 	        }       
 	    }).open();
 	}
 
 </script>
-<div>
+<div class="txt">
 	<div id="memberIdDiv" style="display:none">${memberDTO.id}</div>
 	<div
 		style="border-bottom: 1px solid #E5E5E5; margin-bottom: 60px; height: 100px; vertical-align: center;">
@@ -61,33 +70,48 @@
 				<div style="width:68%">
 					<table id="orderTable" class="table .txt" style="border-bottom: 1px solid #E5E5E5;">
 						<colgroup>
-							<col width="60%" />
-							<col width="18%" />
+							<col width="51%" />
+							<col width="9%" />
 							<col width="22%" />
+							<col width="12%" />
 						</colgroup>
 						<thead style="background-color: #F5F5F5;">
 							<tr style="text-align: center; height: 47px; font-size: 15px;">
 								<th scope="col">상품정보</th>
 								<th scope="col">수량</th>
 								<th scope="col">판매가</th>
+								<th scope="col">쿠폰</th>
 							</tr>
 						</thead>
 						<tbody>
-            				<c:forEach var="product" items="${productList}" varStatus="status">
-	             				<tr style="text-align: center; height: 132px;">
-									<td class="detail-id" style="display:none">${product.productDetailNo}</td>
-									<td class="d-flex"><img src="${product.img1}" alt=""
-										style="width: 98px; height: 98px;">
-										<div style="text-align: left; margin-left: 20px;">
-											<a style="color: black;" href="#">${product.brand}</br> ${product.name}
-											</a>
-											<div style="display:flex">
-											 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
-											</div>
-										</div></td>
-									<td
-										class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
-									<td style="vertical-align: middle;">₩<span class="detail-price" ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></td>
+		            	  <c:forEach var="product" items="${productList}" varStatus="status">
+		       				<tr style="text-align: center; height: 132px;">
+								<td class="detail-id" style="display:none">${product.productDetailNo}</td>
+								<td class="d-flex"><img src="${product.img1}" alt=""
+									style="width: 98px; height: 98px;">
+									<div style="text-align: left; margin-left: 20px;">
+										<a style="color: black;" href="/product/productDetail?no=${product.productDetailNo}">${product.brand}<br/> ${product.name}
+										</a>
+										<div style="display:flex">
+										 	<p style="margin-top: 10px;font-size:12px;color:#CCC7CD" class="detail-color">color :  <img src="${product.colorChip}" alt="" width="20px" height="20px"> / size :<span class="detail-size">${product.psize}</span></p>
+										</div>
+									</div>
+		           	</td>
+		
+						<td class="detail-amount" style="border-left: 1px solid #E5E5E5; border-right: 1px solid #E5E5E5; vertical-align: middle;">${product.amount}</td>
+						<td class="priceList" style="vertical-align: middle; border-right: 1px solid #E5E5E5;">
+							<div style="display:none; color:#c9bc30" class="originBox">₩<span class="originPrice" style="text-decoration:line-through; color:#c9bc30; "><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+							<div>₩<span class="detail-price"  ><fmt:formatNumber value="${product.price}" pattern="#,###"/></span></div>
+							<div style="display:none" class="appliedPoint">-<span class="pointAmount">0</span>P</div>
+							<div style="display:none" class="appliedCoupon">0</div>
+						</td>
+                  		<td style="vertical-align: middle;">
+                  			<button class="btn btn-sm btn-outline-secondary btn-search cpBtn" onclick="couponSelect(${product.price/product.amount},'${product.brand}',${status.index})">적용</button>
+                  			<button style="display:none; margin:0px" class="btn btn-sm btn-outline-secondary btn-search resetCpBtn" onclick="resetCoupon(${status.index})">취소</button>	
+                  		</td>
+                  		
+                  		<td style="display:none" class="couponId">none</td>
+
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -154,7 +178,7 @@
 										</div>
 										<div style="margin-top: 10px;">
 											<input style="width: 100%;" value="${memberDTO.detailAddr}"
-												id="detail-addr" name="adressDetail" type="text" >
+												id="detailAddr" name="adressDetail" type="text" >
 										</div></td>
 								</tr>
 								<tr>
@@ -162,7 +186,7 @@
 										class="th_space"><strong
 										style="color: #c59c6c; margin-right: 5px;">*</strong>수령인</td>
 									<td><input style="width: 150px;" value="${memberDTO.name}" title="수령인"
-										id="rec-name" name="rec-name" type="text"></td>
+										id="recName" name="recName" type="text"></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -222,9 +246,9 @@
 									<td style="background-color: #F5F5F5;" scope="row"
 										class="th_space">배송요청사항</td>
 									<td><input style="width: 80%;" id="request"
-										name="ship_req" type="text" value="">
-									<div style="display: inline-block; margin-left: 10px;">0 /
-											20자</div></td>
+										name="ship_req" type="text" value="" onKeydown="reqlength()">
+									<div style="display: inline-block; margin-left: 10px;"><span id="reqVal"><span id="reqLen">0</span> /
+											20자</div></span></td>
 								</tr>
 								<tr>
 									<td style="background-color: #F5F5F5;" scope="row"
@@ -363,7 +387,7 @@
 												</c:forEach>
 											</select>
 										</div>
-										<input style="width:200px;" id="account-input" readonly>
+										<input  style="width:200px;" id="account-input" readonly>
 										
 										</input>
 									</div>
@@ -374,8 +398,8 @@
 				</div>
 				<div style="width:32%; margin-left:40px">
 					<div style="position:sticky;top:110px;">
-						<div style="width: 310px; height: 220px; border: 1px solid black">
-							<div style="height: 70%;">
+						<div style="width: 310px; height: 250px; border: 1px solid black">
+							<div style="height: 80%;">
 								<div
 									style="width: 100%; height: 100%; padding-left: 20px; padding-right: 20px; padding-top: 5px">
 									<div
@@ -392,49 +416,57 @@
 									</div>
 									<div
 										style="margin-top: 10px; display: flex; justify-content: space-between;">
-										<div>할인 금액</div>
+										<div>쿠폰</div>
+										<div>-₩<span id="coupon">0</span></div>
+									</div>
+									<div
+										style="margin-top: 10px; display: flex; justify-content: space-between;">
+										<div>H.Point</div>
 										<div>-₩<span id="discount-point">0</span></div>
 									</div>
 								</div>
 							</div>
-							<div style="height: 30%; background-color: #f5f5f5;">
+							<div style="height: 20%; background-color: #f5f5f5;">
 								<div
-									style="padding-top: 18px; padding-left: 20px; padding-right: 20px">
+									style="padding-top: 12px; padding-left: 20px; padding-right: 20px">
 									<div style="float: left;">합계</div>
 									<div
 										style="float: right; line-height: 24px; font-size: 18px; color: #c69c6c; text-align: right;">₩<span id="total-price"><fmt:formatNumber value="${totalPrice}" pattern="#,###"/></span></div>
 								</div>
 							</div>
 						</div>
-						<div
-						style="width: 310px;border: 1px solid black; margin-top: 15px;">
-						<div style="height: 65%; padding: 10px;">
-							<input type="checkbox" id="agree"> <label for="agree">구매자
-								동의</label>
-							<div>
-								<p
-									style="font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
-									주문할 상품의 상품명, 가격, 배송정보 등 판매조건을 확인<br>하였으며, 구매진행에 동의합니다.<br>(전자상거래법
-									제8조 2항)
-								</p>
-								<p
-									style="margin-top: 20px; font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
-									기존 마이너스 한섬 마일리지를 보유하고 있는 고객은 한섬<br>마일리지가 차감돠어 적립되는 것에
-									동의합니다. 적립 예정<br>한섬마일리지가 상이할 수 있습니다.
-								</p>
+						<div style="width: 310px;border: 1px solid black; margin-top: 15px;">
+							<div style="height: 65%; padding: 10px;">
+								<div>
+									<p style="font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
+										주문할 상품의 상품명, 가격, 배송정보 등 판매조건을 확인하였으며, 구매진행에 동의합니다.<br>(전자상거래법
+										제8조 2항)
+									</p>
+									<p style="margin-top: 20px; font-size: 12px; vertical-align: top; line-height: 20px; color: #999">
+										기존 마이너스 한섬 마일리지를 보유하고 있는 고객은 한섬마일리지가 차감돠어 적립되는 것에 동의합니다. <br/> 
+										적립 예정한섬마일리지가 상이할 수 있습니다.
+									</p>
+								</div>
+							</div>
+							<div style="padding: 10px; font-weight:800">
+								<input type="checkbox" id="agree"> 
+								<label for="agree">구매자 동의</label>
 							</div>
 						</div>
-					</div>
 						<div style="margin-top:15px; width:100%">
-							<div style="margin:0px auto; width:90px">
-								<button id="card-btn" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModal">
+							<div style="margin:0px auto; width:100%">
+								<button id="card-btn" type="button" class="btn btn-lg btn-dark"  onClick="postForm()"  style="width:100%">
   									결제하기
 								</button>
-								<button id="transfer-btn" style="display:none" type="button" class="btn btn-secondary" onClick="postOrderForm()">
+								<button id="transfer-btn" style="display:none;width:100%" type="button" class="btn btn-lg btn-dark" onClick="postForm()">
   									결제하기
 								</button>
 							</div>
+							 <div style="width:100%; height:30px; margin-top:15px">
+								<div id="validationAlert" style="border:1px solid #ced4da; width:100%; height:100%; border-radius:5px; background-color:#f9d7db; color:#af7175;padding-top:5px; display:none"><p id="validText"style="font-size:15px; text-align:center">안녕하세요!</p></div>
+							</div>
 						</div>
+
 					</div>
 				</div>
 			</div>
@@ -475,18 +507,96 @@
 </div>
 <script>
 
-	function validation(){
+	function reqlength(){
+		let rlen = ($("#request").val()).length;
+		$("#reqLen").text(rlen);
+		if(rlen>20){
+			$("#reqVal").css("color","red");
+		}else{
+			$("#reqVal").css("color","black");
+		}
+	}
+	
+	
+	function postForm(){
+		if(validation()==0)
+			return 0;
 		
+		if(event.currentTarget.id=='card-btn'){
+			if(validation("card")==0)
+				return 0;
+			$('.modal').modal("show");
+		}else{
+			if(validation("transfer")==0)
+				return 0;
+			postOrderForm();
+		}
+	}
+	
+	function validation(pay){
+		console.log($("#detailAddr").val());
+		
+		if($("#detailAddr").val()===""){
+			$("#detailAddr").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*상세주소를 입력하세요");
+			
+			console.log("상세주소 입력");
+			return 0;
+		}else{
+			$("#detailAddr").css("border","");
+		}
+			
+		if($("#recName").val()===""){
+			console.log("수령인 입력");
+			$("#recName").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*수령인을 입력하세요");
+			return 0;
+		}else{
+			$("#recName").css("border","");
+			
+		}
+			
+		if(($("#request").val()).length>20){
+			console.log("요청사항 글자 줄이기");
+			$("#request").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*요청사항은 20자를 넘어선 안됩니다.");
+			return 0;
+		}else{
+			$("#request").css("border","");
+			
+		}
+			
+		if($("#account-input").val()===""&&pay=="transfer"){
+			console.log("가상계좌 선택하기");
+			$("#account-input").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*가상계좌를 선택하세요");
+			return 0;
+		}else{
+			$("#account-input").css("border","");
+		}
+		
+		if($('#agree').is(':checked')){
+			$("#account-input").css("border","");
+		}else{
+			$("#account-input").css("border","red 1px solid");
+			$("#validationAlert").css("display","block");
+			$("#validText").text("*구매자 동의를 체크하세요");
+			return 0;
+		}
+		 
+		$("#validationAlert").css("display","none");
+		return 1;
 	}
 
 	function oneClikAjax(){
-		
 		let modal = document.querySelector(".modal");
 		let password = $("#oneClickPassword").val();
-		let memberId = document.querySelector("#memberIdDiv").innerHTML;
-		let cardNo = document.querySelector(".show #card-no").innerHTML;
-		let company = document.querySelector(".show #card-company").innerHTML;
-		let data = {"payPassword":password,"memberId":memberId,"cardNo":cardNo,"company":company}
+		let id = document.querySelector("#memberIdDiv").innerHTML;
+		let data = {"payPassword":password,"id":id}
 		let alretBox = document.querySelector("#passwordAlert");
 		let flag = 0;
 		
@@ -513,8 +623,10 @@
 	}
 
 	function accountSelected(){
+		console.log("----");
 		let accountNum = $("#account-select option:selected").val();
 		$("#account-input").val(accountNum);
+		console.log(accountNum+"ssss");
 	}
 
 
@@ -603,10 +715,17 @@
 	
 	function resetPoint(){
 		document.querySelector("#discount-point").innerHTML = 0;
+		let refundPoint = parseInt(document.querySelector("#cur-point").innerHTML) - convertNum(document.querySelector("#remain-point").innerHTML);
 		document.querySelector("#remain-point").innerHTML = convertPrice(document.querySelector("#cur-point").innerHTML);
 		$("#apply-point").val(0);
-		document.querySelector("#total-price").innerHTML = document.querySelector("#prod-price").innerHTML;
+		let price = $("#total-price").text();
+		document.querySelector("#total-price").innerHTML = convertPrice(convertNum(price)+refundPoint);
 		
+		let priceList = document.querySelectorAll(".priceList");
+		
+		for(let element of priceList){
+			element.querySelector(".pointAmount").innerHTML = 0;
+		}
 	}
 	
 	function applyPoint(){
@@ -615,14 +734,26 @@
 		let remainPoint = convertNum(document.querySelector("#remain-point").innerHTML);
 		let discountPoint = convertNum(document.querySelector("#discount-point").innerHTML);
 		let prodPrice = convertNum(document.querySelector("#prod-price").innerHTML);
+		let totalPrice = convertNum(document.querySelector("#total-price").innerHTML);
+		
+		let priceList = document.querySelectorAll(".priceList");
+		
+
 		
 		console.log(applyPoint+" "+remainPoint+" "+discountPoint+" "+prodPrice);
 		if(applyPoint>remainPoint){
-			alert("잔액포인트보다 많은 포인트를 사용할 수 없습니다.");	
+			alert("잔여 포인트보다 많은 포인트를 사용할 수 없습니다.");	
 		}else{
 			document.querySelector("#remain-point").innerHTML = convertPrice(remainPoint - applyPoint);
 			document.querySelector("#discount-point").innerHTML = convertPrice(discountPoint+applyPoint);
-			document.querySelector("#total-price").innerHTML = convertPrice(prodPrice-(discountPoint+applyPoint));
+			document.querySelector("#total-price").innerHTML = convertPrice(totalPrice-applyPoint);
+			
+			let len = priceList.length;
+			let dPoint = parseInt(applyPoint/len);
+			
+			for(let element of priceList){
+				element.querySelector(".pointAmount").innerHTML = dPoint;
+			}
 		}
 		$("#apply-point").val(0);
 	}
@@ -639,25 +770,26 @@
 
 	function postOrderForm() {
 		
+		
 		let orderList = document.querySelectorAll("#orderTable tbody tr");
 		let memberId = document.querySelector(".member-id").innerHTML;
-		let recName = $("#rec-name").val();
+		let recName = $("#recName").val();
 		let hp = $("#hp1").val()+"-"+$("#hp2").val()+"-"+$("#hp3").val();
 		let tel = $("#ph1").val()+"-"+$("#ph2").val()+"-"+$("#ph3").val();
+		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
 		let request = $("#request").val();
 		let recEmail = $("#rec-email1").val()+"@"+$("#rec-email2").val();
-		let priceTotal = convertNum(document.querySelector("#total-price").innerHTML);
-		let discountPrice = convertNum(document.querySelector("#discount-point").innerHTML);
 		let zipcode = $("#zipcode").val();
 		let addr = $("#addr").val();
-		let detailAddr = $("#detail-addr").val();
+		let detailAddr = $("#detailAddr").val();
 		let paymentType = "";
 		let payAccount = "";
 		let company = "";
 		let installment = $("#installment").val();
-		let point = discountPrice;
 		let zipCode = 12435;
 		let state = 2;
+		let pointTotal = convertNum(document.querySelector("#discount-point").innerHTML);
+		let couponTotal = convertNum(document.querySelector("#coupon").innerHTML);
 		
 		
 		
@@ -685,14 +817,13 @@
 			}
 		}
 		
-		console.log(orderList,memberId,recName,hp,tel,request,recEmail,priceTotal,discountPrice,zipcode,addr,detailAddr,paymentType,point);
+		//console.log(orderList,memberId,recName,hp,tel,request,recEmail,priceTotal,zipcode,addr,detailAddr,paymentType,point);
 		
 
 		let detailList = [];
 		let data = {
 				"memberId":memberId,
 				"priceTotal":priceTotal,
-				"priceDiscount":discountPrice,
 				"request":request,
 				"addr":addr,
 				"detailAddr":detailAddr,
@@ -700,7 +831,6 @@
 				"tel":tel,
 				"phone":hp,
 				"paymentType":paymentType,
-				"point":point,
 				"zipCode":zipCode,
 				"recName":recName
 		}
@@ -708,7 +838,10 @@
 			 let productDetailNo = orderList[index].querySelector(".detail-id").innerHTML;
 			 let amount = parseInt(orderList[index].querySelector(".detail-amount").innerHTML);
 			 let size = orderList[index].querySelector(".detail-size").innerHTML;
-			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML));
+			 let point = parseInt(orderList[index].querySelector(".pointAmount").innerHTML);
+			 let price = parseInt(convertNum(orderList[index].querySelector(".detail-price").innerHTML))-point;
+			 let couponSum = convertNum(orderList[index].querySelector(".appliedCoupon").innerHTML);
+			 let couponNo = orderList[index].querySelector(".couponId").innerHTML;
 			 
 			 let detailOrder = {"productDetailNo":productDetailNo,"amount":amount,"size":size,"price":price};
 			 detailList.push(detailOrder);
@@ -718,22 +851,34 @@
 			 data['detailList[' + index +'].psize'] = size; 
 			 data['detailList[' + index +'].price'] = price; 
 			 data['detailList[' + index +'].state'] = state; 
+			 data['detailList[' + index +'].discount'] = point+couponSum; 
+			 data['detailList[' + index +'].point'] = point;
+			 
+			 console.log(point+couponSum+" "+point);
+			 if(couponNo != 'none'){
+				 data['detailList[' + index +'].couponNo'] = couponNo;
+			 }
 		}
 		
 		data['paymentList[' + 0 +'].paymentType'] = paymentType;
-		data['paymentList[' + 0 +'].price'] = priceTotal-discountPrice;
+		data['paymentList[' + 0 +'].price'] = priceTotal;
 		data['paymentList[' + 0 +'].payAccount'] = payAccount;
 		data['paymentList[' + 0 +'].company'] = company;
 		
 		if(paymentType=='신용카드'){
 			data['paymentList[' + 0 +'].installment'] = installment;
 		}
-		if(point>0){
-			data['paymentList[' + 1 +'].paymentType'] = "포인트";
-			data['paymentList[' + 1 +'].price'] = point;
+		let payIdx = 1;
+		if(pointTotal>0){
+			data['paymentList[' + payIdx +'].paymentType'] = "포인트";
+			data['paymentList[' + payIdx +'].price'] = pointTotal;
+			payIdx++;
+		}
+		if(couponTotal>0){
+			data['paymentList[' + payIdx +'].paymentType'] = "쿠폰";
+			data['paymentList[' + payIdx +'].price'] = couponTotal;
 		}
 		console.log(data);
-		
 		
 		
 		$.ajax({
@@ -750,8 +895,113 @@
 			}else{
 				alert(data.productName+"의 재고가 부족합니다.");
 			}
-		});
+		});	
+		
+		
+	}
+	
+	function couponSelect(price, brand, index){
+		
+		var productListSize = '<c:out value="${fn:length(productList)}"/>';
+		
+		var usedCoupon = "";
+		for(var i = 0 ; i < productListSize ; i++){
+			if(localStorage.getItem("c"+i))
+				usedCoupon += localStorage.getItem("c"+i);
+		}
+		console.log(usedCoupon);
+		
+		var x = (window.screen.width / 2) - (600 / 2);
+		var y= (window.screen.height /2) - (400 / 2);
+		var popUp = window.open("/order/couponPopup?price="+price+"&brand="+brand+"&index="+index+"&usedCoupon="+usedCoupon, 
+							"쿠폰 적용", 
+							"width=490, height=300, left="+ x + ", top="+ y + ", screenX="+ x + ", screenY= "+ y + ",scrollbars = yes, resizable= no");
+		popUp.focus();
+		let parent = event.currentTarget.parentNode.parentNode;
+		$(".appliedCoupon")
+	}
+	
+	function responseDiscountInfo(totalDiscountPrice,couponNo,index){
+		
+		localStorage.setItem("c"+index, couponNo);
+		
+		let parent = document.querySelectorAll("#orderTable tbody > tr")[index];
+		let appliedCoupon = parent.querySelector(".appliedCoupon");
+		let couponIdBox = parent.querySelector(".couponId");
+		let couponSum = convertNum($("#coupon").text());
+		let totalPrice = convertNum(document.querySelector("#total-price").innerHTML);
+		
+		let detailPrice = parent.querySelector(".detail-price");
+		let price  = convertNum(detailPrice.innerHTML);
+		
+		//console.log(couponSum);
+		couponSum  = couponSum + parseInt(totalDiscountPrice);
+		$("#coupon").text(convertPrice(couponSum));
+		
+		appliedCoupon.innerHTML = convertPrice(totalDiscountPrice);
+		couponIdBox.innerHTML = couponNo;
+		document.querySelector("#total-price").innerHTML = convertPrice(totalPrice - parseInt(totalDiscountPrice));
+		detailPrice.innerHTML = convertPrice(price - parseInt(totalDiscountPrice));
+		
+
+		//appliedCoupon.style.display="block";
+		//console.log(couponIdBox.innerHTML);
+
+		
+		let cpBtn = parent.querySelector(".cpBtn");
+		let resetCpBtn = parent.querySelector(".resetCpBtn");
+		
+		//console.log(cpBtn);
+		//console.log(resetCpBtn);
+		
+		cpBtn.style.display = "none";
+		parent.querySelector(".originBox").style.display="block";
+
+		resetCpBtn.style.display="inline-block";
+	}
+	
+	function resetCoupon(index){
+		
+		localStorage.removeItem("c"+index);
+		
+		let parent = event.currentTarget.parentNode.parentNode;
+		console.log(event.currentTarget.parentNode.parentNode);
+		
+		let couponIdBox = parent.querySelector(".couponId");
+		let appliedCoupon = parent.querySelector(".appliedCoupon");
+		let totalDiscountPrice = convertNum(appliedCoupon.innerHTML);
+		
+		let totalPrice = convertNum(document.querySelector("#total-price").innerHTML);
+		
+		let detailPrice = parent.querySelector(".detail-price");
+		let price  = convertNum(detailPrice.innerHTML);
+		
+		
+		detailPrice.innerHTML = convertPrice(price + parseInt(totalDiscountPrice));
+		
+		let couponSum = convertNum($("#coupon").text());
+		
+		//console.log(couponSum);
+		
+		couponSum  = couponSum - totalDiscountPrice;
+		
+		document.querySelector("#total-price").innerHTML = convertPrice(totalPrice + totalDiscountPrice)
+		
+		$("#coupon").text(convertPrice(couponSum));
+		
+		couponIdBox.innerHTML = 'none';
+		appliedCoupon.innerHTML = 0;
+		
+		let cpBtn = parent.querySelector(".cpBtn");
+		let resetCpBtn = parent.querySelector(".resetCpBtn");
+		
+		//console.log(cpBtn);
+		//console.log(resetCpBtn);
+		
+		cpBtn.style.display = "inline-block";
+		resetCpBtn.style.display="none";
+		parent.querySelector(".originBox").style.display="none";
 		
 	}
 </script>
-<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+<%@ include file="/WEB-INF/views/common/footer.jsp" %>

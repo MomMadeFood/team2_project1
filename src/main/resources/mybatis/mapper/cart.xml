@@ -5,9 +5,10 @@
  <select id="selectCartsById" resultType="product" parameterType="string">
  	SELECT p.product_no, p.name, p.brand, p.price,
 		pd.product_detail_no, pd.color_code, pd.img1,
-		c.psize, c.amount
-	FROM product p, product_detail pd, cart c
-	WHERE c.product_detail_no = pd.product_detail_no AND p.product_no = pd.product_no
+		c.psize, c.amount,
+		s.amount as stock
+	FROM product p, product_detail pd, cart c, stock s
+	WHERE c.product_detail_no = pd.product_detail_no AND p.product_no = pd.product_no AND c.product_detail_no = s.product_detail_no AND c.psize = s.psize 
 		AND c.member_id = #{value}
  </select>
  

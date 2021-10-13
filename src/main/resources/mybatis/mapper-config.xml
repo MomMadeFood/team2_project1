@@ -5,26 +5,31 @@
    <settings>
          <setting name="mapUnderscoreToCamelCase" value="true"/>
    </settings>
+   
    <typeAliases>
-   	  <typeAlias type="com.mycompany.webapp.dto.CardDTO" alias="card"/>
-   	  <typeAlias type="com.mycompany.webapp.dto.CartDTO" alias="cart"/>
-   	  <typeAlias type="com.mycompany.webapp.dto.CategoryDTO" alias="category"/>
-   	  <typeAlias type="com.mycompany.webapp.dto.CouponDTO" alias="coupon"/>
-   	  <typeAlias type="com.mycompany.webapp.dto.MemberDTO" alias="member"/>
-   	  <typeAlias type="com.mycompany.webapp.dto.MOrderDTO" alias="morder"/>
-      <typeAlias type="com.mycompany.webapp.dto.OrderDetailDTO" alias="orderDetail"/>
-      <typeAlias type="com.mycompany.webapp.dto.MOrderDTO" alias="mOrder"/>
-      <typeAlias type="com.mycompany.webapp.dto.OrderListDTO" alias="orderList"/>
-      <typeAlias type="com.mycompany.webapp.dto.PaymentDTO" alias="payment"/>
-      <typeAlias type="com.mycompany.webapp.dto.PointDTO" alias="point"/>
-      <typeAlias type="com.mycompany.webapp.dto.StockDTO" alias="stock"/>
-      <typeAlias type="com.mycompany.webapp.dto.VirtureAccountDTO" alias="virtureAccount"/>
-      <typeAlias type="com.mycompany.webapp.dto.Pager" alias="pager"/>
-      
+   	  <typeAlias type="com.mycompany.webapp.dto.coupon.CouponDTO" alias="coupon"/>
+   	  <typeAlias type="com.mycompany.webapp.dto.coupon.CouponDetailDTO" alias="couponDetail"/>
+   	  
+   	  <typeAlias type="com.mycompany.webapp.dto.member.MemberDTO" alias="member"/>
+   	  
+   	  <typeAlias type="com.mycompany.webapp.dto.order.MOrderDTO" alias="morder"/>
+      <typeAlias type="com.mycompany.webapp.dto.order.OrderDetailDTO" alias="orderDetail"/>
+      <typeAlias type="com.mycompany.webapp.dto.order.MOrderDTO" alias="mOrder"/>
+      <typeAlias type="com.mycompany.webapp.dto.order.OrderListDTO" alias="orderList"/>
+
       <typeAlias type="com.mycompany.webapp.dto.product.ProductDTO" alias="product"/>
       <typeAlias type="com.mycompany.webapp.dto.product.ProductNewDTO" alias="newProduct"/>
       <typeAlias type="com.mycompany.webapp.dto.product.ProductDetailDTO" alias="productDetail"/>
       <typeAlias type="com.mycompany.webapp.dto.product.ProductCategoryDTO" alias="productCategory"/>
       <typeAlias type="com.mycompany.webapp.dto.product.ProductColorDTO" alias="color"/>
+      
+      <typeAlias type="com.mycompany.webapp.dto.CardDTO" alias="card"/>
+   	  <typeAlias type="com.mycompany.webapp.dto.CartDTO" alias="cart"/>
+   	  <typeAlias type="com.mycompany.webapp.dto.CategoryDTO" alias="category"/>
+      <typeAlias type="com.mycompany.webapp.dto.PaymentDTO" alias="payment"/>
+      <typeAlias type="com.mycompany.webapp.dto.PointDTO" alias="point"/>
+      <typeAlias type="com.mycompany.webapp.dto.StockDTO" alias="stock"/>
+      <typeAlias type="com.mycompany.webapp.dto.VirtureAccountDTO" alias="virtureAccount"/>
+      <typeAlias type="com.mycompany.webapp.dto.Pager" alias="pager"/>
    </typeAliases>   
 </configuration>

@@ -1,6 +1,7 @@
 package com.mycompany.webapp.controller;
 
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
@@ -18,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mycompany.webapp.dto.CartDTO;
 import com.mycompany.webapp.dto.StockDTO;
@@ -26,7 +26,9 @@ import com.mycompany.webapp.dto.product.ProductColorDTO;
 import com.mycompany.webapp.dto.product.ProductDTO;
 import com.mycompany.webapp.service.CartService;
 import com.mycompany.webapp.service.CartService.CartResult;
-import com.mycompany.webapp.service.ProductDetailService;
+import com.mycompany.webapp.service.StockService;
+import com.mycompany.webapp.service.StockService.StockResult;
+import com.mycompany.webapp.service.product.ProductDetailService;
 
 @Controller
 @RequestMapping("/cart")
@@ -35,6 +37,7 @@ public class CartController {
 	
 	@Resource private CartService cartService;
 	@Resource private ProductDetailService productDetailService;
+	@Resource private StockService stockService;
 	
 	@RequestMapping("")
 	public String cart(
@@ -43,40 +46,47 @@ public class CartController {
 		logger.info("실행");
 		
 		List<ProductDTO> cartList = cartService.getCarts(principal.getName());
-		
+		int totalPrice = 0;
+		for(ProductDTO p : cartList) {
+			totalPrice += p.getAmount() * p.getPrice();
+		}
+		model.addAttribute("totalPrice", totalPrice);
 		model.addAttribute("cartList", cartList);
 		return "cart/cart";
 	}
 	
 	@PostMapping("/orderForm") 
 	public String orderForm(
-			RedirectAttributes rttr,
+			Principal principal,
 			HttpServletRequest request,
-			@RequestParam("cart_ck") List<String> cart_ck,
-			CartDTO cartDTO
-			){
-			
-		//cart_ck : 카트에서 선택한 제품들의 코드, 
+			@RequestParam("cart_ck") List<String> cartSelectedList ){
+		List<CartDTO> selectedCartList;
+		//cartSelectedList : 카트에서 선택한 제품들의 코드, 
 		//			코드 형식 : 제품상세번호_사이즈 (ex. TN2B7WSHG03N_BL_S)
 		
-		//cartDTO : 카트에 담긴 제품들의 List, 담긴 수량 정보
-		
-		logger.info("선택제품 : " + cart_ck.toString());
-		logger.info("카트제품 : " + cartDTO.getCartDTOList().toString());
-		
-		//선택된 주문 리스트만 orderList에 저장
-		List<ProductDTO> orderList = cartService.getSelectedProducts(cartDTO.getCartDTOList(), cart_ck);
-		
-		logger.info("주문제품 : " + orderList.toString());
-		//주문폼 접근 경로
-	
-		
-		HttpSession session = request.getSession();
-		session.setAttribute("orderList", orderList);
-		session.setAttribute("orderFormAccessRoot", "cart");
-		
-		return "redirect:/order/orderForm";
+		selectedCartList= cartService.getCartsByPdsid(principal.getName(), cartSelectedList);
+		//매진 상품 확인
+		StockResult st = stockService.checkStockByCart(selectedCartList);
+		if(st == StockResult.FAIL_SOLDOUT) {
+			return "cart/soldout";
+		} else if(st == StockResult.FAIL_NOT_ENOUGH_STOCK) {
+			return "cart/stock";
+		} else {
+			//ProductList로 변경
+			List<ProductDTO> orderList = new ArrayList<ProductDTO>();
+			for(CartDTO cartDTO : selectedCartList) {
+				ProductDTO productDTO = cartService.convertToProductDTO(cartDTO);
+				
+				orderList.add(productDTO);
+			}
+			HttpSession session = request.getSession();
+			session.setAttribute("orderList", orderList);
+			session.setAttribute("orderFormAccessRoot", "cart");
+			
+			return "redirect:/order/orderForm";
+		}
 	}
+	
 	
 	@RequestMapping(value="/optionColor", produces="application/json; charset=UTF-8")
 	@ResponseBody
@@ -197,6 +207,8 @@ public class CartController {
 				jsonObject.put("result", "error-duplicate");
 			} else if(cr ==CartResult.FAIL_SAME_VALUE){
 				jsonObject.put("result", "error-same");
+			} else if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "error-stock");
 			} else {
 				jsonObject.put("result", "success");
 				jsonObject.put("psize", cartDTO.getNewPsize());
@@ -227,6 +239,8 @@ public class CartController {
 				logger.info(cartDTO.toString());
 				int amount = cartService.getAmountByCart(cartDTO);
 				jsonObject.put("amount", amount);
+			} else if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "error-stock");
 			} else {
 				jsonObject.put("result", "success");
 				jsonObject.put("amount", cartDTO.getAmount());
