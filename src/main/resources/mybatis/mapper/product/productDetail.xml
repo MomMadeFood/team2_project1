@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mycompany.webapp.dao.product.ProductDetailDAO">
-	
+
 	<select id="selectProductDetailById" resultType="product" parameterType="string">
 		select 	a.product_detail_no,
 		    b.product_no, a.img1, a.img2, a.img3, b.price,
@@ -19,16 +19,16 @@
 			WHERE p.product_no = pd.PRODUCT_NO AND pd.product_detail_no=#{value}
 	</select>
 	
-		<select id="selectPdColSizeById" resultType="product" parameterType="string">
-			select b.product_no || '_'|| a.color_code product_detail_no, 
-				b.product_no, 
-				a.color_chip, 
-				a.color_code, 
-				psize, 
-				amount 
-			from (SELECT * from stock, product_detail 
-			where PRODUCT_DETAIL.PRODUCT_DETAIL_NO = STOCK.PRODUCT_DETAIL_NO) a, (SELECT * FROM product) 
-			b WHERE a.product_no = b.PRODUCT_NO AND a.product_no=#{value}
+	<select id="selectPdColSizeById" resultType="product" parameterType="string">
+		select b.product_no || '_'|| a.color_code product_detail_no, 
+			b.product_no, 
+			a.color_chip, 
+			a.color_code, 
+			psize, 
+			amount 
+		from (SELECT * from stock, product_detail 
+		where PRODUCT_DETAIL.PRODUCT_DETAIL_NO = STOCK.PRODUCT_DETAIL_NO) a, (SELECT * FROM product) 
+		b WHERE a.product_no = b.PRODUCT_NO AND a.product_no=#{value}
 	</select>
 
 	<select id="selectOneImgByPdId" resultType="string">

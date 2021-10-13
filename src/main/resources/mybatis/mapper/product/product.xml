@@ -52,113 +52,113 @@
 	</select>
 
 	
-	<select id="countProductList"  parameterType="string" resultType="int" >
-		SELECT count(*)
-		FROM(
-			SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
-			FROM(
-				SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
-				FROM (
-					SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
-					FROM (
-						SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
-						FROM CATEGORY, PRODUCT_CATEGORY
-						WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{categoryId}
-					) a, PRODUCT b
-					WHERE a.PRODUCT_NO = b.PRODUCT_NO
-				) c, PRODUCT_DETAIL D
-				WHERE c.product_no = d.product_no
-			)
-		)
-		WHERE RNUM = 1
-	</select>
-		
-	<select id="selectProductListByPCId" parameterType="map" resultType="productCategory">
-		<![CDATA[
-		SELECT rnum, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
-		FROM (
-			SELECT rownum rnum, product_no , product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
-			FROM (
-				SELECT *
+    <select id="countProductList"  parameterType="string" resultType="int" >
+			SELECT count(*)
 				FROM(
 					SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
 					FROM(
-						SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
-						FROM (
-							SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+							SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
 							FROM (
-								SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
-								FROM CATEGORY, PRODUCT_CATEGORY
-								WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{categoryId}
-							) a, PRODUCT b
-							WHERE a.PRODUCT_NO = b.PRODUCT_NO
-						) c, PRODUCT_DETAIL D
-					WHERE c.product_no = d.product_no
+									SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+									FROM (
+										SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+										FROM CATEGORY, PRODUCT_CATEGORY
+										WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{categoryId}
+									) a, PRODUCT b
+									WHERE a.PRODUCT_NO = b.PRODUCT_NO
+							) c, PRODUCT_DETAIL D
+							WHERE c.product_no = d.product_no
+						)
 					)
-				)
 				WHERE RNUM = 1
-			) WHERE rownum <=#{endRowNo}
-		)
-		WHERE rnum >= #{startRowNo}
-		]]>
-	</select>
+		</select>
+		
+			<select id="selectProductListByPCId" parameterType="map" resultType="productCategory">
+				<![CDATA[
+					SELECT rnum, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+						FROM (
+							SELECT rownum rnum, product_no , product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+							FROM (
+								SELECT *
+									FROM(
+										SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+										FROM(
+												SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+												FROM (
+														SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+														FROM (
+															SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+															FROM CATEGORY, PRODUCT_CATEGORY
+															WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.PARENT_CATEGORY_ID = #{categoryId}
+														) a, PRODUCT b
+														WHERE a.PRODUCT_NO = b.PRODUCT_NO
+												) c, PRODUCT_DETAIL D
+												WHERE c.product_no = d.product_no
+											)
+										)
+									WHERE RNUM = 1
+							) WHERE rownum <=#{endRowNo}
+						)
+					WHERE rnum >= #{startRowNo}
+				]]>
+		</select>
 		
 
 	<select id ="selectProductListBySex" parameterType = "map" resultType="productCategory">
-		<![CDATA[
-		SELECT rnum, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
-		FROM (
-		  SELECT rownum rnum, product_no , product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
-		  FROM (
-		    SELECT *
-		      FROM(
-			SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
-			FROM(
-			    SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
-			    FROM (
-				SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
-				FROM (
-				  SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
-				  FROM CATEGORY, PRODUCT_CATEGORY
-				  WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_ID LIKE '%' || #{categoryId}  || '%'
-				) a, PRODUCT b
-				WHERE a.PRODUCT_NO = b.PRODUCT_NO
-			    ) c, PRODUCT_DETAIL D
-			    WHERE c.product_no = d.product_no
-			  )
-			)
-		      WHERE RNUM = 1
-		  ) WHERE rownum <=#{endRowNo}
-		)
-		WHERE rnum >= #{startRowNo}
-		]]>
+	  <![CDATA[
+	    SELECT rnum, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+	      FROM (
+	        SELECT rownum rnum, product_no , product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, brand, name, price
+	        FROM (
+	          SELECT *
+	            FROM(
+	              SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+	              FROM(
+	                  SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+	                  FROM (
+	                      SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+	                      FROM (
+	                        SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+	                        FROM CATEGORY, PRODUCT_CATEGORY
+	                        WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_ID LIKE '%' || #{categoryId}  || '%'
+	                      ) a, PRODUCT b
+	                      WHERE a.PRODUCT_NO = b.PRODUCT_NO
+	                  ) c, PRODUCT_DETAIL D
+	                  WHERE c.product_no = d.product_no
+	                )
+	              )
+	            WHERE RNUM = 1
+	        ) WHERE rownum <=#{endRowNo}
+	      )
+	      WHERE rnum >= #{startRowNo}
+	      ]]>
 	</select>
-
+	
 	<select id="countProductListBySex"  parameterType="string" resultType="int" >
 		SELECT count(*)
-		FROM(
-		SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
-		FROM(
-		    SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
-		    FROM (
-			SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
-			FROM (
-			  SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
-			  FROM CATEGORY, PRODUCT_CATEGORY
-			  WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_ID LIKE '%' || #{categoryId}  || '%'
-			) a, PRODUCT b
-			WHERE a.PRODUCT_NO = b.PRODUCT_NO
-		    ) c, PRODUCT_DETAIL D
-		    WHERE c.product_no = d.product_no
-		  )
-		)
-		WHERE RNUM = 1
+		  FROM(
+		    SELECT ROW_NUMBER() OVER(PARTITION BY product_NO ORDER BY product_detail_no) AS RNUM, product_no, product_detail_no, img1, img3, CATEGORY_ID, PARENT_CATEGORY_ID, CATEGORY_NAME, BRAND, NAME, PRICE
+		    FROM(
+		        SELECT c.product_no product_no, d.product_detail_no product_detail_no, d.img1 img1,d.img3 img3, c.CATEGORY_ID CATEGORY_ID, c.PARENT_CATEGORY_ID PARENT_CATEGORY_ID, c.CATEGORY_NAME CATEGORY_NAME, c.BRAND BRAND, c.NAME NAME, c.PRICE PRICE
+		        FROM (
+		            SELECT a.CATEGORY_ID, a.PARENT_CATEGORY_ID, a.CATEGORY_NAME, b.BRAND, b.NAME, b.PRICE, b.product_no
+		            FROM (
+		              SELECT PRODUCT_CATEGORY.PRODUCT_NO , PRODUCT_CATEGORY.CATEGORY_ID , CATEGORY.CATEGORY_NAME, CATEGORY.PARENT_CATEGORY_ID 
+		              FROM CATEGORY, PRODUCT_CATEGORY
+		              WHERE CATEGORY.CATEGORY_ID  = PRODUCT_CATEGORY.CATEGORY_ID AND CATEGORY.CATEGORY_ID LIKE '%' || #{categoryId}  || '%'
+		            ) a, PRODUCT b
+		            WHERE a.PRODUCT_NO = b.PRODUCT_NO
+		        ) c, PRODUCT_DETAIL D
+		        WHERE c.product_no = d.product_no
+		      )
+		    )
+		  WHERE RNUM = 1
 	</select>
 
 	<select id="selectProductByProduct" parameterType="product" resultType="product">
 		SELECT distinct * FROM product_detail pd, product p WHERE pd.product_detail_no = #{productDetailNo} and p.product_no = #{productNo}
 	</select>
-
+	
 	<select id="selectColorsByPid" resultType="string">
 		SELECT color_code
 		FROM product_detail
@@ -171,9 +171,9 @@
 		WHERE product_no = #{value}
 	</select>
 	
-	<select id="selectWithProductByPdId" resultType="product" parameterType="string">
-		SELECT pd.img1, pd.img2, pd.img3, pd.color_code, pd.color_chip, pd.PRODUCT_DETAIL_NO, 
-			p.name, p.price, p.content, p.brand
+  	<select id="selectWithProductByPdId" resultType="product" parameterType="string">
+  		SELECT pd.img1, pd.img2, pd.img3, pd.color_code, pd.color_chip, pd.PRODUCT_DETAIL_NO, 
+        		p.name, p.price, p.content, p.brand
 		FROM product_detail pd, product p
 		WHERE p.product_no = pd.product_no AND pd.product_detail_no = (
 		    SELECT with_product

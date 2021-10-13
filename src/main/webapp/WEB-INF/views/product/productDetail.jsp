@@ -4,7 +4,6 @@
 <style type="text/css">
 	@import url("/resources/css/productDetail.css");
 </style>
-
 <script type="text/javascript">
 	
 	function reduceSum() {
@@ -61,7 +60,7 @@
 		}
 		document.querySelector("#totalPrice").innerHTML = "₩" + ans;
 	}
-
+	
 	function putCart() {
 		closeAllAlert();
 		if($("input[name=psize]:checked").length === 0) {
@@ -72,10 +71,10 @@
 			cartData.productDetailNo = $("input[name=productDetailNo]").val();
 			cartData.amount = $("input[name=amount]").val();
 			cartData.psize = $("input[name=psize]:checked").val();
-
+			
 			let jsonData = JSON.stringify(cartData);
 			console.log(jsonData);
-
+			
 			$.ajax({
 				url: "putCart",
 				type: "POST",
@@ -93,11 +92,11 @@
 					} else if(data.result === "warn-stock") {
 						$("#cart-warn-message").html("상품의 재고가 부족합니다. 최대 구매 가능 수량은 " + data.amount + "개입니다.");
 						$("#cart-warn-alert").show();
-
+						
 					} else if(data.result === "warn-add") {
 						$("#cart-warn-message").html("이미 담겨있는 상품입니다. 총 " + data.amount + "개의 상품이 장바구니에 담겼습니다.");
 						$("#cart-warn-alert").show();
-
+						
 					}
 				},
 				error: function(request,status,error) {
@@ -106,7 +105,7 @@
 			});
 		}
 	 }
-
+	
 	function closeAlert() {
 		$('#cart-alert').hide();
 	}
@@ -121,20 +120,20 @@
 		closeWarnAlert();
 		closeErrorAlert();
 	}
-		
+	
 </script>	
 	
-		<div class="position-fixed c-div-alert">
-			<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
-				  장바구니에 상품이 담겼습니다. <a href="/cart" class="alert-link">장바구니 바로가기</a><button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
-			</div>
-			<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="cart-error-alert" role="alert">
-				 <span id="cart-error-message"></span><button type='button' class='close' onclick='closeErrorAlert();'><span aria-hidden='true'>&times;</span></button>
-			</div>
-			<div class="alert alert-warning alert-dismissible fade show" style="display:none;" id="cart-warn-alert" role="alert">
-				 <span id="cart-warn-message"></span><a href='/cart' class='alert-link'>장바구니 바로가기</a><button type='button' class='close' onclick='closeWarnAlert();'><span aria-hidden='true'>&times;</span></button>
-			</div>
+<div class="position-fixed c-div-alert">
+	<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="cart-alert" role="alert">
+		  장바구니에 상품이 담겼습니다. <a href="/cart" class="alert-link">장바구니 바로가기</a><button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
 	</div>
+	<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="cart-error-alert" role="alert">
+		 <span id="cart-error-message"></span><button type='button' class='close' onclick='closeErrorAlert();'><span aria-hidden='true'>&times;</span></button>
+	</div>
+	<div class="alert alert-warning alert-dismissible fade show" style="display:none;" id="cart-warn-alert" role="alert">
+		 <span id="cart-warn-message"></span><a href='/cart' class='alert-link'>장바구니 바로가기</a><button type='button' class='close' onclick='closeWarnAlert();'><span aria-hidden='true'>&times;</span></button>
+	</div>
+</div>
 
 <div class="container-fluid c-div-content">
 	<div class="row" style="margin-top: 20px; width: 990px; margin:0px auto;">
@@ -209,14 +208,12 @@
 								<div class="prod-detail-con-box">
 									<strong class="number-code mt-2">상품품번 &#58; <span>${productDetail.productDetailNo}</span></strong>
                                 </div>
-                                
-                       <div class="pd-round-style"	style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
-							<p class="pd_p description mb-4">${productDetail.content}</p>
-						</div>    	
-                                
-                               </div>
+		                        <div class="pd-round-style"	style="border-radius: 20px; background-color: #F5F5F5; color: #555555">
+							         <p class="pd_p description mb-4">${productDetail.content}</p>
+							    </div>    	
+                             </div>
                                 <%-- <form:form commandName="cartDTO" id="cart-form"  onsubmit="checkData(this)" action="cart"> --%>
-                                	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
+                               	<input type="hidden" name="productDetailNo" value="${productDetail.productDetailNo}">
                                 	
                                 <div class="pd-info">
                                 	<ul>
@@ -228,8 +225,7 @@
                            						</a>
                    							</c:forEach>
                    						</li>
-                                   		
-                                 		 <li class="pd-size">
+                                		<li class="pd-size">
                                     	 		<span class="product-subtitle">사이즈</span>
                                     	 		<c:forEach items="${sizeList}" var="size">
                                     	 			<label><input type="radio" name="psize" value="${size}" style="width:30px"/><span style="padding: 0px 5px;">${size}</span></label>
@@ -251,11 +247,10 @@
                                 </div>
                                 
                                <ul>
-                                 <li>
-	                                 <button class="cart_lg_btn_wt mb-3" style="width:100%;" onclick="putCart()">쇼핑백 담기</button>
-	                                 
-                               	</li>
- 							</ul>
+	                                 <li>
+		                                 <button class="cart_lg_btn_wt mb-3" style="width:100%;" onclick="putCart()">쇼핑백 담기</button>
+	                               	</li>
+ 								</ul>
  							<hr/>
  							<c:forEach items="${withProductList}" var="withProduct">
            						<div style="width:100%; margin: 0px;">
@@ -274,15 +269,13 @@
 								  			</a>
 								  		</div>
 						  			</div> 
-											
 								</div>
-							</c:forEach>    
-                        	</div>
-                        	
-                        	</div>
-	                    </div>
-	                </div>
-            	</div>
-        	</div>  
-     	</div>
+						  </c:forEach>    
+                    </div>
+                 </div>
+             </div>
+           </div>
+      	</div>
+  	</div>  
+</div>
 <%@ include file="/WEB-INF/views/common/footer.jsp"%>

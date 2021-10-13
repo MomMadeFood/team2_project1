@@ -42,13 +42,9 @@
         <div class="site-mobile-menu-body"></div>
       </div>
 
-
       <header class="site-navbar js-sticky-header site-navbar-target mb-5" role="banner" style="background-color:#F5F5F5">
-
         <div class="container">
           <div class="row position-relative">
-
-
             <div class="mt-4">
               <a href="/" class="text-black"><img src="${pageContext.request.contextPath}/resources/images/logo.png" alt="HANDSOME" class="ml-3" /></a>
             </div>
@@ -160,5 +156,4 @@
             </div>
           </div>
         </div>
-
-      </header>
+	</header>

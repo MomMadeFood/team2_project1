@@ -49,4 +49,5 @@ public class ProductDetailService {
 	public ProductDTO getProductDetailByPdNo(String productDetailNo){
 		return productDetailDAO.selectProductDetailByPdNo(productDetailNo);
 	}
+	
 }

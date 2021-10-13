@@ -1,217 +1,221 @@
-<%@ page contentType="text/html; charset=UTF-8" %>
+package com.mycompany.webapp.controller;
 
-<%@ include file="/WEB-INF/views/common/header.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/coupon.css" />
+import java.security.Principal;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-<script type="text/javascript">
-	function issueCoupon(cNo) {
-		closeAllAlert();
-		$.ajax({
-			url: "/event/issueCoupon",
-			type: "POST",
-			data: {couponNo : cNo},
-			success: function(data) {
-				console.log(data);
-				if(data.result === "success") {
-					$("#coupon-message").text("쿠폰이 발급되었습니다.");
-					$("#coupon-alert").show();
-				} if(data.result === "success-expire") {
-					$("#coupon-message").text("쿠폰이 발급되었습니다. 쿠폰 유효기간 내에 사용하시기 바랍니다.");
-					$("#coupon-alert").show();
-				} else if(data.result === "errer-login") {
-					location.href="/member/loginForm";
-				} else if(data.result === "error-duplicate") {
-					$("#coupon-error-message").text("이미 발급된 쿠폰입니다.");
-					$("#coupon-error-alert").show();
-				} else if(data.result === "error-end") {
-					$("#coupon-warn-message").text("종료된 이벤트입니다.");
-					$("#coupon-warn-alert").show();
-				} else if(data.result === "error-stock") {
-					$("#coupon-warn-message").text("쿠폰 발급 가능 개수가 없습니다.");
-					$("#coupon-warn-alert").show();
-				} else if(data.result === "error-qualification") {
-					$("#coupon-error-message").text("죄송합니다. 회원님은 이벤트 참여 조건에 해당되지 않습니다.");
-					$("#coupon-error-alert").show();
-				}
-			},
-			error: function(request,status,error) {
-				console.log("code:"+request.status+"\n"+"message:"+request.responseText+"\n"+"error:"+error);
-			}
-		}) 
+import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.mycompany.webapp.dto.CartDTO;
+import com.mycompany.webapp.dto.CategoryDTO;
+import com.mycompany.webapp.dto.Pager;
+import com.mycompany.webapp.dto.product.ProductCategoryDTO;
+import com.mycompany.webapp.dto.product.ProductDTO;
+import com.mycompany.webapp.service.CartService;
+import com.mycompany.webapp.service.CartService.CartResult;
+import com.mycompany.webapp.service.CategoryService;
+import com.mycompany.webapp.service.product.ProductDetailService;
+import com.mycompany.webapp.service.product.ProductService;
+
+@Controller
+@RequestMapping("/product")
+public class ProductController {
+	Logger logger = LoggerFactory.getLogger(ProductController.class);
+	
+	@Resource
+	private ProductDetailService productDetailService;
+	
+	@Resource 
+	private CartService cartService;
+	
+	@Resource
+	private ProductService productService;
+	
+	@Resource 
+	private CategoryService categoryService;
+	
+	@RequestMapping("/productDetail")
+	public String productDetail(HttpServletRequest request, HttpServletResponse response, String no, Model model) {
+		String no1 = no;
+		no1 = no1.substring(0,no1.length()-3);
 		
+		List<ProductDTO> productDetailList = productDetailService.getProductDetail(no1);
+		List<ProductDTO> productSizePriceList = productDetailService.getProductDetailCol(no1);
+		
+		for(ProductDTO temp : productDetailList) {
+			if(temp.getProductDetailNo().equals(no)) {
+				model.addAttribute("productDetail", temp);
+				break; 
+			}
+		}
+
+		Map<String, String> productDetailMap = new HashMap<String,String>();
+		
+		for(ProductDTO product : productSizePriceList) {
+			productDetailMap.put(product.getProductDetailNo(), product.getColorChip());
+		}
+		model.addAttribute("productDetailMap", productDetailMap);
+		
+		Set<String> sizeSet = new HashSet<>();
+		for(ProductDTO product : productSizePriceList) {
+			if(product.getProductDetailNo().equals(no))
+				sizeSet.add(product.getPsize());
+		}
+		Object[] sizeList = sizeSet.toArray();
+		model.addAttribute("sizeList", sizeList);
+		
+		List<ProductDTO> withProductList = productDetailService.getWithproductByPdId(no);
+		
+		model.addAttribute("withProductList", withProductList);
+		
+		Cookie[] cookies = request.getCookies();
+		
+		List<String> cookieList = new ArrayList<>();
+		
+		if(cookies.length==1) {
+			Cookie cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
+			cookie.setPath("/");
+			cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+			cookie.setHttpOnly(true); // java script에서 쿠키를 읽지 못하게 함
+			response.addCookie(cookie);
+		}else {
+			
+			for(Cookie c : cookies) {
+				String name = c.getName();
+				if (name != "JSSESSIONID")
+				cookieList.add(c.getValue());
+			}
+			
+			boolean chkCookie = false;
+			for(String c: cookieList) {
+				if(c.equals(no)) {
+					chkCookie = true;
+				}
+			}
+			
+			Cookie cookie = null;
+			if(!chkCookie) {
+				cookie = new Cookie("recentProduct"+(cookieList.size()+1), no);
+				cookie.setPath("/");
+				cookie.setMaxAge(24*60*60); // 24*60*60 은 하루
+				response.addCookie(cookie);
+			}
+			
+			while(cookieList.size() > 3)
+				cookieList.remove(0);
+			
+			List<ProductDTO> recentPd = new ArrayList<>();
+			for(String c: cookieList) {
+				recentPd.add(productDetailService.getProductDetailByPdNo(c));
+			}
+			Collections.reverse(recentPd);
+			model.addAttribute("recentPd", recentPd);
+		}
+		
+		return "product/productDetail";
 	}
 	
-	function closeAlert() {
-		$('#coupon-alert').hide();
+	@RequestMapping("/productList")
+	public String productList(@RequestParam String categoryId, @RequestParam(defaultValue="1") int pageNo, Model model) {
+		Pager pager= null;
+		if(categoryId.length() == 4) {
+			int totalRows = productService.getTotalProductList(categoryId);   
+			pager = new Pager(12, 5, totalRows, pageNo);
+		}else {
+			int totalRows = productService.getTotalProductListBySex(categoryId);  
+			pager = new Pager(12, 5, totalRows, pageNo);
+		}
+		
+		Map<String, Object> param = new HashMap<>();
+		param.put("startRowNo",pager.getStartRowNo());
+		param.put("endRowNo", pager.getEndRowNo());
+		param.put("categoryId", categoryId);
+		
+		
+		List<ProductCategoryDTO> productList;
+		if(categoryId.length() == 4) { // 중분류
+			productList = productService.getProductList(param);
+		}else { // 대분류
+			productList = productService.getProductListBySex(param);
+		}
+		
+		Map<String, List<String>> productColorMap = productService.getColorChip(productList);
+		
+		//subCategory
+		List<CategoryDTO> subCategoryList = categoryService.getSubCategorys(categoryId);
+		
+		model.addAttribute("pager", pager);
+		model.addAttribute("productList", productList);
+		model.addAttribute("categoryId", categoryId);
+		model.addAttribute("productColorMap", productColorMap);
+		model.addAttribute("subCategoryList", subCategoryList);
+		
+		return "product/productList";
 	}
-	function closeWarnAlert() {
-		$('#coupon-warn-alert').hide();
-	}
-	function closeErrorAlert() {
-		$('#coupon-error-alert').hide();
-	}
-	function closeAllAlert() {
-		closeAlert();
-		closeWarnAlert();
-		closeErrorAlert();
-	}
-	</script>
-		<div class="position-fixed c-div-alert">
-		<div class="alert alert-danger alert-dismissible fade show" style="display:none;" id="coupon-error-alert" role="alert">
-			 <span id="coupon-error-message"></span>
-			  <button type="button" class="close" onclick="closeErrorAlert()">
-			  <span aria-hidden="true">&times;</span>
-  			</button>
-		</div>
-		<div class="alert alert-warning alert-dismissible fade show" style="display:none;" id="coupon-warn-alert" role="alert">
-			 <span id="coupon-warn-message"></span>
-			  <button type="button" class="close" onclick="closeWarnAlert()">
-			  <span aria-hidden="true">&times;</span>
-  			</button>
-		</div>
-		<div class="alert alert-dark  alert-dismissible fade show" style="display:none;" id="coupon-alert" role="alert">
-			<span id="coupon-message"></span> <button type="button" class="close" onclick="closeAlert();"><span aria-hidden="true">&times;</span></button>
-		</div>
-	</div>
-	
-    <div>
-      <div style="border-bottom: 1px solid #E5E5E5; height:100px; vertical-align:center;margin-bottom:40px;">
-        <div style="margin:auto; padding-top:30px; width:300px; text-align:center; vertical-align:middle;">
-          <p style="font-size: 28px;">쿠폰 이벤트</p>
-        </div>
-        
-      </div>
-      <div class="container-fluid" style="margin:0px auto; width:990px;">
-      	<div>
-  		  <ul class="nav nav-tabs coupon-tab" id="myTab" role="tablist" >
-		    <li class="nav-item coupon-tab-item" role="presentation">
-		      <a class="nav-link active" id="brand-tab" data-toggle="tab" href="#brand" role="tab" aria-controls="home" aria-selected="true"><span>브랜드 쿠폰</span></a>
-		    </li>
-		    <li class="nav-item coupon-tab-item" role="presentation">
-		      <a class="nav-link" id="welcome-tab" data-toggle="tab" href="#welcome" role="tab" aria-controls="profile" aria-selected="false"><span>웰컴 쿠폰</span></a>
-		    </li>
-		    <li class="nav-item coupon-tab-item" role="presentation">
-		      <a class="nav-link" id="event-tab" data-toggle="tab" href="#event" role="tab" aria-controls="event" aria-selected="false"><span>선착순 쿠폰</span></a>
-		    </li>
-		  </ul>
-		  <div class="tab-content mt-5 d-flex" id="myTabContent">
-		      <div class="tab-pane fade show active" id="brand" role="tabpanel" aria-labelledby="brand-coupon-tab" style="width:100%">
-		     	<c:forEach items="${brandCouponList}" var="brandCoupon">
-		     	  <div class="card coupon-item">
-			  	    <img height="142px" src="${brandCoupon.img}" class="card-img-top" alt="...">
-				   <div class="card-body">
-				      <h5 class="card-title">${brandCoupon.title}</h5>
-				      <p class="card-text">
-				    	  <b>${brandCoupon.discount}<c:if test="${brandCoupon.discountType==1}">% </c:if><c:if test="${brandCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
-				      	  ${brandCoupon.content}
-				      </p>
-				       <a onclick="issueCoupon('${brandCoupon.couponNo}')" href="#" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
-				    </div>
-				  </div>
-				</c:forEach>
-			  </div>
-		      <div class="tab-pane fade" id="welcome" role="tabpanel" aria-labelledby="welcome-coupon-tab" style="width:100%">
-		      	<c:forEach items="${welcomeCouponList}" var="welcomeCoupon">
-		     	  <div class="card coupon-item">
-			  	    <img height="142px" src="${welcomeCoupon.img}" class="card-img-top" alt="...">
-				   <div class="card-body">
-				      <h5 class="card-title" style="font-weight:800">${welcomeCoupon.title}</h5>
-				      <p class="card-text">
-				    	  <b>${welcomeCoupon.discount}<c:if test="${welcomeCoupon.discountType==1}">% </c:if><c:if test="${welcomeCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
-				      	  ${welcomeCoupon.content}
-				      </p>
-				       <a onclick="issueCoupon('${welcomeCoupon.couponNo}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
-				    </div>
-				  </div>
-				</c:forEach>
-			  </div>
-		      <div class="tab-pane fade" id="event" role="tabpanel" aria-labelledby="event-coupon-tab" style="width:100%">
-				<c:forEach items="${eventCouponList}" var="eventCoupon">
-		     	  <div class="card coupon-item" style="height: 350px;">
-			  	    <img height="160px" src="${eventCoupon.img}" class="card-img-top" alt="...">
-				   <div class="card-body">
-				      <h5 class="card-title" style="font-weight:800">${eventCoupon.title}</h5>
-				      <p class="card-text">
-				    	  <b>${eventCoupon.discount}<c:if test="${eventCoupon.discountType==1}">% </c:if><c:if test="${eventCoupon.discountType==2}">만원 </c:if>할인 쿠폰</b> <br/>
-				      	  ${eventCoupon.content}
-				      </p>
-				      <sec:authentication property="principal.username" var="memberId"/>
-				      <a onclick="issueEventCoupon('${eventCoupon.couponNo}', '${memberId}')" class="btn btn-dark" style="color:white;">다운받기 <i class="fas fa-download" style="color:white;"></i></a>
-				    </div>
-				  </div>
-				</c:forEach>
-			  </div>
-		  </div>
-  	    </div>
-    </div>
-  </div>
-  
-  <script>
-  	function issueEventCoupon(couponNo, memberId){
-  		$.ajax({
-  			method:"post",
-  			url:"http://18.224.253.114:8080/event/issueEventCoupon", // event서버 ip
-  			data:{couponNo, memberId}
-  		}).done(data=>{
-  			if(data.result =="success"){
-  				$("#coupon-message").text("쿠폰이 발급되었습니다. 쿠폰 유효기간 내에 사용하시기 바랍니다.");
-				$("#coupon-alert").show();
-  			}else{
-				$("#coupon-warn-message").text(data.message);
-				$("#coupon-warn-alert").show();
-  			}
-  		})
-  	}
-  </script>
-  
-  <script>
 
-/*     function colorChange(){
-      if(document.querySelector("#c2").style.backgroundColor == "white"){
-        document.querySelector("#c2").style.backgroundColor = "red";
-      }else{
-        document.querySelector("#c2").style.backgroundColor = "white";
-      }
-    }
-    
-    function clickBtn(){
-    	alert("쿠폰 획득에 성공했습니다!");
-    	let myBtn = document.querySelector("#my-btn");
-    	myBtn.className = 'btn btn-primary';
-    	myBtn.innerHTML = "성공";
-    	$("#my-btn").attr("disabled", true);
-    	
-    }
-    
-    $("document").ready(function(){
-
-      let myBtn = document.querySelector("#my-btn");
-      var timer = setInterval(colorChange,200);
-      var time = 1000;
-      let myTime1 = document.querySelector("#my-time1");
-      let myTime2 = document.querySelector("#my-time2");
-      let myTime3 = document.querySelector("#my-time3");
-      let clickBtn = document.querySelector("#cick-btn");
-      var stopWatch = setInterval(function(){
-        let sec = parseInt(time/100);
-        let psec = time%100;
-        myTime1.innerHTML = sec;
-        myTime2.innerHTML = psec;
-        time--;
-      },10)
-      setTimeout(function(){
-    	clearInterval(stopWatch);
-        clearInterval(timer);
-        myBtn.className = 'btn btn-success';
-        myBtn.innerHTML = "Click!!"
-        document.querySelector("#c2").style.backgroundColor = "white";
-        myTime1.innerHTML = "";
-        myTime2.innerHTML = "";
-        myTime3.innerHTML = "";
-        $("#my-btn").attr("disabled", false);
-      },10000);
-    })
-
-     */
-  </script>
-<%@ include file="/WEB-INF/views/common/footer.jsp" %>
+	@Secured("ROLE_USER")
+	@RequestMapping("/cart")
+	public String cart(
+			HttpServletRequest request,
+			Principal principal,
+			CartDTO cartDTO
+			) {
+		cartDTO.setMemberId(principal.getName());
+		cartService.setCart(cartDTO);
+		
+		return "redirect:/cart";
+	}
+		
+	@PostMapping(value="/putCart", produces="application/json; charset=UTF-8")
+	@ResponseBody
+	public String updateAmount(
+			@RequestBody CartDTO cartDTO,
+			Principal principal) {
+		logger.info("실행");
+		JSONObject jsonObject = new JSONObject();
+		
+		if(principal == null) {
+			jsonObject.put("result", "errer-login");
+		} else {
+			String loginId = principal.getName();
+			cartDTO.setMemberId(loginId);
+			CartResult cr = cartService.setCart(cartDTO);
+			if(cr == CartResult.FAIL_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "error-stock");
+			} else if (cr == CartResult.SUCCESS_NOT_ENOUGH_STOCK) {
+				jsonObject.put("result", "warn-stock");
+				int amount = cartService.getAmountByCart(cartDTO);
+				jsonObject.put("amount", amount);
+			} else if (cr == CartResult.SUCCESS_ADD_AMOUNT){
+				jsonObject.put("result", "warn-add");
+				int amount = cartService.getAmountByCart(cartDTO);
+				jsonObject.put("amount", amount);
+			} else {
+				jsonObject.put("result", "success");
+			}
+			
+		}
+		String json = jsonObject.toString();
+		return json;
+	}
+}
